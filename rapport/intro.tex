@@ -1,6 +1,8 @@
+\newpage
 \section{Proposal}
-\subsection{Channel system}
-A channel system L is a tuple $\langle$S,$s_0$,A,C,M,$\delta$$\rangle$, where
+
+\subsection{Channel System}
+A channel system CS over a set of processes P and channels Ch is a tuple $\langle$S,$s_0$,A,C,M,$\delta$$\rangle$, where
 \begin{itemize}
 \item[]
 S is a finite set of control states,
@@ -9,32 +11,61 @@ $s_0$ is an initial control state,
 \item[]
 A is a finite set of actions,
 \item[]
-C is a finite set of channels,
+Ch is a finite set of channels,
 \item[]
 M is a finite set of messages,
 \item[]
-$\delta$ is a finite set of transitions, each of which is a triple of the form $\rangle$s1,op,s2$\langle$, where s1 and s2 are control states, and op is a label of one of the forms
+$\delta$ is a finite set of transitions, each of which is a triple of the form $\langle s_1,op,s_2\rangle$, where $s_1$ and $s_2$ are control states, and op is a label of one of the forms
 
 \begin{itemize}
 \item
-c!m, where c $\in$ C and m $\in$ M,
+c!m, where c $\in$ Ch and m $\in$ M
 \item
-c?m, where c $\in$ C and m $\in$ M,
+c?m, where c $\in$ Ch and m $\in$ M
+\item
+a $\in$ A.
 \end{itemize}
+\end{itemize}
+
+The finite-state control part of CS is an ordinary labeled transition system with states S, initial state $s_0$ and transitions $\delta$. The channel part is represented by the set Ch of channels, which may contain a string of messages in M. The set A denotes the set of observable interactions with the environment, whereas $\delta$ may either perform an action from A, or and unobservable action, where
+
+\begin{itemize}
+\item[]
+$\langle s_1, c!m, s_2\rangle$ represents a change of state from $s_1$ to $s_2$ while appending the message m to the tail of channel c
+\item[]
+$\langle s_1, c?m, s_2\rangle$ represents a change of state from $s_1$ to $s_2$ while removing the message m to the head of channel c
 \end{itemize}
 
 \subsection{Channel transition system}
-
-A channel system induces a transition system TS = (K, $\rightarrow$) where K=$(SC)^*$ and $\rightarrow$ $\subseteq$ K$\times$K is the transition relation.
-
-Using $s_k$[i] to denote the state of the ith process and $c_k$[i] to denote the state of the ith channel of a configuration k=($s_k$, $c_k$), the transition relation $\rightarrow$ contains relations k $\rightarrow$ k' with
-
+The operational behaviour of CS is defined by the inifinite-state transition system TS = (C, $\rightarrow$) where
 \begin{itemize}
-  \item
-    $s_k[i] \longrightarrow s_k'[i]$ for some i, with $\longrightarrow \in A$, and the states of all processes j$\neq$i and all channels remain unchanged by the transition.
-  \item
-    $c_k[i] \longrightarrow c_k'[i]$ for some i, with $\longrightarrow \in \delta$, and all other channels j$\neq$i and the states of all processes remain unchanged by the transition.
+\item[]
+   K = (S $\times$ $\xi$) is the set of its configurations, where $\xi$ is an evaluation of the set of channels C in CS
+\item[]
+  $\rightarrow$ $\subseteq (S \times S)$ contains the following transitions
+  \begin{itemize}
+    \item
+      For each observable action a $\in$ A in CS
+      \[
+      \dfrac{s \xrightarrow{a} s'}{(S, \xi) \rightarrow (S', \xi)}
+      \]
+    \item
+      For each transmission action $\langle s_1, c!m, s_2 \rangle$ in CS
+      \[
+      \dfrac{s \xrightarrow{c!m} s' \wedge \xi(c) = m_1,m_2,...,m_n}{(S, \xi) \rightarrow (S', \xi')} \] with \[ \xi' = \xi[c := m_1,m_2,...,m_m,m].
+      \]
+    \item
+      For each reception action $\langle s_1, c?m, s_2 \rangle$ in CS
+      \[
+      \dfrac{s \xrightarrow{c?m} s' \wedge \xi(c) = m_1,m_2,...,m_n}{(S, \xi) \rightarrow (S', \xi')} \] with \[ \xi' = \xi[c := m_2,...,m_m,m].
+      \]
+
+  \end{itemize}
 \end{itemize}
+
+Let k denote a configuration, the k is said to be reachable in TS, if there are configurations $k_1...k_l$ such that $k_0$ is an initial conifuration of TS, $k_l = k$ and for each 0 $\leq$ i < l, $\langle k_i, k_{i+1} \rangle \in \rightarrow$.
+
+\newpage
 
 \subsection{Subwords and views}
 
