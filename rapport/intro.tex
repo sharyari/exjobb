@@ -50,14 +50,14 @@ The operational behaviour of CS is defined by the inifinite-state transition sys
       \dfrac{s \xrightarrow{a} s'}{(S, \xi) \rightarrow (S', \xi)}
       \]
     \item
-      For each transmission action $\langle s_1, c!m, s_2 \rangle$ in CS
+      For each transmission action $\langle s_1, ch!m, s_2 \rangle$ in CS
       \[
-      \dfrac{s \xrightarrow{c!m} s' \wedge \xi(c) = m_1,m_2,...,m_n}{(S, \xi) \rightarrow (S', \xi')} \] with \[ \xi' = \xi[c := m_1,m_2,...,m_m,m].
+      \dfrac{s \xrightarrow{ch!m} s' \wedge ch \in \xi}{(S, \xi) \rightarrow (S', \xi')} \] with \[ \xi' = \xi[ch := \xi (ch) \centerdot m].
       \]
     \item
-      For each reception action $\langle s_1, c?m, s_2 \rangle$ in CS
+      For each reception action $\langle s_1, ch?m, s_2 \rangle$ in CS
       \[
-      \dfrac{s \xrightarrow{c?m} s' \wedge \xi(c) = m_1,m_2,...,m_n}{(S, \xi) \rightarrow (S', \xi')} \] with \[ \xi' = \xi[c := m_2,...,m_m,m].
+      \dfrac{s \xrightarrow{ch?m} s' \wedge ch \in \xi}{(S, m \centerdot \xi) \rightarrow (S', \xi')} \] with \[ \xi' = \xi[ch:= \xi (ch)].
       \]
 
   \end{itemize}
@@ -69,7 +69,9 @@ Let k denote a configuration, the k is said to be reachable in TS, if there are 
 
 \subsection{Subwords and views}
 
-Using $c_k[i]$ be a channel in a transition system k containing the word w=$w_1...w_l$ of length l, then the subword relation $\sqsubseteq$ is a relation (as described elsewere). Then a view v of a configuration k=($s_k,c_k$) (denoted v $\sqsubseteq$ k, with the symbol overloaded) is a tuple ($s_k, c_k'$) such that $c_k'$ $\sqsubseteq$ $c_k$.
+Let $\subword$ be the subword relation, then u $\subword$ $s_1...s_n$=w iff u=$s_{i_1}...s_{i_k}$ where 1 $\leq$ $i_1,i_k$ $\leq $ n and $i_j < i_{j+1}$ for all 1 $leq$ j < k. For example, if w=abc, then the set of subwords of w is {abc, ab, bc, a, b, c}.
+
+We define the subword relation $\subword$ for configurations c = $\confa{c}{\xi}$ to be all configurations c' such that c'=$\confa{c}{\xi[ ch \subword \xi(ch)]}$ for all channels ch $\in$ $\xi$.
 
 \subsection{View abstraction}
 The abstraction function $\alpha_p: K\rightarrow 2^{K_p}$ maps a configuration k into the set $\alpha_k(k) = \{v\in C_k | v\sqsubseteq K\}$. 
