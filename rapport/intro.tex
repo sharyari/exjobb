@@ -71,15 +71,14 @@ Let k denote a configuration, the k is said to be reachable in TS, if there are 
 
 Let $\subword$ be the subword relation, then u $\subword$ $s_1...s_n$=w iff u=$s_{i_1}...s_{i_k}$ where 1 $\leq$ $i_1,i_k$ $\leq $ n and $i_j < i_{j+1}$ for all 1 $leq$ j < k. For example, if w=abc, then the set of subwords of w is {abc, ab, bc, a, b, c}.
 
-We define the subword relation $\subword$ for configurations c = $\confa{c}{\xi}$ to be all configurations c' such that c'=$\confa{c}{\xi[ ch \subword \xi(ch)]}$ for all channels ch $\in$ $\xi$.
+We define the subword relation $\subword$ for configurations, such that for c = $\confa{s}{\xi}$, c'=$\confa{s}{\xi[ ch \subword \xi(ch)] | ch \in \xi}$ .
 
 \subsection{View abstraction}
-The abstraction function $\alpha_p: K\rightarrow 2^{K_p}$ maps a configuration k into the set $\alpha_k(k) = \{v\in C_k | v\sqsubseteq K\}$. 
+The abstraction function $\alpha_p: C\rightarrow 2^{C_p}$!!!!!!!!! maps a configuration c into the set V of \emph{views} such that for each v $\in$ V, $\{v\sqsubseteq c\}$. 
 
-The concretization function $\gamma_k: 2^{K_p} \rightarrow 2^K$ inputs a set of views V $\subseteq$ $K_p$, and returns the set of configurations that can be reconstructed from the views in V, in other words, $\gamma_k(V) = \{k \in K | \alpha_p(k) \subseteq V$\}
+The concretization function $\gamma_k: 2^{K_p} \rightarrow 2^K$ returns, set of views V, the set of configurations that can be reconstructed from the views in V, in other words, $\gamma_k(V) = \{c | \alpha_p(c) \subseteq V$\}
 
-The abstract post-image of a set of view V $\in$ $C_p$ is defined as $Apost_p$(V) = $\alpha_p(post(\gamma_p(V)))$ We also define $\gamma_p^l$ := $\gamma_p(V) \cap K_l$.
-
+The abstract post-image of a set of view V $\in$ $C_p$ is defined as $Apost_p$(V) = $\alpha_p(post(\gamma_p(V)))$ We also define $\gamma_p^l$ := $\gamma_p(V) \cap C_l$.
 
 
 \subsection{Example}
