@@ -40,7 +40,7 @@ $\langle s_1, c?m, s_2\rangle$ represents a change of state from $s_1$ to $s_2$ 
 The operational behaviour of CS is defined by the inifinite-state transition system TS = (C, $\rightarrow$) where
 \begin{itemize}
 \item[]
-   K = (S $\times$ $\xi$) is the set of its configurations, where $\xi$ is an evaluation of the set of channels C in CS
+   C = (S $\times$ $\xi$) is the set of its configurations, where $\xi$ is an evaluation of the set of channels C in CS
 \item[]
   $\rightarrow$ $\subseteq (S \times S)$ contains the following transitions
   \begin{itemize}
@@ -63,7 +63,9 @@ The operational behaviour of CS is defined by the inifinite-state transition sys
   \end{itemize}
 \end{itemize}
 
-Let k denote a configuration, the k is said to be reachable in TS, if there are configurations $k_1...k_l$ such that $k_0$ is an initial conifuration of TS, $k_l = k$ and for each 0 $\leq$ i < l, $\langle k_i, k_{i+1} \rangle \in \rightarrow$.
+Let c denote a configuration, the c is said to be reachable in TS, if there are configurations $c_1...c_l$ such that $c_0$ is an initial conifuration of TS, $c_l = k$ and for each 0 $\leq$ i < l, $\langle c_i, c_{i+1} \rangle \in \rightarrow$. At times we may use a notation for a configuration c with explicit processes and channels, so that c = $\conf{s_1,...,s_n, ch_1,...,ch_p}$, or alternatively, with explicit processes and channel evaluations, c = $\conf{s_1,...,s_n, \xi(ch_1),...,\xi(ch_p)}$.
+
+\emph{Example.} Let $c = \conf{S,\xi}$ be a configuration with two processes and two channels containing the words \e{ab} and \e{lf} respectively. Then c may also be denoted as $c = \conf{s_1,s_2, ch_1, ch_2}$ or as $c = \conf{s_1,s_2,ab,lf}$. 
 
 \newpage
 
@@ -71,15 +73,30 @@ Let k denote a configuration, the k is said to be reachable in TS, if there are 
 
 Let $\subword$ be the subword relation, then u $\subword$ $s_1...s_n$=w iff u=$s_{i_1}...s_{i_k}$ where 1 $\leq$ $i_1,i_k$ $\leq $ n and $i_j < i_{j+1}$ for all 1 $leq$ j < k. For example, if w=abc, then the set of subwords of w is {abc, ab, bc, a, b, c}.
 
-We define the subword relation $\subword$ for configurations, such that for c = $\confa{s}{\xi}$, c'=$\confa{s}{\xi[ ch \subword \xi(ch)] | ch \in \xi}$ .
+We define the subword relation $\subword$ for configurations, such that for c = $\conf{s,\xi}$, c'=$\conf{s,\xi[ ch \subword \xi(ch)] | ch \in \xi}$. 
+
+\emph {Example.} Suppose \e{c} is a configuration $\conf{s_1,s_2,ab,cd}$. Then the subwords of \e{c} is the set
+\begin{ttabular}
+$\conf{s_1,s_2,ab,cd}$ \\
+$\conf{s_1,s_2,a,cd}$ &
+$\conf{s_1,s_2,b,cd}$ &
+$\conf{s_1,s_2,\epsilon,cd}$ \\ 
+$\conf{s_1,s_2,a,c}$ &
+$\conf{s_1,s_2,b,c}$ &
+$\conf{s_1,s_2,\epsilon,c}$ \\
+$\conf{s_1,s_2,a,d}$ &
+$\conf{s_1,s_2,b,d}$ &
+$\conf{s_1,s_2,\epsilon,d}$ \\
+$\conf{s_1,s_2,\epsilon,\epsilon}$ \\
+\end{ttabular}
+
 
 \subsection{View abstraction}
-The abstraction function $\alpha_p: C\rightarrow 2^{C_p}$!!!!!!!!! maps a configuration c into the set V of \emph{views} such that for each v $\in$ V, $\{v\sqsubseteq c\}$. 
+The abstraction function $\alpha_k: C\rightarrow 2^{C_k}$\todo{?} maps a configuration c into the set V of \emph{views} of size up to \emph{k} \todo{define size}, such that for each v $\in$ V, $\{v\sqsubseteq c\}$. 
 
-The concretization function $\gamma_k: 2^{K_p} \rightarrow 2^K$ returns, set of views V, the set of configurations that can be reconstructed from the views in V, in other words, $\gamma_k(V) = \{c | \alpha_p(c) \subseteq V$\}
+The concretization function $\gamma_k: 2^{C_k} \rightarrow 2^C$\todo{?} returns, given a set of views V, the set of configurations that can be reconstructed from the views in V, in other words, $\gamma_c(V) = \{c \in C | \alpha_k(c) \subseteq V$\}
 
-The abstract post-image of a set of view V $\in$ $C_p$ is defined as $Apost_p$(V) = $\alpha_p(post(\gamma_p(V)))$ We also define $\gamma_p^l$ := $\gamma_p(V) \cap C_l$.
-
+The abstract post-image of a set of view V $\in$ $C_k$ is defined as $Apost_k$(V) = $\alpha_k(post(\gamma_k(V)))$ In general, $\gamma_k$ is an infinite set of states. We hope \todo{!} we only need to consider those configurations, whose sizes are up to k+1, i.e. a finite set of configurations. We define $\gamma_k^l$ := $\gamma_k(V) \cap C_l$ for some $l\geq 0$.
 
 \subsection{Example}
 Consider the configuration k = ($s_1$, $r_1$, ab, ba) for the alternating bit protocol (defined elsewere), then $\alpha_2(k)$ = \{($s_1$, $r_1$, ab, ba), ($s_1$, $r_1$, ab, a), ($s_1$, $r_1$, ab, b), ($s_1$, $r_1$, b, ba), ($s_1$, $r_1$, a, ba), ($s_1$, $r_1$, ab, $\epsilon$), ($s_1$, $r_1$, $\epsilon$, ba)\} = V. Then $\gamma(V)$ = V.

@@ -12,6 +12,8 @@
 \usepackage{float}
 \usepackage{authblk}
 \usepackage{todonotes}
+
+
 \usepackage{caption}
 \DeclareCaptionFont{white}{\color{white}}
 \DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
@@ -98,13 +100,35 @@ escapeinside={\#*}{\^^M}
 \newcommand{\SuchThat}{\mid}
 \newcommand{\Tuple}[1]{\langle#1\rangle}
 \newcommand{\Union}{\cup}
-\newcommand{\confb}[4]{\langle#1,#2,#3,#4\rangle}
-\newcommand{\confa}[2]{\langle#1,#2\rangle}
+\newcommand{\conf}[1]{\langle#1\rangle}
 \newcommand{\subword}{\sqsubseteq}
-
+\newcommand{\e}[1]{\emph{#1}}
 \usetikzlibrary{positioning,shapes,shadows,arrows}
 
 \usepackage{url}
+
+
+\usepackage{booktabs,array}
+\def\Midrule{\midrule[\heavyrulewidth]}
+\newcount\rowc
+
+\makeatletter
+\def\ttabular{%
+\hbox\bgroup
+\let\\\cr
+\valign\bgroup
+\global\rowc\@ne
+\hbox to 7em{\strut \hfill##\hfill}%
+&&%
+\global\advance\rowc\@ne
+\hbox to 7em{\strut\hfill##\hfill}%
+\cr}
+\def\endttabular{%
+\crcr\egroup\egroup}
+
+
+
+
 
 
 %Specific for this document
