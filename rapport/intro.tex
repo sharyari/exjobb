@@ -1,7 +1,11 @@
 \newpage
 \section{Proposal}
 
-\subsection{Channel System}
+\subsection{Channel Systems}
+LIFO
+
+\subsubsection{Formal Definition of Channel Systems}
+\label{CS}
 A channel system CS over a set of processes P and channels Ch is a tuple $\langle$S,$s_0$,A,C,M,$\delta$$\rangle$, where
 \begin{itemize}
 \item[]
@@ -36,7 +40,11 @@ $\langle s_1, c!m, s_2\rangle$ represents a change of state from $s_1$ to $s_2$ 
 $\langle s_1, c?m, s_2\rangle$ represents a change of state from $s_1$ to $s_2$ while removing the message m to the head of channel c
 \end{itemize}
 
-\subsection{Channel transition system}
+\subsection{Channel Transition Systems}
+Vad innebär ett transition system?
+
+\subsubsection{Formal Definition of Channel Transition Systems}
+\label{CTS}
 The operational behaviour of CS is defined by the inifinite-state transition system TS = (C, $\rightarrow$) where
 \begin{itemize}
 \item[]
@@ -52,12 +60,12 @@ The operational behaviour of CS is defined by the inifinite-state transition sys
     \item
       For each transmission action $\langle s_1, ch!m, s_2 \rangle$ in CS
       \[
-      \dfrac{s \xrightarrow{ch!m} s' \wedge ch \in \xi}{(S, \xi) \rightarrow (S', \xi')} \] with \[ \xi' = \xi[ch := \xi (ch) \centerdot m].
+      \dfrac{s \xrightarrow{ch!m} s' \wedge ch \in \xi}{(S, \xi) \rightarrow (S', \xi')} \] with \[ \xi' = \xi[ch := \xi (ch) \bullet m].
       \]
     \item
       For each reception action $\langle s_1, ch?m, s_2 \rangle$ in CS
       \[
-      \dfrac{s \xrightarrow{ch?m} s' \wedge ch \in \xi}{(S, m \centerdot \xi) \rightarrow (S', \xi')} \] with \[ \xi' = \xi[ch:= \xi (ch)].
+      \dfrac{s \xrightarrow{ch?m} s' \wedge ch \in \xi}{(S, m \bullet \xi) \rightarrow (S', \xi')} \] with \[ \xi' = \xi[ch:= \xi (ch)].
       \]
 
   \end{itemize}
@@ -67,11 +75,10 @@ Let c denote a configuration, the c is said to be reachable in TS, if there are 
 
 \emph{Example.} Let $c = \conf{S,\xi}$ be a configuration with two processes and two channels containing the words \e{ab} and \e{lf} respectively. Then c may also be denoted as $c = \conf{s_1,s_2, ch_1, ch_2}$ or as $c = \conf{s_1,s_2,ab,lf}$. 
 
-\newpage
 
 \subsection{Subwords and views}
-
-Let $\subword$ be the subword relation, then u $\subword$ $s_1...s_n$=w iff u=$s_{i_1}...s_{i_k}$ where 1 $\leq$ $i_1,i_k$ $\leq $ n and $i_j < i_{j+1}$ for all 1 $leq$ j < k. For example, if w=abc, then the set of subwords of w is {abc, ab, bc, a, b, c}.
+\label{subwords}
+Let $\subword$ be the subword relation, then u $\subword$ $s_1...s_n$=w iff u is an ordered subset of w. For example, if w=abc, then the set of subwords of w is {abc, ab, bc, a, b, c}.
 
 We define the subword relation $\subword$ for configurations, such that for c = $\conf{s,\xi}$, c'=$\conf{s,\xi[ ch \subword \xi(ch)] | ch \in \xi}$. 
 
@@ -98,47 +105,86 @@ The concretization function $\gamma_k: 2^{C_k} \rightarrow 2^C$\todo{?} returns,
 
 The abstract post-image of a set of view V $\in$ $C_k$ is defined as $Apost_k$(V) = $\alpha_k(post(\gamma_k(V)))$ In general, $\gamma_k$ is an infinite set of states. We hope \todo{!} we only need to consider those configurations, whose sizes are up to k+1, i.e. a finite set of configurations. We define $\gamma_k^l$ := $\gamma_k(V) \cap C_l$ for some $l\geq 0$.
 
-\subsection{Example}
-Consider the configuration k = ($s_1$, $r_1$, ab, ba) for the alternating bit protocol (defined elsewhere), then $\alpha_2(k)$ = \{($s_1$, $r_1$, ab, ba), ($s_1$, $r_1$, ab, a), ($s_1$, $r_1$, ab, b), ($s_1$, $r_1$, b, ba), ($s_1$, $r_1$, a, ba), ($s_1$, $r_1$, ab, $\epsilon$), ($s_1$, $r_1$, $\epsilon$, ba)\} = V. Then $\gamma(V)$ = V.
+\subsubsection{Note on concretizations}
+Suppose we want to determine whether a configuration \e{c} $\in$ $\gamma_k(V)$ for a set \e{V}. This would require that all \e{v} $\in$ $\alpha_k(c)$ are in \e{V}. Consider a view \e{v} = $\conf{S, \xi(ch)=w}$ with size($w$) = $k$; if \e{v} $\in$ \e{V} then necessarily, any \e{v'} = $\conf{S, \xi(ch)=w'}$ with \e{w'} $\sqsubseteq$ \e{w} $\in$ \e{V}. Consequently, it is sufficient to assure that all configurations \e{c} = $\conf{S,\xi(ch_i)=w_i}$ are in \e{V}, with
 
-The post of the set V contains
 \begin{itemize}
 \item
-($s_1$, $r_1$, ab, ba) $\rightarrow$ ($s_2$, $r_1$, ab, ba), since ($s_1$$\rightarrow$$s_2$) $\in$ A.
+size($w_i$)=$k$ if size($\xi(ch)$) $\geq$ $k$
 \item
-($s_1$, $r_1$, ab, a) $\rightarrow$ ($s_2$, $r_1$, ab, a), since ($s_1$$\rightarrow$$s_2$) $\in$ A.
-\item
-($s_1$, $r_1$, ab, a) $\rightarrow$ ($s_1$, $r_2$, ab, $\epsilon$), since $\langle$$r_1$,$c_2?m$,$r_2$$\rangle$ $\in$ $\delta$.
-\item
-and so on.
+size($w_i$)= size($\xi(ch)$) if size($\xi(ch)$ < $k$.
 \end{itemize}
 
+\e{Example.} Suppose we want to determine whether \e{c} = $\conf{S, abc, def}$ is an element of $\gamma_2$. It is then sufficient to check that $\conf{S,ab,de}$, $\conf{S,ab,ef}$, $\conf{S,bc ,de}$ and $\conf{S,bc,ef}$ are in \e{V}.
+
+
 \subsection{Proofs}
-We will show that ...
+We will show that for any configuration \e{c} $\in$ $\gamma_k(V)$ of size $m > k + 1$ such that there is a \e{c'} induced by a transmission rule \e{r} $\in$ $\rightarrow$ from \e{c}, then for each \e{v'} $\in$ $\alpha_k(c')$, the following holds: There is a configuration \e{d} $\in$ $\gamma_k(V)$ of size at most \e{k}+1 with a transition \e{d} $\xrightarrow{r}$ \e{d'} with \e{v'} $\in$ $\alpha_k(d')$. 
 
 \subsubsection{Transmission rules}
+\label{proofTransmission}
 First we note, that for any configuration \e{c} $\in$ \e{V}, any view \e{v'} $\in$ $\alpha_k(c)$ is also a valid configuration \e{c'} $\in$ $\gamma_k(V)$, since $\alpha_k(v')$ $\subseteq$ $\alpha_k(c)$ and thus \e{v'} $\in$ $\gamma_k^{k+1}(\alpha_k(c))$. Also note that if from \e{c} a transition \e{r} can be fired, then this transition can also be fired from any configuration \e{c'} = \e{v'}, as transmission rules are guarded only by the states of the channel system and not by channel evaluations.
 
-We will show that for any configuration \e{c} $\in$ $\gamma_k(V)$ of size $m > k + 1$ such that there is a \e{c'} induced by a transmission rule \e{r} $\in$ $\rightarrow$ from \e{c}, then for each \e{v'} $\in$ $\alpha_k(c')$, the following holds: There is a configuration \e{d} $\in$ $\gamma_k(V)$ of size at most \e{k}+1 with a transition \e{d} $\xrightarrow{r}$ \e{d'} with \e{v'} $\in$ $\alpha_k(d')$.
-
 A transmission rule changes the evaluation of at most one channel \e{ch} $\in$ \e{c}, and (possibly) the state of the channel system, thus we need only reason about the evaluations of a single channel \e{ch}.
-Let \e{c} = $\conf{S, w_1..w_m}$ $\xrightarrow{ch!w_{m+1}}$ $\conf{S', w_1..w_mw_{m+1}}$ = \e{c'}. Any view \e{v'} of size at most \e{k} of \e{c'} is of the form $\conf{S',w_{i_1}..w_{i_l}}$ for $l \leq k$, with $\{i_1...i_l\}$ $\subseteq$ \{1...(m+1)\}.
+Let \e{c} = $\conf{S, w}$ $\xrightarrow{ch!w_{m+1}}$ $\conf{S', w \bullet m}$ = \e{c'}.
 
-If in \e{v'} $w_{i_l}$ = $w_{m+1}$, i.e. the transmitted message is the last symbol on the channel, then there is a configuration \e{d} = $\conf{S, w_{i_1}...w_{i_{l-1}}}$ $\in$ $\gamma_k(V)$ from which the transition rule r can be fired, creating the configuration \e{d'} = $\conf{S', w_{i_1}..w_{i_l}}$ of size at most \e{k}, and \e{v'} = $\alpha_k(d')$k.
+The views of \e{c'} of size up to k are either of the type 1) $\conf{S', w' \sqsubset w}$, with size($w'$) $\leq$ $k$ (i.e. not including the newly transmitted message) or 2) of the form $\conf{S', w' \bullet m | w' \sqsubseteq w}$ with size($w'$) < $k$.
 
-If $\in$ \e{v'} $w_{i_l}$ $\neq$ $w_{m+1}$, i.e. the transmitted message is not on the channel, then there is a configuration \e{d} = $\conf{S, w_{i_1}..w_{i_l}}$ from which the transisition \e{r} can be fired, creating the configuration \e{d'} = $\conf{S, w_{i_1}..w_{i_l}w_{m+1}}$ of size at most \e{k}+1 for which \e{v'} $\in$ $\alpha_k(d')$ (created by dropping the last symbol from the channel).
+For any view of type 1, there exists a configuration of size $k$, \e{d} = $\conf{S, w'}$ $\in$ $\alpha_k{c}$ and the transition $r$ can be taken, resulting in \e{d'} = $\conf{S, w'\bullet m}$ of size $k$+1. The view \e{v'} $\in$ $\alpha_k{w'}$.
 
+For any view of type 2, there exists a configuration of size $k-1$, \e{d} = $\conf{S, w'}$ and the transition $r$ can be taken resulting in \e{d'} = $\conf{S, w'\bullet m}$ = $v'$.
 
 \e{Example}. Assume a system with two processes and a single channel. Let \e{c} = $\conf{1,2,abc}$ $\rightarrow{ch!d}$ $\conf{2,2,abcd}$. Assume that $\e{c}$ $\in$ $\gamma_2(V)$, then $\alpha_2(c)$ $\in$ \e{V}, i.e. 
 $\conf{1,2,a}$, $\conf{1,2,b}$, $\conf{1,2,c}$, $\conf{1,2,ab}$, $\conf{1,2,bc}$ are in in V and also in $\gamma_k(V)$.
 
 $\alpha_2(c')$ = \{$\conf{2,2,a}$, $\conf{2,2,b}$, $\conf{2,2,c}$, $\conf{2,2,d}$, $\conf{2,2,ab}$, $\conf{2,2,bc}$, $\conf{2,2,cd}$ \}. Consider a view with the newly transmitted message, $\conf{2,2,cd}$, it can by created by $\conf{1,2,c}$ $\rightarrow{ch!d}$ $\conf{2,2,cd}$. Considering instead a view without the transmitted message, $\conf{1,2,ab}$, it can be created by $\conf{1,2,ab}$ $\rightarrow$ $\conf{2,2,abd}$ for which $\conf{2,2,ab}$ is a view.
 
-\todo{Picture describing this}
-
 \subsubsection{Reception rules}
+\label{proofreception}
+As opposed to the transmission rules, reception rules also rely on the state of the channel in order to be fired, but only the state of that channel need be considered. Consider \e{c} = $\conf{S, m\bullet w}$ $\xrightarrow{ch?m}$ $\conf{S, w}$. For any view \e{v'} $\in$ $\alpha_k(c')$ with the word \e{w'} of size at most \e{k} on the channel, there exists a configuration of size at most \e{k+1}, \e{d} = $\conf{S, m\bullet w'}$ $\in$ $\alpha_k(c)$ such that \e{d} $\xrightarrow{d}$ \e{d'} = \e{v'}.
+
+\subsubsection{Actions}
+Actions can in this context be seen as equivalent to a reception rule, reading the empty symbol $\epsilon$ on some channel. The proof then follows directly from \ref{proofreception}.
 
 
-\appendix
-\section{Proof 
+\section{Extensions}
+There are several ways the channel system and the channel transition system in \ref{CS} and \ref{CTS} could be extended, in order to cope with various application scenarios. For example, we may want to model a protocol working on FILO buffers, rather than the LIFO buffers described above. Another context may be that of a protocol communicating over an unreliable channel, introducing the possibility of message loss on the channels. In this section, we shall create models for both of these scenarios. Doing this requires us to first adapt the channel system model and the corresponding channel transition system by adding appropriate transition rules and action, and second to prove that \ref{lemma1} still holds for these models.
+
+\subsection{FILO Channels}
+\subsubsection{Stack Channel System}
+\label{StackCS}
+In order to model a FILO channel or a \e{stack}, we need only modify one of the transitions of the system described in \ref{CS} in such a way that transmissions and reception append and delete messages on the same end of the channels, For simplicity, we only restate this part of the channel system below, i.e: The finite-state control part of CS is an ordinary labeled transition system with states S, initial state $s_0$ and transitions $\delta$. The channel part is represented by the set Ch of channels, which may contain a string of messages in M. The set A denotes the set of observable interactions with the environment, whereas $\delta$ may either perform an action from A, or and unobservable action, where
+
+\begin{itemize}
+\item[]
+$\langle s_1, c!m, s_2\rangle$ represents a change of state from $s_1$ to $s_2$ while appending the message m to the head of channel c
+\item[]
+$\langle s_1, c?m, s_2\rangle$ represents a change of state from $s_1$ to $s_2$ while removing the message m to the head of channel c
 \end{itemize}
+
+\subsubsection{Stack Channel Transmision System}
+In order to describe the transition system induced by a ChannelCS, we need only modify the transition rules of \ref{CTS} so that they reflect the changes made in \ref{StackCS}. Leaving the rest of the model unchanged, this results in $\rightarrow$ $\subseteq (S \times S)$ containing the following transitions
+\begin{itemize}
+    \item
+      For each observable action a $\in$ A in CS
+      \[
+      \dfrac{s \xrightarrow{a} s'}{(S, \xi) \rightarrow (S', \xi)}
+      \]
+    \item
+      For each transmission action $\langle s_1, ch!m, s_2 \rangle$ in CS
+      \[
+      \dfrac{s \xrightarrow{ch!m} s' \wedge ch \in \xi}{(S, \xi) \rightarrow (S', \xi')} \] with \[ \xi' = \xi[ch := m \bullet \xi (ch)].
+      \]
+    \item
+      For each reception action $\langle s_1, ch?m, s_2 \rangle$ in CS
+      \[
+      \dfrac{s \xrightarrow{ch?m} s' \wedge ch \in \xi}{(S, m \bullet \xi) \rightarrow (S', \xi')} \] with \[ \xi' = \xi[ch:= \xi (ch)].
+      \]
+
+  \end{itemize}
+
+\subsubsection{Proof of Lemma 1}
+Only the part of the proof of lemma 1 regarding transmission rules is affected by the changes made to this system. Such a proof follows in a straightforward manner from the proof \ref{proofTransmission}, by considering configurations of the form  $\conf{S, m\bullet w'}$ rather than $\conf{S, w'\bullet m}$.
+
+\section{Lossy Channels}
+\subsection{Lossy Channel Systems}
