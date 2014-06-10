@@ -111,25 +111,24 @@ The post of the set V contains
 ($s_1$, $r_1$, ab, a) $\rightarrow$ ($s_1$, $r_2$, ab, $\epsilon$), since $\langle$$r_1$,$c_2?m$,$r_2$$\rangle$ $\in$ $\delta$.
 \item
 and so on.
-
+\end{itemize}
 
 \subsection{Proof}
-First we note, that for any configuration \e{c} $\in$ \e{V}, any view \e{v'} $\in$ $\alpha_k(c)$ is also a valid configuration in \e{V}, since $\alpha_k(v')$ $\subseteq$ $\alpha_k(c)$ and thus \e{v'} $\in$ $\gamma_k^(k+1)(\alpha_k(c))$. Also note that if from \e{c} a transition \e{r} can be fired, then this transition can also be fired from any configuration \e{c'} = \e{v'}, as transmission rules are guarded only by the states of the channel system and not by channel evaluations.
+First we note, that for any configuration \e{c} $\in$ \e{V}, any view \e{v'} $\in$ $\alpha_k(c)$ is also a valid configuration \e{c'} $\in$ $\gamma_k(V)$, since $\alpha_k(v')$ $\subseteq$ $\alpha_k(c)$ and thus \e{v'} $\in$ $\gamma_k^{k+1}(\alpha_k(c))$. Also note that if from \e{c} a transition \e{r} can be fired, then this transition can also be fired from any configuration \e{c'} = \e{v'}, as transmission rules are guarded only by the states of the channel system and not by channel evaluations.
 
-We will show that for any configuration \e{c} $in$ $\gamma_k(V)$ of size $m > k + 1$ such that there is a transition \e{c} $\rightarrow$ \e{c'} induced by a transmission rule \e{r} $\in$ $\rightarrow$, then for each \e{v'} $\in$ $\alpha_k(c')$, the following holds: Either \e{v'} $\in$ \e{V} or there is a configuration \e{d} $\in$ $\gamma_k(V)$ of size at most \e{k+1} with a transition \e{d} $\rightarrow$ \e{d'} induced by \e{r} with \e{v'} $\in$ $\alpha_k(d')$.
+We will show that for any configuration \e{c} $\in$ $\gamma_k(V)$ of size $m > k + 1$ such that there is a \e{c'} induced by a transmission rule \e{r} $\in$ $\rightarrow$ from \e{c}, then for each \e{v'} $\in$ $\alpha_k(c')$, the following holds: There is a configuration \e{d} $\in$ $\gamma_k(V)$ of size at most \e{k}+1 with a transition \e{d} $\rightarrow$ \e{d'} induced by \e{r} with \e{v'} $\in$ $\alpha_k(d')$.
 
-A transmission rule changes the evaluation of at most one channel \e{ch} $\in$ \e{c}, and (possibly) the state of the channel system, thus we need only reason about the words of \e{ch}.
-Let \e{c} = $\conf{S, w_1..w_m}$ $\rightarrow{ch!w_{m+1}}$ \e{c'} $\conf{S', w_1..w_mw_{m+1}}$. Any view \e{v'} of size at most \e{k} of \e{c'} is of the form $\conf{S',w_{i_1}..w_{i_l}}$ for $l \leq k$, with $\{i_1...i_l\}$ $\subseteq$ \{1...(m+1)\}.
+A transmission rule changes the evaluation of at most one channel \e{ch} $\in$ \e{c}, and (possibly) the state of the channel system, thus we need only reason about the words of a single channel \e{ch}.
+Let \e{c} = $\conf{S, w_1..w_m}$ $\xrightarrow{ch!w_{m+1}}$ $\conf{S', w_1..w_mw_{m+1}}$ = \e{c'}. Any view \e{v'} of size at most \e{k} of \e{c'} is of the form $\conf{S',w_{i_1}..w_{i_l}}$ for $l \leq k$, with $\{i_1...i_l\}$ $\subseteq$ \{1...(m+1)\}.
 
-If in \e{v'} $w_{i_l}$ = $w_{m+1}$, i.e. the transmitted message is in the view, then there is a configuration \e{d} = $\conf{S, w_{i_0}w_{i_1}...w_{i(l-1)}}$ $\in$ $\gamma_k{V}$ from which the transition rule r can be fired, creating the configuration \e{d'} = $\conf{S', w_{i_0}w_{i_1}..w_{i_l}}$ of size at most \e{k+1}, and \e{v'} $\in$ $\alpha_k(d')$ (created from \e{d'} by dropping the first symbol of the channel).
+If in \e{v'} $w_{i_l}$ = $w_{m+1}$, i.e. the transmitted message is the last symbol on the channel, then there is a configuration \e{d} = $\conf{S, w_{i_1}...w_{i_{l-1}}}$ $\in$ $\gamma_k{V}$ from which the transition rule r can be fired, creating the configuration \e{d'} = $\conf{S', w_{i_1}..w_{i_l}}$ of size at most \e{k}, and \e{v'} $\in$ $\alpha_k(d')$ (created from \e{d'} by dropping the first symbol of the channel).
 
-If $\in$ \e{v'} $w_{i_l}$ $\neq$ $w_{m+1}$, i.e. the transmitted message is not in the view, then there is a configuration \e{d} = $\conf{S, w_{i_1}..w_{i_l}}$ from which the transisition \e{r} can be fired, creating the configuration \e{d'} = $\conf{S, w_{i_1}..w_{i_l}w_{m+1}}$ for which \e{v'} $\in$ $\alpha_k(d')$ (created by dropping the last symbol from the channel).
+If $\in$ \e{v'} $w_{i_l}$ $\neq$ $w_{m+1}$, i.e. the transmitted message is not on the channel, then there is a configuration \e{d} = $\conf{S, w_{i_1}..w_{i_l}}$ from which the transisition \e{r} can be fired, creating the configuration \e{d'} = $\conf{S, w_{i_1}..w_{i_l}w_{m+1}}$ of size at most \e{k}+1 for which \e{v'} $\in$ $\alpha_k(d')$ (created by dropping the last symbol from the channel).
 
 
 \e{Example}. Assume a system with two processes and a single channel. Let \e{c} = $\conf{1,2,abc}$ $\rightarrow{ch!d}$ $\conf{2,2,abcd}$. Assume that $\e{c}$ $\in$ $\gamma_2(V)$, then $\alpha_2(c)$ $\in$ \e{V}, i.e. 
-$\conf{1,2,a}$, $\conf{1,2,b}$, $\conf{1,2,c}$,$\conf{1,2,ab}$,$\conf{1,2,bc}$ are in in V and also in $\gamma_k(V)$.
+$\conf{1,2,a}$, $\conf{1,2,b}$, $\conf{1,2,c}$, $\conf{1,2,ab}$, $\conf{1,2,bc}$ are in in V and also in $\gamma_k(V)$.
 
-$\alpha_2(c')$ = \{$\conf{2,2,a}$, $\conf{2,2,b}$, $\conf{2,2,c}$,$\conf{2,2,d}$,$\conf{2,2,ab}$,$\conf{2,2,bc}$,$\conf{2,2,cd}$ \}. Consider a view with the newly transmitted message, $\conf{2,2,cd}$, it can by created by $\conf{1,2,bc}$ $\rightarrow{ch!d}$ $\conf{2,2,bcd}$, for which $\conf{2,2,cd}$ is a view. Considering a view without the transmitted message, $\conf{2,2,ab}$, it can be created by 
-$\conf{1,2,ab}$ $\rightarrow$ $\conf{1,2,abd}$ for which it is a view.
+$\alpha_2(c')$ = \{$\conf{2,2,a}$, $\conf{2,2,b}$, $\conf{2,2,c}$, $\conf{2,2,d}$, $\conf{2,2,ab}$, $\conf{2,2,bc}$, $\conf{2,2,cd}$ \}. Consider a view with the newly transmitted message, $\conf{2,2,cd}$, it can by created by $\conf{1,2,c}$ $\rightarrow{ch!d}$ $\conf{2,2,cd}$. Considering instead a view without the transmitted message, $\conf{2,2,ab}$, it can be created by $\conf{1,2,ab}$ $\rightarrow$ $\conf{2,2,abd}$ for which $\conf{2,2,ab}$ is a view.
 
 \end{itemize}
