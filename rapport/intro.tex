@@ -71,9 +71,14 @@ The operational behaviour of CS is defined by the inifinite-state transition sys
   \end{itemize}
 \end{itemize}
 
-Let c denote a configuration, the c is said to be reachable in TS, if there are configurations $c_1...c_l$ such that $c_0$ is an initial conifuration of TS, $c_l = k$ and for each 0 $\leq$ i < l, $\langle c_i, c_{i+1} \rangle \in \rightarrow$. At times we may use a notation for a configuration c with explicit processes and channels, so that c = $\conf{s_1,...,s_n, ch_1,...,ch_p}$, or alternatively, with explicit processes and channel evaluations, c = $\conf{s_1,...,s_n, \xi(ch_1),...,\xi(ch_p)}$.
-
 \emph{Example.} Let $c = \conf{S,\xi}$ be a configuration with two processes and two channels containing the words \e{ab} and \e{lf} respectively. Then c may also be denoted as $c = \conf{s_1,s_2, ch_1, ch_2}$ or as $c = \conf{s_1,s_2,ab,lf}$. 
+
+\subsubsection{Reachability and Bad Configurations}
+Let c denote a configuration, the c is said to be reachable in TS, if there are configurations $c_1...c_l$ such that $c_0$ is an initial conifuration of TS, $c_l = k$ and for each 0 $\leq$ i < l, $\langle c_i, c_{i+1} \rangle \in \rightarrow$. At times we may use a notation for a configuration c with explicit processes and channels, so that c = $\conf{s_1,...,s_n, ch_1,...,ch_p}$, or alternatively, with explicit processes and channel evaluations, c = $\conf{s_1,...,s_n, \xi(ch_1),...,\xi(ch_p)}$.
+\todo{Add a definition of a bad configuration and put it in relation to the reachability concept}
+
+\subsection{Traces}
+\todo{Define trace, minimal trace and put it into the context of bad configurations}.
 
 
 \subsection{Subwords and views}
@@ -81,6 +86,7 @@ Let c denote a configuration, the c is said to be reachable in TS, if there are 
 Let $\subword$ be the subword relation, then u $\subword$ $s_1...s_n$=w iff u is an ordered subset of w. For example, if w=abc, then the set of subwords of w is {abc, ab, bc, a, b, c}.
 
 We define the subword relation $\subword$ for configurations, such that for c = $\conf{s,\xi}$, c'=$\conf{s,\xi[ ch \subword \xi(ch)] | ch \in \xi}$. 
+We define the size($ch$) to be equivalent to size($\xi{ch}$), i.e. the length of the evaluation (the word) on the channel \e{ch}.
 
 \emph {Example.} Suppose \e{c} is a configuration $\conf{s_1,s_2,ab,cd}$. Then the subwords of \e{c} is the set
 \begin{ttabular}
@@ -147,6 +153,9 @@ As opposed to the transmission rules, reception rules also rely on the state of 
 Actions can in this context be seen as equivalent to a reception rule, reading the empty symbol $\epsilon$ on some channel. The proof then follows directly from \ref{proofreception}.
 
 
+\section{Problem Formulation}
+This section should consisely restate the problem at hand, and thorougly (but short) mention what this thesis should contain. This includes proofs, extensions, verification, efficiency, traces generation, creation of a specification language, models of specific problems and comparisons to other similar tools.
+
 \section{Extensions}
 There are several ways the channel system and the channel transition system in \ref{CS} and \ref{CTS} could be extended, in order to cope with various application scenarios. For example, we may want to model a protocol working on FILO buffers, rather than the LIFO buffers described above. Another context may be that of a protocol communicating over an unreliable channel, introducing the possibility of message loss on the channels. In this section, we shall create models for both of these scenarios. Doing this requires us to first adapt the channel system model and the corresponding channel transition system by adding appropriate transition rules and action, and second to prove that \ref{lemma1} still holds for these models.
 
@@ -186,5 +195,26 @@ In order to describe the transition system induced by a ChannelCS, we need only 
 \subsubsection{Proof of Lemma 1}
 Only the part of the proof of lemma 1 regarding transmission rules is affected by the changes made to this system. Such a proof follows in a straightforward manner from the proof \ref{proofTransmission}, by considering configurations of the form  $\conf{S, m\bullet w'}$ rather than $\conf{S, w'\bullet m}$.
 
-\section{Lossy Channels}
-\subsection{Lossy Channel Systems}
+\subsection{Lossy Channels}
+Here I would write an extension that emulates data loss on channels, such as described in \cite{287591}.
+\subsubsection{Lossy Channel Systems}
+\subsubsection{Lossy Channel Transition Systems}
+\subsubsection{Proof of Lemma 1}
+
+\subsection{Channel Systems with Synchronization}
+Here I would write an extension allowing transitions that allow several states to change simultaneously, without modifying the channels. This would allow for synchronization, but would also allow me to verify using an ``observer'', such as described in \cite{287591}. \todo{Is this correct?}
+
+
+
+\section{Implementation}
+
+\subsection{Finding Minimal Traces}
+When running the tool, if a bad configuration is found (or if the user just wants to know for some reason) we want to produce a trace, leading up to the bad state. Preferably, this would be a minimal trace that leads to the bad configuration.
+\begin{itemize}
+\item
+Dijkstra or similar shortest-path algorithm. This would require me to save the information on how a configuration was reached, not only when created but also each time a duplicate is created. The pro's of this is that the algorithm is simple and rather fast, but this would likely add quite a lot of data to the states. There is reason to believe that memory is more of an issue than the speed of the algorithm (the algorithm need only be run once and has much better complexity than the verification algorithm can even hope to have).
+\item
+Ford-Fulkerson or other flow network-based algorithm. This would likely have the same issues as dijkstra, if I remember correctly.
+\item
+Greedy: Save for each configuration only a single parent, thus creating a tree. If a new parent is found for some configuration closer to the root (initial configuration), then update that configuration. This would only rely on local information and is therefore only an approximation (Or is this somehow ``concave'', i.e. local=global?) This could potentially lead to performance issues, as one would have to compare configurations everytime a duplicate is created.
+\end{itemize}
