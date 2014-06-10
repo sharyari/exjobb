@@ -52,7 +52,7 @@ alg' l r k = nub((alphaL (apply ((gammaD l k)) r)) k++l)
 
 
 alg :: [C] -> [C->C] -> Int -> Int ->[C]
-alg l r k 0 = l
+alg l r k 0 = []
 alg l r k counter =
     let a = alg' l r k in
     if'
@@ -64,11 +64,11 @@ alg l r k counter =
 
 kor = nub(alg i transitions 5 50)
 kor1 = gammaD i 20
-main = skriv (sort kor)
+--main = skriv (length(sort kor))
 --main = skriv(gammaC test [Conf 2 1 "aa" ""] 2)
 --main = skriv(nub(alpha (Conf 2 1 "aa" "") 2))
 --main = skriv(alpha (Conf 1 1 "" "") 1)
-
+main = skriv(runProgram i 10)
 
 i = [Null, Conf 1 1 "" ""]
 actions = [a1,a2,a3,a4]
