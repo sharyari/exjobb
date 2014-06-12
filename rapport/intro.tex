@@ -65,16 +65,18 @@ The operational behaviour of CS is defined by the inifinite-state transition sys
     \item
       For each reception action $\langle s_1, ch?m, s_2 \rangle$ in CS
       \[
-      \dfrac{s \xrightarrow{ch?m} s' \wedge ch \in \xi}{(S, m \bullet \xi) \rightarrow (S', \xi')} \] with \[ \xi' = \xi[ch:= \xi (ch)].
+      \dfrac{s \xrightarrow{ch?m} s' \wedge \xi(ch) = m \bullet w_1..w_n}{(S, \xi) \rightarrow (S', \xi')} \] with \[ \xi' = \xi[ch:= w_1..w_n].
       \]
 
   \end{itemize}
 \end{itemize}
 
+At times we may use a notation for a configuration c with explicit processes and channels, so that c = $\conf{s_1,...,s_n, ch_1,...,ch_p}$, or alternatively, with explicit processes and channel evaluations, c = $\conf{s_1,...,s_n, \xi(ch_1),...,\xi(ch_p)}$.
+
 \emph{Example.} Let $c = \conf{S,\xi}$ be a configuration with two processes and two channels containing the words \e{ab} and \e{lf} respectively. Then c may also be denoted as $c = \conf{s_1,s_2, ch_1, ch_2}$ or as $c = \conf{s_1,s_2,ab,lf}$. 
 
 \subsubsection{Reachability and Bad Configurations}
-Let c denote a configuration, the c is said to be reachable in TS, if there are configurations $c_1...c_l$ such that $c_0$ is an initial conifuration of TS, $c_l = k$ and for each 0 $\leq$ i < l, $\langle c_i, c_{i+1} \rangle \in \rightarrow$. At times we may use a notation for a configuration c with explicit processes and channels, so that c = $\conf{s_1,...,s_n, ch_1,...,ch_p}$, or alternatively, with explicit processes and channel evaluations, c = $\conf{s_1,...,s_n, \xi(ch_1),...,\xi(ch_p)}$.
+Let c denote a configuration, then c is said to be \emph{reachable} in TS, if there are configurations $c_1...c_l$ such that $c_0$ is an initial configuration of TS and for each 0 $\leq$ i < l, $\langle c_i, c_{i+1} \rangle \in \rightarrow$. 
 \todo{Add a definition of a bad configuration and put it in relation to the reachability concept}
 
 \subsection{Traces}
@@ -85,10 +87,11 @@ Let c denote a configuration, the c is said to be reachable in TS, if there are 
 \label{subwords}
 Let $\subword$ be the subword relation, then u $\subword$ $s_1...s_n$=w iff u is an ordered subset of w. For example, if w=abc, then the set of subwords of w is {abc, ab, bc, a, b, c}.
 
-We define the subword relation $\subword$ for configurations, such that for c = $\conf{s,\xi}$, c'=$\conf{s,\xi[ ch \subword \xi(ch)] | ch \in \xi}$. 
-We define the size($ch$) to be equivalent to size($\xi{ch}$), i.e. the length of the evaluation (the word) on the channel \e{ch}.
+We define the \e{views} of a configurations to be \e{v'} such that for \e{c} = $\conf{s,\xi}$, \e{v'}=$\conf{s,\xi[ ch \subword \xi(ch)] | ch \in \xi}$. 
+We define the size($ch$) to be equivalent to size($\xi(ch)$), i.e. the length of the evaluation (the word) on the channel \e{ch}. We define the size of a configuration or view to equal the size of its longest channel.
 
-\emph {Example.} Suppose \e{c} is a configuration $\conf{s_1,s_2,ab,cd}$. Then the subwords of \e{c} is the set
+\emph {Example.} Suppose \e{c} is a configuration $\conf{s_1,s_2,ab,cd}$. The configuration is of size 2 and its views are
+
 \begin{ttabular}
 $\conf{s_1,s_2,ab,cd}$ \\
 $\conf{s_1,s_2,a,cd}$ &
@@ -105,26 +108,33 @@ $\conf{s_1,s_2,\epsilon,\epsilon}$ \\
 
 
 \subsection{View abstraction}
-The abstraction function $\alpha_k: C\rightarrow 2^{C_k}$\todo{?} maps a configuration c into the set V of \emph{views} of size up to \emph{k} \todo{define size}, such that for each v $\in$ V, $\{v\sqsubseteq c\}$. 
+The abstraction function $\alpha_k: C\rightarrow 2^{C_k}$\todo{?} maps a configuration c into the set V of views of size up to \e{k} , such that for each v $\in$ V, $\{v\sqsubseteq c\}$. 
 
-The concretization function $\gamma_k: 2^{C_k} \rightarrow 2^C$\todo{?} returns, given a set of views V, the set of configurations that can be reconstructed from the views in V, in other words, $\gamma_c(V) = \{c \in C | \alpha_k(c) \subseteq V$\}
+The concretization function $\gamma_k: 2^{C_k} \rightarrow 2^C$\todo{?} returns, given a set of views V, the set of configurations that can be reconstructed from the views in V, in other words, $\gamma_c(V) = \{c \in C$ | $\alpha_k(c) \subseteq V$\}
 
-The abstract post-image of a set of view V $\in$ $C_k$ is defined as $Apost_k$(V) = $\alpha_k(post(\gamma_k(V)))$ In general, $\gamma_k$ is an infinite set of states. We hope \todo{!} we only need to consider those configurations, whose sizes are up to k+1, i.e. a finite set of configurations. We define $\gamma_k^l$ := $\gamma_k(V) \cap C_l$ for some $l\geq 0$.
+The abstract post-image of a set of view V $\in$ $C_k$ is defined as $Apost_k$(V) = $\alpha_k(post(\gamma_k(V)))$ In general, $\gamma_k$ is an infinite set of states. We show (\ref{proof}) that we only need to consider those configurations, whose sizes are up to k+1, i.e. a finite set of configurations. We define $\gamma_k^l$ := $\gamma_k(V) \cap C_l$ for some $l\geq 0$. \todo{Vad innebär den?}
 
 \subsubsection{Note on concretizations}
-Suppose we want to determine whether a configuration \e{c} $\in$ $\gamma_k(V)$ for a set \e{V}. This would require that all \e{v} $\in$ $\alpha_k(c)$ are in \e{V}. Consider a view \e{v} = $\conf{S, \xi(ch)=w}$ with size($w$) = $k$; if \e{v} $\in$ \e{V} then necessarily, any \e{v'} = $\conf{S, \xi(ch)=w'}$ with \e{w'} $\sqsubseteq$ \e{w} $\in$ \e{V}. Consequently, it is sufficient to assure that all configurations \e{c} = $\conf{S,\xi(ch_i)=w_i}$ are in \e{V}, with
+Suppose we want to determine whether \e{c} $\in$ $\gamma_k(V)$ given a configuration \e{c} and a set \e{V}. This would require that all views \e{v} $\in$ $\alpha_k(c)$ are in \e{V}. Consider a view \e{v} = $\conf{S, \xi(ch)=w}$ with size($w$) = $k$; if \e{v} $\in$ \e{V} then necessarily, any \e{v'} = $\conf{S, \xi(ch)=w'}$ with \e{w'} $\sqsubseteq$ \e{w} $\in$ \e{V}. Consequently, it is sufficient to assure that all configurations \e{c} = $\conf{S,\xi(ch_i)=w_i}$ are in \e{V}, with
 
 \begin{itemize}
 \item
 size($w_i$)=$k$ if size($\xi(ch)$) $\geq$ $k$
 \item
-size($w_i$)= size($\xi(ch)$) if size($\xi(ch)$ < $k$.
+size($w_i$)= size($\xi(ch)$) if size($\xi(ch)$) < $k$.
 \end{itemize}
 
 \e{Example.} Suppose we want to determine whether \e{c} = $\conf{S, abc, def}$ is an element of $\gamma_2$. It is then sufficient to check that $\conf{S,ab,de}$, $\conf{S,ab,ef}$, $\conf{S,bc ,de}$ and $\conf{S,bc,ef}$ are in \e{V}.
 
 
+\section{Problem Formulation}
+This section should consisely restate the problem at hand, and thorougly (but short) mention what this thesis should contain. This includes proofs, extensions, verification, efficiency, traces generation, creation of a specification language, models of specific problems and comparisons to other similar tools.
+
+
 \subsection{Proofs}
+\label{proof}
+\todo{What is lemma 1?}
+
 We will show that for any configuration \e{c} $\in$ $\gamma_k(V)$ of size $m > k + 1$ such that there is a \e{c'} induced by a transmission rule \e{r} $\in$ $\rightarrow$ from \e{c}, then for each \e{v'} $\in$ $\alpha_k(c')$, the following holds: There is a configuration \e{d} $\in$ $\gamma_k(V)$ of size at most \e{k}+1 with a transition \e{d} $\xrightarrow{r}$ \e{d'} with \e{v'} $\in$ $\alpha_k(d')$. 
 
 \subsubsection{Transmission rules}
@@ -141,28 +151,27 @@ For any view of type 1, there exists a configuration of size $k$, \e{d} = $\conf
 For any view of type 2, there exists a configuration of size $k-1$, \e{d} = $\conf{S, w'}$ and the transition $r$ can be taken resulting in \e{d'} = $\conf{S, w'\bullet m}$ = $v'$.
 
 \e{Example}. Assume a system with two processes and a single channel. Let \e{c} = $\conf{1,2,abc}$ $\rightarrow{ch!d}$ $\conf{2,2,abcd}$. Assume that $\e{c}$ $\in$ $\gamma_2(V)$, then $\alpha_2(c)$ $\in$ \e{V}, i.e. 
-$\conf{1,2,a}$, $\conf{1,2,b}$, $\conf{1,2,c}$, $\conf{1,2,ab}$, $\conf{1,2,bc}$ are in in V and also in $\gamma_k(V)$.
+$\conf{1,2,a}$, $\conf{1,2,b}$, $\conf{1,2,c}$, $\conf{1,2,ab}$, $\conf{1,2,bc}$, $\conf{1,2,ac}$ are in in V and also in $\gamma_k(V)$.
 
-$\alpha_2(c')$ = \{$\conf{2,2,a}$, $\conf{2,2,b}$, $\conf{2,2,c}$, $\conf{2,2,d}$, $\conf{2,2,ab}$, $\conf{2,2,bc}$, $\conf{2,2,cd}$ \}. Consider a view with the newly transmitted message, $\conf{2,2,cd}$, it can by created by $\conf{1,2,c}$ $\rightarrow{ch!d}$ $\conf{2,2,cd}$. Considering instead a view without the transmitted message, $\conf{1,2,ab}$, it can be created by $\conf{1,2,ab}$ $\rightarrow$ $\conf{2,2,abd}$ for which $\conf{2,2,ab}$ is a view.
+$\alpha_2(c')$ = \{$\conf{2,2,a}$, $\conf{2,2,b}$, $\conf{2,2,c}$, $\conf{2,2,d}$, $\conf{2,2,ab}$, $\conf{2,2,bc}$, $\conf{2,2,cd}$, $\conf{2,2,ac}$, $\conf{2,2,ad}$, $\conf{2,2,bd} $ \}. Consider a view with the newly transmitted message, $\conf{2,2,cd}$, it can by created by $\conf{1,2,c}$ $\rightarrow{ch!d}$ $\conf{2,2,cd}$. Considering instead a view without the transmitted message, $\conf{1,2,ab}$, it can be created by $\conf{1,2,ab}$ $\rightarrow$ $\conf{2,2,abd}$ for which $\conf{2,2,ab}$ is a view.
 
 \subsubsection{Reception rules}
 \label{proofreception}
-As opposed to the transmission rules, reception rules also rely on the state of the channel in order to be fired, but only the state of that channel need be considered. Consider \e{c} = $\conf{S, m\bullet w}$ $\xrightarrow{ch?m}$ $\conf{S, w}$. For any view \e{v'} $\in$ $\alpha_k(c')$ with the word \e{w'} of size at most \e{k} on the channel, there exists a configuration of size at most \e{k+1}, \e{d} = $\conf{S, m\bullet w'}$ $\in$ $\alpha_k(c)$ such that \e{d} $\xrightarrow{d}$ \e{d'} = \e{v'}.
+As opposed to the transmission rules, reception rules also rely on the state of the channel in order to be fired, but only the state of that channel need be considered. Consider \e{c} = $\conf{S, m\bullet w}$ $\xrightarrow{ch?m}$ $\conf{S, w}$. For any view \e{v'} $\in$ $\alpha_k(c')$ with the word \e{w'} of size at most \e{k} on the channel, there exists a configuration of size at most \e{k+1}, \e{d} = $\conf{S, m\bullet w'}$ $\in$ $\alpha_k(c)$ such that \e{d} $\xrightarrow{ch?m}$ \e{d'} = \e{v'}.
+\todo{Why is that so?}
 
 \subsubsection{Actions}
 Actions can in this context be seen as equivalent to a reception rule, reading the empty symbol $\epsilon$ on some channel. The proof then follows directly from \ref{proofreception}.
 
 
-\section{Problem Formulation}
-This section should consisely restate the problem at hand, and thorougly (but short) mention what this thesis should contain. This includes proofs, extensions, verification, efficiency, traces generation, creation of a specification language, models of specific problems and comparisons to other similar tools.
 
 \section{Extensions}
-There are several ways the channel system and the channel transition system in \ref{CS} and \ref{CTS} could be extended, in order to cope with various application scenarios. For example, we may want to model a protocol working on FILO buffers, rather than the LIFO buffers described above. Another context may be that of a protocol communicating over an unreliable channel, introducing the possibility of message loss on the channels. In this section, we shall create models for both of these scenarios. Doing this requires us to first adapt the channel system model and the corresponding channel transition system by adding appropriate transition rules and action, and second to prove that \ref{lemma1} still holds for these models.
+There are several ways the channel system and the channel transition system in \ref{CS} and \ref{CTS} could be extended, in order to cope with various application scenarios. For example, we may want to model a protocol working on FILO buffers, rather than the LIFO buffers described above. Another context may be that of a protocol communicating over an unreliable channel, introducing the possibility of \e{message loss} on the channels. In this section, we shall create models for both of these scenarios. Doing this requires us to first adapt the channel system model and the corresponding channel transition system by adding appropriate transition rules and action, and second to prove that \ref{lemma1} holds for these models.
 
 \subsection{FILO Channels}
 \subsubsection{Stack Channel System}
 \label{StackCS}
-In order to model a FILO channel or a \e{stack}, we need only modify one of the transitions of the system described in \ref{CS} in such a way that transmissions and reception append and delete messages on the same end of the channels, For simplicity, we only restate this part of the channel system below, i.e: The finite-state control part of CS is an ordinary labeled transition system with states S, initial state $s_0$ and transitions $\delta$. The channel part is represented by the set Ch of channels, which may contain a string of messages in M. The set A denotes the set of observable interactions with the environment, whereas $\delta$ may either perform an action from A, or and unobservable action, where
+In order to model a FILO channel or a \e{stack}, we need only modify one of the transitions of the system described in \ref{CS} in such a way that transmissions and reception append and delete messages on the same end of the channels, For simplicity, we only restate this part of the channel system below. The finite-state control part of CS is an ordinary labeled transition system with states S, initial state $s_0$ and transitions $\delta$. The channel part is represented by the set Ch of channels, which may contain a string of messages in M. A set A denotes the set of observable interactions with the environment, whereas $\delta$ may either perform an action from A, or and unobservable action, where
 
 \begin{itemize}
 \item[]
@@ -187,9 +196,8 @@ In order to describe the transition system induced by a ChannelCS, we need only 
     \item
       For each reception action $\langle s_1, ch?m, s_2 \rangle$ in CS
       \[
-      \dfrac{s \xrightarrow{ch?m} s' \wedge ch \in \xi}{(S, m \bullet \xi) \rightarrow (S', \xi')} \] with \[ \xi' = \xi[ch:= \xi (ch)].
+      \dfrac{s \xrightarrow{ch?m} s' \wedge \xi(ch) = m \bullet w_1..w_n}{(S, \xi) \rightarrow (S', \xi')} \] with \[ \xi' = \xi[ch:= w_1..w_n].
       \]
-
   \end{itemize}
 
 \subsubsection{Proof of Lemma 1}
@@ -209,12 +217,18 @@ Here I would write an extension allowing transitions that allow several states t
 \section{Implementation}
 
 \subsection{Finding Minimal Traces}
+\subsection{Finding Minimal Traces}
 When running the tool, if a bad configuration is found (or if the user just wants to know for some reason) we want to produce a trace, leading up to the bad state. Preferably, this would be a minimal trace that leads to the bad configuration.
-\begin{itemize}
-\item
-Dijkstra or similar shortest-path algorithm. This would require me to save the information on how a configuration was reached, not only when created but also each time a duplicate is created. The pro's of this is that the algorithm is simple and rather fast, but this would likely add quite a lot of data to the states. There is reason to believe that memory is more of an issue than the speed of the algorithm (the algorithm need only be run once and has much better complexity than the verification algorithm can even hope to have).
-\item
-Ford-Fulkerson or other flow network-based algorithm. This would likely have the same issues as dijkstra, if I remember correctly.
-\item
-Greedy: Save for each configuration only a single parent, thus creating a tree. If a new parent is found for some configuration closer to the root (initial configuration), then update that configuration. This would only rely on local information and is therefore only an approximation (Or is this somehow ``concave'', i.e. local=global?) This could potentially lead to performance issues, as one would have to compare configurations everytime a duplicate is created.
-\end{itemize}
+ 
+The proposed verification method generatates a finite set of reachable configurations (henceforth referred to as \e{nodes} in this context), but it does not record the available transitions, henceforth \e{edges} between the nodes. It is possible for each node \e{n'} to save all nodes \e{n} with an edge resulting in \e{n'} and so build up a graph. For such a graph, there are efficient algorithms that find the shortest path between to nodes, or even the shortest paths between any two nodes. Unfortunately this approach has potential efficiency issues: there may be many more available edges in the system than nodes, which may strain memory. Also, each time a new transition to a node is found, that node needs to be updated with the new information.
+ 
+We show that the verification method as proposed in \todo{REFERERA UPP SENARE} will generate new nodes in such a way, that if a node $n_{i}$ created in the \e{i}:th iteration is reached by a node $n_{i-1}$ over an edge $e_{i-1}$, the shortest path from the initial node $n_0$ will necessarily be a path $e_1...e_i$.
+ 
+\e{Proof.} This is proven using an induction proof. We hypothesize that, if at the point of creation of $n_i$, choosing the parent node $n_{i-1}$ from which an edge $e_{i-1}$ can be taken $n_i$, the path $e_1..e_{i}$ will be the shortest path to $n_i$ and has length \e{i}. Note that the node $n_{i-1}$ must have been created in the previous iteration; had it been created earlier, the edge $e_i$ could have been taken in a previous iteration, and so $n_{i+1}$ would already be a node in the tree.
+ 
+The base case is that for any node reachable from $n_0$ over any edge $e_0$, $e_0$ will be the shortest path and has length 1. This is trivially true.
+ 
+Now suppose a node $n_{i+1}$ is reachable over an edge $e_i$ from a node $n_i$, and the node $n_{i+1}$ is not yet in the system. The induction hypothesis states that the path $e_1...e_i$ is the shortest path leading up to $n_i$. If $e_0..e_{i-1}e_i$ would not be the shortest path to $n_{i+1}$, there would be a path $e'_0..e'_{k-1}$ to another node $n_k$ with k < i from which $n_{i+1}$ can be reached. But any such node would have been created in the \e{k}:th iteration of the algorithm, which would contradict the fact that the node $n_{i+1}$ was not already in the system.
+ 
+Having shown this, we need only record the information of a single parent of a node, in order to build up a tree from which the shortest path from $n_0$ to any node in the system can efficiently be found.
+
