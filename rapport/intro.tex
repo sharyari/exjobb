@@ -76,7 +76,13 @@ At times we may use a notation for a configuration c with explicit processes and
 \emph{Example.} Let $c = \conf{S,\xi}$ be a configuration with two processes and two channels containing the words \e{ab} and \e{lf} respectively. Then c may also be denoted as $c = \conf{s_1,s_2, ch_1, ch_2}$ or as $c = \conf{s_1,s_2,ab,lf}$. 
 
 \subsubsection{Reachability and Bad Configurations}
-Let c denote a configuration, then c is said to be \emph{reachable} in TS, if there are configurations $c_1...c_l$ such that $c_0$ is an initial configuration of TS and for each 0 $\leq$ i < l, $\langle c_i, c_{i+1} \rangle \in \rightarrow$. 
+An instance of the \e{reachability problem} is defined by a channel transition system TS = (S,$\xi$), a set of initial configurations \e{I} $\subseteq$ $S^+$ and a set \e{BAD} $\subseteq$ $S^+$ of \e{bad configurations}. We assume that \e{Bad} is the upward closure $\{c$ | $ c \in B: b \sqsubseteq c\}$ of a set of a given \e{finite} set of \e{minimal bad configurations}. \todo{Is this true in my case?}
+
+Let c denote a configuration, then c is said to be \emph{reachable} in TS, if there are configurations $c_1...c_l$ such that $c_0$ is an initial configuration of TS and for each 0 $\leq$ i < l, $\langle c_i, c_{i+1} \rangle \in \rightarrow$.
+
+We use $\mathcal{R}$ to denote the set of reachable states. We say that the system \e{TS} is \e{safe} if there are no reachable bad configurations, i.e. $\mathcal{R} \cap Bad$ = $\emptyset$.
+
+
 \todo{Add a definition of a bad configuration and put it in relation to the reachability concept}
 
 \subsection{Traces}
@@ -112,7 +118,7 @@ The abstraction function $\alpha_k: C\rightarrow 2^{C_k}$\todo{?} maps a configu
 
 The concretization function $\gamma_k: 2^{C_k} \rightarrow 2^C$\todo{?} returns, given a set of views V, the set of configurations that can be reconstructed from the views in V, in other words, $\gamma_c(V) = \{c \in C$ | $\alpha_k(c) \subseteq V$\}
 
-The abstract post-image of a set of view V $\in$ $C_k$ is defined as $Apost_k$(V) = $\alpha_k(post(\gamma_k(V)))$ In general, $\gamma_k$ is an infinite set of states. We show (\ref{proof}) that we only need to consider those configurations, whose sizes are up to k+1, i.e. a finite set of configurations. We define $\gamma_k^l$ := $\gamma_k(V) \cap C_l$ for some $l\geq 0$. \todo{Vad innebär den?}
+For a set \e{V}, we define the \e{post-image} of \e{V}, \e{post(V)} = \{$c'$ | \e{c} $\rightarrow$ \e{c'} $\wedge$ \e{c} $\in$ \e{V}\}. The \e{abstract post-image} of a set \e{V} $\in$ $C_k$ is defined as $Apost_k$(\e{V}) = $\alpha_k(post(\gamma_k(V)))$ In general, $\gamma_k$ is an infinite set of states. We show (\ref{proof}) that we only need to consider those configurations, whose sizes are up to k+1, i.e. a finite set of configurations. We define $\gamma_k^l(V)$ := $\gamma_k(V) \cap C_l$ for some $l\geq 0$. The intuitive meaning of $\gamma_k^l(V)$ is the set of $l$-size configurations for which all views of length at most $k$ are in $V$.
 
 \subsubsection{Note on concretizations}
 Suppose we want to determine whether \e{c} $\in$ $\gamma_k(V)$ given a configuration \e{c} and a set \e{V}. This would require that all views \e{v} $\in$ $\alpha_k(c)$ are in \e{V}. Consider a view \e{v} = $\conf{S, \xi(ch)=w}$ with size($w$) = $k$; if \e{v} $\in$ \e{V} then necessarily, any \e{v'} = $\conf{S, \xi(ch)=w'}$ with \e{w'} $\sqsubseteq$ \e{w} $\in$ \e{V}. Consequently, it is sufficient to assure that all configurations \e{c} = $\conf{S,\xi(ch_i)=w_i}$ are in \e{V}, with
@@ -128,12 +134,19 @@ size($w_i$)= size($\xi(ch)$) if size($\xi(ch)$) < $k$.
 
 
 \section{Problem Formulation}
-This section should consisely restate the problem at hand, and thorougly (but short) mention what this thesis should contain. This includes proofs, extensions, verification, efficiency, traces generation, creation of a specification language, models of specific problems and comparisons to other similar tools.
+In \ref{parosh}, the authors propose a verification method for \e{parameterized systems} and show that how they can, under certain assumption, be verified for an unbounded number of processes. This master thesis project is based on the results of this work, and aims to adapt this method for systems with unbounded channels. This is done by formally defining a model for systems working on channels, and proving that such systems have a \e{small system property} that allows us to verify their correctness by only looking at finite-state representations of the system.
+
+The goal is further to implement the proposed verification method. For such an implementation to be useful, several extensions are proposed in order to expand the context in which the system can be used. Also, a specification language is defined with which the user can easily model problems. This type of verification generally has a high demand of computational resources, thus the efficiency of the implementation is of great importance. The method is used to model several well-known protocols, in order to compare its efficiency against other verification methods and establish its correctness.
 
 
 \subsection{Proofs}
 \label{proof}
-\todo{What is lemma 1?}
+The property that allows us to verify infinite-state problems, is that transitions have \e{small preconditions}.
+
+\begin{lemma}
+\label{lemma1}
+For any $k\in\mathbb{N}$, and $X\subseteq C_k$, $\alpha_k(post(\gamma_k(X)))$ $\cup$ $X$ = $\alpha_k(post(\gamma_k^{k+1}(X)))$ $\cup$ $X$.
+\end{lemma}
 
 We will show that for any configuration \e{c} $\in$ $\gamma_k(V)$ of size $m > k + 1$ such that there is a \e{c'} induced by a transmission rule \e{r} $\in$ $\rightarrow$ from \e{c}, then for each \e{v'} $\in$ $\alpha_k(c')$, the following holds: There is a configuration \e{d} $\in$ $\gamma_k(V)$ of size at most \e{k}+1 with a transition \e{d} $\xrightarrow{r}$ \e{d'} with \e{v'} $\in$ $\alpha_k(d')$. 
 
@@ -169,7 +182,7 @@ Actions can in this context be seen as equivalent to a reception rule, reading t
 There are several ways the channel system and the channel transition system in \ref{CS} and \ref{CTS} could be extended, in order to cope with various application scenarios. For example, we may want to model a protocol working on FILO buffers, rather than the LIFO buffers described above. Another context may be that of a protocol communicating over an unreliable channel, introducing the possibility of \e{message loss} on the channels. In this section, we shall create models for both of these scenarios. Doing this requires us to first adapt the channel system model and the corresponding channel transition system by adding appropriate transition rules and action, and second to prove that \ref{lemma1} holds for these models.
 
 \subsection{FILO Channels}
-\subsubsection{Stack Channel System}
+\paragraph{Stack Channel System}
 \label{StackCS}
 In order to model a FILO channel or a \e{stack}, we need only modify one of the transitions of the system described in \ref{CS} in such a way that transmissions and reception append and delete messages on the same end of the channels, For simplicity, we only restate this part of the channel system below. The finite-state control part of CS is an ordinary labeled transition system with states S, initial state $s_0$ and transitions $\delta$. The channel part is represented by the set Ch of channels, which may contain a string of messages in M. A set A denotes the set of observable interactions with the environment, whereas $\delta$ may either perform an action from A, or and unobservable action, where
 
@@ -180,8 +193,8 @@ $\langle s_1, c!m, s_2\rangle$ represents a change of state from $s_1$ to $s_2$ 
 $\langle s_1, c?m, s_2\rangle$ represents a change of state from $s_1$ to $s_2$ while removing the message m to the head of channel c
 \end{itemize}
 
-\subsubsection{Stack Channel Transmision System}
-In order to describe the transition system induced by a ChannelCS, we need only modify the transition rules of \ref{CTS} so that they reflect the changes made in \ref{StackCS}. Leaving the rest of the model unchanged, this results in $\rightarrow$ $\subseteq (S \times S)$ containing the following transitions
+\paragraph{Stack Channel Transmision System}
+In order to describe the transition system induced by a ChannelCS, we need only modify the transition rules of \ref{CTS} so that they reflect the changes made in \ref{StackCS}. Leaving the rest of the model unchanged, this results in $\rightarrow$ $\subseteq (S \times S)$ containing the additional transitions
 \begin{itemize}
     \item
       For each observable action a $\in$ A in CS
@@ -200,29 +213,59 @@ In order to describe the transition system induced by a ChannelCS, we need only 
       \]
   \end{itemize}
 
-\subsubsection{Proof of Lemma 1}
+\paragraph{Proof of Lemma 1}
 Only the part of the proof of lemma 1 regarding transmission rules is affected by the changes made to this system. Such a proof follows in a straightforward manner from the proof \ref{proofTransmission}, by considering configurations of the form  $\conf{S, m\bullet w'}$ rather than $\conf{S, w'\bullet m}$.
 
 \subsection{Lossy Channels}
-Here I would write an extension that emulates data loss on channels, such as described in \cite{287591}.
-\subsubsection{Lossy Channel Systems}
-\subsubsection{Lossy Channel Transition Systems}
-\subsubsection{Proof of Lemma 1}
+A lossy channel system is a system similar to \ref{CS}, with the difference that the messages on channels may be lost. In practice, data loss may appear in several contexts, e.g. data corruption, inconsistencies on weak memory models or message loss during data transmission over a network.
+
+\paragraph{Lossy Channel Systems}
+A lossy channel system is described by \ref{CS} with an additional transition $\langle s, ch*, s\rangle$ that removes a message from a channel without changing the control state.
+
+\paragraph{Lossy Channel Transition Systems}
+A lossy channel transition system TS is described by \ref{CTS} with an additional transition rule
+      \[
+      \dfrac{s \xrightarrow{ch*} s \wedge \xi(ch) = w_1..w_{k-1}\bullet m \bullet w_{k+1}..w_n}{(S, \xi) \rightarrow (S, \xi')} \] with \[ \xi' = \xi[ch:= w_1..w_n].
+      \]
+
+\paragraph{Proof of Lemma 1}
+Trivial?  Hope so.
 
 \subsection{Channel Systems with Synchronization}
-Here I would write an extension allowing transitions that allow several states to change simultaneously, without modifying the channels. This would allow for synchronization, but would also allow me to verify using an ``observer'', such as described in \cite{287591}. \todo{Is this correct?}
+Here I would write an extension allowing transitions that allow several states to change simultaneously, without modifying the channels. This would allow for synchronization, but would also allow me to verify using an ``observer'', such as described in \cite{287591}. \todo{I don't really need to do this? Changing two process states at the same time in the channel system is equal to changing only one configuration in the transition system, thus I can do this with the original model?}
+
+
+\section{Verification method}
+\label{alg1}
+Having proven lemma \ref{lemma1}, we use the results to ... \todo{complete this}
+
+\begin{algorithm}
+  \caption{Verification algorithm}\label{euclid}
+  \begin{algorithmic}[1]
+      \For{\texttt{$r\not=0$}}
+        \If {$\mathcal{R}_k$ $\cap$ $Bad$ $\neq$ $\emptyset$} 
+        \State return Unsafe
+        \EndIf
+        \State V := $\mu X.\alpha_k(I)$ $\cup$ $Apost_k(X)$
+        \If {$\gamma_k(V)$ $\cap$ $Bad$ = $\emptyset$} 
+        \State return Safe     
+        \EndIf
+      \EndFor
+\end{algorithmic}
+\end{algorithm}
+
+
 
 
 
 \section{Implementation}
 
 \subsection{Finding Minimal Traces}
-\subsection{Finding Minimal Traces}
 When running the tool, if a bad configuration is found (or if the user just wants to know for some reason) we want to produce a trace, leading up to the bad state. Preferably, this would be a minimal trace that leads to the bad configuration.
  
 The proposed verification method generatates a finite set of reachable configurations (henceforth referred to as \e{nodes} in this context), but it does not record the available transitions, henceforth \e{edges} between the nodes. It is possible for each node \e{n'} to save all nodes \e{n} with an edge resulting in \e{n'} and so build up a graph. For such a graph, there are efficient algorithms that find the shortest path between to nodes, or even the shortest paths between any two nodes. Unfortunately this approach has potential efficiency issues: there may be many more available edges in the system than nodes, which may strain memory. Also, each time a new transition to a node is found, that node needs to be updated with the new information.
  
-We show that the verification method as proposed in \todo{REFERERA UPP SENARE} will generate new nodes in such a way, that if a node $n_{i}$ created in the \e{i}:th iteration is reached by a node $n_{i-1}$ over an edge $e_{i-1}$, the shortest path from the initial node $n_0$ will necessarily be a path $e_1...e_i$.
+We show that the verification method as proposed in \ref{alg1} will generate new nodes in such a way, that if a node $n_{i}$ created in the \e{i}:th iteration is reached by a node $n_{i-1}$ over an edge $e_{i-1}$, the shortest path from the initial node $n_0$ will necessarily be a path $e_1...e_i$.
  
 \e{Proof.} This is proven using an induction proof. We hypothesize that, if at the point of creation of $n_i$, choosing the parent node $n_{i-1}$ from which an edge $e_{i-1}$ can be taken $n_i$, the path $e_1..e_{i}$ will be the shortest path to $n_i$ and has length \e{i}. Note that the node $n_{i-1}$ must have been created in the previous iteration; had it been created earlier, the edge $e_i$ could have been taken in a previous iteration, and so $n_{i+1}$ would already be a node in the tree.
  
