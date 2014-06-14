@@ -1,131 +1,4 @@
-\newpage
-\section{Definitions and Terms}
-
-\subsection{Channel Systems}
-We present here the basic definition of a finite-state system with unbounded channels. Such a system can be seen as to have two parts, a \e{control part} and a \e{channel part}. The channel part is a set of channels, which may be empty or contain a sequence of messages, a \e{word}. The control part is a labeled finite-state transition system\todo{Should I make labels explicit in the definition below?} The definition below is associated to systems operating on FIFO buffers, other types of systems are covered in section \ref{extensions}. 
-
-\paragraph{Alternating Bit Protocol.} The Alternating Bit Protocol (ABP) is a distributed protocol for transmitting data from a \e{sender} to a \e{receiver} in a network. The protocol uses two unbounded channels, $ch_M$ used to transmit messages and $ch_A$ to transmit \e{acknowledgements} of received messages. The sender sends a message with sequence number x $\in$ \{0,1\} to the receiver over channel $ch_M$, who upon reception sends an acknowledgement with the same sequence number over channel $ch_A$. Both the sender and the receiver may send the same message (with the same sequence number) repeatedly. When the sender receives an acknowledgement from the receiver, the next message can be sent using the sequence number (1-x) (thus the name Alternating Bit Protocol). This is a simple protocol that operates on unbounded channels, and it is used in this paper to illustrate the theoretical concepts in a concrete setting. The behaviour of the sender and receiver process is illustrated in figure \ref{abpgraph}
-
-\begin{figure}[h!]
-\subfloat[Sender]{\label{fig:in}
-\abpsender{}
-}
-\subfloat[Receiver]{\label{fig:in}
-\abpreceiver{}
-}
-\caption{Program graphs of sender and receiver in the ABP protocol.}
-\label{abpgraph}
-\end{figure}
-
-
-\subsubsection{Formal Definition of Channel Systems}
-\label{CS}
-A channel system CS over a set of processes P and channels Ch is a tuple $\langle$S,$s_0$,A,C,M,$\delta$$\rangle$, where 
-\begin{itemize}
-\item[]
-S is a finite set of control states,
-\item[]
-$s_0$ is an initial control state,
-\item[]
-A is a finite set of actions,
-\item[]
-Ch is a finite set of channels,
-\item[]
-M is a finite set of messages,
-\item[]
-$\delta$ is a finite set of transitions, each of which is a triple of the form $\langle s_1,op,s_2\rangle$, where $s_1$ and $s_2$ are control states, and op is a label of one of the forms
-
-\begin{itemize}
-\item
-c!m, where c $\in$ Ch and m $\in$ M
-\item
-c?m, where c $\in$ Ch and m $\in$ M
-\item
-a $\in$ A.
-\end{itemize}
-\end{itemize}
-
-The finite-state control part of CS is an ordinary labeled transition system with states S, initial state $s_0$ and transitions $\delta$. The channel part is represented by the set Ch of channels, which may contain a string of messages in M. The set A denotes the set of observable interactions with the environment, whereas $\delta$ may either perform an action from A, or and unobservable action, where
-
-\begin{itemize}
-\item[]
-$\langle s_1, c!m, s_2\rangle$ represents a change of state from $s_1$ to $s_2$ while appending the message m to the tail of channel c
-\item[]
-$\langle s_1, c?m, s_2\rangle$ represents a change of state from $s_1$ to $s_2$ while removing the message m to the head of channel c
-\end{itemize}
-
-\e{Example.} The alternating bit protocol can be described by a channel system CS = $\langle S,i,A,Ch,M,\delta\rangle$ such that S = {(s,r)} with \e{s} $\in$ $\{s_1,s_2,s_3,s_4\}$, \e{r} $\in$ $\{r_1,r_2,r_3,r_4\}$, \e{i} is the initial state ($s_1,r_1$), \e{A} = \{Snd, Rcv\}, \e{Ch} = \{$Ch_M,Ch_A$\}, M = \{1,0\} and delta is the set of transitions
-
-\begin{ttabular}
-$\langle s_1, Snd, s_2\rangle$ &
-$\langle s_2, ch!0, s_2\rangle$ &
-$\langle s_2, ch?1, s_2\rangle$ &
-$\langle s_2, ch?0, s_3\rangle$ &
-$\langle s_3, Snd, s_4\rangle$ &
-$\langle s_4, ch!1, s_4\rangle$&
-$\langle s_4, ch?0, s_4\rangle$&
-$\langle s_4, ch?1, s_1\rangle$ \\
-
-$\langle r_1, ch!1, r_1\rangle$ &
-$\langle r_1, ch?1, r_1\rangle$&
-$\langle r_1, ch?0, r_2\rangle$&
-$\langle r_2, Rcv, r_3\rangle$&
-$\langle r_3, ch!0, r_3\rangle$&
-$\langle r_3, ch?0, r_3\rangle$&
-$\langle r_3, ch?1, r_4\rangle$&
-$\langle r_4, Rcv, r_1\rangle$
-\end{ttabular}
-
-
-
-\subsection{Channel Transition Systems}
-A \e{transition system} is an abstract machine, commonly used in model checking to describe the behaviour of a system. They are in ways similar to the notion of finite state automata, with the difference that the states and transitions in a transition system need not be finite. A state of a transition system describing a program may be determined, for example, the evaluation of all variables in the program. Transitions describe how a system in a certain state can move to another state.
-
-\subsubsection{Formal Definition of Channel Transition Systems}
-\label{CTS}
-The operational behaviour of CS is defined by the inifinite-state transition system TS = (C, $\rightarrow$) where
-\begin{itemize}
-\item[]
-   C = (S $\times$ $\xi$) is the set of its configurations, where $\xi$ is an evaluation of the set of channels C in CS
-\item[]
-  $\rightarrow$ $\subseteq (S \times S)$ contains the following transitions
-  \begin{itemize}
-    \item
-      For each observable action a $\in$ A in CS
-      \[
-      \dfrac{s \xrightarrow{a} s'}{(S, \xi) \rightarrow (S', \xi)}
-      \]
-    \item
-      For each transmission action $\langle s_1, ch!m, s_2 \rangle$ in CS
-      \[
-      \dfrac{s \xrightarrow{ch!m} s' \wedge ch \in \xi}{(S, \xi) \rightarrow (S', \xi')} \] with \[ \xi' = \xi[ch := \xi (ch) \bullet m].
-      \]
-    \item
-      For each reception action $\langle s_1, ch?m, s_2 \rangle$ in CS
-      \[
-      \dfrac{s \xrightarrow{ch?m} s' \wedge \xi(ch) = m \bullet w_1..w_n}{(S, \xi) \rightarrow (S', \xi')} \] with \[ \xi' = \xi[ch:= w_1..w_n].
-      \]
-
-  \end{itemize}
-\end{itemize}
-
-At times we may use a notation for a configuration c with explicit processes and channels, so that c = $\conf{s_1,...,s_n, ch_1,...,ch_p}$, or alternatively, with explicit processes and channel evaluations, c = $\conf{s_1,...,s_n, \xi(ch_1),...,\xi(ch_p)}$.
-
-\emph{Example.} Let $c = \conf{S,\xi}$ be a configuration of the alternating bit protocol, with the channels containing the words \e{01} and \e{10} respectively. Then c may also be denoted as $c = \conf{s,r,ch_M,ch_A}$ or as $c = \conf{s_1,s_2,01,10}$. There are finitely many control states in this system, but an infinite set of channel evaluations. A transmission transition in this system is for example $\langle\conf{s_2,r_1,01,10}$, $ch_m!1$, $\conf{s_2,r_1,011,10}\rangle$. 
-
-\subsubsection{Reachability and Bad Configurations}
-An instance of the \e{reachability problem} is defined by a channel transition system TS = (S,$\xi$), a set of initial configurations \e{I} $\subseteq$ $S^+$ and a set \e{BAD} $\subseteq$ $S^+$ of \e{bad configurations}. We assume that \e{Bad} is the upward closure $\{c$ | $ c \in B: b \sqsubseteq c\}$ of a set of a given \e{finite} set of \e{minimal bad configurations}. \todo{Is this true in my case?}
-
-Let c denote a configuration, then c is said to be \emph{reachable} in TS, if there are configurations $c_1...c_l$ such that $c_0$ is an initial configuration of TS and for each 0 $\leq$ i < l, $\langle c_i, c_{i+1} \rangle \in \rightarrow$.
-
-We use $\mathcal{R}$ to denote the set of reachable states. We say that the system \e{TS} is \e{safe} if there are no reachable bad configurations, i.e. $\mathcal{R} \cap Bad$ = $\emptyset$.
-
-
-\todo{Add a definition of a bad configuration and put it in relation to the reachability concept}
-
-\subsection{Traces}
-\todo{Define trace, minimal trace and put it into the context of bad configurations}.
-
+\section{Model}
 
 \subsection{Subwords and views}
 \label{subwords}
@@ -134,7 +7,7 @@ Let $\subword$ be the subword relation, then u $\subword$ $s_1...s_n$=w iff u is
 We define the \e{views} of a configurations to be \e{v'} such that for \e{c} = $\conf{s,\xi}$, \e{v'}=$\conf{s,\xi[ ch \subword \xi(ch)] | ch \in \xi}$. 
 We define the size($ch$) to be equivalent to size($\xi(ch)$), i.e. the length of the evaluation (the word) on the channel \e{ch}. We define the size of a configuration or view to equal the size of its longest channel.
 
-\emph {Example.} Suppose \e{c} is a configuration $\conf{s_1,s_2,ab,cd}$. The configuration is of size 2 and its views are
+\paragraph{Example.} Suppose \e{c} is a configuration $\conf{s_1,s_2,ab,cd}$. The configuration is of size 2 and its views are
 
 \begin{ttabular}
 $\conf{s_1,s_2,ab,cd}$ \\
@@ -151,7 +24,7 @@ $\conf{s_1,s_2,\epsilon,\epsilon}$ \\
 \end{ttabular}
 
 
-\subsection{View abstraction}
+\subsection{Abstractions and Concretizations}
 The abstraction function $\alpha_k: C\rightarrow 2^{C_k}$\todo{?} maps a configuration c into the set V of views of size up to \e{k} , such that for each v $\in$ V, $\{v\sqsubseteq c\}$. 
 
 The concretization function $\gamma_k: 2^{C_k} \rightarrow 2^C$\todo{?} returns, given a set of views V, the set of configurations that can be reconstructed from the views in V, in other words, $\gamma_c(V) = \{c \in C$ | $\alpha_k(c) \subseteq V$\}
@@ -171,10 +44,6 @@ size($w_i$)= size($\xi(ch)$) if size($\xi(ch)$) < $k$.
 \e{Example.} Suppose we want to determine whether \e{c} = $\conf{S, abc, def}$ is an element of $\gamma_2$. It is then sufficient to check that $\conf{S,ab,de}$, $\conf{S,ab,ef}$, $\conf{S,bc ,de}$ and $\conf{S,bc,ef}$ are in \e{V}.
 
 
-\section{Problem Formulation}
-In \ref{parosh}, the authors propose a verification method for \e{parameterized systems} and show that how they can, under certain assumption, be verified for an unbounded number of processes. This master thesis project is based on the results of this work, and aims to adapt this method for systems with unbounded channels. This is done by formally defining a model for systems working on channels, and proving that such systems have a \e{small system property} that allows us to verify their correctness by only looking at finite-state representations of the system.
-
-The goal is further to implement the proposed verification method. For such an implementation to be useful, several extensions are proposed in order to expand the context in which the system can be used. Also, a specification language is defined with which the user can easily model problems. This type of verification generally has a high demand of computational resources, thus the efficiency of the implementation is of great importance. The method is used to model several well-known protocols, in order to compare its efficiency against other verification methods and establish its correctness.
 
 
 \subsection{Proofs}
@@ -294,44 +163,3 @@ The alternating bit protocol is a protocol designed to be resistent to message l
 \abpobserver
 
 The observer synchronizes with the sender over transitions with the label \e{Snd} and with the receiver over \e{Rcv}. If either the sender performs two transmissions (with different sequence numbers) without the receiver having received in between, or if the receiver receives two messages without the sender having transmitted in between, the observer would reach its accepting state $o_3$. This state can therefore be considered to be a minimal bad state, and any configurations describing a system with the observer in its bad state is a bad configuration.
-
-\section{Verification method}
-\label{alg1}
-Having proven lemma \ref{lemma1}, we use the results to ... \todo{complete this}
-
-\begin{algorithm}
-  \caption{Verification algorithm}\label{euclid}
-  \begin{algorithmic}[1]
-      \For{\texttt{$r\not=0$}}
-        \If {$\mathcal{R}_k$ $\cap$ $Bad$ $\neq$ $\emptyset$} 
-        \State return Unsafe
-        \EndIf
-        \State V := $\mu X.\alpha_k(I)$ $\cup$ $Apost_k(X)$
-        \If {$\gamma_k(V)$ $\cap$ $Bad$ = $\emptyset$} 
-        \State return Safe     
-        \EndIf
-      \EndFor
-\end{algorithmic}
-\end{algorithm}
-
-
-
-
-
-\section{Implementation}
-
-\subsection{Finding Minimal Traces}
-When running the tool, if a bad configuration is found (or if the user just wants to know for some reason) we want to produce a trace, leading up to the bad state. Preferably, this would be a minimal trace that leads to the bad configuration.
- 
-The proposed verification method generatates a finite set of reachable configurations (henceforth referred to as \e{nodes} in this context), but it does not record the available transitions, henceforth \e{edges} between the nodes. It is possible for each node \e{n'} to save all nodes \e{n} with an edge resulting in \e{n'} and so build up a graph. For such a graph, there are efficient algorithms that find the shortest path between to nodes, or even the shortest paths between any two nodes. Unfortunately this approach has potential efficiency issues: there may be many more available edges in the system than nodes, which may strain memory. Also, each time a new transition to a node is found, that node needs to be updated with the new information.
- 
-We show that the verification method as proposed in \ref{alg1} will generate new nodes in such a way, that if a node $n_{i}$ created in the \e{i}:th iteration is reached by a node $n_{i-1}$ over an edge $e_{i-1}$, the shortest path from the initial node $n_0$ will necessarily be a path $e_1...e_i$.
- 
-\e{Proof.} This is proven using an induction proof. We hypothesize that, if at the point of creation of $n_i$, choosing the parent node $n_{i-1}$ from which an edge $e_{i-1}$ can be taken $n_i$, the path $e_1..e_{i}$ will be the shortest path to $n_i$ and has length \e{i}. Note that the node $n_{i-1}$ must have been created in the previous iteration; had it been created earlier, the edge $e_i$ could have been taken in a previous iteration, and so $n_{i+1}$ would already be a node in the tree.
- 
-The base case is that for any node reachable from $n_0$ over any edge $e_0$, $e_0$ will be the shortest path and has length 1. This is trivially true.
- 
-Now suppose a node $n_{i+1}$ is reachable over an edge $e_i$ from a node $n_i$, and the node $n_{i+1}$ is not yet in the system. The induction hypothesis states that the path $e_1...e_i$ is the shortest path leading up to $n_i$. If $e_0..e_{i-1}e_i$ would not be the shortest path to $n_{i+1}$, there would be a path $e'_0..e'_{k-1}$ to another node $n_k$ with k < i from which $n_{i+1}$ can be reached. But any such node would have been created in the \e{k}:th iteration of the algorithm, which would contradict the fact that the node $n_{i+1}$ was not already in the system.
- 
-Having shown this, we need only record the information of a single parent of a node, in order to build up a tree from which the shortest path from $n_0$ to any node in the system can efficiently be found.
-
