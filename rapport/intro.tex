@@ -1,12 +1,26 @@
 \newpage
-\section{Proposal}
+\section{Definitions and Terms}
 
 \subsection{Channel Systems}
-LIFO
+We present here the basic definition of a finite-state system with unbounded channels. Such a system can be seen as to have two parts, a \e{control part} and a \e{channel part}. The channel part is a set of channels, which may be empty or contain a sequence of messages, a \e{word}. The control part is a labeled finite-state transition system\todo{Should I make labels explicit in the definition below?} The definition below is associated to systems operating on FIFO buffers, other types of systems are covered in section \ref{extensions}. 
+
+\paragraph{Alternating Bit Protocol.} The Alternating Bit Protocol (ABP) is a distributed protocol for transmitting data from a \e{sender} to a \e{receiver} in a network. The protocol uses two unbounded channels, $ch_M$ used to transmit messages and $ch_A$ to transmit \e{acknowledgements} of received messages. The sender sends a message with sequence number x $\in$ \{0,1\} to the receiver over channel $ch_M$, who upon reception sends an acknowledgement with the same sequence number over channel $ch_A$. Both the sender and the receiver may send the same message (with the same sequence number) repeatedly. When the sender receives an acknowledgement from the receiver, the next message can be sent using the sequence number (1-x) (thus the name Alternating Bit Protocol). This is a simple protocol that operates on unbounded channels, and it is used in this paper to illustrate the theoretical concepts in a concrete setting. The behaviour of the sender and receiver process is illustrated in figure \ref{abpgraph}
+
+\begin{figure}[h!]
+\subfloat[Sender]{\label{fig:in}
+\abpsender{}
+}
+\subfloat[Receiver]{\label{fig:in}
+\abpreceiver{}
+}
+\caption{Program graphs of sender and receiver in the ABP protocol.}
+\label{abpgraph}
+\end{figure}
+
 
 \subsubsection{Formal Definition of Channel Systems}
 \label{CS}
-A channel system CS over a set of processes P and channels Ch is a tuple $\langle$S,$s_0$,A,C,M,$\delta$$\rangle$, where
+A channel system CS over a set of processes P and channels Ch is a tuple $\langle$S,$s_0$,A,C,M,$\delta$$\rangle$, where 
 \begin{itemize}
 \item[]
 S is a finite set of control states,
@@ -40,8 +54,32 @@ $\langle s_1, c!m, s_2\rangle$ represents a change of state from $s_1$ to $s_2$ 
 $\langle s_1, c?m, s_2\rangle$ represents a change of state from $s_1$ to $s_2$ while removing the message m to the head of channel c
 \end{itemize}
 
+\e{Example.} The alternating bit protocol can be described by a channel system CS = $\langle S,i,A,Ch,M,\delta\rangle$ such that S = {(s,r)} with \e{s} $\in$ $\{s_1,s_2,s_3,s_4\}$, \e{r} $\in$ $\{r_1,r_2,r_3,r_4\}$, \e{i} is the initial state ($s_1,r_1$), \e{A} = \{Snd, Rcv\}, \e{Ch} = \{$Ch_M,Ch_A$\}, M = \{1,0\} and delta is the set of transitions
+
+\begin{ttabular}
+$\langle s_1, Snd, s_2\rangle$ &
+$\langle s_2, ch!0, s_2\rangle$ &
+$\langle s_2, ch?1, s_2\rangle$ &
+$\langle s_2, ch?0, s_3\rangle$ &
+$\langle s_3, Snd, s_4\rangle$ &
+$\langle s_4, ch!1, s_4\rangle$&
+$\langle s_4, ch?0, s_4\rangle$&
+$\langle s_4, ch?1, s_1\rangle$ \\
+
+$\langle r_1, ch!1, r_1\rangle$ &
+$\langle r_1, ch?1, r_1\rangle$&
+$\langle r_1, ch?0, r_2\rangle$&
+$\langle r_2, Rcv, r_3\rangle$&
+$\langle r_3, ch!0, r_3\rangle$&
+$\langle r_3, ch?0, r_3\rangle$&
+$\langle r_3, ch?1, r_4\rangle$&
+$\langle r_4, Rcv, r_1\rangle$
+\end{ttabular}
+
+
+
 \subsection{Channel Transition Systems}
-Vad innebär ett transition system?
+A \e{transition system} is an abstract machine, commonly used in model checking to describe the behaviour of a system. They are in ways similar to the notion of finite state automata, with the difference that the states and transitions in a transition system need not be finite. A state of a transition system describing a program may be determined, for example, the evaluation of all variables in the program. Transitions describe how a system in a certain state can move to another state.
 
 \subsubsection{Formal Definition of Channel Transition Systems}
 \label{CTS}
@@ -73,7 +111,7 @@ The operational behaviour of CS is defined by the inifinite-state transition sys
 
 At times we may use a notation for a configuration c with explicit processes and channels, so that c = $\conf{s_1,...,s_n, ch_1,...,ch_p}$, or alternatively, with explicit processes and channel evaluations, c = $\conf{s_1,...,s_n, \xi(ch_1),...,\xi(ch_p)}$.
 
-\emph{Example.} Let $c = \conf{S,\xi}$ be a configuration with two processes and two channels containing the words \e{ab} and \e{lf} respectively. Then c may also be denoted as $c = \conf{s_1,s_2, ch_1, ch_2}$ or as $c = \conf{s_1,s_2,ab,lf}$. 
+\emph{Example.} Let $c = \conf{S,\xi}$ be a configuration of the alternating bit protocol, with the channels containing the words \e{01} and \e{10} respectively. Then c may also be denoted as $c = \conf{s,r,ch_M,ch_A}$ or as $c = \conf{s_1,s_2,01,10}$. There are finitely many control states in this system, but an infinite set of channel evaluations. A transmission transition in this system is for example $\langle\conf{s_2,r_1,01,10}$, $ch_m!1$, $\conf{s_2,r_1,011,10}\rangle$. 
 
 \subsubsection{Reachability and Bad Configurations}
 An instance of the \e{reachability problem} is defined by a channel transition system TS = (S,$\xi$), a set of initial configurations \e{I} $\subseteq$ $S^+$ and a set \e{BAD} $\subseteq$ $S^+$ of \e{bad configurations}. We assume that \e{Bad} is the upward closure $\{c$ | $ c \in B: b \sqsubseteq c\}$ of a set of a given \e{finite} set of \e{minimal bad configurations}. \todo{Is this true in my case?}
@@ -179,12 +217,13 @@ Actions can in this context be seen as equivalent to a reception rule, reading t
 
 
 \section{Extensions}
-There are several ways the channel system and the channel transition system in \ref{CS} and \ref{CTS} could be extended, in order to cope with various application scenarios. For example, we may want to model a protocol working on FILO buffers, rather than the LIFO buffers described above. Another context may be that of a protocol communicating over an unreliable channel, introducing the possibility of \e{message loss} on the channels. In this section, we shall create models for both of these scenarios. Doing this requires us to first adapt the channel system model and the corresponding channel transition system by adding appropriate transition rules and action, and second to prove that \ref{lemma1} holds for these models.
+\label{extensions}
+There are several ways the channel system and the channel transition system in \ref{CS} and \ref{CTS} could be extended, in order to cope with various application scenarios. For example, we may want to model a protocol working on LIFO buffers, rather than the FIFO buffers described above. Another context may be that of a protocol communicating over an unreliable channel, introducing the possibility of \e{message loss} on the channels. In this section, we shall create models for both of these scenarios. Doing this requires us to first adapt the channel system model and the corresponding channel transition system by adding appropriate transition rules and action, and second to prove that \ref{lemma1} holds for these models.
 
-\subsection{FILO Channels}
+\subsection{LIFO Channels}
 \paragraph{Stack Channel System}
 \label{StackCS}
-In order to model a FILO channel or a \e{stack}, we need only modify one of the transitions of the system described in \ref{CS} in such a way that transmissions and reception append and delete messages on the same end of the channels, For simplicity, we only restate this part of the channel system below. The finite-state control part of CS is an ordinary labeled transition system with states S, initial state $s_0$ and transitions $\delta$. The channel part is represented by the set Ch of channels, which may contain a string of messages in M. A set A denotes the set of observable interactions with the environment, whereas $\delta$ may either perform an action from A, or and unobservable action, where
+In order to model a LIFO channel or a \e{stack}, we need only modify one of the transitions of the system described in \ref{CS} in such a way that transmissions and reception append and delete messages on the same end of the channels, For simplicity, we only restate this part of the channel system below. The finite-state control part of CS is an ordinary labeled transition system with states S, initial state $s_0$ and transitions $\delta$. The channel part is represented by the set Ch of channels, which may contain a string of messages in M. A set A denotes the set of observable interactions with the environment, whereas $\delta$ may either perform an action from A, or and unobservable action, where
 
 \begin{itemize}
 \item[]
@@ -232,8 +271,29 @@ A lossy channel transition system TS is described by \ref{CTS} with an additiona
 Trivial?  Hope so.
 
 \subsection{Channel Systems with Synchronization}
-Here I would write an extension allowing transitions that allow several states to change simultaneously, without modifying the channels. This would allow for synchronization, but would also allow me to verify using an ``observer'', such as described in \cite{287591}. \todo{I don't really need to do this? Changing two process states at the same time in the channel system is equal to changing only one configuration in the transition system, thus I can do this with the original model?}
+It is not uncommon that distributed programs rely on \e{synchronization} in their program behaviour. With synchronization, we mean that two or more programs take a joint step, i.e. a transition cannot be fired unless the programs fire it together. This is particularly common in parallel programs, which may perform independent calculations but occasionally need to rendezvous. As we shall see, \ref{abpobserver}, synchronization can also be used as a modelling technique even if the program being modelled does not synchronize.
 
+\paragraph{Channel Systems with Synchronization}
+The channel system described in \ref{CS} already has the mechanisms needed in order to model synchronizing programs.\todo{Correct?}
+
+\paragraph{Channel Transition System with Synchronization}
+We modify the transition
+
+      \[
+      \dfrac{s \xrightarrow{a} s'}{(S, \xi) \rightarrow (S', \xi)}
+      \]
+
+in such a way, that an action with a label \e{l} can only be taken, if every program with that action take the action simultaneously. This corresponds to the transition
+
+\todo{I cannot model this without talking about specific programs, which is not possible in the current definition of a channel system. I could add specific synchronization actions to that model?}
+
+
+\subsection{Alternating Bit Protocol Revised}
+The alternating bit protocol is a protocol designed to be resistent to message loss, therefore it is reasonable to model it using a lossy model. Furthermore, the transition system induced by the program graphs \e{abpgraph} does not provide an intuitive way to describe a set \e{Bad} of bad states. This can easily be overcome by introducing an \e{observer} program, which synchronizes with the sender and receiver.
+
+\abpobserver
+
+The observer synchronizes with the sender over transitions with the label \e{Snd} and with the receiver over \e{Rcv}. If either the sender performs two transmissions (with different sequence numbers) without the receiver having received in between, or if the receiver receives two messages without the sender having transmitted in between, the observer would reach its accepting state $o_3$. This state can therefore be considered to be a minimal bad state, and any configurations describing a system with the observer in its bad state is a bad configuration.
 
 \section{Verification method}
 \label{alg1}
