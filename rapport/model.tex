@@ -31,7 +31,7 @@ The concretization function $\gamma_k: 2^{C_k} \rightarrow 2^C$\todo{?} returns,
 
 For a set \e{V}, we define the \e{post-image} of \e{V}, \e{post(V)} = \{$c'$ | \e{c} $\rightarrow$ \e{c'} $\wedge$ \e{c} $\in$ \e{V}\}. The \e{abstract post-image} of a set \e{V} $\in$ $C_k$ is defined as $Apost_k$(\e{V}) = $\alpha_k(post(\gamma_k(V)))$ In general, $\gamma_k$ is an infinite set of states. We show (\ref{proof}) that we only need to consider those configurations, whose sizes are up to k+1, i.e. a finite set of configurations. We define $\gamma_k^l(V)$ := $\gamma_k(V) \cap C_l$ for some $l\geq 0$. The intuitive meaning of $\gamma_k^l(V)$ is the set of $l$-size configurations for which all views of length at most $k$ are in $V$.
 
-\subsubsection{Note on concretizations}
+\paragraph{Note on concretizations}
 Suppose we want to determine whether \e{c} $\in$ $\gamma_k(V)$ given a configuration \e{c} and a set \e{V}. This would require that all views \e{v} $\in$ $\alpha_k(c)$ are in \e{V}. Consider a view \e{v} = $\conf{S, \xi(ch)=w}$ with size($w$) = $k$; if \e{v} $\in$ \e{V} then necessarily, any \e{v'} = $\conf{S, \xi(ch)=w'}$ with \e{w'} $\sqsubseteq$ \e{w} $\in$ \e{V}. Consequently, it is sufficient to assure that all configurations \e{c} = $\conf{S,\xi(ch_i)=w_i}$ are in \e{V}, with
 
 \begin{itemize}
@@ -41,7 +41,7 @@ size($w_i$)=$k$ if size($\xi(ch)$) $\geq$ $k$
 size($w_i$)= size($\xi(ch)$) if size($\xi(ch)$) < $k$.
 \end{itemize}
 
-\e{Example.} Suppose we want to determine whether \e{c} = $\conf{S, abc, def}$ is an element of $\gamma_2$. It is then sufficient to check that $\conf{S,ab,de}$, $\conf{S,ab,ef}$, $\conf{S,bc ,de}$ and $\conf{S,bc,ef}$ are in \e{V}.
+\subparagraph{Example.} Suppose we want to determine whether \e{c} = $\conf{S, abc, def}$ is an element of $\gamma_2$. It is then sufficient to check that $\conf{S,ab,de}$, $\conf{S,ab,ef}$, $\conf{S,bc ,de}$ and $\conf{S,bc,ef}$ are in \e{V}.
 
 
 
@@ -57,7 +57,7 @@ For any $k\in\mathbb{N}$, and $X\subseteq C_k$, $\alpha_k(post(\gamma_k(X)))$ $\
 
 We will show that for any configuration \e{c} $\in$ $\gamma_k(V)$ of size $m > k + 1$ such that there is a \e{c'} induced by a transmission rule \e{r} $\in$ $\rightarrow$ from \e{c}, then for each \e{v'} $\in$ $\alpha_k(c')$, the following holds: There is a configuration \e{d} $\in$ $\gamma_k(V)$ of size at most \e{k}+1 with a transition \e{d} $\xrightarrow{r}$ \e{d'} with \e{v'} $\in$ $\alpha_k(d')$. 
 
-\subsubsection{Transmission rules}
+\paragraph{Transmission rules}
 \label{proofTransmission}
 First we note, that for any configuration \e{c} $\in$ \e{V}, any view \e{v'} $\in$ $\alpha_k(c)$ is also a valid configuration \e{c'} $\in$ $\gamma_k(V)$, since $\alpha_k(v')$ $\subseteq$ $\alpha_k(c)$ and thus \e{v'} $\in$ $\gamma_k^{k+1}(\alpha_k(c))$. Also note that if from \e{c} a transition \e{r} can be fired, then this transition can also be fired from any configuration \e{c'} = \e{v'}, as transmission rules are guarded only by the states of the channel system and not by channel evaluations.
 
@@ -75,10 +75,10 @@ $\conf{1,2,a}$, $\conf{1,2,b}$, $\conf{1,2,c}$, $\conf{1,2,ab}$, $\conf{1,2,bc}$
 
 $\alpha_2(c')$ = \{$\conf{2,2,a}$, $\conf{2,2,b}$, $\conf{2,2,c}$, $\conf{2,2,d}$, $\conf{2,2,ab}$, $\conf{2,2,bc}$, $\conf{2,2,cd}$, $\conf{2,2,ac}$, $\conf{2,2,ad}$, $\conf{2,2,bd} $ \}. Consider a view with the newly transmitted message, $\conf{2,2,cd}$, it can by created by $\conf{1,2,c}$ $\rightarrow{ch!d}$ $\conf{2,2,cd}$. Considering instead a view without the transmitted message, $\conf{1,2,ab}$, it can be created by $\conf{1,2,ab}$ $\rightarrow$ $\conf{2,2,abd}$ for which $\conf{2,2,ab}$ is a view.
 
-\subsubsection{Reception rules}
+\paragraph{Reception rules}
 \label{proofreception}
 As opposed to the transmission rules, reception rules also rely on the state of the channel in order to be fired, but only the state of that channel need be considered. Consider \e{c} = $\conf{S, m\bullet w}$ $\xrightarrow{ch?m}$ $\conf{S, w}$. For any view \e{v'} $\in$ $\alpha_k(c')$ with the word \e{w'} of size at most \e{k} on the channel, there exists a configuration of size at most \e{k+1}, \e{d} = $\conf{S, m\bullet w'}$ $\in$ $\alpha_k(c)$ such that \e{d} $\xrightarrow{ch?m}$ \e{d'} = \e{v'}.
 \todo{Why is that so?}
 
-\subsubsection{Actions}
+\paragraph{Actions}
 Actions can in this context be seen as equivalent to a reception rule, reading the empty symbol $\epsilon$ on some channel. The proof then follows directly from \ref{proofreception}.

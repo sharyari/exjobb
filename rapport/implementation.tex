@@ -1,6 +1,6 @@
 
 \section{Implementation}
-\section{Verification method}
+\subsection{Verification method}
 \label{alg1}
 Having proven lemma \ref{lemma1}, we use the results to ... \todo{complete this}
 
@@ -25,7 +25,7 @@ When running the tool, if a bad configuration is found (or if the user just want
  
 The proposed verification method generatates a finite set of reachable configurations (henceforth referred to as \e{nodes} in this context), but it does not record the available transitions, henceforth \e{edges} between the nodes. It is possible for each node \e{n'} to save all nodes \e{n} with an edge resulting in \e{n'} and so build up a graph. For such a graph, there are efficient algorithms that find the shortest path between to nodes, or even the shortest paths between any two nodes. Unfortunately this approach has potential efficiency issues: there may be many more available edges in the system than nodes, which may strain memory. Also, each time a new transition to a node is found, that node needs to be updated with the new information.
  
-We show that the verification method as proposed in \ref{alg1} will generate new nodes in such a way, that if a node $n_{i}$ created in the \e{i}:th iteration is reached by a node $n_{i-1}$ over an edge $e_{i-1}$, the shortest path from the initial node $n_0$ will necessarily be a path $e_1...e_i$.
+We show that the verification method as proposed in \ref{alg1} will generate new nodes in such a way, that if a node $n_{i}$ created in the \e{i}:th iteration is reached by a node $n_{i-1}$ over an edge $e_{i-1}$, the shortest path from the initial node $n_0$ will necessarily be a path $e_1...e_{i-1}$.
  
 \e{Proof.} This is proven using an induction proof. We hypothesize that, if at the point of creation of $n_i$, choosing the parent node $n_{i-1}$ from which an edge $e_{i-1}$ can be taken $n_i$, the path $e_1..e_{i}$ will be the shortest path to $n_i$ and has length \e{i}. Note that the node $n_{i-1}$ must have been created in the previous iteration; had it been created earlier, the edge $e_i$ could have been taken in a previous iteration, and so $n_{i+1}$ would already be a node in the tree.
  

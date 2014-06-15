@@ -1,90 +1,3 @@
-\section{Model}
-
-\subsection{Subwords and views}
-\label{subwords}
-Let $\subword$ be the subword relation, then u $\subword$ $s_1...s_n$=w iff u is an ordered subset of w. For example, if w=abc, then the set of subwords of w is {abc, ab, bc, a, b, c}.
-
-We define the \e{views} of a configurations to be \e{v'} such that for \e{c} = $\conf{s,\xi}$, \e{v'}=$\conf{s,\xi[ ch \subword \xi(ch)] | ch \in \xi}$. 
-We define the size($ch$) to be equivalent to size($\xi(ch)$), i.e. the length of the evaluation (the word) on the channel \e{ch}. We define the size of a configuration or view to equal the size of its longest channel.
-
-\paragraph{Example.} Suppose \e{c} is a configuration $\conf{s_1,s_2,ab,cd}$. The configuration is of size 2 and its views are
-
-\begin{ttabular}
-$\conf{s_1,s_2,ab,cd}$ \\
-$\conf{s_1,s_2,a,cd}$ &
-$\conf{s_1,s_2,b,cd}$ &
-$\conf{s_1,s_2,\epsilon,cd}$ \\ 
-$\conf{s_1,s_2,a,c}$ &
-$\conf{s_1,s_2,b,c}$ &
-$\conf{s_1,s_2,\epsilon,c}$ \\
-$\conf{s_1,s_2,a,d}$ &
-$\conf{s_1,s_2,b,d}$ &
-$\conf{s_1,s_2,\epsilon,d}$ \\
-$\conf{s_1,s_2,\epsilon,\epsilon}$ \\
-\end{ttabular}
-
-
-\subsection{Abstractions and Concretizations}
-The abstraction function $\alpha_k: C\rightarrow 2^{C_k}$\todo{?} maps a configuration c into the set V of views of size up to \e{k} , such that for each v $\in$ V, $\{v\sqsubseteq c\}$. 
-
-The concretization function $\gamma_k: 2^{C_k} \rightarrow 2^C$\todo{?} returns, given a set of views V, the set of configurations that can be reconstructed from the views in V, in other words, $\gamma_c(V) = \{c \in C$ | $\alpha_k(c) \subseteq V$\}
-
-For a set \e{V}, we define the \e{post-image} of \e{V}, \e{post(V)} = \{$c'$ | \e{c} $\rightarrow$ \e{c'} $\wedge$ \e{c} $\in$ \e{V}\}. The \e{abstract post-image} of a set \e{V} $\in$ $C_k$ is defined as $Apost_k$(\e{V}) = $\alpha_k(post(\gamma_k(V)))$ In general, $\gamma_k$ is an infinite set of states. We show (\ref{proof}) that we only need to consider those configurations, whose sizes are up to k+1, i.e. a finite set of configurations. We define $\gamma_k^l(V)$ := $\gamma_k(V) \cap C_l$ for some $l\geq 0$. The intuitive meaning of $\gamma_k^l(V)$ is the set of $l$-size configurations for which all views of length at most $k$ are in $V$.
-
-\subsubsection{Note on concretizations}
-Suppose we want to determine whether \e{c} $\in$ $\gamma_k(V)$ given a configuration \e{c} and a set \e{V}. This would require that all views \e{v} $\in$ $\alpha_k(c)$ are in \e{V}. Consider a view \e{v} = $\conf{S, \xi(ch)=w}$ with size($w$) = $k$; if \e{v} $\in$ \e{V} then necessarily, any \e{v'} = $\conf{S, \xi(ch)=w'}$ with \e{w'} $\sqsubseteq$ \e{w} $\in$ \e{V}. Consequently, it is sufficient to assure that all configurations \e{c} = $\conf{S,\xi(ch_i)=w_i}$ are in \e{V}, with
-
-\begin{itemize}
-\item
-size($w_i$)=$k$ if size($\xi(ch)$) $\geq$ $k$
-\item
-size($w_i$)= size($\xi(ch)$) if size($\xi(ch)$) < $k$.
-\end{itemize}
-
-\e{Example.} Suppose we want to determine whether \e{c} = $\conf{S, abc, def}$ is an element of $\gamma_2$. It is then sufficient to check that $\conf{S,ab,de}$, $\conf{S,ab,ef}$, $\conf{S,bc ,de}$ and $\conf{S,bc,ef}$ are in \e{V}.
-
-
-
-
-\subsection{Proofs}
-\label{proof}
-The property that allows us to verify infinite-state problems, is that transitions have \e{small preconditions}.
-
-\begin{lemma}
-\label{lemma1}
-For any $k\in\mathbb{N}$, and $X\subseteq C_k$, $\alpha_k(post(\gamma_k(X)))$ $\cup$ $X$ = $\alpha_k(post(\gamma_k^{k+1}(X)))$ $\cup$ $X$.
-\end{lemma}
-
-We will show that for any configuration \e{c} $\in$ $\gamma_k(V)$ of size $m > k + 1$ such that there is a \e{c'} induced by a transmission rule \e{r} $\in$ $\rightarrow$ from \e{c}, then for each \e{v'} $\in$ $\alpha_k(c')$, the following holds: There is a configuration \e{d} $\in$ $\gamma_k(V)$ of size at most \e{k}+1 with a transition \e{d} $\xrightarrow{r}$ \e{d'} with \e{v'} $\in$ $\alpha_k(d')$. 
-
-\subsubsection{Transmission rules}
-\label{proofTransmission}
-First we note, that for any configuration \e{c} $\in$ \e{V}, any view \e{v'} $\in$ $\alpha_k(c)$ is also a valid configuration \e{c'} $\in$ $\gamma_k(V)$, since $\alpha_k(v')$ $\subseteq$ $\alpha_k(c)$ and thus \e{v'} $\in$ $\gamma_k^{k+1}(\alpha_k(c))$. Also note that if from \e{c} a transition \e{r} can be fired, then this transition can also be fired from any configuration \e{c'} = \e{v'}, as transmission rules are guarded only by the states of the channel system and not by channel evaluations.
-
-A transmission rule changes the evaluation of at most one channel \e{ch} $\in$ \e{c}, and (possibly) the state of the channel system, thus we need only reason about the evaluations of a single channel \e{ch}.
-Let \e{c} = $\conf{S, w}$ $\xrightarrow{ch!w_{m+1}}$ $\conf{S', w \bullet m}$ = \e{c'}.
-
-The views of \e{c'} of size up to k are either of the type 1) $\conf{S', w' \sqsubset w}$, with size($w'$) $\leq$ $k$ (i.e. not including the newly transmitted message) or 2) of the form $\conf{S', w' \bullet m | w' \sqsubseteq w}$ with size($w'$) < $k$.
-
-For any view of type 1, there exists a configuration of size $k$, \e{d} = $\conf{S, w'}$ $\in$ $\alpha_k{c}$ and the transition $r$ can be taken, resulting in \e{d'} = $\conf{S, w'\bullet m}$ of size $k$+1. The view \e{v'} $\in$ $\alpha_k{w'}$.
-
-For any view of type 2, there exists a configuration of size $k-1$, \e{d} = $\conf{S, w'}$ and the transition $r$ can be taken resulting in \e{d'} = $\conf{S, w'\bullet m}$ = $v'$.
-
-\e{Example}. Assume a system with two processes and a single channel. Let \e{c} = $\conf{1,2,abc}$ $\rightarrow{ch!d}$ $\conf{2,2,abcd}$. Assume that $\e{c}$ $\in$ $\gamma_2(V)$, then $\alpha_2(c)$ $\in$ \e{V}, i.e. 
-$\conf{1,2,a}$, $\conf{1,2,b}$, $\conf{1,2,c}$, $\conf{1,2,ab}$, $\conf{1,2,bc}$, $\conf{1,2,ac}$ are in in V and also in $\gamma_k(V)$.
-
-$\alpha_2(c')$ = \{$\conf{2,2,a}$, $\conf{2,2,b}$, $\conf{2,2,c}$, $\conf{2,2,d}$, $\conf{2,2,ab}$, $\conf{2,2,bc}$, $\conf{2,2,cd}$, $\conf{2,2,ac}$, $\conf{2,2,ad}$, $\conf{2,2,bd} $ \}. Consider a view with the newly transmitted message, $\conf{2,2,cd}$, it can by created by $\conf{1,2,c}$ $\rightarrow{ch!d}$ $\conf{2,2,cd}$. Considering instead a view without the transmitted message, $\conf{1,2,ab}$, it can be created by $\conf{1,2,ab}$ $\rightarrow$ $\conf{2,2,abd}$ for which $\conf{2,2,ab}$ is a view.
-
-\subsubsection{Reception rules}
-\label{proofreception}
-As opposed to the transmission rules, reception rules also rely on the state of the channel in order to be fired, but only the state of that channel need be considered. Consider \e{c} = $\conf{S, m\bullet w}$ $\xrightarrow{ch?m}$ $\conf{S, w}$. For any view \e{v'} $\in$ $\alpha_k(c')$ with the word \e{w'} of size at most \e{k} on the channel, there exists a configuration of size at most \e{k+1}, \e{d} = $\conf{S, m\bullet w'}$ $\in$ $\alpha_k(c)$ such that \e{d} $\xrightarrow{ch?m}$ \e{d'} = \e{v'}.
-\todo{Why is that so?}
-
-\subsubsection{Actions}
-Actions can in this context be seen as equivalent to a reception rule, reading the empty symbol $\epsilon$ on some channel. The proof then follows directly from \ref{proofreception}.
-
-
-
 \section{Extensions}
 \label{extensions}
 There are several ways the channel system and the channel transition system in \ref{CS} and \ref{CTS} could be extended, in order to cope with various application scenarios. For example, we may want to model a protocol working on LIFO buffers, rather than the FIFO buffers described above. Another context may be that of a protocol communicating over an unreliable channel, introducing the possibility of \e{message loss} on the channels. In this section, we shall create models for both of these scenarios. Doing this requires us to first adapt the channel system model and the corresponding channel transition system by adding appropriate transition rules and action, and second to prove that \ref{lemma1} holds for these models.
@@ -160,6 +73,8 @@ in such a way, that an action with a label \e{l} can only be taken, if every pro
 \subsection{Alternating Bit Protocol Revised}
 The alternating bit protocol is a protocol designed to be resistent to message loss, therefore it is reasonable to model it using a lossy model. Furthermore, the transition system induced by the program graphs \e{abpgraph} does not provide an intuitive way to describe a set \e{Bad} of bad states. This can easily be overcome by introducing an \e{observer} program, which synchronizes with the sender and receiver.
 
+\begin{figure}[h!]
 \abpobserver
-
+\label{abpobserver}
+\end{figure}
 The observer synchronizes with the sender over transitions with the label \e{Snd} and with the receiver over \e{Rcv}. If either the sender performs two transmissions (with different sequence numbers) without the receiver having received in between, or if the receiver receives two messages without the sender having transmitted in between, the observer would reach its accepting state $o_3$. This state can therefore be considered to be a minimal bad state, and any configurations describing a system with the observer in its bad state is a bad configuration.
