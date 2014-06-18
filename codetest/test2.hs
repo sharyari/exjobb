@@ -99,7 +99,7 @@ confToTuples (Conf il chl) = ((confToTuples' 1 il), (confToTuples'' 1 chl))
 
 checkRule :: C -> R -> C
 checkRule c (Rule l1 l2 l3 l4) =
-  let ts = confToTuples c in 
+  let ts = confToTuples c in
   if (l1 Data.List.\\ (fst ts) == [] && l2 Data.List.\\ (snd ts) == []) then changeConf ts l3 l4 else Null
 
 changeState _ [] = []
@@ -111,12 +111,14 @@ changeChannel _ [] = []
 changeChannel [] _ = []
 changeChannel ((a,b):il) ((c,"?", d):nil) = if (a==c) then (tail b) : (changeChannel il nil) else b:changeChannel il ((c,"?",d):nil)
 changeChannel ((a,b):il) ((c,"!", d):nil) = if (a==c) then (d++b) : (changeChannel il nil) else b:changeChannel il ((c,"!",d):nil)
+changeChannel ((a,b):il) ((c,"¡", d):nil) = if (a==c) then (b++d) : (changeChannel il nil) else b:changeChannel il ((c,"!",d):nil)
+
 
 changeConf :: ([(Int, Int)], [(Int, [Char])]) -> [(Int, Int)] -> [(Int, [Char], [Char])] -> C
 changeConf (il, chl) nil nchl = Conf (changeState il nil) (changeChannel chl nchl)
-                                                  
+
 kor = alg (fromList initial) transitions 7 50
---main = skriv (size kor) 
+--main = skriv (size kor)
 
 main = skriv(checkRule (head initial) r1)
 
