@@ -2,6 +2,7 @@ package model;
 
 public class Channel {
 	private String name;
+	private String initial = "\"\"";
 	
 	public Channel(String name){
 		this.name = name;
@@ -17,6 +18,10 @@ public class Channel {
 	
 	public String getName(){
 		return name;
+	}
+	
+	public String getInitial(){
+		return initial;
 	}
 	
 }

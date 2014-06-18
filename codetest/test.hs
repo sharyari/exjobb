@@ -4,14 +4,12 @@ import Data.Set
 import Data.Char
 data C = Conf Int Int [Char] [Char] | Null    deriving (Show, Eq, Ord)
 data R = Rule (C->C)
-
-
+-- 5: 12.4, 6: 36.9, 7: 106
+-- 5: 3.2 6: 7.6, 7: 16.4
 if' :: Bool -> a -> a -> a
 if' True  x _ = x
 if' False _ y = y
 skriv a = putStrLn(show(a))
-
-
 
 --Subwords of a set
 getWordInterval a b l = take (b-a) (drop a l)
@@ -19,133 +17,153 @@ getWordInterval a b l = take (b-a) (drop a l)
 subwordK l 0 = [""]
 subwordK l k = nub [getWordInterval x (x+k) l | x <- [0..(length l -k)]]++subwordK l (k-1)
 
-longerwords'' Null = []
---longerwords'' (Conf a b c d) = [(Conf a b c d), (Conf a b ('a':c) d),(Conf a b ('b':c) d),(Conf a b ('a':c) ('a':d)),(Conf a b ('a':c) ('b':d)), (Conf a b ('b':c) ('a':d)),(Conf a b ('b':c) ('b':d)), (Conf a b c ('a':d)),(Conf a b c ('b':d))]
-longerwords'' (Conf a b c d) = [Conf a b c d, Conf a b ('a':c) ('a':d),Conf a b ('a':c) ('b':d), Conf a b ('b':c) ('a':d),Conf a b ('b':c) ('b':d)]
 
-longerwords l = nub (concat [longerwords'' x | x <- l])
+symbols :: [Char]
+symbols = ['a','b']
 
-apply l r = nub [x y | x <- r, y <- l]
-
-
-gammaC l [] k = []
-gammaC l (c:onf) k = 
-       let a = alpha c k in
-    if' 
-    ((nub(a) Data.List.\\ l) == [])
-    (c:gammaC l onf k)
-    (gammaC l onf k)
+longerwords'' :: C -> Set C
+--longerwords'' Null = empty
+longerwords'' (Conf a b c d) = fromList [Conf a b c d, Conf a b ('a':c) ('a':d),Conf a b ('a':c) ('b':d), Conf a b ('b':c) ('a':d),Conf a b ('b':c) ('b':d)]
 
 
-gammaD l k = nub(gammaC l (longerwords l) k)
+unionMap f = Data.Set.foldr (Data.Set.union . f) Data.Set.empty
 
-alpha :: C -> Int -> [C]
-alpha Null _ = []
-alpha (Conf s r c1 c2) k =
-    [Conf s r x y | x <- subwordK c1 k, y <- subwordK c2 k]
+longerwords :: Set C -> Set C
+longerwords l = unionMap longerwords'' l
 
-alphaL :: [C] -> Int -> [C]
-alphaL l k = concat[alpha x k | x <-l]
-
-alg' :: [C] -> [C->C] -> Int -> [C]
-alg' l r k = nub((alphaL (apply ((gammaD l k)) r)) k++l)
+apply :: (Set C) -> [C -> C] -> (Set C)
+apply setOfNodes listOfRules = unions [Data.Set.map x setOfNodes | x <- listOfRules]
 
 
-alg :: [C] -> [C->C] -> Int -> Int ->[C]
-alg l r k 0 = []
+gammaC' :: (Set C) -> Int -> C -> C
+gammaC' l k c =
+  let a = alpha k c in
+    if'
+    ((a Data.Set.\\ l) == empty)
+    c
+    Null
+
+gammaC :: (Set C) -> (Set C) -> Int -> (Set C)
+gammaC l s k = Data.Set.map (gammaC' l k) s
+
+
+gammaD :: (Set C) -> Int -> (Set C)
+gammaD l k = gammaC l (longerwords l) k
+
+alpha :: Int -> C -> (Set C)
+alpha _ Null = empty
+alpha k (Conf s r c1 c2) =
+    fromList [Conf s r x y | x <- subwordK c1 k, y <- subwordK c2 k]
+
+alphaL :: (Set C) -> Int -> (Set C)
+alphaL l k =(unions [alpha k  x | x <- (toList l)])
+
+
+
+alg' :: (Set C) -> [C->C] -> Int -> (Set C)
+alg' l r k = (alphaL (apply ((gammaD l k)) r)) k  `Data.Set.union` l
+
+
+alg :: (Set C) -> [C->C] -> Int -> Int ->(Set C)
+alg l r k 0 = l
 alg l r k counter =
     let a = alg' l r k in
     if'
-    ((length a) == length l)
+    ((size a) == size l)
     l
     (alg a r k (counter-1))
-   
-
-
-kor = nub(alg i transitions 5 50)
-kor1 = gammaD i 20
---main = skriv (length(sort kor))
---main = skriv(gammaC test [Conf 2 1 "aa" ""] 2)
---main = skriv(nub(alpha (Conf 2 1 "aa" "") 2))
---main = skriv(alpha (Conf 1 1 "" "") 1)
-main = skriv(runProgram i 10)
-
-i = [Null, Conf 1 1 "" ""]
-actions = [a1,a2,a3,a4]
-transitions = [t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12]++actions
-
-a1 (Conf 1 r c1 c2) =
-    (Conf 2 r c1 c2)
-a1 _ = Null
-
-a2 (Conf 3 r c1 c2) =
-    (Conf 4 r c1 c2)
-a2 _ = Null
-
-a3 (Conf s 2 c1 c2) =
-    (Conf s 3 c1 c2)
-a3 _ = Null
-
-a4 (Conf s 4 c1 c2) =
-    (Conf s 1 c1 c2)
-a4 _ = Null
 
 
 
-t1 (Conf 2 r c1 c2) =
-    (Conf 2 r (c1++['a']) c2)
-t1 _ = Null
-
-t2 (Conf 2 r c1 ('a':c2)) =
-    (Conf 3 r c1 c2)
-t2 _ = Null
-
-t3 (Conf 2 r c1 ('b':c2)) =
-    (Conf 2 r c1 c2)
-t3 _ = Null
-
-t4 (Conf 4 r c1 c2) =
-    (Conf 4 r (c1++['b']) c2)
-t4 _ = Null
-
-t5 (Conf 4 r c1 ('b':c2)) =
-    (Conf 1 r c1 c2)
-t5 _ = Null
-
-t6 (Conf 4 r c1 ('a':c2)) =
-    (Conf 4 r c1 c2)
-t6 _ = Null
+--runProgram :: [C] -> Int -> [C]
+--runProgram l 0 = l
+--runProgram l k = runProgram ((apply l transitions) `Data.Set.union` l) (k-1)
 
 
+kor = alg (fromList initial) transitions 7 50
+main = skriv (size kor)
 
 
-
-t7 (Conf s 1 c1 c2) =
-    (Conf s 1 c1 (c2++['b']))          
-t7 _ = Null
-
-t8 (Conf s 1 ('b':c1) c2) =
-    (Conf s 1 c1 c2)
-t8 _ = Null
-
-t9 (Conf s 1 ('a':c1) c2) =
-    (Conf s 2 c1 c2)
-t9 _ = Null
-
-t10 (Conf s 3 c1 c2) =
-    (Conf s 3 c1 (c2++['a']))   
-t10 _ = Null
-
-t11 (Conf s 3 ('a':c1) c2) =
-    (Conf s 3 c1 c2)
-t11 _ = Null
-
-t12 (Conf s 3 ('b':c1) c2) =
-    (Conf s 4 c1 c2)
-t12 _ = Null
+s0 (Conf 1 r m a ) =
+	(Conf 2 r m a )
+s0 _ = Null
 
 
-runProgram :: [C] -> Int -> [C]
-runProgram l 0 = l
-runProgram l k = runProgram (nub ((apply l transitions)++l)) (k-1)
+s1 (Conf 2 r m a ) =
+	(Conf 2 r (m++['a']) a )
+s1 _ = Null
 
+
+s2 (Conf 2 r m ('b':a )) =
+	(Conf 2 r m a )
+s2 _ = Null
+
+
+s3 (Conf 2 r m ('a':a )) =
+	(Conf 3 r m a )
+s3 _ = Null
+
+
+s4 (Conf 3 r m a ) =
+	(Conf 4 r m a )
+s4 _ = Null
+
+
+s5 (Conf 4 r m a ) =
+	(Conf 4 r (m++['b']) a )
+s5 _ = Null
+
+
+s6 (Conf 4 r m ('a':a )) =
+	(Conf 4 r m a )
+s6 _ = Null
+
+
+s7 (Conf 4 r m ('b':a )) =
+	(Conf 1 r m a )
+s7 _ = Null
+
+
+r0 (Conf s 1 ('a':m) a ) =
+	(Conf s 2 m a )
+r0 _ = Null
+
+
+r1 (Conf s 1 ('b':m) a ) =
+	(Conf s 1 m a )
+r1 _ = Null
+
+
+r2 (Conf s 1 m a ) =
+	(Conf s 1 m (a ++['b']))
+r2 _ = Null
+
+
+r3 (Conf s 2 m a ) =
+	(Conf s 3 m a )
+r3 _ = Null
+
+
+r4 (Conf s 3 ('b':m) a ) =
+	(Conf s 4 m a )
+r4 _ = Null
+
+
+r5 (Conf s 3 ('a':m) a ) =
+	(Conf s 3 m a )
+r5 _ = Null
+
+
+r6 (Conf s 3 m a ) =
+	(Conf s 3 m (a ++['a']))
+r6 _ = Null
+
+
+r7 (Conf s 4 m a ) =
+	(Conf s 1 m a )
+r7 _ = Null
+
+
+transitions = [s0,s1,s2,s3,s4,s5,s6,s7,r0,r1,r2,r3,r4,r5,r6,r7]
+
+initial = [(Conf 1 1 "" "" )]

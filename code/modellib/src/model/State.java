@@ -21,6 +21,10 @@ public class State {
 			return num+"";
 	}
 	
+	public StateType getType(){
+		return type;
+	}
+	
 	public int getNum(){
 		return num;
 	}

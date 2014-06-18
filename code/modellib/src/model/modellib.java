@@ -5,8 +5,8 @@ class modellib {
 
 		Model mod = new Model();
 
-		Channel m = new Channel("M");
-		Channel a = new Channel("A");
+		Channel m = new Channel("m");
+		Channel a = new Channel("a ");
 
 		mod.addChannel(m);
 		mod.addChannel(a);
@@ -49,7 +49,7 @@ class modellib {
 
 		Transition tr1 = new Transition(r1, r2, m, "?", "a");
 		Transition tr2 = new Transition(r1, r1, m, "?", "b");
-		Transition tr3 = new Transition(r1, r2, a, "!", "b");
+		Transition tr3 = new Transition(r1, r1, a, "!", "b");
 		Transition tr4 = new Transition(r2, s3);
 		Transition tr5 = new Transition(r3, r4, m, "?", "b");
 		Transition tr6 = new Transition(r3, r3, m, "?", "a");
@@ -57,10 +57,10 @@ class modellib {
 		Transition tr8 = new Transition(r4, r1);
 	
 
-		receiver.addState(s1);
-		receiver.addState(s2);
-		receiver.addState(s3);
-		receiver.addState(s4);
+		receiver.addState(r1);
+		receiver.addState(r2);
+		receiver.addState(r3);
+		receiver.addState(r4);
 
 		receiver.addTransition(tr1);
 		receiver.addTransition(tr2);

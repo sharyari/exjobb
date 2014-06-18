@@ -7,7 +7,7 @@ public class Program {
 	private Vector<Transition> transitions = 
 			new Vector<Transition>();
 	private int counter = 0;
-	
+	private int initial = 0;
 	
 	private String name;
 	
@@ -19,7 +19,13 @@ public class Program {
 		this.name= name;
 	}
 	public void addState(State s){
+		if (s.getType() == StateType.INITIAL)
+			initial = s.getNum();
 		states.add(s);
+	}
+	
+	public int getInitial(){
+		return initial;
 	}
 	
 	public void addTransition(Transition t){
