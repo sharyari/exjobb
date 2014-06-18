@@ -2,8 +2,9 @@ import Data.List
 import Data.Set
 import Data.Char
 data C = Conf [Int] [[Char]] | Null    deriving (Show, Eq, Ord)
-data R = Rule [(Int, Int)] [(Int, Char)] [(Int, Int)] [(Int, Char, Char)]
-
+data R = Rule [(Int, Int)] [(Int, [Char])] [(Int, Int)] [(Int, [Char], [Char])]
+-- Att göra senare: Titta på "boundary retransmission"
+-- Sliding window är beskrivet av tannenbaum
 
 --arr 5: 12.4, 6: 36.9, 7: 106
 --set 5: 3.2 6: 7.6, 7: 16.4
@@ -83,12 +84,44 @@ alg l r k counter =
 --runProgram l 0 = l
 --runProgram l k = runProgram ((apply l transitions) `Data.Set.union` l) (k-1)
 
+confToTuples'' :: Int -> [[Char]] -> [(Int, [Char])]
+confToTuples'' k [] = []
+confToTuples'' k ("":tl) = (k, ""):confToTuples'' (k+1) tl
+confToTuples'' k (h:tl) = (k, [head h]):confToTuples'' (k+1) tl
 
+confToTuples' :: Int -> [Int] -> [(Int, Int)]
+confToTuples' k [] = []
+confToTuples' k (h:tl) = (k, h):confToTuples' (k+1) tl
+
+confToTuples :: C -> ([(Int, Int)], [(Int, [Char])])
+confToTuples (Conf il chl) = ((confToTuples' 1 il), (confToTuples'' 1 chl))
+
+
+checkRule :: C -> R -> C
+checkRule c (Rule l1 l2 l3 l4) =
+  let ts = confToTuples c in 
+  if (l1 Data.List.\\ (fst ts) == [] && l2 Data.List.\\ (snd ts) == []) then changeConf ts l3 l4 else Null
+
+changeState _ [] = []
+changeState [] _ = []
+changeState ((a,b):il) ((c,d):nil) = if (a==c) then d : (changeState il nil) else b:changeState il ((c,d):nil)
+
+
+changeChannel _ [] = []
+changeChannel [] _ = []
+changeChannel ((a,b):il) ((c,"?", d):nil) = if (a==c) then (tail b) : (changeChannel il nil) else b:changeChannel il ((c,"?",d):nil)
+changeChannel ((a,b):il) ((c,"!", d):nil) = if (a==c) then (d++b) : (changeChannel il nil) else b:changeChannel il ((c,"!",d):nil)
+
+changeConf :: ([(Int, Int)], [(Int, [Char])]) -> [(Int, Int)] -> [(Int, [Char], [Char])] -> C
+changeConf (il, chl) nil nchl = Conf (changeState il nil) (changeChannel chl nchl)
+                                                  
 kor = alg (fromList initial) transitions 7 50
-main = skriv (size kor) 
+--main = skriv (size kor) 
+
+main = skriv(checkRule (head initial) r1)
 
 r1 :: R
-r1 = Rule [(1,1)] [] [(2,1)] []
+r1 = Rule [(1,1)] [(1, "a")] [(1,2)] [(1, "!", "a")]
 
 transitions = []
-initial = [Conf [1] ["",""]]
+initial = [Conf [1] ["a",""]]
