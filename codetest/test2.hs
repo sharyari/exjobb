@@ -129,7 +129,7 @@ changeChannel l1 l2 = changeChannel' l1 l2
 changeConf :: ([(Int, Int)], [(Int, [Char])]) -> [(Int, Int)] -> [(Int, [Char], [Char])] -> C
 changeConf (il, chl) nil nchl = Conf (changeState il nil) (changeChannel chl nchl)
 
-kor = (alg (fromList initial) transitions 5 50)
+kor = (alg (fromList initial) transitions 5 50 )
 main = skriv (size kor)
 --main = skriv (subwordK 2 "hejsan")
 --main = skriv (checkRule l2 (Conf [4,3] ["bbb", "aaa"]))
