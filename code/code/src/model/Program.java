@@ -4,32 +4,31 @@ import java.util.Vector;
 
 public class Program {
 	private Vector<State> states = new Vector<State>();
-	private Vector<Transition> transitions = 
-			new Vector<Transition>();
-
+	private Vector<Transition> transitions = new Vector<Transition>();
 	private State initial;
-	
 	private int counter = 0;
 	private int number;
-	
 	private String name;
 	
-	public String getName(){
-		return name;
+	public Program(String name){
+		this.name= name; //Name is used to create function names
 	}
 	
-	public Program(String name){
-		this.name= name;
+	public String getName(){
+		return name; 
 	}
+	
 	public void addState(State s){
-		if (s.getType() == StateType.INITIAL)
-			initial = s;
+		if (s.getType() == StateType.INITIAL || states.size() == 0)
+			initial = s; // The first state is assumed to be initial, unless one is later specified.
 		states.add(s);
 	}
 	
 	public State getInitial() {
 		return initial;
 	}
+	
+	// Programs are enumerated when added to a model, all states must be updated
 	public void setNumber(int n) {
 		number = n;
 		for(int i=0;i<states.size();i++){
@@ -80,9 +79,12 @@ public class Program {
 	public String getTransitionNames() {
 		String str= "";
 		for (int i=0;i< transitions.size();i++){
-			str+= transitions.elementAt(i).getName()+",";
-		}
-		str = str.substring(0, str.length()-1);
+			if (transitions.elementAt(i).sync == false){
+				str+= transitions.elementAt(i).getName()+",";
+			}
+		} 
+		if (str != "")
+			str = str.substring(0, str.length()-1);
 
 		return str;
 	}

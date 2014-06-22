@@ -11,25 +11,30 @@ public class Transition {
 	private String name;
 	
 	public String toHaskell(){
+		if (sync)
+			return "";
 		String str = name+" = Rule [";
-		str+="("+s1.getInProgram()+","+s1.getNum()+")]";
-		if (ch == null || effect == "!" || effect == "¡") {
-			str+=" [] ";
-		} else {
-			str+=" [("+ch.getNum()+",\""+symbol+"\")] ";
-		}
-		if (s1.getNum() == s2.getNum()){
-			str+= "[] ";
-		} else {
-			str+= "[("+s2.getInProgram()+","+s2.getNum()+")] ";
-		}
+		str+=helpHaskell();
 		if (ch == null) {
-			str+=" [] \n";
+			str+="] []\n";
 		} else {
-			str+=" [("+ch.getNum()+",\""+effect+"\",\""+symbol+"\")]\n";
+			str+= "] ["+helpHaskell2()+"]\n";
 		}
 		return str;
 	}
+
+	public String helpHaskell(){
+		String str = "";
+		str+="("+s1.getInProgram()+","+s1.getNum()+","+s2.getNum()+")";
+		return str;
+	}
+	public String helpHaskell2(){
+		String str = "";
+		if (ch != null)
+		str+="("+ch.getNum()+",\""+effect+"\",\""+symbol+"\")";
+		return str;
+	}
+	
 	public Transition (State s1, State s2){
 		this.s1 = s1;
 		this.s2 = s2;

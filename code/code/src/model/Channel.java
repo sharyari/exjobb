@@ -3,8 +3,7 @@ package model;
 public class Channel {
 	private Integer num;
 	static Integer counter = 0;
-	
-	
+		
 	public Channel(){
 		counter++;
 		num = counter;
@@ -17,6 +16,5 @@ public class Channel {
 	public Integer getNum(){
 		return num;
 	}
-	
 	
 }

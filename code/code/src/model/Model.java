@@ -29,16 +29,25 @@
 			}
 			return str;
 		}
+		
+		public void synchronize(Transition t1, Transition t2){
+			Synchronize s = new Synchronize (t1, t2);
+			s.setName("sync");
+			sync.add(s);
+		}
 
 		public String toHaskell(){
 			String str = "";
 			for (int i=0;i<programs.size();i++){
 				str+= programs.elementAt(i).toHaskell();
 			}
+			for (int i=0;i<sync.size();i++){
+				str+= sync.elementAt(i).toHaskell();
+			}
 			
 			str += "\ninitial = [Conf [";
 			for (int i=0;i<programs.size();i++){
-				str+= "(" + programs.elementAt(i).getInitial().getInProgram()+","+programs.elementAt(i).getInitial().getNum()+"),"; 
+				str+= programs.elementAt(i).getInitial().getNum()+","; 
 			}
 			str = str.substring(0, str.length()-1);
 			str +="] [";
@@ -51,9 +60,14 @@
 
 		
 			str+="\ntransitions = [";
+			String str2 = "";
 			for (int i=0;i<programs.size();i++){
-				str+= programs.elementAt(i).getTransitionNames();
-				str+=",";
+				str2= programs.elementAt(i).getTransitionNames();
+				if (str2!="")
+					str+=str2+",";
+			}
+			for (int i=0;i<sync.size();i++){
+				str+= sync.elementAt(i).getName()+",";
 			}
 			str = str.substring(0, str.length()-1);
 			
