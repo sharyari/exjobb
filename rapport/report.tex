@@ -110,19 +110,19 @@ escapeinside={\#*}{\^^M}
     (3) edge node [left] {A} (5)
         edge [loop above] node {B,C,a,b} (3)
     (4) edge node [above] {SND} (5)
-        edge [loop left] node {A,B,C} (4)
+        edge [loop below] node {A,B,C} (4)
     (5) edge node [above] {SND} (6)
         edge [loop below] node {C,A,b} (5)
         edge node [left] {B} (7)
     (6) edge node [left] {B} (8)
-        edge [loop below] node {A,B,c,a} (6)
+        edge [loop below] node {A,C,b,c} (6)
     (7) edge node [above] {SND} (8)
-        edge [loop left] node {A,B,C} (7)
+        edge [loop below] node {A,B,C} (7)
     (8) edge node [above] {SND} (9)
         edge [loop below] node {A,B,c} (8)
         edge [bend left=120] node [left] {C} (1)
     (9) edge [bend right=120] node [left] {C} (2)
-        edge [loop below] node {A,B,c,a} (9)
+        edge [loop below] node {A,B,c,a} (9);
 
 
 
