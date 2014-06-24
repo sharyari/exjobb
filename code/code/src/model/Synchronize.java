@@ -35,11 +35,11 @@ public class Synchronize {
 	}
 	
 	public String toHaskell(){
-		String str = name+number+" = Rule [";
+		String str = name+number+" = ([";
 		for (int i=0;i<t.size();i++)
 			str+=t.elementAt(i).helpHaskell()+",";
 		str = str.substring(0, str.length()-1);
-		str+="] [";
+		str+="], [";
 
 		String str2 = "";
 		for (int i=0;i<t.size();i++){
@@ -48,7 +48,7 @@ public class Synchronize {
 				str += str2+",";
 		}
 		str.substring(0, str.length()-1);
-		str+="]\n";
+		str+="])\n";
 		return str;
 	}
 	

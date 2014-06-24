@@ -27,12 +27,21 @@ instance Show C where
 if' :: Bool -> a -> a -> a
 if' True  x _ = x
 if' False _ y = y
-skriv a = putStrLn(show(a))
-unionMap f = Data.Set.foldr (Data.Set.union . f) Data.Set.empty
+qunionMap f = Data.Set.foldr (Data.Set.union . f) Data.Set.empty
 combinations n = Data.List.filter (\s -> length s == n) . subsequences -- Not used
 
 --Subwords of a set
 getWordInterval a b l = take b (drop a l)
+
+-- Using Choose is slower, but should prove faster if used correctly
+chooseK :: Int -> [b] -> [[b]]
+0      `chooseK` _       = [[]]
+_     `chooseK` []       =  []
+k `chooseK` (x:xs)       =  (x:) `fmap` ((k-1) `chooseK` xs) ++ k `chooseK` xs
+
+choose :: Int -> [Char] -> [[Char]]
+choose 0 l = [""]
+choose k l = chooseK k l ++ choose (k-1) l
 
 subwordK :: Int -> [Char] -> [[Char]]
 subwordK 0 l = [""]
@@ -82,11 +91,11 @@ alg' l r k = Data.Set.union l (alphaL (apply ((gammaD l k)) r) k)
 
 
 alg :: (Set C) -> [R] -> Int -> Int ->(Set C)
-alg l r k 0 = l
+alg l r k 0 = fromList []
 alg l r k counter =
     let a = alg' l r k in
     if'
-    ((size a) == size l)
+    ((Data.Set.size a) == Data.Set.size l)
     l
     (alg a r k (counter-1))
 
@@ -146,11 +155,11 @@ checkForBad _ (Conf [] _ _) = True
 checkForBad ((a,b):bsl) (Conf il chl parent) = if (il!!(a-1)==b) then (checkForBad bsl (Conf il chl parent)) else False
 
 
-
-kor2 = (alg (fromList initial) transitions 2 50)
-kor = Data.Set.filter (checkForBad bad) (alg (fromList initial) transitions 5 50)
---main = skriv (kor2)
-main = skriv (trace (Conf [4,4,2] ["bb","aa"] Null) (toList kor2))
+kor2 = (alg (fromList initial) transitions 5 50)
+--kor = Data.Set.filter (checkForBad bad) (alg (fromList initial) transitions 5 50)
+--main = skriv (choose 2 "hej")
+main = skriv (size kor2)
+--main = skriv (trace (Conf [4,4,2] ["bb","aa"] Null) (toList kor2))
 --main = skriv (changeConf r2 (head initial))
 --main = skriv (checkRule l2 (Conf [4,3] ["bbb", "aaa"]))
 --main = skriv (confToTuples (checkRule s1 (checkRule s0 (head initial))))
@@ -161,7 +170,8 @@ main = skriv (trace (Conf [4,4,2] ["bb","aa"] Null) (toList kor2))
 symbols :: [[Char]]
 symbols = ["a","b",""]
 
-bad = []
+bad = [(3,4)]
+
 
 s1 = Rule [(1,2,2)] [(1,"!","a")]
 s2 = Rule [(1,2,2)] [(2,"?","b")]
@@ -184,7 +194,5 @@ sync5 = Rule [(3,2,1),(2,4,1)] []
 sync6 = Rule [(3,1,3),(2,2,3)] []
 sync7 = Rule [(3,1,3),(2,4,1)] []
 
-
 initial = [Conf [1,1,1] ["",""] Null]
 transitions = [s1,s2,s3,s5,s6,s7,r0,r1,r2,r4,r5,r6,sync0,sync1,sync2,sync3,sync4,sync5,sync6,sync7]
-

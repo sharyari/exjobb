@@ -13,12 +13,12 @@ public class Transition {
 	public String toHaskell(){
 		if (sync)
 			return "";
-		String str = name+" = Rule [";
+		String str = name+" = ([";
 		str+=helpHaskell();
 		if (ch == null) {
-			str+="] []\n";
+			str+="], [])\n";
 		} else {
-			str+= "] ["+helpHaskell2()+"]\n";
+			str+= "], ["+helpHaskell2()+"])\n";
 		}
 		return str;
 	}
