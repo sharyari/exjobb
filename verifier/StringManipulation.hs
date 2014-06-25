@@ -2,9 +2,10 @@ module StringManipulation where
 
 import Data.Set as S
 import Data.List as L
+import DataTypes
 
-
-symbols = ["a","b",""]
+--symbols = ["a","b","c", ""]
+symbols = [""]
 
 -- This takes out an interval of a string/List
 getWordInterval a b l = take b (drop a l)
@@ -19,9 +20,10 @@ subwords :: Int -> String -> [String]
 subwords 0 l = [""]
 subwords k l = chooseK k l ++ subwords (k-1) l
 
+
 -- This returns all views of a configuration, with the states abstracted (as views does not affect them)
-views :: Int -> [String] -> [[String]]
-views k sl = sequence (L.map (subwords k) sl)
+views :: Int -> [String] -> TNode
+views k sl = S.fromList ([(x, False) | x <- (sequence (L.map (chooseK k) sl))]) -- subwords is slower
 
 -- This returns all "simple" views of a configuration
 simpleViews :: Int -> [String] -> Set [String]

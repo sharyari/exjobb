@@ -16,9 +16,9 @@ public class Transition {
 		String str = name+" = ([";
 		str+=helpHaskell();
 		if (ch == null) {
-			str+="], [])\n";
+			str+="], aa[])\n";
 		} else {
-			str+= "], ["+helpHaskell2()+"])\n";
+			str+= "], "+helpHaskell2()+")\n";
 		}
 		return str;
 	}

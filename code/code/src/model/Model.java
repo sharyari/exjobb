@@ -17,7 +17,7 @@
 		}
 
 		public void addProgram(Program p){
-			p.setNumber(++counter);
+			p.setNumber(counter++);
 			programs.add(p);
 		}
 		

@@ -154,8 +154,11 @@ checkForBad [] (Conf _ _ _)  = True
 checkForBad _ (Conf [] _ _) = True
 checkForBad ((a,b):bsl) (Conf il chl parent) = if (il!!(a-1)==b) then (checkForBad bsl (Conf il chl parent)) else False
 
+unionMap f = Data.Set.foldr (Data.Set.union . f) Data.Set.empty
 
-kor2 = (alg (fromList initial) transitions 5 50)
+skriv a = putStrLn(show(a))
+
+kor2 = (alg (fromList initial) transitions 2 100)
 --kor = Data.Set.filter (checkForBad bad) (alg (fromList initial) transitions 5 50)
 --main = skriv (choose 2 "hej")
 main = skriv (size kor2)
@@ -172,27 +175,54 @@ symbols = ["a","b",""]
 
 bad = [(3,4)]
 
-
-s1 = Rule [(1,2,2)] [(1,"!","a")]
-s2 = Rule [(1,2,2)] [(2,"?","b")]
-s3 = Rule [(1,2,3)] [(2,"?","a")]
-s5 = Rule [(1,4,4)] [(1,"!","b")]
-s6 = Rule [(1,4,4)] [(2,"?","a")]
-s7 = Rule [(1,4,1)] [(2,"?","b")]
-r0 = Rule [(2,1,2)] [(1,"?","a")]
-r1 = Rule [(2,1,1)] [(1,"?","b")]
-r2 = Rule [(2,1,1)] [(2,"!","b")]
-r4 = Rule [(2,3,4)] [(1,"?","b")]
-r5 = Rule [(2,3,3)] [(1,"?","a")]
-r6 = Rule [(2,3,3)] [(2,"!","a")]
-sync0 = Rule [(3,1,2),(1,1,2)] []
-sync1 = Rule [(3,1,2),(1,3,4)] []
-sync2 = Rule [(3,2,3),(1,1,2)] []
-sync3 = Rule [(3,2,3),(1,3,4)] []
-sync4 = Rule [(3,2,1),(2,2,3)] []
-sync5 = Rule [(3,2,1),(2,4,1)] []
-sync6 = Rule [(3,1,3),(2,2,3)] []
-sync7 = Rule [(3,1,3),(2,4,1)] []
+s1 = Rule[(1,2,2)] [(1,"!","a")]
+s3 = Rule[(1,3,3)] [(1,"!","ba")]
+s4 = Rule[(1,2,4)] [(2,"?","a")]
+s5 = Rule[(1,3,5)] [(2,"?","a")]
+s8 = Rule[(1,5,5)] [(1,"!","b")]
+s9 = Rule[(1,5,7)] [(2,"?","b")]
+s10 = Rule[(1,6,8)] [(2,"?","b")]
+s13 = Rule[(1,8,8)] [(1,"!","c")]
+s14 = Rule[(1,9,9)] [(1,"!","ac")]
+s15 =Rule [(1,8,1)] [(2,"?","c")]
+s16 =Rule [(1,9,2)] [(1,"?","c")]
+s17 =Rule [(1,6,6)] [(1,"!","cb")]
+r0 =Rule [(2,1,1)] [(2,"!","c")]
+r1 =Rule [(2,1,2)] [(1,"?","a")]
+r3 =Rule [(2,3,3)] [(2,"!","a")]
+r4 =Rule [(2,3,4)] [(1,"?","b")]
+r6 =Rule [(2,5,5)] [(2,"!","b")]
+r7 =Rule [(2,5,6)] [(1,"?","c")]
+sync0 =Rule [(3,1,2),(1,1,2)] []
+sync1 =Rule [(3,1,2),(1,2,3)] []
+sync2 =Rule [(3,1,2),(1,4,5)] []
+sync3 =Rule [(3,1,2),(1,5,6)] []
+sync4 =Rule [(3,1,2),(1,7,8)] []
+sync5 = Rule[(3,1,2),(1,8,9)] []
+sync6 =Rule [(3,2,3),(1,1,2)] []
+sync7 =Rule [(3,2,3),(1,2,3)] []
+sync8 = Rule[(3,2,3),(1,4,5)] []
+sync9 = Rule[(3,2,3),(1,5,6)] []
+sync10 =Rule [(3,2,3),(1,7,8)] []
+sync11 =Rule [(3,2,3),(1,8,9)] []
+sync12 =Rule [(3,3,4),(1,1,2)] []
+sync13 = Rule[(3,3,4),(1,2,3)] []
+sync14 = Rule[(3,3,4),(1,4,5)] []
+sync15 =Rule [(3,3,4),(1,5,6)] []
+sync16 = Rule[(3,3,4),(1,7,8)] []
+sync17 = Rule[(3,3,4),(1,8,9)] []
+sync18 = Rule[(3,2,1),(2,2,3)] []
+sync19 = Rule[(3,2,1),(2,4,5)] []
+sync20 = Rule[(3,2,1),(2,6,1)] []
+sync21 =Rule [(3,3,2),(2,2,3)] []
+sync22 = Rule[(3,3,2),(2,4,5)] []
+sync23 =Rule [(3,3,2),(2,6,1)] []
+sync24 =Rule [(3,1,4),(2,2,3)] []
+sync25 = Rule[(3,1,4),(2,4,5)] []
+sync26 = Rule[(3,1,4),(2,6,1)] []
 
 initial = [Conf [1,1,1] ["",""] Null]
-transitions = [s1,s2,s3,s5,s6,s7,r0,r1,r2,r4,r5,r6,sync0,sync1,sync2,sync3,sync4,sync5,sync6,sync7]
+
+transitions = [s1,s3,s4,s5,s8,s9,s10,s13,s14,s15,s16,s17,r0,r1,r3,r4,r6,r7,sync0,sync1,sync2,sync3,sync4,sync5,sync6,sync7,sync8,sync9,sync10,sync11,sync12,sync13,sync14,sync15,sync16,sync17,sync18,sync19,sync20,sync21,sync22,sync23,sync24,sync25,sync26]
+
+

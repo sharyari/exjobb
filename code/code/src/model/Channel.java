@@ -5,8 +5,7 @@ public class Channel {
 	static Integer counter = 0;
 		
 	public Channel(){
-		counter++;
-		num = counter;
+		num = counter++;
 	}
 	
 	public String toString() {
