@@ -7,13 +7,14 @@ import Step
 import Gamma
 import Alpha
 import TrieModule
+import DataTypes
 
 skriv a = putStrLn(show(a))
 
-verify :: Trie (Set ([String], Bool)) -> Int -> Trie (Set ([String], Bool))
-verify trie 0 = trie
-verify trie k = let nextIteration = alpha(step(gamma(trie))) in
+verify :: CTrie -> Trie [R] -> Int -> Int -> CTrie
+verify trie rules _ 0 = trie
+verify trie rules k c = let nextIteration = alpha (step (gamma trie k) rules ) k in
   if ((getSize nextIteration) == getSize trie) then
     nextIteration
   else
-    verify nextIteration (k-1)
+    verify nextIteration rules k (c-1)

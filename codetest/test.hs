@@ -91,7 +91,7 @@ alg' l r k = Data.Set.union l (alphaL (apply ((gammaD l k)) r) k)
 
 
 alg :: (Set C) -> [R] -> Int -> Int ->(Set C)
-alg l r k 0 = fromList []
+alg l r k 0 = l
 alg l r k counter =
     let a = alg' l r k in
     if'
@@ -112,9 +112,9 @@ trace :: C -> [C] -> [C]
 trace Null list = []
 trace c list = c:trace (getParent (findConf c list)) list
 
---runProgram :: [C] -> Int -> [C]
---runProgram l 0 = l
---runProgram l k = runProgram ((apply l transitions) `Data.Set.union` l) (k-1)
+runProgram :: Set C -> Int -> Set C
+runProgram l 0 = l
+runProgram l k = runProgram ((apply l transitions) `Data.Set.union` l) (k-1)
 
 replaceNth n newVal (x:xs)
   | n == 0 = newVal:xs
@@ -158,10 +158,11 @@ unionMap f = Data.Set.foldr (Data.Set.union . f) Data.Set.empty
 
 skriv a = putStrLn(show(a))
 
-kor2 = (alg (fromList initial) transitions 2 100)
+kor2 = (alg (fromList initial) transitions 2 23)
 --kor = Data.Set.filter (checkForBad bad) (alg (fromList initial) transitions 5 50)
 --main = skriv (choose 2 "hej")
-main = skriv (size kor2)
+--main = skriv (kor2)
+main = skriv (nub(toList(runProgram (fromList initial) 4)))
 --main = skriv (trace (Conf [4,4,2] ["bb","aa"] Null) (toList kor2))
 --main = skriv (changeConf r2 (head initial))
 --main = skriv (checkRule l2 (Conf [4,3] ["bbb", "aaa"]))
@@ -171,7 +172,7 @@ main = skriv (size kor2)
 --main = skriv (gammaC (fromList initial) 2 (head initial))
 --main = skriv ((alpha 2 (head initial)) `Data.Set.isSubsetOf` (fromList initial))
 symbols :: [[Char]]
-symbols = ["a","b",""]
+symbols = ["a","b","c", ""]
 
 bad = [(3,4)]
 

@@ -13,8 +13,6 @@ type CTrie = Trie (Set ([String], Bool))
 type TNode = (Set ([String], Bool))
 type NodeElem = ([String], Bool)
 
-instance Show CTrie where
-  show c = "hej"
 
 -- Basic datatype to apply rules
 -- The bytestring is the new bytestring, the tuple (chNum, op, symbol) is a read or write operation such that

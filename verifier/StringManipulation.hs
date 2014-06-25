@@ -4,8 +4,8 @@ import Data.Set as S
 import Data.List as L
 import DataTypes
 
---symbols = ["a","b","c", ""]
-symbols = [""]
+symbols = ["a","b","c", ""]
+--symbols= [""]
 
 -- This takes out an interval of a string/List
 getWordInterval a b l = take b (drop a l)
@@ -13,7 +13,7 @@ getWordInterval a b l = take b (drop a l)
 -- This is a help function for subwords
 -- This can be used as a simple version of subwords
 chooseK :: Int -> [b] -> [[b]]
-chooseK k l       =  if (length l >= k) then [getWordInterval a (a+k) l | a<-[0..(length l-k)]] else [l]
+chooseK k l       =  if (length l >= k) then [getWordInterval a k l | a<-[0..(length l-k)]] else [l]
 
 -- This returns all subwords of size up to k of a word
 subwords :: Int -> String -> [String]
