@@ -20,7 +20,8 @@ tAdd :: CTrie -> C -> Bool -> CTrie
 tAdd trie (Conf key val) seen = let s = T.lookup key trie in
     T.insert key (S.insert (val,seen) (fromMaybe (S.empty) s)) trie
 
-tAddList :: CTrie -> ByteString -> Set ([String], Bool) -> Bool -> CTrie
+-- This is slow and cannot get faster, the union is the culprit
+tAddList :: CTrie -> ByteString -> TNode -> Bool -> CTrie
 tAddList trie key list seen = let s = T.lookup key trie in
     T.insert key ( S.union (fromMaybe (S.empty) s) list) trie
 

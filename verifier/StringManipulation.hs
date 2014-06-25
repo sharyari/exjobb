@@ -30,8 +30,8 @@ simpleViews :: Int -> [String] -> Set [String]
 simpleViews k sl = S.fromList (sequence (L.map (chooseK k) sl))
 
 --Given a channel evaluation, this returns all channel evaluation with length at most 1 more
-longer :: [String] -> Set [String]
-longer sl = S.fromList (sequence [[x++y | y<-symbols] | x <-sl])
+longer :: [String] -> [[String]]
+longer sl = (sequence [[x++y | y<-symbols] | x <-sl])
 
 
 

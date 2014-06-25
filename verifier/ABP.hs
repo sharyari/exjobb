@@ -28,3 +28,5 @@ sync7 = ([(2,1,3),(1,4,1)], (1,"_","b"))
 
 transitions :: [([(Int,Int,Int)], (Int,String,String))]
 transitions = [s1,s2,s3,s5,s6,s7,r0,r1,r2,r4,r5,r6,sync0,sync1,sync2,sync3,sync4,sync5,sync6,sync7]
+
+

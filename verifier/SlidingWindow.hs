@@ -53,3 +53,10 @@ transitions = [s1,s3,s4,s5,s8,s9,s10,s13,s14,s15,s16,s17,r0,r1,r3,r4,r6,r7,sync0
 
 initial :: [Word8]
 initial = [1,1,1]
+
+
+
+numPrograms = 3
+numStates1 = 9
+numStates2 = 6
+numStates3 = 4

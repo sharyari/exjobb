@@ -19,25 +19,24 @@ gamma trie k = let nodes = T.toList trie in
   (trie,L.concat [createConfigurations (fst x) (gamma' (snd x) k) | x <- nodes])
 
 
-
-
 ifNotStepped :: TNode -> [String] -> Bool
 ifNotStepped  node strl = if (S.member (strl, False) node) then True else False
 
 
+
+-- This looks like it takes a lot of time, but it made everything %30 faster
+gamma'' l = S.toList (S.fromList ((L.concat ((L.map longer (L.map fst (S.toList l)))))))
+
 -- This help function creates the longerwords, and removes the ones previously accepted
 gamma' :: TNode -> Int -> [[String]]
 gamma' stringset k =
-  S.toList(S.filter (ifNotStepped (stringset)) (S.unions (S.toList (S.map longer (S.map fst stringset)))))
-
---  S.toList (S.map fst (S.filter (ifNotStepped) p))
---gamma' stringset = L.filter (canBeCreated (stringset) (S.toList (S.unions (S.toList (S.map longer stringset)) S.\\ stringset))
+  L.filter (ifNotStepped (stringset)) (gamma'' stringset)
 
 -- This function checks if all the subwords of a configuration are in the set
 canBeCreated :: Set [String] -> [String] -> Int -> Bool
 canBeCreated stringSet string k = ((simpleViews k string) S.\\ stringSet) == S.empty
 
-
+-- This converts node elements back to configurations
 createConfigurations :: ByteString -> [[String]] -> [C]
 createConfigurations states [] = []
 createConfigurations states (eval:list) = (Conf states eval):createConfigurations states list
