@@ -7,14 +7,14 @@ import Data.Set as S
 
 -- Basic datatype used to work with configurations
 -- The bytestring is the set of states, the string list is the channel evaluation
-data C = Conf ByteString [String] | Null deriving (Show, Eq, Ord)
+data C = Conf ByteString [ByteString] | Null deriving (Show, Eq, Ord)
 
 -- Short name for a configuration tree
-type CTrie = Trie (Set ([String], Bool))
+type CTrie = Trie (Set [ByteString])
 -- Short name for the nodes of a CTrie
-type TNode = (Set ([String], Bool))
+type TNode = Set [ByteString]
 -- Short? name for the elements of a node
-type NodeElem = ([String], Bool)
+type NodeElem = [ByteString]
 
 
 -- Basic datatype to apply rules

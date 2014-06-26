@@ -1,7 +1,7 @@
 CC=ghc
 RM=rm
-CFLAGS2=-rtsopts -prof -auto-all 
-CFLAGS=-rtsopts -prof -auto-all -O2
+CFLAGS2=-rtsopts -prof -auto-all  -threaded
+CFLAGS=-rtsopts -prof -auto-all -O2 -threaded
 
 make: main.hs 
 	$(CC) -o main main.hs $(CFLAGS)

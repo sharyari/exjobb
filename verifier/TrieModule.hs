@@ -16,13 +16,16 @@ import Data.Maybe (fromMaybe, fromJust, isJust)
 -- ([String], Bool)
 
 --This function adds a configuration to the trie
-tAdd :: CTrie -> C -> Bool -> CTrie
-tAdd trie (Conf key val) seen = let s = T.lookup key trie in
-    T.insert key (S.insert (val,seen) (fromMaybe (S.empty) s)) trie
+tAdd :: CTrie -> C ->  CTrie
+tAdd trie (Conf key val) = let s = T.lookup key trie in
+    T.insert key (S.insert val (fromMaybe (S.empty) s)) trie
+
+tAdd2 trie  [] = trie
+tAdd2 trie (c:onfs) = tAdd2 (tAdd trie c) onfs
 
 -- This is slow and cannot get faster, the union is the culprit
-tAddList :: CTrie -> ByteString -> TNode -> Bool -> CTrie
-tAddList trie key list seen = let s = T.lookup key trie in
+tAddList :: CTrie -> ByteString -> TNode -> CTrie
+tAddList trie key list = let s = T.lookup key trie in
     T.insert key ( S.union (fromMaybe (S.empty) s) list) trie
 
 -- foldl, foldr, does it matter?

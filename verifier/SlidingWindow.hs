@@ -1,5 +1,6 @@
 module SlidingWindow where
 import Data.Word
+import qualified Data.ByteString.Char8 as B2
 
 
 s1 = ([(0,2,2)], (0,"!","a"))

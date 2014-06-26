@@ -2,37 +2,37 @@ module StringManipulation where
 
 import Data.Set as S
 import Data.List as L
+import Data.ByteString as B
 import DataTypes
+import qualified Data.ByteString.Char8 as B2
 
-symbols = ["a","b","c", ""]
---symbols= [""]
+symbols = L.map B2.pack ["a","b","c", ""]
+
+--symbols= L.map B2.pack [""]
 
 -- This takes out an interval of a string/List
-getWordInterval a b l = take b (drop a l)
+getWordInterval a b l = B.take b (B.drop a l)
 
 -- This is a help function for subwords
 -- This can be used as a simple version of subwords
-chooseK :: Int -> [b] -> [[b]]
-chooseK k l       =  if (length l >= k) then [getWordInterval a k l | a<-[0..(length l-k)]] else [l]
+chooseK :: Int -> ByteString -> [ByteString]
+chooseK k l =  if (B.length l >= k) then [getWordInterval a k l | a<-[0..(B.length l-k)]] else [l]
 
 -- This returns all subwords of size up to k of a word
-subwords :: Int -> String -> [String]
-subwords 0 l = [""]
+subwords :: Int -> ByteString -> [ByteString]
+subwords 0 l = [B2.pack ""]
 subwords k l = chooseK k l ++ subwords (k-1) l
 
 
 -- This returns all views of a configuration, with the states abstracted (as views does not affect them)
-views :: Int -> [String] -> TNode
-views k sl = S.fromList ([(x, False) | x <- (sequence (L.map (chooseK k) sl))]) -- subwords is slower
+views :: Int -> [ByteString] -> TNode
+views k sl = S.fromList ([x | x <- (sequence (L.map (chooseK k) sl))]) -- subwords is slower
 
--- This returns all "simple" views of a configuration
-simpleViews :: Int -> [String] -> Set [String]
-simpleViews k sl = S.fromList (sequence (L.map (chooseK k) sl))
+--simpleViews :: Int -> [ByteString] -> TNode
+--simpleViews k sl = S.fromList ([x | x <- (sequence (L.map (chooseK k) sl))]) -- subwords is slower
 
 --Given a channel evaluation, this returns all channel evaluation with length at most 1 more
-longer :: [String] -> [[String]]
-longer sl = (sequence [[x++y | y<-symbols] | x <-sl])
-
+longer sl = (sequence [[B.concat [x,y] | y<-symbols] | x <-sl])
 
 
 

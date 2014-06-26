@@ -2,6 +2,7 @@ module ABP where
 import Data.List as L
 import Data.Word
 
+
 initial :: [Word8]
 initial = [1,1,1]
 

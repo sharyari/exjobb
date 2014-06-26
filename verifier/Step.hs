@@ -6,31 +6,33 @@ import Data.Set as S
 import Prelude as P
 import Data.Word
 import Data.Maybe (fromMaybe, fromJust, isJust)
+import qualified Data.ByteString.Char8 as B2
+
 
 import DataTypes
 import TrieModule
 
 -- This is the main function of the file, it will apply appropriate rules to configurations
-step :: (CTrie, [C]) -> Trie [R] -> (CTrie, [C])
-step (trie, confs) rules = (trie, L.concat (L.map (applyRules rules) confs))
+step :: (CTrie, CTrie, [C]) -> Trie [R] -> (CTrie, CTrie, [C])
+step (trie, seen, confs) rules = (trie, seen, L.concat (L.map (applyRules rules) confs))
 
 applyRules :: Trie [R] -> C -> [C]
 applyRules trie (Conf states chan) = let s = T.lookup states trie in
   if (isJust s) then
-    [applyRule (Conf states chan) x | x <- (fromJust s)]
+    [applyRule states (P.map B2.unpack chan) x | x <- (fromJust s)]
   else []
 
-applyRule :: C -> R -> C
-applyRule Null _ = Null
-applyRule (Conf states chan) (Rule newState (i, "_", symbol)) =
-  Conf newState chan
-applyRule (Conf states chan) (Rule newState (i, "?", symbol)) =
-  if (L.length (chan!!i) > 0 && [P.head (chan!!i)] == symbol) then
-  Conf newState (replaceNth i (P.tail (chan!!i)) chan) else Null
-applyRule (Conf states chan) (Rule newState (i, "!", symbol)) =
-  Conf newState (replaceNth i (chan!!i++symbol) chan)
-applyRule (Conf states chan) (Rule newState (i, "¡", symbol)) =
-  Conf newState (replaceNth i (symbol++chan!!i) chan)
+--applyRule :: C -> R -> C
+--applyRule Null _ = Null
+applyRule states chan (Rule newState (i, "_", symbol)) =
+  Conf newState (P.map B2.pack chan)
+applyRule states chan (Rule newState (i, "?", symbol)) =
+  if (P.length (chan!!i) > 0 && [P.head (chan!!i)] == symbol) then
+  Conf newState (P.map B2.pack (replaceNth i (P.tail (chan!!i))  chan)) else Null
+applyRule states chan (Rule newState (i, "!", symbol)) =
+  Conf newState (P.map B2.pack (replaceNth i (chan!!i++symbol) chan))
+applyRule states chan (Rule newState (i, "¡", symbol)) =
+  Conf newState (P.map B2.pack (replaceNth i (symbol++chan!!i) chan))
 
 
 
@@ -38,9 +40,6 @@ applyRule (Conf states chan) (Rule newState (i, "¡", symbol)) =
 replaceNth n newVal (x:xs)
   | n == 0 = newVal:xs
   | otherwise = x:replaceNth (n-1) newVal xs
-
-
-
 
 
 --- This is used once in the beginning, to generate a tree of rules
@@ -73,5 +72,5 @@ numStates3 = 4
 
 -- Help function to create empty configuration from int-list. Only needed for initial configuration and debugging
 toConf :: [Word8] -> C
-toConf l = Conf (pack l) ["", ""]
+toConf l = Conf (pack l) (L.map B2.pack ["", ""])
 
