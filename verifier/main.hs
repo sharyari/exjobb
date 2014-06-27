@@ -27,10 +27,13 @@ import SlidingWindow
 main = getArgs >>= parse >>= P.putStr . tac
 tac  = P.unlines . P.reverse . P.lines
 
+verbose = verify (myTrie,T.empty) rules 3 150
+normal = getSize (verify (myTrie,T.empty) rules 2 220)
+
 parse ["-h"] = usage   >> exit
-parse ["-v"] = skriv (verify (myTrie,T.empty) rules 3 60) >> exit
+parse ["-v"] = skriv (verbose) >> exit
 parse ["-r"] = skriv ((run myConf rules 2)) >> exit
-parse []     = skriv (getSize (verify (myTrie,T.empty) rules 3 220)) >> exit
+parse []     = skriv (normal)) >> exit
 --parse ["-t"] = skriv (nlonger (L.map B2.pack ["ab", "cd"]) 2) >> exit
 parse fs     = P.concat `P.fmap` P.mapM P.readFile fs
 

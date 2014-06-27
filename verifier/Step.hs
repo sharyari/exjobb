@@ -8,13 +8,14 @@ import Data.Word
 import Data.Maybe (fromMaybe, fromJust, isJust)
 import qualified Data.ByteString.Char8 as B2
 
-
 import DataTypes
 import TrieModule
 
+
+
 -- This is the main function of the file, it will apply appropriate rules to configurations
 step :: (CTrie, CTrie, [C]) -> Trie [R] -> (CTrie, CTrie, [C])
-step (trie, seen, confs) rules = (trie, seen, L.concat (L.map (applyRules rules) confs))
+step (trie, seen, confs) rules = (trie, seen, L.concat (P.map (applyRules rules) confs))
 
 applyRules :: Trie [R] -> C -> [C]
 applyRules trie (Conf states chan) = let s = T.lookup states trie in

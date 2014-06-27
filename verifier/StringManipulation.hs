@@ -6,7 +6,7 @@ import Data.ByteString as B
 import DataTypes
 import qualified Data.ByteString.Char8 as B2
 
-symbols = L.map B2.pack ["a","b","c"]
+symbols = L.map B2.pack ["a","b"]
 
 --symbols= L.map B2.pack [""]
 
@@ -20,13 +20,14 @@ chooseK k l =  if (B.length l >= k) then [getWordInterval a k l | a<-[0..(B.leng
 
 -- This returns all subwords of size up to k of a word
 subwords :: Int -> ByteString -> [ByteString]
-subwords 0 l = [B2.pack ""]
+subwords 0 l = []
 subwords k l = chooseK k l ++ subwords (k-1) l
 
 
 -- This returns all views of a configuration, with the states abstracted (as views does not affect them)
+-- subwords is slower, but I finally found a situation where it created more configurations
 views :: Int -> [ByteString] -> TNode
-views k sl = S.fromList ([x | x <- (sequence (L.map (chooseK k) sl))]) -- subwords is slower
+views k sl = S.fromList ([x | x <- (sequence (L.map (subwords k) sl))])
 
 --simpleViews :: Int -> [ByteString] -> TNode
 --simpleViews k sl = S.fromList ([x | x <- (sequence (L.map (chooseK k) sl))]) -- subwords is slower

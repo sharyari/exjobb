@@ -11,10 +11,10 @@ import Data.Maybe (fromMaybe, fromJust, isJust)
 
 import Alpha
 import StringManipulation
-import Control.Parallel.Strategies
 import TrieModule
 import Step
 
+import Control.Parallel.Strategies
 pmap f x = (L.map f x) `using` parList rdeepseq
 pfilter f x = (L.filter f x) `using` parList rdeepseq
 
@@ -24,6 +24,8 @@ pfilter f x = (L.filter f x) `using` parList rdeepseq
 -- 2. If the extended configuration is in the trie, ignore it
 -- 3. else check if all its "simple" views are in the trie (necessarily in the same node)
 -- If not, ignore it for now, else, return it
+
+
 
 -- This function takes a trie of configurations, another trie that marks the configurations
 -- which have already stepped and passes them back, with the second trie updated
@@ -57,13 +59,14 @@ nlonger stringset k sl= let list = nlonger' (L.length sl-1) sl in
 
 nlonger' :: Int -> [ByteString] -> [([ByteString],Int)]
 nlonger' (-1) sl = []
-nlonger' n sl = [(replaceNth n x sl,n) | x <- [B2.concat [y,(sl!!n)] | y<-symbols ]]++nlonger' (n-1) sl
+nlonger' n sl = [(replaceNth n x sl,n) | x <- [B2.concat [y,(sl!!n)] | y<- symbols ]]++nlonger' (n-1) sl
 
 help' stringset k bla = S.member (swords k bla) stringset
 
 swords :: Int -> ([ByteString], Int) -> [ByteString]
 swords k (x,n) = let xv = x!!n in
-  replaceNth n (B.drop (B.length xv-k) xv) x
+  if (B.length xv < k) then x else
+    replaceNth n (B.take k xv) x
 
 -- This converts node elements back to configurations
 createConfigurations :: ByteString -> [[ByteString]] -> [C]
