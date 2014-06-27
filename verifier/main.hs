@@ -27,8 +27,8 @@ import SlidingWindow
 main = getArgs >>= parse >>= P.putStr . tac
 tac  = P.unlines . P.reverse . P.lines
 
-verbose = verify (myTrie,T.empty) rules 2 150
-normal = getSize (verify (myTrie,T.empty) rules 2 220)
+verbose = verify (myTrie,T.empty) rules 3 150
+normal = getSize (verify (myTrie,T.empty) rules 3 220)
 
 parse ["-h"] = usage   >> exit
 parse ["-v"] = skriv (verbose) >> exit

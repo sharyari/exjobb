@@ -57,9 +57,9 @@ canBeCreated :: HashSet [ByteString] -> Int -> [ByteString] -> Bool
 canBeCreated stringset k string = (S.difference (simpleViews k string) stringset) == S.empty
 
 gamma'' :: TNode -> Int -> TNode
-gamma'' stringset k = 
-  S.filter (canBeCreated stringset k) $  S.fromList $ L.concat $ S.toList $ S.map (longer) (stringset)
-
+gamma'' stringset k =
+  let stringlist = S.toList stringset in 
+  S.fromList $  L.concat (pmap (nlonger stringset k) stringlist)
 
 --------------------------------------------------------
 --------------------- OBSELETE -------------------------

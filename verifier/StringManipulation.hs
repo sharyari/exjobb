@@ -6,7 +6,7 @@ import Data.ByteString as B
 import DataTypes
 import qualified Data.ByteString.Char8 as B2
 
-symbols = L.map B2.pack ["a","b"]
+symbols = L.map B2.pack ["a","b", "c"]
 
 --symbols= L.map B2.pack [""]
 
