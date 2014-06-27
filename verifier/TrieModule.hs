@@ -2,7 +2,7 @@ module TrieModule where
 import DataTypes
 
 import Data.Trie as T
-import Data.Set as S
+import Data.HashSet as S
 import Data.List as L
 import Data.ByteString
 import Data.Maybe (fromMaybe, fromJust, isJust)
@@ -26,7 +26,7 @@ tAdd2 trie (c:onfs) = tAdd2 (tAdd trie c) onfs
 -- This is slow and cannot get faster, the union is the culprit
 tAddList :: CTrie -> ByteString -> TNode -> CTrie
 tAddList trie key list = let s = T.lookup key trie in
-    T.insert key ( S.union (fromMaybe (S.empty) s) list) trie
+    T.insert key ( S.union list (fromMaybe (S.empty) s)) trie
 
 -- foldl, foldr, does it matter?
 getSize trie = L.foldl (+) 0 (L.map S.size (L.map snd (T.toList trie)))

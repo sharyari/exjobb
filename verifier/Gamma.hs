@@ -2,10 +2,10 @@ module Gamma where
 import Data.List as L
 import DataTypes
 import Data.Trie as T
-import Data.Set as S
+import Data.HashSet as S
 import Data.ByteString as B
 import qualified Data.ByteString.Char8 as B2
-
+import Data.Set as Set
 
 import Data.Maybe (fromMaybe, fromJust, isJust)
 
@@ -34,36 +34,36 @@ gamma (trie, seen) k = let newconfs = newConfs seen (T.toList trie) k in
 
 
 -- This function creates the new configurations
--- converting back and forth to a set is faster than "nub" in this case
--- Likely due to the set being ordered, putting the conversion in a best case scenario each time
+-- converting back and forth to a set is faster than "nub", seems like it is always like that
 newConfs :: CTrie -> [(ByteString, TNode)] -> Int -> [C]
 newConfs seen nodes k =
-  S.toList (S.fromList (L.concat [createConfigurations (fst x) (gamma' seen x k) | x <- nodes]))
-
--- This is a filter function that removes the candidates which have been considered in a previous
--- iteration of gamma
-alreadySeen :: TNode -> [ByteString] -> Bool
-alreadySeen node element = S.notMember element node
+  Set.toList . Set.fromList $ (L.concat [createConfigurations (fst x) (gamma' seen x k) | x <- nodes])
 
 
 gamma' :: CTrie ->  (ByteString, TNode) -> Int -> [[ByteString]]
-gamma' seen (state,stringset) k = pfilter (alreadySeen (fromMaybe S.empty (T.lookup state seen))) (gamma'' stringset k)
+gamma' seen (state,stringset) k = let
+  l1 = (gamma'' stringset k)
+  l2 = fromMaybe S.empty $ T.lookup state seen in
+    S.toList $ S.difference (S.fromList l1) l2
 
-gamma'' stringset k = L.concat (pmap (nlonger stringset k) (S.toList stringset))
+
+gamma'' stringset k = let stringlist = (S.toList stringset) in
+  stringlist ++ L.concat (pmap (nlonger stringset k) stringlist)
 
 
 --nlonger :: [ByteString] -> [([ByteString],Int)]
-nlonger stringset k sl= let list = nlonger' (L.length sl) sl in
-  L.map fst (L.filter (help' stringset k) list)
+nlonger stringset k sl= let list = nlonger' (L.length sl-1) sl in
+  L.map fst $ L.filter (help' stringset k) list
 
 nlonger' :: Int -> [ByteString] -> [([ByteString],Int)]
-nlonger' 0 sl = []
-nlonger' n sl= [(replaceNth (n-1) x sl,(n-1)) | x <- [B2.concat [(sl!!(n-1)),y] | y<-symbols ]]++nlonger' (n-1) sl
+nlonger' (-1) sl = []
+nlonger' n sl = [(replaceNth n x sl,n) | x <- [B2.concat [y,(sl!!n)] | y<-symbols ]]++nlonger' (n-1) sl
 
 help' stringset k bla = S.member (swords k bla) stringset
 
 swords :: Int -> ([ByteString], Int) -> [ByteString]
-swords k (x,n) = replaceNth n (B.drop (B.length (x!!n)-k) (x!!n)) x
+swords k (x,n) = let xv = x!!n in
+  replaceNth n (B.drop (B.length xv-k) xv) x
 
 -- This converts node elements back to configurations
 createConfigurations :: ByteString -> [[ByteString]] -> [C]

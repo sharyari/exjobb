@@ -27,19 +27,19 @@ applyRules trie (Conf states chan) = let s = T.lookup states trie in
 applyRule states chan (Rule newState (i, "_", symbol)) =
   Conf newState (P.map B2.pack chan)
 applyRule states chan (Rule newState (i, "?", symbol)) =
-  if (P.length (chan!!i) > 0 && [P.head (chan!!i)] == symbol) then
-  Conf newState (P.map B2.pack (replaceNth i (P.tail (chan!!i))  chan)) else Null
-applyRule states chan (Rule newState (i, "!", symbol)) =
-  Conf newState (P.map B2.pack (replaceNth i (chan!!i++symbol) chan))
+  if (P.length (chan!!i) > 0 && [P.last (chan!!i)] == symbol) then
+  Conf newState (P.map B2.pack (replaceNth i (P.init (chan!!i))  chan)) else Null
 applyRule states chan (Rule newState (i, "¡", symbol)) =
+  Conf newState (P.map B2.pack (replaceNth i (chan!!i++symbol) chan))
+applyRule states chan (Rule newState (i, "!", symbol)) =
   Conf newState (P.map B2.pack (replaceNth i (symbol++chan!!i) chan))
 
 
 
 -- This is a function that replaces the nth value of a list
 replaceNth n newVal (x:xs)
-  | n == 0 = newVal:xs
-  | otherwise = x:replaceNth (n-1) newVal xs
+ | n == 0 = newVal:xs
+ | otherwise = x:replaceNth (n-1) newVal xs
 
 
 --- This is used once in the beginning, to generate a tree of rules

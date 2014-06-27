@@ -5,7 +5,7 @@ import StringManipulation
 import Gamma
 import Step
 import Alpha
---import Run
+import Run
 
 import Data.List as L
 import Data.Trie as T
@@ -28,9 +28,9 @@ main = getArgs >>= parse >>= P.putStr . tac
 tac  = P.unlines . P.reverse . P.lines
 
 parse ["-h"] = usage   >> exit
-parse ["-v"] = skriv (verify (myTrie,T.empty) rules 2 60) >> exit
---parse ["-r"] = skriv (S.size (run myConf rules 2)) >> exit
-parse []     = skriv (getSize (verify (myTrie,T.empty) rules 2 200)) >> exit
+parse ["-v"] = skriv (verify (myTrie,T.empty) rules 3 60) >> exit
+parse ["-r"] = skriv ((run myConf rules 2)) >> exit
+parse []     = skriv (getSize (verify (myTrie,T.empty) rules 3 220)) >> exit
 --parse ["-t"] = skriv (nlonger (L.map B2.pack ["ab", "cd"]) 2) >> exit
 parse fs     = P.concat `P.fmap` P.mapM P.readFile fs
 

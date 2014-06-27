@@ -3,16 +3,16 @@ module DataTypes where
 import Data.Word as W
 import Data.ByteString as B
 import Data.Trie as T
-import Data.Set as S
+import Data.HashSet as H
 
 -- Basic datatype used to work with configurations
 -- The bytestring is the set of states, the string list is the channel evaluation
 data C = Conf ByteString [ByteString] | Null deriving (Show, Eq, Ord)
 
 -- Short name for a configuration tree
-type CTrie = Trie (Set [ByteString])
+type CTrie = Trie (HashSet [ByteString])
 -- Short name for the nodes of a CTrie
-type TNode = Set [ByteString]
+type TNode = HashSet [ByteString]
 -- Short? name for the elements of a node
 type NodeElem = [ByteString]
 
