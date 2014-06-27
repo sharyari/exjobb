@@ -29,11 +29,12 @@ subwords k l = chooseK k l ++ subwords (k-1) l
 views :: Int -> [ByteString] -> TNode
 views k sl = S.fromList ([x | x <- (sequence (L.map (subwords k) sl))])
 
---simpleViews :: Int -> [ByteString] -> TNode
---simpleViews k sl = S.fromList ([x | x <- (sequence (L.map (chooseK k) sl))]) -- subwords is slower
+simpleViews :: Int -> [ByteString] -> TNode
+simpleViews k sl = S.fromList ([x | x <- (sequence (L.map (chooseK k) sl))]) -- subwords is slower
 
 --Given a channel evaluation, this returns all channel evaluation with length at most 1 more
-longer sl = (sequence [[B.concat [x,y] | y<-symbols] | x <-sl])
+longer :: [ByteString] -> [[ByteString]]
+longer sl = sequence [[B.concat [x,y] | y<-symbols] | x <-sl]
 
 
 
