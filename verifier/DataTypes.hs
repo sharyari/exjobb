@@ -19,9 +19,9 @@ type NodeElem = [ByteString]
 
 -- Basic datatype to apply rules
 -- The bytestring is the new bytestring, the tuple (chNum, op, symbol) is a read or write operation such that
--- op = ? => if the chNum:th channel contains the symbol, remove the symbol
--- op = ! => append the symbol to the end of the chNum:th channel
--- op = ¡ => append the symbol to the beginning of the chNum:th channel (used for stacks/lifo)
+-- op = ? => if the chNum:th channel contains the symbol at its end, remove the symbol
+-- op = ! => append the symbol to the beginning of the chNum:th channel
+-- op = ¡ => append the symbol to the end of the chNum:th channel (used for stacks/lifo)
 -- op = - => leave channels unchanged
 data R = Rule ByteString (Int, String, String) deriving (Show, Eq, Ord)
 

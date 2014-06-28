@@ -30,16 +30,16 @@ pfilter f x = (L.filter f x) `using` parList rdeepseq
 -- This function takes a trie of configurations, another trie that marks the configurations
 -- which have already stepped and passes them back, with the second trie updated
 -- together with a set of configurations that can be created from that information.
-gamma :: (CTrie, CTrie) -> Int -> Bool -> (CTrie,CTrie, [C])
-gamma (trie, seen) k b = let newconfs = newConfs seen (T.toList trie) k b in
+gamma :: (CTrie, CTrie) -> [ByteString] -> Int -> Bool -> (CTrie,CTrie, [C])
+gamma (trie, seen) symbols k b = let newconfs = newConfs seen (T.toList trie) symbols k b in
   (trie,tAdd2 seen newconfs, newconfs)
 
 
 -- This function creates the new configurations
 -- converting back and forth to a set is faster than "nub", seems like it is always like that
-newConfs :: CTrie -> [(ByteString, TNode)] -> Int -> Bool -> [C]
-newConfs seen nodes k b =
-  Set.toList . Set.fromList $ (L.concat [createConfigurations (fst x) (gamma' seen x k b) | x <- nodes])
+newConfs :: CTrie -> [(ByteString, TNode)] -> [ByteString] -> Int -> Bool -> [C]
+newConfs seen nodes symbols k b =
+  Set.toList . Set.fromList $ (L.concat [createConfigurations (fst x) (gamma' seen x symbols k b) | x <- nodes])
 
 -- This converts node elements back to configurations
 createConfigurations :: ByteString -> [[ByteString]] -> [C]
@@ -47,19 +47,19 @@ createConfigurations states [] = []
 createConfigurations states (eval:list) = (Conf states eval):createConfigurations states list
 
 
-gamma' :: CTrie ->  (ByteString, TNode) -> Int -> Bool -> [[ByteString]]
-gamma' seen (state,stringset) k b = let
-  l1 = if b then gamma'' stringset k else stringset
+gamma' :: CTrie ->  (ByteString, TNode) -> [ByteString] -> Int -> Bool -> [[ByteString]]
+gamma' seen (state,stringset) symbols k b = let
+  l1 = if b then gamma'' stringset symbols k else stringset
   l2 = fromMaybe S.empty $ T.lookup state seen in
    S.toList $ S.difference l1 l2
 
 canBeCreated :: HashSet [ByteString] -> Int -> [ByteString] -> Bool
 canBeCreated stringset k string = (S.difference (simpleViews k string) stringset) == S.empty
 
-gamma'' :: TNode -> Int -> TNode
-gamma'' stringset k =
+gamma'' :: TNode -> [ByteString]  -> Int -> TNode
+gamma'' stringset symbols k =
   let stringlist = S.toList stringset in
-  S.fromList $  L.concat (pmap (nlonger stringset k) stringlist)
+  S.fromList $  L.concat (pmap (nlonger stringset symbols k) stringlist)
 
 --------------------------------------------------------
 --------------------- OBSELETE -------------------------
@@ -68,12 +68,12 @@ gamma'' stringset k =
 ----extra configurations found. ------------------------
 --------------------------------------------------------
 --nlonger :: [ByteString] -> [([ByteString],Int)]
-nlonger stringset k sl= let list = nlonger' (L.length sl-1) sl in
+nlonger stringset symbols k sl= let list = nlonger' symbols (L.length sl-1) sl in
   L.map fst $ L.filter (help' stringset k) list
 
-nlonger' :: Int -> [ByteString] -> [([ByteString],Int)]
-nlonger' (-1) sl = []
-nlonger' n sl = [(replaceNth n x sl,n) | x <- [B2.concat [y,(sl!!n)] | y<- symbols ]]++nlonger' (n-1) sl
+nlonger' :: [ByteString] -> Int -> [ByteString] -> [([ByteString],Int)]
+nlonger' symbols (-1) sl = []
+nlonger' symbols n sl = [(replaceNth n x sl,n) | x <- [B2.concat [y,(sl!!n)] | y<- symbols ]]++nlonger' symbols (n-1) sl
 
 help' stringset k bla = S.member (swords k bla) stringset
 

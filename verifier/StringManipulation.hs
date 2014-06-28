@@ -6,8 +6,6 @@ import Data.ByteString as B
 import DataTypes
 import qualified Data.ByteString.Char8 as B2
 
-symbols = L.map B2.pack ["a","b","c"]
-
 --symbols= L.map B2.pack [""]
 
 -- This takes out an interval of a string/List
@@ -33,8 +31,8 @@ simpleViews :: Int -> [ByteString] -> TNode
 simpleViews k sl = S.fromList ([x | x <- (sequence (L.map (chooseK k) sl))]) -- subwords is slower
 
 --Given a channel evaluation, this returns all channel evaluation with length at most 1 more
-longer :: [ByteString] -> [[ByteString]]
-longer sl = sequence [[B.concat [x,y] | y<-symbols] | x <-sl]
+--longer :: [ByteString] -> [[ByteString]]
+--longer sl = sequence [[B.concat [x,y] | y<-symbols] | x <-sl]
 
 
 

@@ -1,6 +1,9 @@
-module SlidingWindow where
+module ProblemFormulation where
 import Data.Word
 import qualified Data.ByteString.Char8 as B2
+import Data.List as L
+
+symbols = L.map B2.pack ["a","b","c"]
 
 
 s1 = ([(0,2,2)], (0,"!","a"))
