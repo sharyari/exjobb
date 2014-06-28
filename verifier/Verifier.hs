@@ -28,6 +28,6 @@ verify2 :: (CTrie, CTrie) -> Trie [R] -> Int -> Int -> CTrie
 verify2 (trie,seen) rules _ 0 = trie
 verify2 (trie,seen) rules k c = let nextIteration = alpha (step (gamma (trie,seen) k True ) rules ) k in
   if ((getSize (fst nextIteration)) == getSize trie) then
-    fst nextIteration	    
+    fst nextIteration
   else
     verify nextIteration rules k (c-1)

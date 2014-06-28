@@ -6,7 +6,7 @@ import Data.ByteString as B
 import DataTypes
 import qualified Data.ByteString.Char8 as B2
 
-symbols = L.map B2.pack ["a","b", "c"]
+symbols = L.map B2.pack ["a","b","c"]
 
 --symbols= L.map B2.pack [""]
 
@@ -27,7 +27,7 @@ subwords k l = chooseK k l ++ subwords (k-1) l
 -- This returns all views of a configuration, with the states abstracted (as views does not affect them)
 -- subwords is slower, but I finally found a situation where it created more configurations
 views :: Int -> [ByteString] -> TNode
-views k sl = S.fromList ([x | x <- (sequence (L.map (subwords k) sl))])
+views k sl = S.fromList ([x | x <- (sequence (L.map (chooseK k) sl))])
 
 simpleViews :: Int -> [ByteString] -> TNode
 simpleViews k sl = S.fromList ([x | x <- (sequence (L.map (chooseK k) sl))]) -- subwords is slower

@@ -27,7 +27,5 @@ alpha' (trie,(x:xs)) k = alpha' ((addViews trie x k), xs) k
 
 addViews :: CTrie -> C -> Int -> CTrie
 addViews trie Null k= trie
---addViews trie (Conf states chan) = tAddList trie ([Conf states x | x <- views k chan]) False
 addViews trie (Conf states chan) k = tAddList trie states (views k chan)
-
 

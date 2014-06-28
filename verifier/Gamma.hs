@@ -47,7 +47,7 @@ createConfigurations states [] = []
 createConfigurations states (eval:list) = (Conf states eval):createConfigurations states list
 
 
-gamma' :: CTrie ->  (ByteString, TNode) -> Int -> Bool -> [[ByteString]] 
+gamma' :: CTrie ->  (ByteString, TNode) -> Int -> Bool -> [[ByteString]]
 gamma' seen (state,stringset) k b = let
   l1 = if b then gamma'' stringset k else stringset
   l2 = fromMaybe S.empty $ T.lookup state seen in
@@ -58,7 +58,7 @@ canBeCreated stringset k string = (S.difference (simpleViews k string) stringset
 
 gamma'' :: TNode -> Int -> TNode
 gamma'' stringset k =
-  let stringlist = S.toList stringset in 
+  let stringlist = S.toList stringset in
   S.fromList $  L.concat (pmap (nlonger stringset k) stringlist)
 
 --------------------------------------------------------
