@@ -22,22 +22,23 @@ import Control.Parallel.Strategies
 
 
 isBad Null = False
-isBad (Conf state chan) = (B.last state == (4 :: Word8))
+isBad (Conf state chan) = (B.last state == (5 :: Word8))
 
-isBad2 (a,b) = B.last a == 4
+isBad2 (a,b) = B.last a == 5
 
 verify :: (CTrie, CTrie) -> Trie [R] -> [Word8]-> [[ByteString]] -> Int -> CTrie
 verify tries rules initial symbols k =
   let
-    isSafe =  S.size $ S.filter (isBad) (run (([toConf initial]),[]) rules k)
-    result =  (verify' tries rules symbols k 100)
-    isSafe2 = L.length $ L.filter (isBad2) $ T.toList result
+    result1 = run (([toConf initial]),[]) rules k
+    isSafe =  S.size $ S.filter (isBad) (result1)
+    result2 =  (verify' tries rules symbols k 100)
+    isSafe2 = L.length $ L.filter (isBad2) $ T.toList result2
   in
-      isSafe2 `par` isSafe `pseq` if isSafe > 0 then trace "Bad state entered, K= " $ traceShow isSafe T.empty else
+    isSafe2 `par` isSafe `pseq` if isSafe > 0 then trace "Bad state entered, K= " $ traceShow k $ traceShow result1 T.empty else
     if isSafe2 > 0 then
       trace "Bad configuration found with K=" $ traceShow k $verify tries rules initial symbols (k+1)
     else
-      trace "System found to be found safe with K=" $ traceShow k result
+      trace "System found to be found safe with K=" $ traceShow k result2
 
 -- This is the verifier, and it basically iterates alpha $ step $ gamma
 -- It is divided into two almost identical functions:

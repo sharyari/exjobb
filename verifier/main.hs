@@ -22,7 +22,7 @@ exit    = exitWith ExitSuccess
 die     = exitWith (ExitFailure 1)
 
 
-verbose = verify (myTrie,T.empty) rules initial symbols 2
+verbose = verify (myTrie,T.empty) rules initial symbols 1
 normal = getSize (verbose)
 
 rules = createRuleTree (concat (map translate transitions))

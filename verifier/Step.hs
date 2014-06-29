@@ -67,9 +67,9 @@ combs = sequence [[1..numStates1],[1..numStates2],[1..numStates3]]
 
 
 
-numStates1 = 9
-numStates2 = 6
-numStates3 = 4
+numStates1 = 16
+numStates2 = 9
+numStates3 = 5
 
 -- Help function to create empty configuration from int-list. Only needed for initial configuration and debugging
 toConf :: [Word8] -> C
