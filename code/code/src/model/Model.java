@@ -6,7 +6,7 @@
 		Vector<Program> programs = new Vector<Program>();
 		Vector<Synchronize> sync = new Vector<Synchronize>();
 		Vector<Channel> channels = new Vector<Channel>();
-
+		
 		private int counter=0;
 		
 		public Model(){
@@ -15,7 +15,7 @@
 		public void addChannel(Channel ch) {
 			channels.add(ch);
 		}
-
+		
 		public void addProgram(Program p){
 			p.setNumber(counter++);
 			programs.add(p);
@@ -30,35 +30,45 @@
 			return str;
 		}
 		
-		public void synchronize(Transition t1, Transition t2){
-			Synchronize s = new Synchronize (t1, t2);
-			s.setName("sync");
-			sync.add(s);
-		}
+		public void synchronize(Program p1, Program p2, Actions a){
+			Vector<Transition> t1 = p1.getTransitions();
+			Vector<Transition> t2 = p2.getTransitions();
+			
+			for (int i=0;i<t1.size();i++){
+				Transition e1 = t1.elementAt(i);
+				if ( e1.isSynchronized() ) {
+					for (int j=0;j<t2.size();j++){
+						Transition e2 = t2.elementAt(j);
+						if (e2.isSynchronized()){
+							if (e1.getAction() == e2.getAction() && e1.getAction() != Actions.NONE){
+								Synchronize s = new Synchronize (t1.elementAt(i), t2.elementAt(j));
+								s.setName("sync");
+								sync.add(s);
+		}	}	}	}	}	}
 
 		public String toHaskell(){
-			String str = "";
-			for (int i=0;i<programs.size();i++){
-				str+= programs.elementAt(i).toHaskell();
-			}
-			for (int i=0;i<sync.size();i++){
-				str+= sync.elementAt(i).toHaskell();
-			}
+			String str = "module ProblemFormulation where\n";
+			str+="import Data.Word\n";
+			str+="import qualified Data.ByteString.Char8 as B2\n";
+			str+="import Data.List as L\n\n\n";
 			
-			str += "\ninitial = [Conf [";
+			
+			str += "\nsymbols = L.map (L.map B2.pack) [";
+			for (int i=0;i< channels.size();i++){
+				str+="["+channels.elementAt(i).getSymbols()+"],";
+			}
+			str = str.substring(0, str.length()-1);
+			str+="]";
+			
+			str += "\n\ninitial :: [Word8]";
+			str += "\ninitial = [";
 			for (int i=0;i<programs.size();i++){
 				str+= programs.elementAt(i).getInitial().getNum()+","; 
 			}
 			str = str.substring(0, str.length()-1);
-			str +="] [";
-			
-			for (int i=0;i<channels.size();i++){
-				str+= "\"\",";
-			}
-			str = str.substring(0, str.length()-1);
-			str +="]]";
+			str +="]\n";
 
-		
+			str+= "\ntransitions :: [([(Int,Int,Int)], (Int,String,String))]";
 			str+="\ntransitions = [";
 			String str2 = "";
 			for (int i=0;i<programs.size();i++){
@@ -70,8 +80,17 @@
 				str+= sync.elementAt(i).getName()+",";
 			}
 			str = str.substring(0, str.length()-1);
-			
 			str+="]\n";
+
+			str+="\n";
+			for (int i=0;i<programs.size();i++){
+				str+= programs.elementAt(i).toHaskell();
+			}
+			for (int i=0;i<sync.size();i++){
+				str+= sync.elementAt(i).toHaskell();
+			}
+			
+			
 		return str;
 		}
 			

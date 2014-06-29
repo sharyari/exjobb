@@ -9,6 +9,7 @@ public class Transition {
 	private String symbol;
 	private String effect;
 	private String name;
+	private Actions action;
 	
 	public String toHaskell(){
 		if (sync)
@@ -23,6 +24,14 @@ public class Transition {
 		return str;
 	}
 
+	public boolean isSynchronized(){
+		return sync;
+	}
+	
+	public Actions getAction() {
+		return action;
+	}
+	
 	public String helpHaskell(){
 		String str = "";
 		str+="("+s1.getInProgram()+","+s1.getNum()+","+s2.getNum()+")";
@@ -41,6 +50,13 @@ public class Transition {
 		ch = null; symbol = ""; effect="";
 	}
 
+	public Transition (State s1, State s2, Actions a){
+		this.s1 = s1;
+		this.s2 = s2;
+		this.action = a;
+		sync = true;
+		ch = null; symbol = ""; effect="";
+	}
 	
 	public void setName(String name){
 		this.name = name;
@@ -56,6 +72,7 @@ public class Transition {
 		this.ch = ch;
 		this.symbol = symbol;
 		this.effect = effect;
+		this.action = Actions.NONE;
 	}
 	public void synchronize(){
 		sync = true;

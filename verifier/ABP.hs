@@ -3,7 +3,7 @@ import Data.List as L
 import Data.Word
 import qualified Data.ByteString.Char8 as B2
 
-symbols = L.map B2.pack ["a","b"]
+symbols = L.map (L.map B2.pack) [["a","b"],["a","b"]]
 
 
 initial :: [Word8]

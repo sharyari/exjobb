@@ -46,6 +46,55 @@ public class Program {
 		counter++;
 	}
 	
+	public void addTransition (int a, int b){
+		State s1=null,s2=null;
+		for (int i=0;i<states.size();i++){
+			if (states.elementAt(i).getNum() == a){
+				s1 = states.elementAt(i);
+			}
+			if (states.elementAt(i).getNum() == b){
+				s2 = states.elementAt(i);
+			}
+		}
+		Transition t = new Transition(s1,s2,Actions.NONE); // catch throw null!
+		transitions.add(t);
+		t.setName(name+counter);
+		counter++;
+	}
+	
+	public void addTransition (int a, int b, Actions act){
+		State s1=null,s2=null;
+		for (int i=0;i<states.size();i++){
+			if (states.elementAt(i).getNum() == a){
+				s1 = states.elementAt(i);
+			}
+			if (states.elementAt(i).getNum() == b){
+				s2 = states.elementAt(i);
+			}
+		}
+		Transition t = new Transition(s1,s2, act); // catch throw null!
+		transitions.add(t);
+		t.setName(name+counter);
+		counter++;
+	}
+
+	public void addTransition (int a, int b, Channel ch, String op, String symbol){
+		State s1=null,s2=null;
+		for (int i=0;i<states.size();i++){
+			if (states.elementAt(i).getNum() == a){
+				s1 = states.elementAt(i);
+			}
+			if (states.elementAt(i).getNum() == b){
+				s2 = states.elementAt(i);
+			}
+		}
+		Transition t = new Transition(s1,s2, ch, op, symbol); // catch throw null!
+		transitions.add(t);
+		t.setName(name+counter);
+		counter++;
+	}
+
+	
 	public void addState(Vector<State> s){
 		states.addAll(s);
 	}
