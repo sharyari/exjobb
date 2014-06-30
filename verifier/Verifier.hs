@@ -22,9 +22,9 @@ import Control.Parallel.Strategies
 
 
 isBad Null = False
-isBad (Conf state chan) = (B.last state == (5 :: Word8))
+isBad (Conf state chan) = (B.last state == (4 :: Word8))
 
-isBad2 (a,b) = B.last a == 5
+isBad2 (a,b) = B.last a == 4
 
 verify :: (CTrie, CTrie) -> Trie [R] -> [Word8]-> [[ByteString]] -> Int -> CTrie
 verify tries rules initial symbols k =
@@ -48,7 +48,7 @@ verify' :: (CTrie, CTrie) -> Trie [R] -> [[ByteString]] -> Int -> Int -> CTrie
 verify' (trie,seen) rules symbols _ 0 = trace "Max number of iterations reached" trie
 verify' (trie,seen) rules symbols k c =
   let
-    nextIteration = alpha (step (gamma (trie,seen) symbols k False ) rules ) k
+    nextIteration = alpha (step (gamma (trie,seen) symbols k False ) rules) k
     isSafe = L.length $ L.filter (isBad2) $ T.toList $ fst nextIteration
    in
   if ((getSize (fst nextIteration)) == getSize trie) then
@@ -62,7 +62,7 @@ verify2 :: (CTrie, CTrie) -> Trie [R] -> [[ByteString]] -> Int -> Int -> CTrie
 verify2 (trie,seen) rules symbols _ 0 = trie
 verify2 (trie,seen) rules symbols k c =
   let
-    nextIteration = alpha (step (gamma (trie,seen) symbols k True ) rules ) k
+    nextIteration = alpha (step (gamma (trie,seen) symbols k True ) rules) k
     isSafe = L.length $ L.filter (isBad2) $ T.toList $ fst nextIteration
   in
   if ((getSize (fst nextIteration)) == getSize trie) then

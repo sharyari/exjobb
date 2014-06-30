@@ -15,7 +15,8 @@ import TrieModule
 
 -- This is the main function of the file, it will apply appropriate rules to configurations
 step :: (CTrie, CTrie, [C]) -> Trie [R] -> (CTrie, CTrie, [C])
-step (trie, seen, confs) rules = (trie, seen, L.concat (P.map (applyRules rules) confs))
+step (trie, seen, confs) rules =(trie, seen, S.toList $ S.fromList $ L.concat $ P.map (applyRules rules) confs)
+
 
 applyRules :: Trie [R] -> C -> [C]
 applyRules trie (Conf states chan) = let s = T.lookup states trie in
@@ -31,9 +32,11 @@ applyRule states chan (Rule newState (i, "?", symbol)) =
   if (P.length (chan!!i) > 0 && [P.last (chan!!i)] == symbol) then
   Conf newState (P.map B2.pack (replaceNth i (P.init (chan!!i))  chan)) else Null
 applyRule states chan (Rule newState (i, "¡", symbol)) =
-  Conf newState (P.map B2.pack (replaceNth i (chan!!i++symbol) chan))
+  let newWord = chan!!i++symbol in
+  Conf newState (P.map B2.pack (replaceNth i newWord chan))
 applyRule states chan (Rule newState (i, "!", symbol)) =
-  Conf newState (P.map B2.pack (replaceNth i (symbol++chan!!i) chan))
+  let newWord = symbol++chan!!i in
+  Conf newState (P.map B2.pack (replaceNth i newWord chan))
 
 
 

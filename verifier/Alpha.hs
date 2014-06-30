@@ -5,6 +5,10 @@ import Data.HashSet as S
 import DataTypes
 import TrieModule
 import StringManipulation
+import Data.ByteString as B
+import Data.List as L
+import Data.Maybe (fromMaybe, fromJust, isJust)
+
 
 -- Alpha takes a list of configurations and a trie, and adds all the views of the configurations in the trie
 
@@ -13,18 +17,24 @@ import StringManipulation
 myFunc a b = Just (S.union a b)
 
 
+
+-- This filters away configurations already seen, avoiding the costly views function. Helps a bit
+ifSeen :: CTrie -> C -> Bool
+ifSeen _ Null = False
+ifSeen trie (Conf state chan) = let states = T.lookup state trie in
+  not $ S.member chan (fromMaybe S.empty states)
+
 -- This function creates an empty trie, adds all new configurations to the trie and then
 -- merges the two tries to a new one.
 --alpha (trie, seen, list) k = ((T.mergeBy (myFunc) trie $ alpha' (T.empty, list) k), seen)
-
-alpha (trie, seen, list) k = (alphA trie list k, seen)
+alpha (trie, seen, list) k = (alphA trie (L.filter (ifSeen seen) list) k, seen)
 
 -- This function is here due to prevent stack space overflow. Without this function, the depth of alpha
 -- would equal the number of configurations that are to be added, which may be quite a few. This puts a cap
 -- on 10000.
 alphA trie list k =
-  if length list > 100 then
-    T.mergeBy (myFunc) (alpha' (T.empty, take 100000 list) k) (alphA trie (drop 10000 list) k)
+  if L.length list > 100 then
+    T.mergeBy (myFunc) (alpha' (T.empty, L.take 100000 list) k) (alphA trie (L.drop 10000 list) k)
   else
     (T.mergeBy (myFunc) trie $ alpha' (T.empty, list) k)
 
