@@ -2,10 +2,14 @@ module Alpha where
 import Data.Trie as T
 import Data.HashSet as S
 
+import Data.Set as S2
+
+
 import DataTypes
 import TrieModule
 import StringManipulation
 import Data.ByteString as B
+import Data.ByteString.Char8 as B2
 import Data.List as L
 import Data.Maybe (fromMaybe, fromJust, isJust)
 import Debug.Trace
@@ -30,8 +34,7 @@ ifSeen trie (Conf state chan) = let states = T.lookup state trie in
 alpha (trie, seen, list) k = (alpha' trie (L.filter (ifSeen seen) list) k, seen)
 
 
-findSameState s (Conf state chan) = s == state
-findSameState2 s (Conf state chan) = s /= state
+findSameState s (Conf state chan) = (s == state)
 getChan (Conf state chan) = chan
 
 -- This is the actual alpha function. It iterates over the configurations and updates the trie with their views
@@ -44,7 +47,8 @@ alpha' trie ((Conf state chan):xs) k =
 
 -- This function creates the views of a single configuration, and adds it to the trie
 addViews :: CTrie -> ByteString -> [[ByteString]] -> Int -> CTrie
-addViews trie state (chans) k = helpFunction trie state (S.fromList $ L.concat $ L.map (views k) chans)
+addViews trie state (chans) k =
+  helpFunction trie state $ S.fromList $ L.concat $ L.map (views k) chans
 
 
 helpFunction trie state node = tAddList trie state  node

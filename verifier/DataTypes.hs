@@ -17,6 +17,7 @@ type TNode = HashSet [B.ByteString]
 type NodeElem = [B.ByteString]
 
 
+
 -- Basic datatype to apply rules
 -- The bytestring is the new bytestring, the tuple (chNum, op, symbol) is a read or write operation such that
 -- op = ? => if the chNum:th channel contains the symbol at its end, remove the symbol

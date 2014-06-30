@@ -1,6 +1,6 @@
 CC=ghc
 RM=rm
-CFLAGS4= -rtsopts -auto-all -O -threaded -prof
+CFLAGS4= -rtsopts -O -threaded -prof -fprof-auto
 CFLAGS3= -rtsopts -auto-all -O -threaded -eventlog
 CFLAGS2= -rtsopts -auto-all
 CFLAGS = -rtsopts -auto-all -O -threaded

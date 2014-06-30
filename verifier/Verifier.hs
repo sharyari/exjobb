@@ -23,7 +23,6 @@ import Control.Parallel.Strategies
 
 isBad Null = False
 isBad (Conf state chan) = (B.last state == (5 :: Word8))
-
 isBad2 (a,b) = B.last a == 5
 
 verify :: (CTrie, CTrie) -> Trie [R] -> [Word8]-> [[ByteString]] -> Int -> CTrie

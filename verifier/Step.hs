@@ -25,7 +25,6 @@ applyRules trie (Conf states chan) = let s = T.lookup states trie in
   else []
 
 --applyRule :: C -> R -> C
---applyRule Null _ = Null
 applyRule states chan (Rule newState (i, "_", symbol)) =
   Conf newState (P.map B2.pack chan)
 applyRule states chan (Rule newState (i, "?", symbol)) =
@@ -35,7 +34,7 @@ applyRule states chan (Rule newState (i, "¡", symbol)) =
   let newWord = chan!!i++symbol in
   Conf newState (P.map B2.pack (replaceNth i newWord chan))
 applyRule states chan (Rule newState (i, "!", symbol)) =
-  let newWord = symbol++chan!!i in
+  let newWord = P.reverse $ P.take 5 $ P.reverse $ symbol++chan!!i in
   Conf newState (P.map B2.pack (replaceNth i newWord chan))
 
 

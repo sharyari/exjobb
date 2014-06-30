@@ -4,7 +4,8 @@ import DataTypes
 import Data.Trie as T
 import Data.HashSet as S
 import Data.List as L
-import Data.ByteString
+import Data.ByteString as B
+import Data.ByteString.Char8 as B2
 import Data.Maybe (fromMaybe, fromJust, isJust)
 -- Tries are used to store configurations and to store rules, the latter is static
 -- Storing the rules in a trie allows for efficiently finding the relevant rules at each point
@@ -24,7 +25,7 @@ tAdd2 trie  [] = trie
 tAdd2 trie (c:onfs) = tAdd2 (tAdd trie c) onfs
 
 -- This is slow and cannot get faster, the union is the culprit
-tAddList :: CTrie -> ByteString -> TNode -> CTrie
+tAddList :: CTrie -> B.ByteString -> TNode -> CTrie
 tAddList trie key list = let s = T.lookup key trie in
     T.insert key ( S.union list (fromMaybe (S.empty) s)) trie
 
