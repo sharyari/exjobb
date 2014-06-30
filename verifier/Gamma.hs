@@ -15,8 +15,7 @@ import TrieModule
 import Step
 
 import Control.Parallel.Strategies
-pmap f x = (L.map f x) `using` parList rdeepseq
-pfilter f x = (L.filter f x) `using` parList rdeepseq
+
 
 
 -- Gamma takes all configurations, i.e. the trie, and for each configuration:
@@ -51,7 +50,7 @@ gamma' :: CTrie ->  (ByteString, TNode) -> [[ByteString]] -> Int -> Bool -> [[By
 gamma' seen (state,stringset) symbols k b = let
   l1 = if b then gamma'' stringset symbols k else stringset
   l2 = fromMaybe S.empty $ T.lookup state seen in
-   S.toList $ S.difference l1 l2
+   (S.toList $ S.difference l1 l2)
 
 canBeCreated :: HashSet [ByteString] -> Int -> [ByteString] -> Bool
 canBeCreated stringset k string = (S.difference (simpleViews k string) stringset) == S.empty
@@ -59,8 +58,8 @@ canBeCreated stringset k string = (S.difference (simpleViews k string) stringset
 gamma'' :: TNode -> [[ByteString]]  -> Int -> TNode
 gamma'' stringset symbols k =
   let stringlist = S.toList stringset in
-  S.fromList $  L.concat (pmap (nlonger stringset symbols k) stringlist)
-
+--  S.fromList $  L.concat (pmap (nlonger stringset symbols k) stringlist)
+    S.unions $ L.map S.fromList (L.map (nlonger stringset symbols k) stringlist)
 --------------------------------------------------------
 --------------------- OBSELETE -------------------------
 ----longer gives more configurations. It runs slower,---

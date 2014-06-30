@@ -31,3 +31,7 @@ myConf = ([toConf initial], [])
 
 --test1 = alpha(step(gamma(myTrie)))
 --test2 = alpha(step(gamma test1))
+
+
+----------- Create a trie with all possible views, and then map to that instead of calculating at runtime
+----------- The same could be done for gamma, but it doesn't seem like it's worth it

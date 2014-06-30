@@ -31,7 +31,7 @@ verify tries rules initial symbols k =
   let
     result1 = run (([toConf initial]),[]) rules k
     isSafe =  S.size $ S.filter (isBad) (result1)
-    result2 =  (verify' tries rules symbols k 100)
+    result2 =  (verify' tries rules symbols k 200)
     isSafe2 = L.length $ L.filter (isBad2) $ T.toList result2
   in
     isSafe2 `par` isSafe `pseq` if isSafe > 0 then trace "Bad state entered, K= " $ traceShow k $ traceShow result1 T.empty else
@@ -45,7 +45,7 @@ verify tries rules initial symbols k =
 -- If gamma gets false, it does the cheaper operation of only stepping
 -- If gamma gets true, it creates the longer words. As long as possible, only step
 verify' :: (CTrie, CTrie) -> Trie [R] -> [[ByteString]] -> Int -> Int -> CTrie
-verify' (trie,seen) rules symbols _ 0 = trie
+verify' (trie,seen) rules symbols _ 0 = trace "Max number of iterations reached" trie
 verify' (trie,seen) rules symbols k c =
   let
     nextIteration = alpha (step (gamma (trie,seen) symbols k False ) rules ) k
