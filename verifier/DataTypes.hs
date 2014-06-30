@@ -7,14 +7,14 @@ import Data.HashSet as H
 
 -- Basic datatype used to work with configurations
 -- The bytestring is the set of states, the string list is the channel evaluation
-data C = Conf ByteString [ByteString] | Null deriving (Show, Eq, Ord)
+data C = Conf B.ByteString [B.ByteString] | Null deriving (Show, Eq, Ord)
 
 -- Short name for a configuration tree
-type CTrie = Trie (HashSet [ByteString])
+type CTrie = Trie (HashSet [B.ByteString])
 -- Short name for the nodes of a CTrie
-type TNode = HashSet [ByteString]
+type TNode = HashSet [B.ByteString]
 -- Short? name for the elements of a node
-type NodeElem = [ByteString]
+type NodeElem = [B.ByteString]
 
 
 -- Basic datatype to apply rules
@@ -23,5 +23,5 @@ type NodeElem = [ByteString]
 -- op = ! => append the symbol to the beginning of the chNum:th channel
 -- op = ¡ => append the symbol to the end of the chNum:th channel (used for stacks/lifo)
 -- op = - => leave channels unchanged
-data R = Rule ByteString (Int, String, String) deriving (Show, Eq, Ord)
+data R = Rule B.ByteString (Int, String, String) deriving (Show, Eq, Ord)
 
