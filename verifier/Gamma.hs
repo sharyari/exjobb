@@ -38,12 +38,11 @@ gamma (trie, seen) symbols k b = let newconfs = newConfs seen (T.toList trie) sy
 -- converting back and forth to a set is faster than "nub", seems like it is always like that
 newConfs :: CTrie -> [(ByteString, TNode)] -> [[ByteString]] -> Int -> Bool -> [C]
 newConfs seen nodes symbols k b =
-  Set.toList . Set.fromList $ (L.concat [createConfigurations (fst x) (gamma' seen x symbols k b) | x <- nodes])
+  Set.toList . Set.fromList $ (L.concat [L.map (createConfigurations (fst x)) (gamma' seen x symbols k b) | x <- nodes])
 
 -- This converts node elements back to configurations
-createConfigurations :: ByteString -> [[ByteString]] -> [C]
-createConfigurations states [] = []
-createConfigurations states (eval:list) = (Conf states eval):createConfigurations states list
+--createConfigurations :: ByteString -> [[ByteString]] -> [C]
+createConfigurations states eval = (Conf states eval)
 
 
 gamma' :: CTrie ->  (ByteString, TNode) -> [[ByteString]] -> Int -> Bool -> [[ByteString]]
@@ -58,14 +57,9 @@ canBeCreated stringset k string = (S.difference (simpleViews k string) stringset
 gamma'' :: TNode -> [[ByteString]]  -> Int -> TNode
 gamma'' stringset symbols k =
   let stringlist = S.toList stringset in
---  S.fromList $  L.concat (pmap (nlonger stringset symbols k) stringlist)
-    S.unions $ L.map S.fromList (L.map (nlonger stringset symbols k) stringlist)
---------------------------------------------------------
---------------------- OBSELETE -------------------------
-----longer gives more configurations. It runs slower,---
-----but proportionally so, considering the number of----
-----extra configurations found. ------------------------
---------------------------------------------------------
+    S.unions $ L.map (S.fromList . nlonger stringset symbols k) stringlist
+
+
 --nlonger :: TNode -> [[ByteString]] -> [([ByteString],Int)]
 nlonger stringset symbols k sl= let list = nlonger' symbols (L.length sl-1) sl in
   L.map fst $ L.filter (help' stringset k) list
@@ -78,7 +72,4 @@ help' stringset k bla = S.member (swords k bla) stringset
 
 swords :: Int -> ([ByteString], Int) -> [ByteString]
 swords k (x,n) = let xv = x!!n in
-  if (B.length xv < k) then x else
     replaceNth n (B.take k xv) x
-
-

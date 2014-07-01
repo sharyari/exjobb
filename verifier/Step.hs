@@ -15,7 +15,7 @@ import TrieModule
 
 -- This is the main function of the file, it will apply appropriate rules to configurations
 step :: (CTrie, CTrie, [C]) -> Trie [R] ->  Int -> (CTrie, CTrie, [C])
-step (trie, seen, confs) rules k=(trie, seen, S.toList $ S.fromList $ L.concat $ P.map (applyRules rules k ) confs)
+step (trie, seen, confs) rules k=(trie, seen, S.toList . S.fromList . L.concat $ P.map (applyRules rules k ) confs)
 
 
 applyRules :: Trie [R] -> Int -> C -> [C]
