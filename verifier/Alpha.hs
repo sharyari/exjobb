@@ -14,6 +14,7 @@ import Data.List as L
 import Data.Maybe (fromMaybe, fromJust, isJust)
 import Debug.Trace
 
+
 -- Alpha takes a list of configurations and a trie, and adds all the views of the configurations in the trie
 
 

@@ -14,27 +14,27 @@ import TrieModule
 
 
 -- This is the main function of the file, it will apply appropriate rules to configurations
-step :: (CTrie, CTrie, [C]) -> Trie [R] -> (CTrie, CTrie, [C])
-step (trie, seen, confs) rules =(trie, seen, S.toList $ S.fromList $ L.concat $ P.map (applyRules rules) confs)
+step :: (CTrie, CTrie, [C]) -> Trie [R] ->  Int -> (CTrie, CTrie, [C])
+step (trie, seen, confs) rules k=(trie, seen, S.toList $ S.fromList $ L.concat $ P.map (applyRules rules k ) confs)
 
 
-applyRules :: Trie [R] -> C -> [C]
-applyRules trie (Conf states chan) = let s = T.lookup states trie in
+applyRules :: Trie [R] -> Int -> C -> [C]
+applyRules trie k (Conf states chan)= let s = T.lookup states trie in
   if (isJust s) then
-    [applyRule states (P.map B2.unpack chan) x | x <- (fromJust s)]
+    [applyRule states (P.map B2.unpack chan) x k | x <- (fromJust s)]
   else []
 
 --applyRule :: C -> R -> C
-applyRule states chan (Rule newState (i, "_", symbol)) =
+applyRule states chan (Rule newState (i, "_", symbol)) k=
   Conf newState (P.map B2.pack chan)
-applyRule states chan (Rule newState (i, "?", symbol)) =
+applyRule states chan (Rule newState (i, "?", symbol)) k =
   if (P.length (chan!!i) > 0 && [P.last (chan!!i)] == symbol) then
   Conf newState (P.map B2.pack (replaceNth i (P.init (chan!!i))  chan)) else Null
-applyRule states chan (Rule newState (i, "¡", symbol)) =
+applyRule states chan (Rule newState (i, "¡", symbol)) k=
   let newWord = chan!!i++symbol in
   Conf newState (P.map B2.pack (replaceNth i newWord chan))
-applyRule states chan (Rule newState (i, "!", symbol)) =
-  let newWord = P.reverse $ P.take 5 $ P.reverse $ symbol++chan!!i in
+applyRule states chan (Rule newState (i, "!", symbol)) k=
+  let newWord = P.reverse $ P.take k $ P.reverse $ symbol++chan!!i in
   Conf newState (P.map B2.pack (replaceNth i newWord chan))
 
 

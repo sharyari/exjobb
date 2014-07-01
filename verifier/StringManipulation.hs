@@ -7,24 +7,23 @@ import DataTypes
 import qualified Data.ByteString.Char8 as B2
 
 
+
 symbols= L.map B2.pack ["a","b","c"]
 
 -- This takes out an interval of a string/List
-getWordInterval a b l = B.take b (B.drop a l)
+getWordInterval a b = (B.take b) . B.drop a
 
 -- This is a help function for subwords
 -- This can be used as a simple version of subwords
 chooseK :: Int -> ByteString -> [ByteString]
-chooseK k l =  if (B.length l >= fromIntegral k) then [getWordInterval (fromIntegral a) (fromIntegral k) l | a<-[0..(B.length l-(fromIntegral k))]] else [l]
+chooseK k l =  let len = B2.length l in if (len >= k) then [getWordInterval a k l | a<-[0..(len-k)]] else [l]
 
 -- This returns all subwords of size up to k of a word
 subwords' :: Int -> ByteString -> [ByteString]
 subwords' 0 l = []
 subwords' k l = chooseK k l ++ subwords' (k-1) l
 
-test k l = k >= L.length l
-
-subwords k l=S.toList . S.fromList $ subwords' k l
+subwords k l = S.toList $ S.fromList $ subwords' k l
 
 -- This returns all views of a configuration, with the states abstracted (as views does not affect them)
 -- subwords is slower, but I finally found a situation where it created more configurations

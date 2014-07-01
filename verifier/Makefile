@@ -8,7 +8,7 @@ CFLAGS = -rtsopts -auto-all -O -threaded
 make: main.hs 
 	$(CC) -o main main.hs $(CFLAGS)
 
-makeunopt: main.hs 
+unopt: main.hs 
 	$(CC) -o main main.hs $(CFLAGS2)
 
 eventlog: main.hs 
