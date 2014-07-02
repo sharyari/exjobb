@@ -46,29 +46,20 @@ A lossy channel system is described by \ref{CS} with an additional transition $\
 \paragraph{Lossy Channel Transition Systems}
 A lossy channel transition system TS is described by \ref{CTS} with an additional transition rule
       \[
-      \dfrac{s \xrightarrow{ch*} s \wedge \xi(ch) = w_1..w_{k-1}\bullet m \bullet w_{k+1}..w_n}{(S, \xi) \rightarrow (S, \xi')} \] with \[ \xi' = \xi[ch:= w_1..w_n].
+      \dfrac{s \xrightarrow{ch*} s \wedge \xi(ch) = w_1..w_{p-1}\bullet m \bullet w_{p+1}..w_n}{(S, \xi) \rightarrow (S, \xi')} \] with \[ \xi' = \xi[ch:= w_1..w_n].
       \]
 
 \paragraph{Proof of Lemma 1}
-Trivial?  Hope so.
+Consider a configuration \e{c'} such that \e{c} $\xrightarrow{r}$ \e{c'}, where \e{r} is a channel loss transition, as described above. Then one channel \e{ch} in \e{c} of length \e{n} $leq$ \e{k}, $\xi(ch) = w_1..w_{p-1}\bullet m \bullet w_{p+1}..w_n$ loses the symbol \e{m}, resulting in the channel evaluation $\xi(ch') = w_1..w_n$ in \e{c'}. Then \e{c'} is a actually a view of \e{c}.
+
+From this follows that the proofs as presented in \ref{proof} hold also for the lossy channel transition system, as lossy transitions are already a part of the over-approximation of states. This also leads to the conclusion that channel loss transitions may be disregarded, when creating the configurations of a transition system.
 
 \subsection{Channel Systems with Synchronization}
 It is not uncommon that distributed programs rely on \e{synchronization} in their program behaviour. With synchronization, we mean that two or more programs take a joint step, i.e. a transition cannot be fired unless the programs fire it together. This is particularly common in parallel programs, which may perform independent calculations but occasionally need to rendezvous. As we shall see, \ref{abpobserver}, synchronization can also be used as a modelling technique even if the program being modelled does not synchronize.
 
-\paragraph{Channel Systems with Synchronization}
-The channel system described in \ref{CS} already has the mechanisms needed in order to model synchronizing programs.\todo{Correct?}
+A channel system is in a sense the interleaving of multiple \e{program graphs}. When operating such a level of detail, a synchronizaition action with a label \e{l} corresponds to an action that cannot be taken, unless each program where such an action is present take the action simultaneously.
 
-\paragraph{Channel Transition System with Synchronization}
-We modify the transition
-
-      \[
-      \dfrac{s \xrightarrow{a} s'}{(S, \xi) \rightarrow (S', \xi)}
-      \]
-
-in such a way, that an action with a label \e{l} can only be taken, if every program with that action take the action simultaneously. This corresponds to the transition
-
-\todo{I cannot model this without talking about specific programs, which is not possible in the current definition of a channel system. I could add specific synchronization actions to that model?}
-
+As the working model in this paper, i.e. the channel system described in \ref{CS} and the corresponding transition system, have a higher level of abstraction, they have the mechanisms needed in order to model synchronizing programs. In a sense, synchronizing and non-synchronizing actions are the same at this level of abstraction and cannot be differentiated.
 
 \subsection{Alternating Bit Protocol Revised}
 The alternating bit protocol is a protocol designed to be resistent to message loss, therefore it is reasonable to model it using a lossy model. Furthermore, the transition system induced by the program graphs \e{abpgraph} does not provide an intuitive way to describe a set \e{Bad} of bad states. This can easily be overcome by introducing an \e{observer} program, which synchronizes with the sender and receiver.
@@ -77,4 +68,5 @@ The alternating bit protocol is a protocol designed to be resistent to message l
 \abpobserver
 \label{abpobserver}
 \end{figure}
+
 The observer synchronizes with the sender over transitions with the label \e{Snd} and with the receiver over \e{Rcv}. If either the sender performs two transmissions (with different sequence numbers) without the receiver having received in between, or if the receiver receives two messages without the sender having transmitted in between, the observer would reach its accepting state $o_3$. This state can therefore be considered to be a minimal bad state, and any configurations describing a system with the observer in its bad state is a bad configuration.

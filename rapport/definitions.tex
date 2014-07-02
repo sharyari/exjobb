@@ -120,4 +120,7 @@ Let c denote a configuration, then c is said to be \emph{reachable} in TS, if th
 We use $\mathcal{R}$ to denote the set of reachable states. We say that the system \e{TS} is \e{safe} if there are no reachable bad configurations, i.e. $\mathcal{R} \cap Bad$ = $\emptyset$.
 
 \subsection{Traces}
-\todo{Define trace, minimal trace and put it into the context of bad configurations}.
+Note that the set $\mathcal{R}$ of reachable \e{configurations} in a channel transition system is an \e{over-approximation} of the reachable \e{states} of a channel system. If $\mathcal{R} \cap Bad$ $\neq$ $\emptyset$, this does not mean that there necessarily exists a bad state in the channel system. If indeed a bad state does exist in a channel system, it is often useful not only to determine which state it is, but how that state can be reached from the initial state of the system.
+
+Suppose $s_n$ is a bad state of a channel system \e{CS}. Then a \e{bad trace} is a sequence \e{t} = $s_0s_1...s_n$ such that for each $0 \leq i \leq (n-1)$, $\conf{s_i,r,s_{i+1}}$ $\in$ $\delta$. If \e{t} is the shortest bad trace in the system, we call it a \e{minimal bad trace}.
+
