@@ -313,4 +313,31 @@ escapeinside={\#*}{\^^M}
 \bibliographystyle{ieeetr} 
 \bibliography{references}
 
+\appendix
+\section{Notes on configurations}
+\paragraph{Reducing the potential concretizations.}
+Given a configuration \e{c}, with channel evaluations $\xi$ such that all channels have size smaller or equal to \e{k}, a potential concretization is any configuration where at most one symbol has been added to one or more channels \e{ch} $\in$ $\xi$. As this is a large number of potential configurations, it is desireable to consider only a subset thereof, while still ensuring that all valid concretizations are eventually found. We show here that it is sufficient in each iteration to consider only the potential concretizations of \e{c}, for which only one channel has been modified, and only modifications where a symbol has been added at end (or alternatively the beginning) of a channel.
+
+Consider a potential concretization created from \e{c}, where $n$ channels have been extended by a symbol.
+If such a potential concretization is valid, any evaluation where $n'<n$ channels have been modified in a similar way will also be a valid concretization. Therefore, \e{c} will eventually be considered also when only one channel is extended in each iteration, but more iterations are required in order to find it.
+
+Consider then a potential concretization with channel evaluation \e{e} = $w \wedge s \wedge w_1..w_l$, created by extending the channel $ww_1w_l$ with a symbol \e{m}. If \e{e} is a valid evalution, then a configuration \e{c'} must be in \e{V} such that \e{c'} has the channel evaluation $w_1 \wedge s \wedge w_1..w_{l-1}$. This channel evaluation can be extended to \e{e} by adding the symbol $w_l$ at the end of the channel.
+
+This shows that any valid concretization will eventually be found, even if only the subset of potential concretizations are considered which are reachable by extending a single channel with a symbol at the end. This result highly reduces the number of potential concretizations inspected. If \e{s} = |$symbols$|, \e{t} is the number of channels and \e{n} = |$V$|, the naive method creates up to $n*(s^k)^t$ potential concretizations in each iteration. Using this abstraction, the number of potential concretizations is reduced to $n*s*t$.
+
+
+
+\paragraph{Reducing the views.}
+Suppose we want to determine whether \e{c} $\in$ $\gamma_k(V)$ given a configuration \e{c} and a set \e{V}. This would require that all views \e{v} $\in$ $\alpha_k(c)$ are in \e{V}. Consider a view \e{v} = $\conf{S, \xi(ch)=w}$ with size($w$) = $k$; if \e{v} $\in$ \e{V} then necessarily, any \e{v'} = $\conf{S, \xi(ch)=w'}$ with \e{w'} $\sqsubseteq$ \e{w} $\in$ \e{V}. Consequently, it is sufficient to assure that all configurations \e{c} = $\conf{S,\xi(ch_i)=w_i}$ are in \e{V}, with
+
+\begin{itemize}
+\item
+size($w_i$)=$k$ if size($\xi(ch)$) $\geq$ $k$
+\item
+size($w_i$)= size($\xi(ch)$) if size($\xi(ch)$) < $k$.
+\end{itemize}
+
+\subparagraph{Example.} Suppose we want to determine whether \e{c} = $\conf{S, abc, def}$ is an element of $\gamma_2$. It is then sufficient to check that $\conf{S,ab,de}$, $\conf{S,ab,ef}$, $\conf{S,bc ,de}$ and $\conf{S,bc,ef}$ are in \e{V}.
+
+
 \end{document}
