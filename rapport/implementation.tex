@@ -43,9 +43,72 @@ The function \e{gamma} is the heaviest of the functions. It first creates all po
 \subsection{Less naive algorithm}
 We look closer at $\gamma$, in order to address the issues mentioned above. We will show that all concretizations can be found, while considering only a subset of the potential concretizations. Furthermore, it is possible to determine whether a concretization should be refuted or not, while computing only a subset of its views. 
 
+\paragraph{Reducing the potential concretizations.}
+Given a configuration \e{c}, with channel evaluations $\xi$ such that all channels have size smaller or equal to \e{k}, a potential concretization is any configuration where at most one symbol has been added to one or more channels \e{ch} $\in$ $\xi$. As this is a large number of potential configurations, it is desireable to consider only a subset thereof, while still ensuring that all valid concretizations are eventually found. We show here that it is sufficient in each iteration to consider only the potential concretizations of \e{c}, for which only one channel has been modified, and only modifications where a symbol has been added at end (or alternatively the beginning) of a channel.
 
-\subsection{Finding Minimal Traces}
-When running the tool, if a bad state is found we want to produce a trace leading up to the bad state. Preferably, this would be a minimal trace that leads to the bad state.
+Consider a potential concretization created from \e{c}, where $n$ channels have been extended by a symbol.
+If such a potential concretization is valid, any evaluation where $n'<n$ channels have been modified in a similar way will also be a valid concretization. Therefore, \e{c} will eventually be considered also when only one channel is extended in each iteration, but more iterations are required in order to find it.
+
+Consider then a potential concretization with channel evaluation \e{e} = $w \wedge s \wedge w_1..w_l$, created by extending the channel $ww_1w_l$ with a symbol \e{m}. If \e{e} is a valid evalution, then a configuration \e{c'} must be in \e{V} such that \e{c'} has the channel evaluation $w_1 \wedge s \wedge w_1..w_{l-1}$. This channel evaluation can be extended to \e{e} by adding the symbol $w_l$ at the end of the channel.
+
+This shows that any valid concretization will eventually be found, even if only the subset of potential concretizations are considered which are reachable by extending a single channel with a symbol at the end. This result highly reduces the number of potential concretizations inspected. If \e{s} = |$symbols$|, \e{t} is the number of channels and \e{n} = |$V$|, the naive method creates up to $n*(s^k)^t$ potential concretizations in each iteration. Using this abstraction, the number of potential concretizations is reduced to $n*s*t$.
+
+\paragraph{Reducing the views.}
+Suppose we want to determine whether \e{c} $\in$ $\gamma_k(V)$ given a configuration \e{c} and a set \e{V}. This would require that all views \e{v} $\in$ $\alpha_k(c)$ are in \e{V}. Consider a view \e{v} = $\conf{S, \xi(ch)=w}$ with size($w$) = $k$; if \e{v} $\in$ \e{V} then necessarily, any \e{v'} = $\conf{S, \xi(ch)=w'}$ with \e{w'} $\sqsubseteq$ \e{w} $\in$ \e{V}. Consequently, it is sufficient to assure that all configurations \e{c} = $\conf{S,\xi(ch_i)=w_i}$ are in \e{V}, with
+
+\begin{itemize}
+\item
+size($w_i$)=$k$ if size($\xi(ch)$) $\geq$ $k$
+\item
+size($w_i$)= size($\xi(ch)$) if size($\xi(ch)$) < $k$.
+\end{itemize}
+
+\subparagraph{Example.} Suppose we want to determine whether \e{c} = $\conf{S, abc, def}$ is an element of $\gamma_2$. It is then sufficient to check that $\conf{S,ab,de}$, $\conf{S,ab,ef}$, $\conf{S,bc ,de}$ and $\conf{S,bc,ef}$ are in \e{V}.
+\\\\\\
+
+Using these abstraction, the computational complexity of the verifier is greatly reduced, but there are yet several ways to optimize the procedure. The bottle-neck with the procedure at its current state is the choice of a \e{Set} as lone data structure to store configurations. We expect the number of configurations to grow rather large, due to natural state-space explotion which cannot be avoided automatically (in certain cases, it could be reduced by further abstraction of the model under testing or by removing unnecessary redundancy in the model). Assuming the Set is ordered, inserting an element to the set and finding an element in the set is done in \e{O(log n)} here \e{n} is the number of elements in the set. As a consequence, onsidering the function \e{alpha}, determining whether the views of a certain configuration are in the set has complexity \e{O(plog n)} where p is the number of views of the configuration. By definition, a view (and a configuration) is of type \e{(S $\times$ $\xi$)}. For any configuration \e{c} = $\conf{s}{\xi}$, it's views will be of the type $\conf{s}{\xi'}$, i.e., all views share the same state but have different channel evaluations.
+
+Following this reasoning, it is reasonable to divide the single \e{Set} into a Set of \e{Set}s, where each \e{Set} corresponds to a specific control-state. It is then sufficient to check for the existence of views in the \e{Set} corresponding to the control-state of the views in question.
+
+In a best-case scenario, there would be an equal number of configurations for every state in the system. To for example check for the views of a configuration would the be reduced to \e{O(p log (n/s))} where \e{s} denotes the number of states in the system. The gains of these modifications in terms of computational complexity is difficult to determine, as the number of configurations with a certain control-state are not necessarily well-distributed, but we anticipate that the gains in many cases will be close to the best case scenario.
+
+
+
+% Det går inte att beskriva rule-delen här, för det är mer beroende av tries.
+\subsection{Even less naive algorithm}
+\subsubsection{Trie}
+\todo{obs!} Here there should be a description of a trie, with a reasoning about why that was chosen. It is likely that any multi-branched tree or whatever it is called would work the same. Remember to mention that hashing would have the same effect, but with this data-structure, we can guarantee to get constant time insert/search since it corresponds to a case of perfect matching.
+
+
+\subsubsection{Using the Trie}
+Using the above mentioned data structure, each node in the trie can be a \e{Set} with equal-state configurations, addressed by the common control-state. This leads to a speed-up both when inserting, retrieving and looking for the existence of elements in the sets, as the size of the sets will be smaller than before, when all configurations where in the same set. Retrieving and inserting nodes into the trie is done in constant time.
+
+Having divided the configurations into equal-state groups, consider the act of firing transitions in order to create new configurations. Any configuration has a state-predicate and a channel-predicate, a state-event and a channel-event. If the predicates are fulfilled, a new configuration can be created by applying the events to the current configuration.
+
+We show that by organizing the set of \e{rules} or transitions in a certain way in a trie, one can ensure that the state-predicate is fulfilled without specifically testing for it. A state-predicate is a predicate on the states of the processes in the system, either without any requirements on the state, or with requirements that one or more processes are in a specific state. It is therefore possible to generate a static trie of rules, addressed by control-states. Considering a transition $t_2$ with no requirements on any processes, the state-predicate will be fulfilled by any configuration, thus a corresponding rule is created in every node of the tree. Consider then a transition $t_2$ with requirements on processes all processes in the system, i.e. there is only one control-state where the transition can be taken. Such a transition corresponds to a single rule in the node addressed by that control-state. Last, consider a transition $t_3$ with requirements on a true subset of the processes in the system, then the transition can be taken from a number of control-states. These control states can be generated, and the transition will correspond to a set of rules in the nodes corresponding to those control-states.
+
+There is a small one-time cost of creating the rule tree, but after creation, it is highly effective. It is now possible to find exactly those rules where the state-predicate is fulfilled, and there is no need to test either. This means that all computations except those where the state-predicate is fulfilled but the channel-predicate is not are actually used.
+
+\todo{Obs, ifSeen seen? Why not ifSeen trie? Shouldn't matter?}
+\todo{Shouldn't applyRules create a set instead, avoiding doubles directly?}
+\paragraph{Example.} Consider the alternating bit protocol, as described in \ref{REFERERA DEN MED OBSERVER}. The system has three processes \e{Sender}, \e{Receiver} and \e{Observer} with 4, 4 and 3 states respectively. Consider then the transition with the predicates that the sender is in state 3, the observer in state 3 and they may take the synchronized transition with the action \e{Snd} to states 4 and 2 respectively. This transition has no requirements on the receiver, thus it corresponds to four rules, (3,1,3)->(4,1,2), (3,2,3)->(4,2,2), (3,3,3)->(4,3,2), (3,4,3)->(4,4,2). These rules are inserted in the nodes (3,1,3), (3,2,3), (3,3,3) and (3,4,3).
+
+\\\\\\
+The verifier at this point amounts to the following pseudo-code representation:
+
+\todo{pseudo-code}
+
+\subsection{Final subsection}
+An efficient algorithm in this context is largely an algorithm that avoids performing unnecessary calculations, either by not creating configurations that must be discarded such as the rule-trie above or by avoiding re-calculating previously calculated results. The algorithm as described above reproduces its steps each iteration; if a configuration \e{c} can be extended to another configuration \e{c'} at any point in the verification process, then \e{c'} can and will be created in every iteration following. This includes checking whether \e{c'} is accepted or not, applying a set of rules to the configuration and adding all the views of the resulting configurations to the set. As the result of this will be exactly the same views as was considered before, the calculations are performed but the result will be duplicates and filtered out (since a \e{Set} always has unique elements}.
+
+One way to solve this is to maintain another trie of configurations in parallell, containing exactly those configurations that have been tested and accepted. If a configuration \e{c} can be extended to \e{c'}, then we first check if \e{c'} has already been considered in a previous iteration, and if so, we discard \e{c'}. If it has not been considered, we add \e{c'} to the new trie, and perform the \e{step} and \e{alpha} steps.
+
+Another source of repetition is the fact that there are multiple ways to create the same channel evaluations. Therefore, after a configuration has fired a set of transitions, it can result in a configuration already in the set. Instead of performing the costly calculation of finding all it's views, we first check if the newly created configuration is not in fact a duplicate by checking if it is in the new trie introduced in this section. If so, the configuration can again be discarded.
+
+The final algorithm amounts to the following pseudo-code representation:
+
+\subparagraph{Finding Minimal Traces}
+When running the verification too, if a bad state is found we want to produce a trace leading up to the bad state. Preferably, this would be a minimal trace that leads to the bad state.
  
 The proposed verification method generates a finite set of reachable states (nodes in this context), but it does not record the available transitions between the nodes (i.e. the edges). It is possible to for each node \e{n} to save all nodes \e{n} from which an edge to \e{n'} exists, and thus build the complete reachability graph of the problem. There exists efficient algorithms to solve such a problem, e.g. \e{dijkstra shortest path}, or even the shortest path between any two nodes, e.g. flow-network techniques. Although these algorithms are efficient, building the complete reachability graph would be costly in terms of memory space, as the number of edges may be much larger than the number of states.
 
