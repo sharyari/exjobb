@@ -20,6 +20,7 @@ import Data.Maybe (fromMaybe, fromJust, isJust)
 
 --This function adds a configuration to the trie
 tAdd :: CTrie -> C ->  CTrie
+tAdd trie Null = trie
 tAdd trie (Conf key val) = let s = T.lookup key trie in
     T.insert key (S.insert val $ fromMaybe S.empty s) trie
 

@@ -14,6 +14,7 @@ import StringManipulation
 import TrieModule
 import Step
 
+import Debug.Trace
 import Control.Parallel.Strategies
 
 
@@ -38,7 +39,7 @@ gamma (trie, seen) symbols k b = let newconfs = newConfs seen (T.toList trie) sy
 -- converting back and forth to a set is faster than "nub", seems like it is always like that
 newConfs :: CTrie -> [(ByteString, TNode)] -> [[ByteString]] -> Int -> Bool -> [C]
 newConfs seen nodes symbols k b =
-  Set.toList . Set.fromList $ (L.concat [L.map (createConfigurations (fst x)) (gamma' seen x symbols k b) | x <- nodes])
+  (L.concat [L.map (createConfigurations (fst x)) (gamma' seen x symbols k b) | x <- nodes])
 
 -- This converts node elements back to configurations
 --createConfigurations :: ByteString -> [[ByteString]] -> [C]
@@ -47,22 +48,22 @@ createConfigurations states eval = (Conf states eval)
 
 gamma' :: CTrie ->  (ByteString, TNode) -> [[ByteString]] -> Int -> Bool -> [[ByteString]]
 gamma' seen (state,stringset) symbols k b = let
-  l1 = if b then gamma'' stringset symbols k else stringset
   l2 = fromMaybe S.empty $ T.lookup state seen in
-   (S.toList $ S.difference l1 l2)
+  if b then S.toList $ gamma'' stringset l2 symbols k else S.toList $ S.difference stringset l2
 
 canBeCreated :: HashSet [ByteString] -> Int -> [ByteString] -> Bool
 canBeCreated stringset k string = (S.difference (simpleViews k string) stringset) == S.empty
 
-gamma'' :: TNode -> [[ByteString]]  -> Int -> TNode
-gamma'' stringset symbols k =
+gamma'' :: TNode -> TNode -> [[ByteString]]  -> Int -> TNode
+gamma'' stringset seen symbols k =
   let stringlist = S.toList stringset in
-    S.unions $ L.map (S.fromList . nlonger stringset symbols k) stringlist
+    S.unions $ L.map (S.fromList . nlonger stringset seen symbols k) stringlist
 
+bla a b = not $ S.member b a
 
 --nlonger :: TNode -> [[ByteString]] -> [([ByteString],Int)]
-nlonger stringset symbols k sl= let list = nlonger' symbols (L.length sl-1) sl in
-  L.map fst $ L.filter (help' stringset k) list
+nlonger stringset seen symbols k sl= let list = nlonger' symbols (L.length sl-1) sl in
+  (L.filter (bla seen) $ L.map fst $ L.filter (help' stringset k) list)
 
 nlonger' :: [[ByteString]] -> Int -> [ByteString] -> [([ByteString],Int)]
 nlonger' symbols (-1) sl = []

@@ -61,7 +61,7 @@ verify2 :: (CTrie, CTrie) -> Trie [R] -> [[ByteString]] -> Int -> Int -> CTrie
 verify2 (trie,seen) rules symbols _ 0 = trie
 verify2 (trie,seen) rules symbols k c =
   let
-    nextIteration = alpha (step (gamma (trie,seen) symbols k True ) rules k) k
+    nextIteration = alpha (step (gamma (trie,seen) symbols k True) rules k) k
     isSafe = L.length $ L.filter (isBad2) $ T.toList $ fst nextIteration
   in
   if ((getSize (fst nextIteration)) == getSize trie) then

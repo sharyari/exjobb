@@ -19,6 +19,7 @@ step (trie, seen, confs) rules k=(trie, seen, S.toList . S.fromList . L.concat $
 
 
 applyRules :: Trie [R] -> Int -> C -> [C]
+applyRules trie k Null = [Null]
 applyRules trie k (Conf states chan)= let s = T.lookup states trie in
   if (isJust s) then
     [applyRule states (P.map B2.unpack chan) x k | x <- (fromJust s)]
