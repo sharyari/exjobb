@@ -10,12 +10,13 @@ import qualified Data.ByteString.Char8 as B2
 
 import DataTypes
 import TrieModule
-
+import ProblemFormulation
 
 
 -- This is the main function of the file, it will apply appropriate rules to configurations
 step :: (CTrie, CTrie, [C]) -> Trie [R] ->  Int -> (CTrie, CTrie, [C])
-step (trie, seen, confs) rules k=(trie, seen, S.toList . S.fromList . L.concat $ P.map (applyRules rules k ) confs)
+step (trie, seen, confs) rules k=
+  (trie, seen, L.concat $ P.map (applyRules rules k ) confs)
 
 
 applyRules :: Trie [R] -> Int -> C -> [C]
@@ -35,7 +36,7 @@ applyRule states chan (Rule newState (i, "¡", symbol)) k=
   let newWord = chan!!i++symbol in
   Conf newState (P.map B2.pack (replaceNth i newWord chan))
 applyRule states chan (Rule newState (i, "!", symbol)) k=
-  let newWord = P.reverse $ P.take k $ P.reverse $ symbol++chan!!i in
+  let newWord = symbol++chan!!i in
   Conf newState (P.map B2.pack (replaceNth i newWord chan))
 
 
@@ -66,13 +67,11 @@ checkPred :: [(Int, Int, Int)] -> [Int] -> Bool
 checkPred [] _ = True
 checkPred ((a,b,c):l) il = if ((il!!a) /= b ) then False else checkPred l il
 
+combs :: [[Int]]
 combs = sequence [[1..numStates1],[1..numStates2],[1..numStates3]]
 
 
 
-numStates1 = 16
-numStates2 = 9
-numStates3 = 5
 
 -- Help function to create empty configuration from int-list. Only needed for initial configuration and debugging
 toConf :: [Word8] -> C

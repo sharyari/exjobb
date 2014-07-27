@@ -31,8 +31,8 @@ ifSeen trie (Conf state chan) = let states = T.lookup state trie in
 
 -- This function creates an empty trie, adds all new configurations to the trie and then
 -- merges the two tries to a new one.
---alpha (trie, seen, list) k = ((T.mergeBy (myFunc) trie $ alpha' (T.empty, list) k), seen)
-alpha (trie, seen, list) k = (alpha' trie (L.filter (ifSeen seen) list) k, seen)
+alpha (trie, seen, list) k = (T.mergeBy (myFunc) trie $ (alpha' T.empty (L.filter (ifSeen seen) list) k), seen)
+
 
 
 findSameState s (Conf state chan) = (s == state)

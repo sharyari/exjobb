@@ -110,3 +110,9 @@ sync61 = ([(1,8,1),(2,3,2)], (1,"_","b"))
 sync62 = ([(1,8,1),(2,4,3)], (1,"_","b"))
 sync63 = ([(1,8,1),(2,1,5)], (1,"_","b"))
 
+numStates1 :: Int
+numStates1 = 16
+numStates2 :: Int
+numStates2 = 8
+numStates3 :: Int
+numStates3 = 5

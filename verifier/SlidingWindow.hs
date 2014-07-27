@@ -63,6 +63,9 @@ initial = [1,1,1]
 
 
 numPrograms = 3
+numStates1 :: Int
 numStates1 = 9
+numStates2 :: Int
 numStates2 = 6
+numStates3 :: Int
 numStates3 = 4

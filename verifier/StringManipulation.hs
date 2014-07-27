@@ -8,7 +8,7 @@ import qualified Data.ByteString.Char8 as B2
 
 
 
-symbols= L.map B2.pack ["a","b","c"]
+
 
 -- This takes out an interval of a string/List
 getWordInterval a b = (B.take b) . B.drop a
