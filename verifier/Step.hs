@@ -16,7 +16,7 @@ import ProblemFormulation
 -- This is the main function of the file, it will apply appropriate rules to configurations
 step :: (CTrie, CTrie, [C]) -> Trie [R] ->  Int -> (CTrie, CTrie, [C])
 step (trie, seen, confs) rules k=
-  (trie, seen, L.concat $ P.map (applyRules rules k ) confs)
+  (trie, seen, confs++ (L.concat $ P.map (applyRules rules k ) confs))
 
 
 applyRules :: Trie [R] -> Int -> C -> [C]

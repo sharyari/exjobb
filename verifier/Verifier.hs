@@ -30,7 +30,7 @@ verify tries rules initial symbols k =
   let
     result1 = run (([toConf initial]),[]) rules k
     isSafe =  S.size $ S.filter (isBad) (result1)
-    result2 =  (verify' tries rules symbols k 200)
+    result2 =  (verify' tries rules symbols k 300)
     isSafe2 = L.length $ L.filter (isBad2) $ T.toList result2
   in
     isSafe2 `par` isSafe `pseq` if isSafe > 0 then trace "Bad state entered, K= " $ traceShow k $ traceShow "" T.empty else
