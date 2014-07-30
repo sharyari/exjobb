@@ -16,7 +16,7 @@ import ProblemFormulation
 -- This is the main function of the file, it will apply appropriate rules to configurations
 step :: (CTrie, CTrie, [C]) -> Trie [R] ->  Int -> (CTrie, CTrie, [C])
 step (trie, seen, confs) rules k=
-  (trie, seen, confs++ (L.concat $ P.map (applyRules rules k ) confs))
+  (trie, seen, (L.concat $ P.map (applyRules rules k ) confs))
 
 
 applyRules :: Trie [R] -> Int -> C -> [C]
@@ -36,7 +36,7 @@ applyRule states chan (Rule newState (i, "¡", symbol)) k=
   let newWord = chan!!i++symbol in
   Conf newState (P.map B2.pack (replaceNth i newWord chan))
 applyRule states chan (Rule newState (i, "!", symbol)) k=
-  let newWord = symbol++chan!!i in
+  let newWord = P.reverse $ P.take (k+1) $ P.reverse $ symbol++chan!!i in 
   Conf newState (P.map B2.pack (replaceNth i newWord chan))
 
 
