@@ -22,8 +22,8 @@ import Control.Parallel.Strategies
 
 
 isBad Null = False
-isBad (Conf state chan) = B.last state == 5
-isBad2 (a,b) = B.last a == 5
+isBad (Conf state chan) = B.last state == 3
+isBad2 (a,b) = B.last a == 3
 
 verify :: (CTrie, CTrie) -> Trie [R] -> [Word8]-> [[ByteString]] -> Int -> CTrie
 verify tries rules initial symbols k =

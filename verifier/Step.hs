@@ -23,22 +23,28 @@ applyRules :: Trie [R] -> Int -> C -> [C]
 applyRules trie k Null = [Null]
 applyRules trie k (Conf states chan)= let s = T.lookup states trie in
   if (isJust s) then
-    [applyRule states (P.map B2.unpack chan) x k | x <- (fromJust s)]
+    L.concat [applyRule states (P.map B2.unpack chan) x k | x <- (fromJust s)]
   else []
 
 --applyRule :: C -> R -> C
 applyRule states chan (Rule newState (i, "_", symbol)) k=
-  Conf newState (P.map B2.pack chan)
+  [Conf newState (P.map B2.pack chan)]
 applyRule states chan (Rule newState (i, "?", symbol)) k =
   if (P.length (chan!!i) > 0 && [P.last (chan!!i)] == symbol) then
-  Conf newState (P.map B2.pack (replaceNth i (P.init (chan!!i))  chan)) else Null
+  [Conf newState (P.map B2.pack (replaceNth i (P.init (chan!!i))  chan))] else [Null]
 applyRule states chan (Rule newState (i, "¡", symbol)) k=
   let newWord = chan!!i++symbol in
-  Conf newState (P.map B2.pack (replaceNth i newWord chan))
+  [Conf newState (P.map B2.pack (replaceNth i newWord chan))]
 applyRule states chan (Rule newState (i, "!", symbol)) k=
-  let newWord = P.reverse $ P.take (k+1) $ P.reverse $ symbol++chan!!i in 
-  Conf newState (P.map B2.pack (replaceNth i newWord chan))
-
+  let
+    w = symbol++chan!!i
+    newWord1 = P.reverse $ P.take k $ P.reverse $ w
+    newWord2 = P.reverse $ P.take k $ P.drop 1 $ P.reverse  $ w
+  in
+   if (P.length w > k) then 
+     [Conf newState (P.map B2.pack (replaceNth i newWord1 chan)),Conf newState (P.map B2.pack (replaceNth i newWord2 chan))]
+   else
+     [Conf newState (P.map B2.pack (replaceNth i (symbol++chan!!i) chan))]
 
 
 -- This is a function that replaces the nth value of a list
