@@ -49,14 +49,16 @@ alpha' trie ((Conf state chan):xs) k =
 -- This function creates the views of a single configuration, and adds it to the trie
 addViews :: CTrie -> ByteString -> [[ByteString]] -> Int -> CTrie
 addViews trie state (chans) k =
-  let node = fromMaybe S.empty $ T.lookup state trie in
-  helpFunction trie state k $ S.fromList $ L.concat $ L.map (views k) chans
+  let
+    node = fromMaybe S.empty $ T.lookup state trie 
+  in
+   helpFunction trie state k $ S.fromList $ L.concat $ L.map (views k) chans
 
+bla2 a b = S.member b a
 
 helpFunction trie state k node =
   tAddList trie state node
 
-lgk k chan = nub $ L.filter (>k) $ L.map (L.length) chan
 
 
 

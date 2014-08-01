@@ -21,8 +21,8 @@ import Data.Maybe (fromMaybe, fromJust, isJust)
 --This function adds a configuration to the trie
 tAdd :: CTrie -> C ->  CTrie
 tAdd trie Null = trie
-tAdd trie (Conf key val) = let s = T.lookup key trie in
-    T.insert key (S.insert val $ fromMaybe S.empty s) trie
+tAdd trie (Conf key val) = 
+    T.insert key (S.insert val $ fromMaybe S.empty (T.lookup key trie)) trie
 
 tAdd2 trie  [] = trie
 tAdd2 trie (c:onfs) = tAdd2 (tAdd trie c) onfs
@@ -30,8 +30,7 @@ tAdd2 trie (c:onfs) = tAdd2 (tAdd trie c) onfs
 -- This is slow and cannot get faster, the union is the culprit
 tAddList :: CTrie -> B.ByteString -> TNode -> CTrie
 tAddList trie key list =
-  let s = T.lookup key trie in
-    T.insert key ( S.union list $ fromMaybe S.empty s) trie
+    T.insert key ( S.union list $ fromMaybe S.empty (T.lookup key trie)) trie
 
 -- foldl, foldr, does it matter?
 getSize trie = L.foldl (+) 0 $ L.map (S.size . snd) $ T.toList trie

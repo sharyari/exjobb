@@ -21,7 +21,8 @@ chooseK k l =  let len = B2.length l in if (len >= k) then [getWordInterval a k 
 -- This returns all subwords of size up to k of a word
 subwords' :: Int -> ByteString -> [ByteString]
 subwords' 0 l = []
-subwords' k l = chooseK k l ++ subwords' (k-1) l
+subwords' k l =
+    chooseK k l ++ subwords' (k-1) l
 
 subwords k l = S.toList $ S.fromList $ subwords' k l
 

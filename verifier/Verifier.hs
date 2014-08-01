@@ -22,15 +22,15 @@ import Control.Parallel.Strategies
 
 
 isBad Null = False
-isBad (Conf state chan) = B.last state == 3
-isBad2 (a,b) = B.last a == 3
+isBad (Conf state chan) = B.last state == 5
+isBad2 (a,b) = B.last a == 5
 
 verify :: (CTrie, CTrie) -> Trie [R] -> [Word8]-> [[ByteString]] -> Int -> CTrie
 verify tries rules initial symbols k =
   let
     result1 = run (([toConf initial]),[]) rules k
     isSafe =  S.size $ S.filter (isBad) (result1)
-    result2 =  (verify' tries rules symbols k 300)
+    result2 =  (verify' tries rules symbols k 100 False)
     isSafe2 = L.length $ L.filter (isBad2) $ T.toList result2
   in
     isSafe2 `par` isSafe `pseq` if isSafe > 0 then trace "Bad state entered, K= " $ traceShow k $ traceShow "" T.empty else
@@ -43,30 +43,20 @@ verify tries rules initial symbols k =
 -- It is divided into two almost identical functions:
 -- If gamma gets false, it does the cheaper operation of only stepping
 -- If gamma gets true, it creates the longer words. As long as possible, only step
-verify' :: (CTrie, CTrie) -> Trie [R] -> [[ByteString]] -> Int -> Int -> CTrie
-verify' (trie,seen) rules symbols _ 0 = trace "Max number of iterations reached" trie
-verify' (trie,seen) rules symbols k c =
+verify' :: (CTrie, CTrie) -> Trie [R] -> [[ByteString]] -> Int -> Int -> Bool -> CTrie
+verify' (trie,seen) rules symbols _ 0 _= trace "Max number of iterations reached" trie
+verify' (trie,seen) rules symbols k c b =
   let
-    nextIteration = alpha (step (gamma (trie,seen) symbols k False ) rules k) k
+    nextIteration = alpha (step (gamma (trie,seen) symbols k b ) rules k) k
     isSafe = L.length $ L.filter (isBad2) $ T.toList $ fst nextIteration
    in
-  if ((getSize (fst nextIteration)) == getSize trie) then
-    verify2 nextIteration rules symbols k (c-1)
+  if ((getSize (fst nextIteration)) == getSize trie ) && b then
+    fst nextIteration
+  else if ((getSize (fst nextIteration)) == getSize trie ) then
+    verify' nextIteration rules symbols k (c-1) True
   else if isSafe > 0 then
     fst nextIteration
   else
-    verify' nextIteration rules symbols k (c-1)
+    verify' nextIteration rules symbols k (c-1) False
 
-verify2 :: (CTrie, CTrie) -> Trie [R] -> [[ByteString]] -> Int -> Int -> CTrie
-verify2 (trie,seen) rules symbols _ 0 = trie
-verify2 (trie,seen) rules symbols k c =
-  let
-    nextIteration = alpha (step (gamma (trie,seen) symbols k True) rules k) k
-    isSafe = L.length $ L.filter (isBad2) $ T.toList $ fst nextIteration
-  in
-  if ((getSize (fst nextIteration)) == getSize trie) then
-   fst nextIteration
-  else if isSafe > 0 then
-    fst nextIteration
-  else
-    verify' nextIteration rules symbols k (c-1)
+

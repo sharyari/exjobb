@@ -49,28 +49,30 @@ createConfigurations states eval = (Conf states eval)
 gamma' :: CTrie ->  (ByteString, TNode) -> [[ByteString]] -> Int -> Bool -> [[ByteString]]
 gamma' seen (state,stringset) symbols k b = let
   l2 = fromMaybe S.empty $ T.lookup state seen in
-  if b then S.toList $ gamma'' stringset l2 symbols k else S.toList $ S.difference stringset l2
+  if b then
+    S.toList $ gamma'' stringset l2 symbols k
+  else
+    S.toList $ S.difference stringset l2
 
 canBeCreated :: HashSet [ByteString] -> Int -> [ByteString] -> Bool
 canBeCreated stringset k string = (S.difference (simpleViews k string) stringset) == S.empty
 
 gamma'' :: TNode -> TNode -> [[ByteString]]  -> Int -> TNode
 gamma'' stringset seen symbols k =
-  let stringlist = S.toList stringset in
-    S.unions $ L.map (S.fromList . nlonger stringset seen symbols k) stringlist
+    S.unions $ L.map (S.fromList . nlonger stringset seen symbols k) (S.toList stringset)
 
 bla a b = not $ S.member b a
 
 --nlonger :: TNode -> [[ByteString]] -> [([ByteString],Int)]
-nlonger stringset seen symbols k sl= let list = nlonger' symbols (L.length sl-1) sl in
-  (L.filter (bla seen) $ L.map fst $ L.filter (help' stringset k) list)
+nlonger stringset seen symbols k sl =
+  nlonger' seen stringset symbols k (L.length sl-1) sl 
 
-nlonger' :: [[ByteString]] -> Int -> [ByteString] -> [([ByteString],Int)]
-nlonger' symbols (-1) sl = []
-nlonger' symbols n sl = [(replaceNth n x sl,n) | x <- [B2.concat [y,(sl!!n)] | y<- (symbols!!n) ]]++nlonger' symbols (n-1) sl
+--nlonger' :: [[ByteString]] -> Int -> [ByteString] -> [([ByteString],Int)]
+nlonger' seen stringset symbols k (-1) sl = []
+nlonger' seen stringset symbols k n sl =
+  L.filter (bla seen) $ L.filter (help' stringset k n)
+  [replaceNth n x sl | x <- [B2.concat [y,(sl!!n)] | y<- (symbols!!n) ]]
+  ++nlonger' seen stringset symbols k (n-1) sl
 
-help' stringset k bla = S.member (swords k bla) stringset
+help' stringset k n bla = S.member (replaceNth n (B.take k (bla!!n)) bla) stringset
 
-swords :: Int -> ([ByteString], Int) -> [ByteString]
-swords k (x,n) = let xv = x!!n in
-    replaceNth n (B.take k xv) x
