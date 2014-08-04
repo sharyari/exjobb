@@ -1,0 +1,72 @@
+\section{Extensions}
+\label{extensions}
+There are several ways the channel system and the channel transition system in \ref{CS} and \ref{CTS} could be extended, in order to cope with various application scenarios. For example, we may want to model a protocol working on LIFO buffers, rather than the FIFO buffers described above. Another context may be that of a protocol communicating over an unreliable channel, introducing the possibility of \e{message loss} on the channels. In this section, we shall create models for both of these scenarios. Doing this requires us to first adapt the channel system model and the corresponding channel transition system by adding appropriate transition rules and action, and second to prove that \ref{lemma1} holds for these models.
+
+\subsection{LIFO Channels}
+\paragraph{Stack Channel System}
+\label{StackCS}
+In order to model a LIFO channel or a \e{stack}, we need only modify one of the transitions of the system described in \ref{CS} in such a way that transmissions and reception append and delete messages on the same end of the channels, For simplicity, we only restate this part of the channel system below. The finite-state control part of CS is an ordinary labeled transition system with states S, initial state $s_0$ and transitions $\delta$. The channel part is represented by the set Ch of channels, which may contain a string of messages in M. A set A denotes the set of observable interactions with the environment, whereas $\delta$ may either perform an action from A, or and unobservable action, where
+
+\begin{itemize}
+\item[]
+$\langle s_1, c!m, s_2\rangle$ represents a change of state from $s_1$ to $s_2$ while appending the message m to the head of channel c
+\item[]
+$\langle s_1, c?m, s_2\rangle$ represents a change of state from $s_1$ to $s_2$ while removing the message m to the head of channel c
+\end{itemize}
+
+\paragraph{Stack Channel Transmision System}
+In order to describe the transition system induced by a ChannelCS, we need only modify the transition rules of \ref{CTS} so that they reflect the changes made in \ref{StackCS}. Leaving the rest of the model unchanged, this results in $\rightarrow$ $\subseteq (S \times S)$ containing the additional transitions
+\begin{itemize}
+    \item
+      For each observable action a $\in$ A in CS
+      \[
+      \dfrac{s \xrightarrow{a} s'}{(S, \xi) \rightarrow (S', \xi)}
+      \]
+    \item
+      For each transmission action $\langle s_1, ch!m, s_2 \rangle$ in CS
+      \[
+      \dfrac{s \xrightarrow{ch!m} s' \wedge ch \in \xi}{(S, \xi) \rightarrow (S', \xi')} \] with \[ \xi' = \xi[ch := m \bullet \xi (ch)].
+      \]
+    \item
+      For each reception action $\langle s_1, ch?m, s_2 \rangle$ in CS
+      \[
+      \dfrac{s \xrightarrow{ch?m} s' \wedge \xi(ch) = m \bullet w_1..w_n}{(S, \xi) \rightarrow (S', \xi')} \] with \[ \xi' = \xi[ch:= w_1..w_n].
+      \]
+  \end{itemize}
+
+\paragraph{Proof of Lemma 1}
+Only the part of the proof of lemma 1 regarding transmission rules is affected by the changes made to this system. Such a proof follows in a straightforward manner from the proof \ref{proofTransmission}, by considering configurations of the form  $\conf{S, m\bullet w'}$ rather than $\conf{S, w'\bullet m}$.
+
+\subsection{Lossy Channels}
+A lossy channel system is a system similar to \ref{CS}, with the difference that the messages on channels may be lost. In practice, data loss may appear in several contexts, e.g. data corruption, inconsistencies on weak memory models or message loss during data transmission over a network.
+
+\paragraph{Lossy Channel Systems}
+A lossy channel system is described by \ref{CS} with an additional transition $\langle s, ch*, s\rangle$ that removes a message from a channel without changing the control state.
+
+\paragraph{Lossy Channel Transition Systems}
+A lossy channel transition system TS is described by \ref{CTS} with an additional transition rule
+      \[
+      \dfrac{s \xrightarrow{ch*} s \wedge \xi(ch) = w_1..w_{p-1}\bullet m \bullet w_{p+1}..w_n}{(S, \xi) \rightarrow (S, \xi')} \] with \[ \xi' = \xi[ch:= w_1..w_n].
+      \]
+
+\paragraph{Proof of Lemma 1}
+Consider a configuration \e{c'} such that \e{c} $\xrightarrow{r}$ \e{c'}, where \e{r} is a channel loss transition, as described above. Then one channel \e{ch} in \e{c} of length \e{n} $leq$ \e{k}, $\xi(ch) = w_1..w_{p-1}\bullet m \bullet w_{p+1}..w_n$ loses the symbol \e{m}, resulting in the channel evaluation $\xi(ch') = w_1..w_n$ in \e{c'}. Then \e{c'} is a actually a view of \e{c}.
+
+From this follows that the proofs as presented in \ref{proof} hold also for the lossy channel transition system, as lossy transitions are already a part of the over-approximation of states. This also leads to the conclusion that channel loss transitions may be disregarded, when creating the configurations of a transition system.
+
+\subsection{Channel Systems with Synchronization}
+It is not uncommon that distributed programs rely on \e{synchronization} in their program behaviour. With synchronization, we mean that two or more programs take a joint step, i.e. a transition cannot be fired unless the programs fire it together. This is particularly common in parallel programs, which may perform independent calculations but occasionally need to rendezvous. As we shall see, \ref{abpobserver}, synchronization can also be used as a modelling technique even if the program being modelled does not synchronize.
+
+A channel system is in a sense the interleaving of multiple \e{program graphs}. When operating such a level of detail, a synchronizaition action with a label \e{l} corresponds to an action that cannot be taken, unless each program where such an action is present take the action simultaneously.
+
+As the working model in this paper, i.e. the channel system described in \ref{CS} and the corresponding transition system, have a higher level of abstraction, they have the mechanisms needed in order to model synchronizing programs. In a sense, synchronizing and non-synchronizing actions are the same at this level of abstraction and cannot be differentiated.
+
+\subsection{Alternating Bit Protocol Revised}
+The alternating bit protocol is a protocol designed to be resistent to message loss, therefore it is reasonable to model it using a lossy model. Furthermore, the transition system induced by the program graphs \e{abpgraph} does not provide an intuitive way to describe a set \e{Bad} of bad states. This can easily be overcome by introducing an \e{observer} program, which synchronizes with the sender and receiver.
+
+\begin{figure}[h!]
+\abpobserver
+\label{abpobserver}
+\end{figure}
+
+The observer synchronizes with the sender over transitions with the label \e{Snd} and with the receiver over \e{Rcv}. If either the sender performs two transmissions (with different sequence numbers) without the receiver having received in between, or if the receiver receives two messages without the sender having transmitted in between, the observer would reach its accepting state $o_3$. This state can therefore be considered to be a minimal bad state, and any configurations describing a system with the observer in its bad state is a bad configuration.

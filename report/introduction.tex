@@ -1,0 +1,6 @@
+\newpage
+\section{Introduction}
+The goal of \e{model checking} is to formally verify the correctness of a program with respect to a given specification. In general, given a model of a system and a set of properties, the task is to decide whether the properties are met by the model or not, by performing an exhaustive search in the system. Although different ways of representing the model and the properties have been proposed\todo{citation needed}, most commonly the model is expressed as a \e{finite state machine} and the properties as propositional logic formulae. These properties are then checked by creating a \e{transition system} corresponding to the FSM at hand.\todo{FSM becomes TS, prop. logic becomes LTL/CTL?}
+
+A serious limitation of model checking is the problem of \e{state space explosion}, i.e. an exponential increase of states in the transition system, in relation to the size of the FSM. Related to this is the fact that a transition system need not be finite, for example due to the precense of an infinite buffer.\todo{Adding infinite resources such as numbers or buffers, does it count as state space explosion?}
+

@@ -1,0 +1,141 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage{fullpage}
+\usepackage[british]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{natbib}
+\usepackage[utf8]{inputenc}
+%\usepackage{amsthm} \newtheorem{theorem}{Theorem}
+\usepackage{color}
+\usepackage{float}
+\usepackage{authblk}
+\usepackage{todonotes}
+\usepackage{caption}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+\usepackage{alltt}
+\usepackage{listings}
+ \usepackage{aeguill}
+\usepackage{dsfont}
+%\usepackage{algorithm}
+\usepackage[noend]{algorithm2e}
+%\usepackage{algorithmicx}
+\usepackage{subfig}
+\lstset{% parameters for all code listings
+language=Python,
+frame=single,
+basicstyle=\small, % nothing smaller than \footnotesize, please
+tabsize=2,
+numbers=left,
+% framexleftmargin=2em, % extend frame to include line numbers
+%xrightmargin=2em, % extra space to fit 79 characters
+breaklines=true,
+breakatwhitespace=true,
+prebreak={/},
+captionpos=b,
+columns=fullflexible,
+escapeinside={\#*}{\^^M}
+}
+
+
+% Alter some LaTeX defaults for better treatment of figures:
+    % See p.105 of "TeX Unbound" for suggested values.
+    % See pp. 199-200 of Lamport's "LaTeX" book for details.
+    % General parameters, for ALL pages:
+    \renewcommand{\topfraction}{0.9}	% max fraction of floats at top
+    \renewcommand{\bottomfraction}{0.8}	% max fraction of floats at bottom
+    % Parameters for TEXT pages (not float pages):
+    \setcounter{topnumber}{2}
+    \setcounter{bottomnumber}{2}
+    \setcounter{totalnumber}{4} % 2 may work better
+    \setcounter{dbltopnumber}{2} % for 2-column pages
+    \renewcommand{\dbltopfraction}{0.9}	% fit big float above 2-col. text
+    \renewcommand{\textfraction}{0.07}	% allow minimal text w. figs
+    % Parameters for FLOAT pages (not text pages):
+    \renewcommand{\floatpagefraction}{0.7}	% require fuller float pages
+% N.B.: floatpagefraction MUST be less than topfraction !!
+    \renewcommand{\dblfloatpagefraction}{0.7}	% require fuller float pages
+
+% remember to use [htp] or [htpb] for placement
+
+
+\usepackage{fancyvrb}
+%\DefineVerbatimEnvironment{code}{Verbatim}{fontsize=\small
+%\DefineVerbatimEnvironment{example}{Verbatim}{fontsize=\small}
+
+\usepackage{url}
+\urldef{\mailsa}\path|josh0151@student.uu.se |
+\urldef{\mailsb}\path|bjfo5755@student.uu.se |
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
+
+
+\usepackage{tikz} \usetikzlibrary{trees}
+\usepackage{hyperref} % should always be the last package
+
+% useful colours (use sparingly!):
+\newcommand{\blue}[1]{{\color{blue}#1}}
+\newcommand{\green}[1]{{\color{green}#1}}
+\newcommand{\red}[1]{{\color{red}#1}}
+
+% useful wrappers for algorithmic/Python notation:
+\newcommand{\length}[1]{\text{len}(#1)}
+\newcommand{\twodots}{\mathinner{\ldotp\ldotp}} % taken from clrscode3e.sty
+\newcommand{\Oh}[1]{\mathcal{O}\left(#1\right)}
+
+% useful (wrappers for) math symbols:
+\newcommand{\Cardinality}[1]{\left\lvert#1\right\rvert}
+%\newcommand{\Cardinality}[1]{\##1}
+\newcommand{\Ceiling}[1]{\left\lceil#1\right\rceil}
+\newcommand{\Floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\Iff}{\Leftrightarrow}
+\newcommand{\Implies}{\Rightarrow}
+\newcommand{\Intersect}{\cap}
+\newcommand{\Sequence}[1]{\left[#1\right]}
+\newcommand{\Set}[1]{\left\{#1\right\}}
+\newcommand{\SetComp}[2]{\Set{#1\SuchThat#2}}
+\newcommand{\SuchThat}{\mid}
+\newcommand{\Tuple}[1]{\langle#1\rangle}
+\newcommand{\Union}{\cup}
+\usetikzlibrary{positioning,shapes,shadows,arrows}
+
+\usepackage{url}
+
+
+
+\title{\textbf{The History, Development and Future of \\ Computer Input/Output Methods}}
+
+\author{Jonathan Sharyari}
+\textwidth 5.5in 
+\oddsidemargin 0.5in 
+
+
+\begin{document}
+
+\maketitle
+
+
+\input{abstract.tex}
+\newpage
+\tableofcontents
+\input{intro.tex}
+
+\input{form.tex}
+
+\input{history.tex}
+
+
+\input{current.tex}
+\input{future.tex}
+\input{special.tex}
+\input{discussion.tex}
+
+
+\bibliographystyle{ieeetr} 
+\bibliography{references}
+
+\end{document}
