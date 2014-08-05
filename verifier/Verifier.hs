@@ -37,7 +37,7 @@ verify tries rules initial symbols k =
     if isSafe2 > 0 then
       trace "Bad configuration found with K=" $ traceShow k $verify tries rules initial symbols (k+1)
     else
-      trace "System found to be safe with K=" $ traceShow result2 result2
+      trace "System found to be safe with K=" $  result2
 
 -- This is the verifier, and it basically iterates alpha $ step $ gamma
 -- It is divided into two almost identical functions:

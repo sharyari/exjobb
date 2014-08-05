@@ -7,9 +7,6 @@ import DataTypes
 import qualified Data.ByteString.Char8 as B2
 
 
-
-
-
 -- This takes out an interval of a string/List
 getWordInterval a b = (B.take b) . B.drop a
 
@@ -28,14 +25,19 @@ subwords k l = S.toList $ S.fromList $ subwords' k l
 
 -- This returns all views of a configuration, with the states abstracted (as views does not affect them)
 -- subwords is slower, but I finally found a situation where it created more configurations
-views :: Int -> [ByteString] -> [[ByteString]]      --TNode
-views k sl = sequence $ L.map (subwords k) sl
+--views :: Int -> [ByteString] -> [[ByteString]]      --TNode
+
+views :: TNode -> Int -> [ByteString] -> [[ByteString]]
+views node k sl = if S.member sl node then [] else sl:views' node (k-1) sl
+
+views' node 0 sl = []
+views' node k sl = L.concat $ L.map (views node k) (sequence $ [[sl!!0], chooseK k (sl!!1)])++L.map (views node k) (sequence $ [chooseK k (sl!!0), [sl!!1]])
 
 
 simpleViews :: Int -> [ByteString] -> TNode
 simpleViews k sl = S.fromList (sequence $ L.map (chooseK k) sl) -- subwords is slower
 
 
-
+-- 17.6 s
 
 
