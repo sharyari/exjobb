@@ -33,7 +33,6 @@ views node k sl = if S.member sl node then [] else sl:views' node (k-1) sl
 views' node 0 sl = []
 views' node k sl = L.concat $ L.map (views node k) (sequence $ [[sl!!0], chooseK k (sl!!1)])++L.map (views node k) (sequence $ [chooseK k (sl!!0), [sl!!1]])
 
-
 simpleViews :: Int -> [ByteString] -> TNode
 simpleViews k sl = S.fromList (sequence $ L.map (chooseK k) sl) -- subwords is slower
 
