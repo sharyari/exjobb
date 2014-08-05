@@ -4,7 +4,7 @@
 As a result of lemma \ref{lemma1}, if $\gamma_k^{k+1} \cap Bad$ = $\empty$ for any \e{k} $\geq$ 1, then $\gamma_k(V) \cap Bad$ = $\empty$ for any buffer size larger than \e{k}. Given a set of bad states \e{Bad}, a set of initial states \e{I} and a set of transitions, Verifying the correctness of a system can be done with the following algorithm.
 
 \begin{algorithm}
-  \caption{Verification algorithm}\label{euclid}
+  \caption{General Verification algorithm}\label{euclid}
   \begin{algorithmic}[1]
       \For{\texttt{$True$}}
         \If {$\mathcal{R}_k$ $\cap$ $Bad$ $\neq$ $\emptyset$} 
@@ -14,7 +14,7 @@ As a result of lemma \ref{lemma1}, if $\gamma_k^{k+1} \cap Bad$ = $\empty$ for a
         \If {$\gamma_k(V)$ $\cap$ $Bad$ = $\emptyset$} 
         \State return Safe     
         \EndIf
-        k := k+1
+        \State k := k+1
       \EndFor
 \end{algorithmic}
 \end{algorithm}
@@ -83,7 +83,11 @@ In a best-case scenario, there would be an equal number of configurations for ev
 \subsubsection{Trie}
 Above it was suggested that the set V could be divided into several sets, distinguished by control-states. The number of control-states in a system is finite and unique; For a system with \e{n} processes, the number of states is $\prod\limits_{i=1}^n|p_i|$. In such a situation, it is possible to use a hash table and provide a hash function that achieves perfect hashing. In this project, we have chosen instead to use a data structure known as a \e{trie}. A trie is an ordered tree data structure, indexed by a string value (i.e. the control state). Doing this has is merely a matter of style, there are no advantages over a hash map other than the hash function being implicit, and that a tree-like structure is less abstract that a hash map, thus being simpler to visualize. In figure \ref{triemerge}, we give an example of performing the $V := V' \cup V$ in a trie.
 
-\todo{Draw that trie} 
+\begin{figure}
+\includegraphics[width=400pt] {bilder/triemerge.png}
+\caption{This picture shows the union of two tries. In this case, there are two processes, the first of which has two states (0 and 1) and the second has three states (0,1 and 2). The union of the trie is the union of their leaves. In the picture, the content of the leaves (0,0) in both threes is made explicit.}
+\label{triemerge}
+\end{figure}
 
 
 \subsubsection{Using the Trie}
@@ -95,12 +99,47 @@ We show that by organizing the set of \e{rules} or transitions in a certain way 
 
 \paragraph{Example.} Consider the alternating bit protocol, as described in \ref{REFERERA DEN MED OBSERVER}. The system has three processes \e{Sender}, \e{Receiver} and \e{Observer} with 4, 4 and 3 states respectively. Consider then the transition with the predicates that the sender is in state 3, the observer in state 3 and they may take the synchronized transition with the action \e{Snd} to states 4 and 2 respectively. This transition has no requirements on the receiver, thus it corresponds to four rules, (3,1,3)->(4,1,2), (3,2,3)->(4,2,2), (3,3,3)->(4,3,2), (3,4,3)->(4,4,2). These rules are inserted in the nodes (3,1,3), (3,2,3), (3,3,3) and (3,4,3).
 
-There is a small one-time cost of creating the rule tree, but after creation, it is highly effective. The division by itself ensures that the state-predicate is fulfilled, if not, we never even attempt to apply the rule to a configuration. We illustrate this in figure \ref{applyrule}  \todo{Draw a rule-trie and a state-trie and draw lines, showing that only the applicable rules are even tried}. At this point. verifying a system amounts to the following pseudo-code representation:
+There is a small one-time cost of creating the rule tree, but after creation, it is highly effective. The division by itself ensures that the state-predicate is fulfilled, if not, we never even attempt to apply the rule to a configuration. We illustrate this in figure \ref{applyrule} 
 
-\todo{pseudo-code}
+\begin{figure}
+\includegraphics[width=400pt] {bilder/applyrule.png}
+\caption{This picture shows the union of two tries. In this case, there are two processes, the first of which has two states (0 and 1) and the second has three states (0,1 and 2). The union of the trie is the union of their leaves. In the picture, the content of the leaves (0,0) in both threes is made explicit.}
+\label{applyrule}
+\end{figure}
+
+
+\begin{algorithm}
+  \caption{The verification algorithm from section \ref{alg1} in somewhat higher detail. This version includes }\label{euclid}
+  \begin{algorithmic}[1]
+    \State \textbf{Gamma (V, Seen):}
+    \State \hspace{6 mm} con' := concretizations (V)
+    \State \hspace{6 mm} con  := c | c $\in$ con $\land$ c $\notin$ Seen
+    \\
+    \State \textbf{Step (Con, Rules):}
+    \For {state $\in$ nodes(V)}
+    \State \hspace{6 mm} S := r(c) | $\forall$ c $\in$ con(state) $\land$ $\forall$ r $\in$ Rules(state)
+    \EndFor
+    \\            
+    \State \textbf{Alpha (V, S):}
+    \State \hspace{6 mm} V:= V $\cup$ views(C)
+    \\
+    \State \textbf{Verifier (V, Rules, Bad):}
+    \For{\texttt{$True$}}
+        \If {$\mathcal{R}_k$ $\cap$ $Bad$ $\neq$ $\emptyset$} 
+        \State return Unsafe
+        \EndIf
+        \State V := $\mu Alpha(Step(Gamma(V)))$
+        \If {$\gamma_k(V)$ $\cap$ $Bad$ = $\emptyset$} 
+        \State return Safe     
+        \EndIf
+        \State k := k+1
+      \EndFor
+\end{algorithmic}
+\end{algorithm}
+
 
 \subsection{Final subsection}
-An efficient algorithm in this context is largely an algorithm that avoids performing unnecessary calculations. This can either be done by avoiding to create unnecessary configurations such as was done with the rule-trie above or by avoiding re-calculating previously calculated results. The algorithm as described above reproduces its steps each iteration; if a configuration \e{c} can be extended to a concretization \e{con} at any point in the verification process, then \e{con} can and will be created in every following iteration. This includes checking whether \e{\alpha_k(con) \subset V}, applying a set of rules to the configuration and then adding all the views of the resulting configurations to the set. Each time the calculations are performed, the result will be duplicates and no new views are added to the system.
+An efficient algorithm in this context is largely an algorithm that avoids performing unnecessary calculations. This can either be done by avoiding to create unnecessary configurations such as was done with the rule-trie above or by avoiding re-calculating previously calculated results. The algorithm as described above reproduces its steps each iteration; if a configuration \e{c} can be extended to a concretization \e{con} at any point in the verification process, then \e{con} can and will be created in every following iteration. This includes checking whether \e{$\alpha_k(con) \subset V$}, applying a set of rules to the configuration and then adding all the views of the resulting configurations to the set. Each time the calculations are performed, the result will be duplicates and no new views are added to the system.
 
 We solve this by maintaining another trie, \e{seen}, of configurations in parallell, containing exactly those concretization that have been accepted. If a configuration \e{c} can be extended to the concretization \e{con}, then we first check if \e{con} is an element of seen. If it is, we discard \e{con}, otherwise we add \e{con} to \e{seen} and also to the set of concretizations to be evaluated in this iteration.
 

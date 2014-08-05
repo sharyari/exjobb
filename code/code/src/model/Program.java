@@ -120,6 +120,7 @@ public class Program {
 	public String toHaskell() {
 		String str = "";
 		for (int i=0;i<transitions.size();i++){
+			
 			str+=transitions.elementAt(i).toHaskell();
 		}
 		return str;

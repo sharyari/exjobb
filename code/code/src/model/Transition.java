@@ -17,13 +17,13 @@ public class Transition {
 		String str = name+" = ([";
 		str+=helpHaskell();
 		if (ch == null) {
-			str+="], aa[])\n";
+			str+="], (1, \"_\", \"b\"))\n";
 		} else {
 			str+= "], "+helpHaskell2()+")\n";
 		}
 		return str;
 	}
-
+	
 	public boolean isSynchronized(){
 		return sync;
 	}
@@ -47,6 +47,7 @@ public class Transition {
 	public Transition (State s1, State s2){
 		this.s1 = s1;
 		this.s2 = s2;
+		this.action = Actions.NONE;
 		ch = null; symbol = ""; effect="";
 	}
 
@@ -54,7 +55,7 @@ public class Transition {
 		this.s1 = s1;
 		this.s2 = s2;
 		this.action = a;
-		sync = true;
+		sync = false;
 		ch = null; symbol = ""; effect="";
 	}
 	
@@ -81,7 +82,7 @@ public class Transition {
 	public String toString() {
 		return (s1 + " " + ch + " " + s2);
 	}
-	
+		
 	public int getS1(){
 		return s1.getNum();
 	}

@@ -36,15 +36,13 @@
 			
 			for (int i=0;i<t1.size();i++){
 				Transition e1 = t1.elementAt(i);
-				if ( e1.isSynchronized() ) {
 					for (int j=0;j<t2.size();j++){
 						Transition e2 = t2.elementAt(j);
-						if (e2.isSynchronized()){
-							if (e1.getAction() == e2.getAction() && e1.getAction() != Actions.NONE){
+							if (e1.getAction() == e2.getAction() && e1.getAction() == a){
 								Synchronize s = new Synchronize (t1.elementAt(i), t2.elementAt(j));
 								s.setName("sync");
 								sync.add(s);
-		}	}	}	}	}	}
+		}	}	}	}
 
 		public String toHaskell(){
 			String str = "module ProblemFormulation where\n";
