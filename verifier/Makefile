@@ -1,9 +1,9 @@
 CC=ghc
 RM=rm
-CFLAGS4= -rtsopts -O -threaded -prof -fprof-auto
-CFLAGS3= -rtsopts -auto-all -O -threaded -eventlog
+CFLAGS4= -rtsopts -O2 -threaded -prof -fprof-auto
+CFLAGS3= -rtsopts -auto-all -O2 -threaded -eventlog
 CFLAGS2= -rtsopts -auto-all
-CFLAGS = -rtsopts -auto-all -O -threaded
+CFLAGS = -rtsopts -auto-all -O2 -threaded
 
 make: main.hs 
 	$(CC) -o main main.hs $(CFLAGS)

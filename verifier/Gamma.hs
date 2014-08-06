@@ -1,25 +1,19 @@
 module Gamma where
 import Data.List as L
-import DataTypes
 import Data.Trie as T
 import Data.HashSet as S
-import Data.ByteString as B
 import qualified Data.ByteString.Char8 as B2
 import Data.Set as Set
 
-import Data.Maybe (fromMaybe, fromJust, isJust)
-
-import Alpha
 import StringManipulation
 import TrieModule
-import Step
+import DataTypes
 
 import Debug.Trace
-import Control.Parallel.Strategies
 
 
 
--- Gamma takes all configurations, i.e. the trie, and for each configuration:
+-- In general, Gamma takes all configurations, i.e. the trie, and for each configuration:
 -- 1. extend the configuration (longer channels)
 -- 2. If the extended configuration is in the trie, ignore it
 -- 3. else check if all its "simple" views are in the trie (necessarily in the same node)
@@ -30,14 +24,15 @@ import Control.Parallel.Strategies
 -- This function takes a trie of configurations, another trie that marks the configurations
 -- which have already stepped and passes them back, with the second trie updated
 -- together with a set of configurations that can be created from that information.
-gamma :: (CTrie, CTrie) -> [[ByteString]] -> Int -> Bool -> (CTrie,CTrie, [C])
-gamma (trie, seen) symbols k b = let newconfs = newConfs seen (T.toList trie) symbols k b in
-  (trie,tAdd2 seen newconfs, newconfs)
+gamma :: (CTrie, CTrie) -> [Symbols] -> Int -> Bool -> (CTrie,CTrie, [C])
+gamma (trie, seen) symbols k b =
+  let newconfs = newConfs seen (T.toList trie) symbols k b in
+    (trie,tAdd2 seen newconfs, newconfs)
 
 
 -- This function creates the new configurations
 -- converting back and forth to a set is faster than "nub", seems like it is always like that
-newConfs :: CTrie -> [(ByteString, TNode)] -> [[ByteString]] -> Int -> Bool -> [C]
+newConfs :: CTrie -> [(State, TNode)] -> [Symbols] -> Int -> Bool -> [C]
 newConfs seen nodes symbols k b =
   (L.concat [L.map (createConfigurations (fst x)) (gamma' seen x symbols k b) | x <- nodes])
 
@@ -46,33 +41,32 @@ newConfs seen nodes symbols k b =
 createConfigurations states eval = (Conf states eval)
 
 
-gamma' :: CTrie ->  (ByteString, TNode) -> [[ByteString]] -> Int -> Bool -> [[ByteString]]
-gamma' seen (state,stringset) symbols k b = let
-  l2 = fromMaybe S.empty $ T.lookup state seen in
+gamma' :: CTrie ->  (State, TNode) -> [Symbols] -> Int -> Bool -> [Eval]
+gamma' seen (state,stringset) symbols k b =
   if b then
-    S.toList $ gamma'' stringset l2 symbols k
+    S.toList $ gamma'' stringset (findStateInTrie state seen) symbols k
   else
-    S.toList $ S.difference stringset l2
+    S.toList $ S.difference stringset $ findStateInTrie state seen
 
-canBeCreated :: HashSet [ByteString] -> Int -> [ByteString] -> Bool
-canBeCreated stringset k string = (S.difference (simpleViews k string) stringset) == S.empty
-
-gamma'' :: TNode -> TNode -> [[ByteString]]  -> Int -> TNode
+gamma'' :: TNode -> TNode -> [Symbols]  -> Int -> TNode
 gamma'' stringset seen symbols k =
     S.unions $ L.map (S.fromList . nlonger stringset seen symbols k) (S.toList stringset)
 
-bla a b = not $ S.member b a
+-- This function is here only to change the order of a and b, which prevents it from being inline
+unique a b = not $ S.member b a
 
 --nlonger :: TNode -> [[ByteString]] -> [([ByteString],Int)]
 nlonger stringset seen symbols k sl =
-  nlonger' seen stringset symbols k (L.length sl-1) sl 
+  nlonger' seen stringset symbols k (L.length sl-1) sl
 
 --nlonger' :: [[ByteString]] -> Int -> [ByteString] -> [([ByteString],Int)]
 nlonger' seen stringset symbols k (-1) sl = []
 nlonger' seen stringset symbols k n sl =
-  L.filter (bla seen) $ L.filter (help' stringset k n)
-  [replaceNth n x sl | x <- [B2.concat [y,(sl!!n)] | y<- (symbols!!n) ]]
+  L.filter (unique seen) $ L.filter (help' stringset k n)
+  [replaceNth n x sl | x <- [B2.concat [y,(sl!!n)] | y <- (symbols!!n) ]]
   ++nlonger' seen stringset symbols k (n-1) sl
 
-help' stringset k n bla = S.member (replaceNth n (B.take k (bla!!n)) bla) stringset
+-- This is a help function that checks whether the subviews (actually a single one) of a concretization are in the trie
+help' stringset k n bla = S.member (replaceNth n (B2.take k (bla!!n)) bla) stringset
 
+-- THIS DOESN'T WORD FOR STACKS RIGHT NOW!!

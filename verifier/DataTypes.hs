@@ -7,14 +7,17 @@ import Data.HashSet as H
 
 -- Basic datatype used to work with configurations
 -- The bytestring is the set of states, the string list is the channel evaluation
-data C = Conf B.ByteString [B.ByteString] | Null deriving (Show, Eq, Ord)
+data C = Conf State Eval | Null deriving (Show, Eq, Ord)
+
+type CWord = B.ByteString
+type State = B.ByteString
+type Eval = [CWord]
+type Symbols = [B.ByteString]
 
 -- Short name for a configuration tree
-type CTrie = Trie (HashSet [B.ByteString])
+type CTrie = Trie TNode
 -- Short name for the nodes of a CTrie
-type TNode = HashSet [B.ByteString]
--- Short? name for the elements of a node
-type NodeElem = [B.ByteString]
+type TNode = HashSet Eval
 
 
 

@@ -5,12 +5,13 @@ import Data.List as L
 import Data.Set as S
 import Prelude as P
 import Data.Word
-import Data.Maybe (fromMaybe, fromJust, isJust)
 import qualified Data.ByteString.Char8 as B2
+import Data.Maybe (fromMaybe, fromJust, isJust)
 
 import DataTypes
 import TrieModule
 import ProblemFormulation
+import StringManipulation
 
 
 -- This is the main function of the file, it will apply appropriate rules to configurations
@@ -20,38 +21,38 @@ step (trie, seen, confs) rules k=
 
 
 applyRules :: Trie [R] -> Int -> C -> [C]
-applyRules trie k Null = [Null]
-applyRules trie k (Conf states chan)= let s = T.lookup states trie in
-  if (isJust s) then
-    L.concat [applyRule states (P.map B2.unpack chan) x k | x <- (fromJust s)]
-  else []
+applyRules rules k Null = [Null]
+applyRules trie k (Conf states chan) =
+  let s = fromMaybe [] $ T.lookup states trie in
+  L.concat $ L.map (applyRule states (P.map B2.unpack chan) k) s
 
 --applyRule :: C -> R -> C
-applyRule states chan (Rule newState (i, "_", symbol)) k=
+applyRule states chan k (Rule newState (i, "_", symbol))=
   [Conf newState (P.map B2.pack chan)]
-applyRule states chan (Rule newState (i, "?", symbol)) k =
+applyRule states chan k (Rule newState (i, "?", symbol)) =
   if (P.length (chan!!i) > 0 && [P.last (chan!!i)] == symbol) then
   [Conf newState (P.map B2.pack (replaceNth i (P.init (chan!!i))  chan))] else [Null]
-applyRule states chan (Rule newState (i, "¡", symbol)) k=
-  let newWord = chan!!i++symbol in
-  [Conf newState (P.map B2.pack (replaceNth i newWord chan))]
-applyRule states chan (Rule newState (i, "!", symbol)) k=
+applyRule states chan k (Rule newState (i, "¡", symbol))=
+  let
+    w = chan!!i++symbol
+    newWord1 = P.reverse $ P.take k $ P.reverse $ w
+    newWord2 = P.reverse $ P.take k $ P.drop 1 $ P.reverse  $ w
+  in
+   if (P.length w > k) then
+     [Conf newState $P.map B2.pack $ replaceNth i newWord1 chan,Conf newState $ P.map B2.pack $ replaceNth i newWord2 chan]
+   else
+     [Conf newState $P.map B2.pack $ replaceNth i w chan]
+
+applyRule states chan k (Rule newState (i, "!", symbol))=
   let
     w = symbol++chan!!i
     newWord1 = P.reverse $ P.take k $ P.reverse $ w
     newWord2 = P.reverse $ P.take k $ P.drop 1 $ P.reverse  $ w
   in
-   if (P.length w > k) then 
-     [Conf newState (P.map B2.pack (replaceNth i newWord1 chan)),Conf newState (P.map B2.pack (replaceNth i newWord2 chan))]
+   if (P.length w > k) then
+     [Conf newState $P.map B2.pack $ replaceNth i newWord1 chan,Conf newState $ P.map B2.pack $ replaceNth i newWord2 chan]
    else
-     [Conf newState (P.map B2.pack (replaceNth i (symbol++chan!!i) chan))]
-
-
--- This is a function that replaces the nth value of a list
-replaceNth n newVal (x:xs)
- | n == 0 = newVal:xs
- | otherwise = x:replaceNth (n-1) newVal xs
-
+     [Conf newState $P.map B2.pack $ replaceNth i w chan]
 
 --- This is used once in the beginning, to generate a tree of rules
 createRuleTree :: [([Word8], [Word8], (Int, String, String))] -> Trie [R]
