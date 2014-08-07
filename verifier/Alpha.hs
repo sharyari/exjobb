@@ -14,7 +14,7 @@ myFunc a b = Just (S.union a b)
 
 -- This function creates an empty trie, computes adds all new views and adds them to the trie and then
 -- merges the two tries to a new trie V.
-alpha (trie, seen, list) k = (T.mergeBy (myFunc) trie $ (alpha' T.empty (L.filter (ifSeen seen)  list) k), seen)
+alpha (trie, seen, list) k = (T.mergeBy (myFunc) trie $ (alpha' T.empty (L.filter (ifSeen seen) list) k), seen)
 
 
 -- This filters away configurations already seen, avoiding the costly views function. Helps a bit

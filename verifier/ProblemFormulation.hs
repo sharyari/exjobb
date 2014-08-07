@@ -117,5 +117,5 @@ numStates2 = 8
 numStates3 :: Int
 numStates3 = 5
 
-bad :: [(Int,Word8)]
+bad :: [(Int, Word8)]
 bad = [(2,5)]
