@@ -69,4 +69,4 @@ nlonger' seen stringset symbols k n sl =
 -- This is a help function that checks whether the subviews (actually a single one) of a concretization are in the trie
 help' stringset k n bla = S.member (replaceNth n (B2.take k (bla!!n)) bla) stringset
 
--- THIS DOESN'T WORD FOR STACKS RIGHT NOW!!
+-- THIS DOESN'T WORK FOR STACKS RIGHT NOW!!
