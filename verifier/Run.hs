@@ -28,21 +28,21 @@ applyRules :: Trie [R] -> Int -> C -> [C]
 applyRules _ _ Null = [Null]
 applyRules trie k (Conf states chan) = let s = T.lookup states trie in
   if (isJust s) then
-    [applyRule states (L.map B2.unpack chan) x k | x <- (fromJust s)]
+    [applyRule states chan x k | x <- (fromJust s)]
   else []
 
 --applyRule :: C -> R -> C
 --applyRule Null _ = Null
-applyRule :: ByteString -> [[Char]] -> R -> Int -> C
+applyRule :: ByteString -> Eval -> R -> Int -> C
 applyRule states chan (Rule newState (i, "_", symbol)) k =
-  Conf newState (P.map B2.pack chan)
+  Conf newState chan
 applyRule states chan (Rule newState (i, "?", symbol)) k =
   if (P.length (chan!!i) > 0 && [P.last (chan!!i)] == symbol) then
-  Conf newState (P.map B2.pack (replaceNth i k (P.init (chan!!i))  chan)) else Null
+  Conf newState (replaceNth i k (P.init (chan!!i))  chan) else Null
 applyRule states chan (Rule newState (i, "¡", symbol)) k =
-  Conf newState (P.map B2.pack (replaceNth i k (chan!!i++symbol) chan))
+  Conf newState ((replaceNth i k (chan!!i++symbol) chan))
 applyRule states chan (Rule newState (i, "!", symbol)) k =
-  Conf newState (P.map B2.pack (replaceNth i k (symbol++chan!!i) chan))
+  Conf newState ((replaceNth i k (symbol++chan!!i) chan))
 
 replaceNth n k newVal l =
   let diff = (P.length newVal - k) in

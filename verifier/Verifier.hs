@@ -25,7 +25,7 @@ isBadState bad Null = False
 isBadState bad (Conf state chan) = or [index state x == y | (x,y) <- bad]
 isBadConfiguration bad (state,eval) = or [index state x == y | (x,y) <- bad]
 
-verify :: (CTrie, CTrie) -> Trie [R] -> [(Int, Word8)] -> [Word8]-> [Symbols] -> Int -> CTrie
+verify :: (CTrie, CTrie) -> Trie [R] -> [(Int, Word8)] -> [Word8]-> Symbols -> Int -> CTrie
 verify tries rules bad initial symbols k =
   let
     result1 = run ([toConf initial],[]) rules k                                   -- Reachability analysis
@@ -47,7 +47,7 @@ verify tries rules bad initial symbols k =
 -- It is divided into two almost identical functions:
 -- If gamma gets false, it does the cheaper operation of only stepping (b=False)
 -- If gamma gets true, it creates the longer words (b=True). As long as possible, only step
-verify' :: (CTrie, CTrie) -> Trie [R] -> [(Int,Word8)] -> [Symbols] -> Int -> Bool -> CTrie
+verify' :: (CTrie, CTrie) -> Trie [R] -> [(Int,Word8)] -> Symbols -> Int -> Bool -> CTrie
 verify' (trie,seen) rules bad symbols k b =
   let
     (newTrie, newSeen) = alpha (step (gamma (trie,seen) symbols k b) rules k) k

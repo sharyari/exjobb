@@ -9,10 +9,10 @@ import Data.HashSet as H
 -- The bytestring is the set of states, the string list is the channel evaluation
 data C = Conf State Eval | Null deriving (Show, Eq, Ord)
 
-type CWord = B.ByteString
+type CWord = [Word8]
 type State = B.ByteString
 type Eval = [CWord]
-type Symbols = [B.ByteString]
+type Symbols = [[Word8]]
 
 -- Short name for a configuration tree
 type CTrie = Trie TNode
@@ -27,5 +27,5 @@ type TNode = HashSet Eval
 -- op = ! => append the symbol to the beginning of the chNum:th channel
 -- op = ¡ => append the symbol to the end of the chNum:th channel (used for stacks/lifo)
 -- op = - => leave channels unchanged
-data R = Rule B.ByteString (Int, String, String) deriving (Show, Eq, Ord)
+data R = Rule B.ByteString (Int, String, [Word8]) deriving (Show, Eq, Ord)
 

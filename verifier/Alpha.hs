@@ -37,7 +37,7 @@ alpha' trie ((Conf state chan):xs) k =
         alpha' (addViews trie state relevant k) irrelevant k
 
 -- This function calls addViews' to recursively find all views of the configurations and adds them to the trie
-addViews :: CTrie -> CWord -> [Eval] -> Int -> CTrie
+addViews :: CTrie -> State -> [Eval] -> Int -> CTrie
 addViews trie state chans k =
    tAddList trie state $ addViews' chans k S.empty
 

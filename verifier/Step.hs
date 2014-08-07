@@ -24,14 +24,14 @@ applyRules :: Trie [R] -> Int -> C -> [C]
 applyRules rules k Null = [Null]
 applyRules trie k (Conf states chan) =
   let s = fromMaybe [] $ T.lookup states trie in
-  L.concat $ L.map (applyRule states (P.map B2.unpack chan) k) s
+  L.concat $ L.map (applyRule states chan k) s
 
 --applyRule :: C -> R -> C
 applyRule states chan k (Rule newState (i, "_", symbol))=
-  [Conf newState (P.map B2.pack chan)]
+  [Conf newState chan]
 applyRule states chan k (Rule newState (i, "?", symbol)) =
   if (P.length (chan!!i) > 0 && [P.last (chan!!i)] == symbol) then
-  [Conf newState (P.map B2.pack (replaceNth i (P.init (chan!!i))  chan))] else [Null]
+  [Conf newState (replaceNth i (P.init (chan!!i))  chan)] else [Null]
 applyRule states chan k (Rule newState (i, "¡", symbol))=
   let
     w = chan!!i++symbol
@@ -39,9 +39,9 @@ applyRule states chan k (Rule newState (i, "¡", symbol))=
     newWord2 = P.reverse $ P.take k $ P.drop 1 $ P.reverse  $ w
   in
    if (P.length w > k) then
-     [Conf newState $P.map B2.pack $ replaceNth i newWord1 chan,Conf newState $ P.map B2.pack $ replaceNth i newWord2 chan]
+     [Conf newState $ replaceNth i newWord1 chan,Conf newState $ replaceNth i newWord2 chan]
    else
-     [Conf newState $P.map B2.pack $ replaceNth i w chan]
+     [Conf newState $ replaceNth i w chan]
 
 applyRule states chan k (Rule newState (i, "!", symbol))=
   let
@@ -50,16 +50,16 @@ applyRule states chan k (Rule newState (i, "!", symbol))=
     newWord2 = P.reverse $ P.take k $ P.drop 1 $ P.reverse  $ w
   in
    if (P.length w > k) then
-     [Conf newState $P.map B2.pack $ replaceNth i newWord1 chan,Conf newState $ P.map B2.pack $ replaceNth i newWord2 chan]
+     [Conf newState $replaceNth i newWord1 chan,Conf newState $ replaceNth i newWord2 chan]
    else
-     [Conf newState $P.map B2.pack $ replaceNth i w chan]
+     [Conf newState $ replaceNth i w chan]
 
 --- This is used once in the beginning, to generate a tree of rules
-createRuleTree :: [([Word8], [Word8], (Int, String, String))] -> Trie [R]
+createRuleTree :: [([Word8], [Word8], (Int, String, CWord))] -> Trie [R]
 createRuleTree [] = T.empty
 createRuleTree ((w1,w2,tuple):xs) = tAddRule (createRuleTree xs) ((pack w1,pack w2, tuple))
 
-translate :: ([(Int,Int,Int)], (Int, String, String)) -> [([Word8], [Word8], (Int, String, String))]
+translate :: ([(Int,Int,Int)], (Int, String, CWord)) -> [([Word8], [Word8], (Int, String, CWord))]
 translate (ilist,tuple) = let res = L.filter (checkPred ilist) combs in [(toW8 x, toW8 (perform ilist x), tuple) | x <- res]
 
 toW8 :: [Int] -> [Word8]
@@ -82,5 +82,5 @@ combs = sequence [[1..numStates1],[1..numStates2],[1..numStates3]]
 
 -- Help function to create empty configuration from int-list. Only needed for initial configuration and debugging
 toConf :: [Word8] -> C
-toConf l = Conf (pack l) (L.map B2.pack ["", ""])
+toConf l = Conf (pack l) ([[], []])
 

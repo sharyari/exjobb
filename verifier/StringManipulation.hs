@@ -7,12 +7,12 @@ import qualified Data.ByteString.Char8 as B2
 
 
 -- This takes out an interval of a string/List
-getWordInterval a b = (B2.take b) . B2.drop a
+getWordInterval a b = (L.take b) . L.drop a
 
 -- This is a help function for subwords
 -- This can be used as a simple version of subwords
 chooseK :: Int -> CWord -> [CWord]
-chooseK k l =  let len = B2.length l in if (len >= k) then [getWordInterval a k l | a<-[0..(len-k)]] else [l]
+chooseK k l =  let len = L.length l in if (len >= k) then [getWordInterval a k l | a<-[0..(len-k)]] else [l]
 
 -- This returns all subwords of size up to k of a word
 subwords' :: Int -> CWord -> [CWord]
