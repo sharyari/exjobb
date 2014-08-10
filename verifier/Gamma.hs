@@ -54,7 +54,7 @@ test stringset state seen = S.toList $ S.difference stringset $ findStateInTrie 
 
 gamma'' :: TNode -> TNode -> Symbols -> Int -> [Eval]
 gamma'' stringset seen symbols k =
-    L.concat $ L.map (nlonger stringset seen symbols k) (S.toList stringset)
+    S.toList $ S.fromList $ L.concat $ L.map (nlonger stringset seen symbols k) (S.toList stringset)
 
 -- This function is here only to change the order of a and b, which prevents it from being inline
 unique a b = not $ S.member b a

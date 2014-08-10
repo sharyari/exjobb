@@ -1,4 +1,4 @@
 #!/bin/bash
-time ./main +RTS -p -h -K100000000
+time ./main +RTS -p -hc -K100000000
 hp2ps main.hp
 

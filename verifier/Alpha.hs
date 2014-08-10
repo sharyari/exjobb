@@ -16,15 +16,10 @@ myFunc a b = Just (S.union a b)
 -- This function creates an empty trie, computes adds all new views and adds them to the trie and then
 -- merges the two tries to a new trie V.
 alpha (trie, seen, list) k =
-  let (newTrie, newConfs) = (alpha' trie (L.filter (ifSeen trie) $ L.filter (ifSeen seen) list) k []) in
+  let (newTrie, newConfs) = (alpha' trie  list k []) in
   (newTrie, newConfs, seen)
 
 
--- This filters away configurations already seen, avoiding the costly views function. Helps a bit
-ifSeen :: CTrie -> C -> Bool
-ifSeen _ Null = False
-ifSeen trie (Conf state chan) =
-  not $ S.member chan (fromMaybe S.empty $ T.lookup state trie)
 
 -- This function checks if a configuration has a certain state
 hasState s (Conf state chan) = (s == state)

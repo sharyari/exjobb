@@ -7,6 +7,7 @@ import Prelude as P
 import Data.Word
 import qualified Data.ByteString.Char8 as B2
 import Data.Maybe (fromMaybe, fromJust, isJust)
+import Debug.Trace
 
 import DataTypes
 import TrieModule
@@ -17,21 +18,21 @@ import StringManipulation
 -- This is the main function of the file, it will apply appropriate rules to configurations
 step :: (CTrie, CTrie, [C]) -> Trie [R] ->  Int -> (CTrie, CTrie, [C])
 step (trie, seen, confs) rules k=
-  (trie, seen, (L.concat $ P.map (applyRules rules k ) confs))
+  (trie, seen, (L.concat $ P.map (applyRules rules seen trie k ) confs))
 
 
-applyRules :: Trie [R] -> Int -> C -> [C]
-applyRules rules k Null = [Null]
-applyRules trie k (Conf states chan) =
-  let s = fromMaybe [] $ T.lookup states trie in
-  L.concat $ L.map (applyRule states chan k) s
+applyRules :: Trie [R] -> CTrie -> CTrie -> Int -> C -> [C]
+applyRules rules seen trie k Null = [Null]
+applyRules rules seen trie k (Conf states chan) =
+  let s = fromMaybe [] $ T.lookup states rules in
+  L.concat $ L.map (L.filter (ifSeen seen) . L.filter (ifSeen trie)) $ L.map (applyRule states chan k) s
 
 --applyRule :: C -> R -> C
 applyRule states chan k (Rule newState (i, "_", symbol))=
   [Conf newState chan]
 applyRule states chan k (Rule newState (i, "?", symbol)) =
   if (P.length (chan!!i) > 0 && [P.last (chan!!i)] == symbol) then
-  [Conf newState (replaceNth i (P.init (chan!!i))  chan)] else [Null]
+  [Conf newState (replaceNth i (P.init (chan!!i))  chan)] else []
 applyRule states chan k (Rule newState (i, "¡", symbol))=
   let
     w = chan!!i++symbol
@@ -50,7 +51,7 @@ applyRule states chan k (Rule newState (i, "!", symbol))=
     newWord2 = P.reverse $ P.take k $ P.drop 1 $ P.reverse  $ w
   in
    if (P.length w > k) then
-     [Conf newState $replaceNth i newWord1 chan,Conf newState $ replaceNth i newWord2 chan]
+     [Conf newState $ replaceNth i newWord1 chan,Conf newState $ replaceNth i newWord2 chan]
    else
      [Conf newState $ replaceNth i w chan]
 

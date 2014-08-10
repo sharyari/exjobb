@@ -36,6 +36,13 @@ getSize trie = L.foldl (+) 0 $ L.map (S.size . snd) $ T.toList trie
 
 findStateInTrie state trie = fromMaybe S.empty $ T.lookup state trie
 
+
+-- This filters away configurations already seen, avoiding the costly views function. Helps a bit
+ifSeen :: CTrie -> C -> Bool
+ifSeen _ Null = False
+ifSeen trie (Conf state chan) =
+  not $ S.member chan (fromMaybe S.empty $ T.lookup state trie)
+
 ------------------------------------------------------
 ------------------- SECTION RULES --------------------
 ------------------------------------------------------
