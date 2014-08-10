@@ -6,7 +6,7 @@ public class Transition {
 	private State s1;
 	private State s2;
 	private Channel ch;
-	private String symbol;
+	private int symbol;
 	private String effect;
 	private String name;
 	private Actions action;
@@ -17,7 +17,7 @@ public class Transition {
 		String str = name+" = ([";
 		str+=helpHaskell();
 		if (ch == null) {
-			str+="], (1, \"_\", \"b\"))\n";
+			str+="], (1, \"_\", []))\n";
 		} else {
 			str+= "], "+helpHaskell2()+")\n";
 		}
@@ -38,17 +38,28 @@ public class Transition {
 		return str;
 	}
 	public String helpHaskell2(){
+		int temp = symbol;
 		String str = "";
+		String tempStr = "";
 		if (ch != null)
-		str+="("+ch.getNum()+",\""+effect+"\",\""+symbol+"\")";
+		str+="("+ch.getNum()+",\""+effect+"\",[";
+		while (temp > 0){
+			tempStr+= temp%10+",";
+			temp=temp/10;
+		}
+		if (symbol != 0)
+			tempStr = tempStr.substring(0, tempStr.length()-1);
+		str+= new StringBuilder(tempStr).reverse().toString();
+		str+="])";
 		return str;
 	}
+	
 	
 	public Transition (State s1, State s2){
 		this.s1 = s1;
 		this.s2 = s2;
 		this.action = Actions.NONE;
-		ch = null; symbol = ""; effect="";
+		ch = null; symbol = 0; effect="";
 	}
 
 	public Transition (State s1, State s2, Actions a){
@@ -56,7 +67,7 @@ public class Transition {
 		this.s2 = s2;
 		this.action = a;
 		sync = false;
-		ch = null; symbol = ""; effect="";
+		ch = null; symbol = 0; effect="";
 	}
 	
 	public void setName(String name){
@@ -67,7 +78,7 @@ public class Transition {
 		return name;
 	}
 	
-	public Transition (State s1, State s2, Channel ch, String effect, String symbol){
+	public Transition (State s1, State s2, Channel ch, String effect, int symbol){
 		this.s1 = s1;
 		this.s2 = s2;
 		this.ch = ch;
@@ -92,7 +103,7 @@ public class Transition {
 	}
 	
 	public String getSymbol(){
-		return symbol;
+		return symbol+"";
 	}
 	
 	public String getEffect(){

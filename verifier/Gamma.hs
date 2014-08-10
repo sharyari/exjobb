@@ -24,12 +24,13 @@ import Debug.Trace
 -- This function takes a trie of configurations, another trie that marks the configurations
 -- which have already stepped and passes them back, with the second trie updated
 -- together with a set of configurations that can be created from that information.
-gamma :: (CTrie, CTrie) -> Symbols -> Int -> Bool -> (CTrie,CTrie, [C])
-gamma (trie, seen) symbols k b =
-  let newconfs = newConfs seen (T.toList trie) symbols k b in
+gamma :: (CTrie, [C], CTrie) -> Symbols -> Int -> Bool -> (CTrie,CTrie, [C])
+gamma (trie, new, seen) symbols k b =
+  let newconfs = if b then newConfs seen (T.toList trie) symbols k b else new in
+  if b then
     (trie,tAdd2 seen newconfs, newconfs)
-
-
+  else
+    (trie, seen, newconfs)
 -- This function creates the new configurations
 -- converting back and forth to a set is faster than "nub", seems like it is always like that
 newConfs :: CTrie -> [(State, TNode)] -> Symbols -> Int -> Bool -> [C]
@@ -65,8 +66,8 @@ nlonger stringset seen symbols k sl =
 --nlonger' :: [[ByteString]] -> Int -> [ByteString] -> [([ByteString],Int)]
 nlonger' seen stringset symbols k (-1) sl = []
 nlonger' seen stringset symbols k n sl =
-  L.filter (unique seen) $ L.filter (help' stringset k n)
-  [replaceNth n (y:(sl!!n)) sl  | y <- (symbols!!n) ]
+  (if (L.length (sl!!n) == k) then (L.filter (unique seen) $ L.filter (help' stringset k n)
+  [replaceNth n (y:(sl!!n)) sl  | y <- (symbols!!n) ]) else [])
   ++nlonger' seen stringset symbols k (n-1) sl
 
 -- This is a help function that checks whether the subviews (actually a single one) of a concretization are in the trie

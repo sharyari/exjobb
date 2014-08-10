@@ -39,7 +39,7 @@ public class Synchronize {
 		for (int i=0;i<t.size();i++)
 			str+=t.elementAt(i).helpHaskell()+",";
 		str = str.substring(0, str.length()-1);
-		str+="], (1,\"_\",\"b\")";
+		str+="], (1,\"_\",[])";
 
 		str+=")\n";
 		return str;

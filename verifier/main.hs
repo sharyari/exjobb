@@ -8,7 +8,6 @@ import Control.Monad
 import System.Exit
 import Data.Trie as T
 
-
 skriv a = putStrLn(show(a))
 
 main = getArgs >>=parse

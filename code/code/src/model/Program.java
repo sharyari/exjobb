@@ -78,7 +78,7 @@ public class Program {
 		counter++;
 	}
 
-	public void addTransition (int a, int b, Channel ch, String op, String symbol){
+	public void addTransition (int a, int b, Channel ch, String op, int j){
 		State s1=null,s2=null;
 		for (int i=0;i<states.size();i++){
 			if (states.elementAt(i).getNum() == a){
@@ -88,7 +88,7 @@ public class Program {
 				s2 = states.elementAt(i);
 			}
 		}
-		Transition t = new Transition(s1,s2, ch, op, symbol); // catch throw null!
+		Transition t = new Transition(s1,s2, ch, op, j); // catch throw null!
 		transitions.add(t);
 		t.setName(name+counter);
 		counter++;
