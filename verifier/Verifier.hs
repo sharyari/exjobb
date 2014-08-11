@@ -49,7 +49,7 @@ verify (t1,t2) rules bad initial symbols k =
 verify' :: (CTrie, [C], CTrie) -> Trie [R] -> [(Int,Word8)] -> Symbols -> Int -> Bool -> CTrie
 verify' (trie,new, seen) rules bad symbols k b =
   let
-    (newTrie, newConf, newSeen) = alpha (step (gamma (trie,new,seen) symbols k b) rules k) k
+    (newTrie, newConf, newSeen) = alpha (step (gamma (trie,new,seen) symbols k b) rules k b) k
     isSafe = L.length $ L.filter (isBadConfiguration bad) $ T.toList $ newTrie
    in
   if getSize newTrie == getSize trie && b || isSafe > 0 then

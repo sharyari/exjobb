@@ -19,7 +19,7 @@ run' :: (Set C, Set C) -> Trie [R] -> Int -> Int -> (Set C, Set C)
 run' (new,old) _ _ 0 = (new, old)
 run' (new, old) rules k i
   | new == S.empty = (S.empty, old)
-  | otherwise     = run' (iteration rules (S.toList (new S.\\ old)) k, S.union new old) rules k (i-1)
+  | otherwise  = run' (iteration rules (S.toList (new S.\\ old)) k, S.union new old) rules k (i-1)
 
 iteration :: Trie [R] -> [C] -> Int -> Set C
 iteration r c k = S.fromList (L.concat (L.map (applyRules r k) c))

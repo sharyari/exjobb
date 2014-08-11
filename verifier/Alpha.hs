@@ -17,7 +17,7 @@ myFunc a b = Just (S.union a b)
 -- merges the two tries to a new trie V.
 alpha (trie, seen, list) k =
   let (newTrie, newConfs) = (alpha' trie  list k []) in
-  traceShow (getSize trie ) $ traceShow (getSize seen) $ traceShow (L.length list) $ (newTrie, newConfs, seen)
+  (newTrie, newConfs, seen)
 
 
 

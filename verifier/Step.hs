@@ -15,15 +15,15 @@ import StringManipulation
 
 
 -- This is the main function of the file, it will apply appropriate rules to configurations
-step :: (CTrie, CTrie, [C]) -> Trie [R] ->  Int -> (CTrie, CTrie, [C])
-step (trie, seen, confs) rules k=
-  (trie, seen, (L.concat $ P.map (applyRules rules seen trie k ) confs))
+step :: (CTrie, CTrie, [C]) -> Trie [R] ->  Int -> Bool -> (CTrie, CTrie, [C])
+step (trie, seen, confs) rules k b=
+  (trie, seen, (L.concat $ P.map (applyRules rules seen trie k b ) confs))
 
 
-applyRules :: Trie [R] -> CTrie -> CTrie -> Int -> C -> [C]
-applyRules rules seen trie k (states, chan) =
+applyRules :: Trie [R] -> CTrie -> CTrie -> Int -> Bool -> C -> [C]
+applyRules rules seen trie k b (states, chan) =
   let s = fromMaybe [] $ T.lookup states rules in
-  L.filter (ifSeen seen) $ L.filter (ifSeen trie) $ L.concatMap (applyRule states chan k) s
+  if b then L.filter (ifSeen seen) $ L.filter (ifSeen trie) $ L.concatMap (applyRule states chan k) s else L.filter (ifSeen trie) $ L.concatMap (applyRule states chan k) s
 
 --applyRule :: C -> R -> C
 applyRule states chan k (Rule newState (i, "_", symbol))=
