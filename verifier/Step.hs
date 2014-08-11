@@ -8,7 +8,6 @@ import Data.Word
 import qualified Data.ByteString.Char8 as B2
 import Data.Maybe (fromMaybe, fromJust, isJust)
 import Debug.Trace
-
 import DataTypes
 import TrieModule
 import ProblemFormulation
@@ -22,17 +21,16 @@ step (trie, seen, confs) rules k=
 
 
 applyRules :: Trie [R] -> CTrie -> CTrie -> Int -> C -> [C]
-applyRules rules seen trie k Null = [Null]
-applyRules rules seen trie k (Conf states chan) =
+applyRules rules seen trie k (states, chan) =
   let s = fromMaybe [] $ T.lookup states rules in
-  L.concat $ L.map (L.filter (ifSeen seen) . L.filter (ifSeen trie)) $ L.map (applyRule states chan k) s
+  L.filter (ifSeen seen) $ L.filter (ifSeen trie) $ L.concatMap (applyRule states chan k) s
 
 --applyRule :: C -> R -> C
 applyRule states chan k (Rule newState (i, "_", symbol))=
-  [Conf newState chan]
+  [(newState, chan)]
 applyRule states chan k (Rule newState (i, "?", symbol)) =
   if (P.length (chan!!i) > 0 && [P.last (chan!!i)] == symbol) then
-  [Conf newState (replaceNth i (P.init (chan!!i))  chan)] else []
+  [(newState, replaceNth i (P.init (chan!!i))  chan)] else []
 applyRule states chan k (Rule newState (i, "¡", symbol))=
   let
     w = chan!!i++symbol
@@ -40,9 +38,9 @@ applyRule states chan k (Rule newState (i, "¡", symbol))=
     newWord2 = P.reverse $ P.take k $ P.drop 1 $ P.reverse  $ w
   in
    if (P.length w > k) then
-     [Conf newState $ replaceNth i newWord1 chan,Conf newState $ replaceNth i newWord2 chan]
+     [(newState, replaceNth i newWord1 chan),(newState,replaceNth i newWord2 chan)]
    else
-     [Conf newState $ replaceNth i w chan]
+     [(newState, replaceNth i w chan)]
 
 applyRule states chan k (Rule newState (i, "!", symbol))=
   let
@@ -51,9 +49,9 @@ applyRule states chan k (Rule newState (i, "!", symbol))=
     newWord2 = P.reverse $ P.take k $ P.drop 1 $ P.reverse  $ w
   in
    if (P.length w > k) then
-     [Conf newState $ replaceNth i newWord1 chan,Conf newState $ replaceNth i newWord2 chan]
+     [(newState, replaceNth i newWord1 chan),(newState, replaceNth i newWord2 chan)]
    else
-     [Conf newState $ replaceNth i w chan]
+     [(newState, replaceNth i w chan)]
 
 --- This is used once in the beginning, to generate a tree of rules
 createRuleTree :: [([Word8], [Word8], (Int, String, CWord))] -> Trie [R]
@@ -83,5 +81,5 @@ combs = sequence [[1..numStates1],[1..numStates2],[1..numStates3]]
 
 -- Help function to create empty configuration from int-list. Only needed for initial configuration and debugging
 toConf :: [Word8] -> C
-toConf l = Conf (pack l) ([[], []])
+toConf l = (pack l, [[], []])
 

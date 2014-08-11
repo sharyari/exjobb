@@ -7,7 +7,7 @@ import Data.HashSet as H
 
 -- Basic datatype used to work with configurations
 -- The bytestring is the set of states, the string list is the channel evaluation
-data C = Conf State Eval | Null deriving (Show, Eq, Ord)
+type C = (State, Eval)
 
 type CWord = [Word8]
 type State = B.ByteString

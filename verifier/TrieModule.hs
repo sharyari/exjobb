@@ -20,8 +20,7 @@ import Data.Maybe (fromMaybe, fromJust, isJust)
 
 --This function adds a configuration to the trie
 tAdd :: CTrie -> C ->  CTrie
-tAdd trie Null = trie
-tAdd trie (Conf key val) =
+tAdd trie (key, val) =
     T.insert key (S.insert val $ fromMaybe S.empty (T.lookup key trie)) trie
 
 tAdd2 trie  [] = trie
@@ -39,8 +38,7 @@ findStateInTrie state trie = fromMaybe S.empty $ T.lookup state trie
 
 -- This filters away configurations already seen, avoiding the costly views function. Helps a bit
 ifSeen :: CTrie -> C -> Bool
-ifSeen _ Null = False
-ifSeen trie (Conf state chan) =
+ifSeen trie (state, chan) =
   not $ S.member chan (fromMaybe S.empty $ T.lookup state trie)
 
 ------------------------------------------------------

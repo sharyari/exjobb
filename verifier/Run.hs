@@ -12,8 +12,8 @@ import Debug.Trace
 run :: ([C],[C]) -> Trie [R] -> Int -> Set C
 run (a1,a2) b c = snd (run' (S.fromList a1,S.fromList a2) b c 70)
 
-check [] = Null
-check ((Conf states chans):xs) = if ((unpack states)!!2 == 4 ) then (Conf states chans) else check xs
+--check [] = ()
+--check ((states, chans):xs) = if ((unpack states)!!2 == 4 ) then (states, chans) else check xs
 
 run' :: (Set C, Set C) -> Trie [R] -> Int -> Int -> (Set C, Set C)
 run' (new,old) _ _ 0 = (new, old)
@@ -25,24 +25,23 @@ iteration :: Trie [R] -> [C] -> Int -> Set C
 iteration r c k = S.fromList (L.concat (L.map (applyRules r k) c))
 
 applyRules :: Trie [R] -> Int -> C -> [C]
-applyRules _ _ Null = [Null]
-applyRules trie k (Conf states chan) = let s = T.lookup states trie in
+applyRules trie k (states, chan) = let s = T.lookup states trie in
   if (isJust s) then
-    [applyRule states chan x k | x <- (fromJust s)]
+    L.concat [applyRule states chan x k | x <- (fromJust s)]
   else []
 
 --applyRule :: C -> R -> C
 --applyRule Null _ = Null
-applyRule :: ByteString -> Eval -> R -> Int -> C
+applyRule :: ByteString -> Eval -> R -> Int -> [C]
 applyRule states chan (Rule newState (i, "_", symbol)) k =
-  Conf newState chan
+  [(newState, chan)]
 applyRule states chan (Rule newState (i, "?", symbol)) k =
   if (P.length (chan!!i) > 0 && [P.last (chan!!i)] == symbol) then
-  Conf newState (replaceNth i k (P.init (chan!!i))  chan) else Null
+  [(newState, replaceNth i k (P.init (chan!!i))  chan)] else []
 applyRule states chan (Rule newState (i, "¡", symbol)) k =
-  Conf newState ((replaceNth i k (chan!!i++symbol) chan))
+  [(newState, (replaceNth i k (chan!!i++symbol) chan))]
 applyRule states chan (Rule newState (i, "!", symbol)) k =
-  Conf newState ((replaceNth i k (symbol++chan!!i) chan))
+  [(newState, (replaceNth i k (symbol++chan!!i) chan))]
 
 replaceNth n k newVal l =
   let diff = (P.length newVal - k) in

@@ -21,8 +21,7 @@ import Control.Parallel.Strategies
 -- These functions should be removed and automatized, the include will then be unnecessary
 import Data.ByteString as B
 
-isBadState bad Null = False
-isBadState bad (Conf state chan) = or [index state x == y | (x,y) <- bad]
+isBadState bad (state, chan) = or [index state x == y | (x,y) <- bad]
 isBadConfiguration bad (state,eval) = or [index state x == y | (x,y) <- bad]
 
 verify :: (CTrie, CTrie) -> Trie [R] -> [(Int, Word8)] -> [Word8]-> Symbols -> Int -> CTrie

@@ -39,22 +39,16 @@ newConfs seen nodes symbols k b =
 
 -- This converts node elements back to configurations
 --createConfigurations :: ByteString -> [[ByteString]] -> [C]
-createConfigurations states eval = (Conf states eval)
+createConfigurations states eval = (states, eval)
 
 
 gamma' :: CTrie ->  (State, TNode) -> Symbols -> Int -> Bool -> [Eval]
 gamma' seen (state,stringset) symbols k b =
-  if b then
     gamma'' stringset (findStateInTrie state seen) symbols k
-  else
-     test stringset state seen
---    S.toList $ S.difference stringset $ findStateInTrie state seen
-
-test stringset state seen = S.toList $ S.difference stringset $ findStateInTrie state seen
 
 gamma'' :: TNode -> TNode -> Symbols -> Int -> [Eval]
 gamma'' stringset seen symbols k =
-    S.toList $ S.fromList $ L.concat $ L.map (nlonger stringset seen symbols k) (S.toList stringset)
+     L.concatMap (nlonger stringset seen symbols k) (S.toList stringset)
 
 -- This function is here only to change the order of a and b, which prevents it from being inline
 unique a b = not $ S.member b a

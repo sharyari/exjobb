@@ -17,26 +17,26 @@ myFunc a b = Just (S.union a b)
 -- merges the two tries to a new trie V.
 alpha (trie, seen, list) k =
   let (newTrie, newConfs) = (alpha' trie  list k []) in
-  (newTrie, newConfs, seen)
+  traceShow (getSize trie ) $ traceShow (getSize seen) $ traceShow (L.length list) $ (newTrie, newConfs, seen)
 
 
 
 -- This function checks if a configuration has a certain state
-hasState s (Conf state chan) = (s == state)
+hasState s (state, chan) = (s == state)
 -- Get functions, returns the evaluation of a configuration
-getEval (Conf state chan) = chan
+getEval (state, chan) = chan
 
 -- This is the actual alpha function. It iterates over the configurations and updates the trie with their views
 alpha' :: CTrie -> [C] -> Int -> [C] -> (CTrie,[C])
 alpha' trie [] k new = (trie,new)
-alpha' trie ((Conf state chan):xs) k new=
-  let (relevant',irrelevant) = L.partition (hasState state) ((Conf state chan):xs)
+alpha' trie ((state, chan):xs) k new=
+  let (relevant',irrelevant) = L.partition (hasState state) ((state, chan):xs)
       relevant = L.map getEval relevant'
       (ntrie, new') = (addViews trie state relevant k)
       in
         alpha' ntrie irrelevant k (new'++new)
 
-createConfigurations states eval = (Conf states eval)
+createConfigurations states eval = (states, eval)
 
 
 -- This function calls addViews' to recursively find all views of the configurations and adds them to the trie
@@ -49,7 +49,7 @@ addViews trie state chans k =
 addViews' :: [Eval] -> Int -> TNode -> TNode
 addViews' [] k node = node
 addViews' (x:chans) k node =
-  addViews' chans k (S.union node (S.fromList $  views node k x))
+  addViews' chans k $ S.union node $ S.fromList $  views node k x
 
 
 

@@ -4,7 +4,7 @@ import Data.HashSet as S
 import Data.List as L
 import DataTypes
 import qualified Data.ByteString.Char8 as B2
-
+import Debug.Trace
 
 -- This takes out an interval of a string/List
 getWordInterval a b = (L.take b) . L.drop a
@@ -28,7 +28,8 @@ views node k sl = if S.member sl node then [] else sl:views' node (k-1) sl
 
 views' :: TNode -> Int -> Eval -> [Eval]
 views' node 0 sl = []
-views' node k sl = L.concat $ L.map (views node k) (sequence $ [[sl!!0], chooseK k (sl!!1)])++L.map (views node k) (sequence $ [chooseK k (sl!!0), [sl!!1]])
+views' node k sl = let bla = (sequence $ [[sl!!0], chooseK k (sl!!1)])++(sequence $ [chooseK k (sl!!0), [sl!!1]]) in
+    L.concatMap (views node k) bla
 
 -- This is a function that replaces the nth value of a list
 replaceNth n newVal (x:xs)
