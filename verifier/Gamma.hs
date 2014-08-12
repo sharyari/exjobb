@@ -4,6 +4,7 @@ import Data.Trie as T
 import Data.HashSet as S
 import qualified Data.ByteString.Char8 as B2
 import Data.Set as Set
+import Data.HashMap.Strict as M
 
 import StringManipulation
 import TrieModule
@@ -26,7 +27,7 @@ import Debug.Trace
 -- together with a set of configurations that can be created from that information.
 gamma :: (CTrie, [C], CTrie) -> Symbols -> Int -> Bool -> (CTrie,CTrie, [C])
 gamma (trie, new, seen) symbols k b =
-  let newconfs = if b then newConfs seen (T.toList trie) symbols k b else new in
+  let newconfs = if b then newConfs seen (M.toList trie) symbols k b else new in
   if b then
     (trie,tAdd2 seen newconfs, newconfs)
   else

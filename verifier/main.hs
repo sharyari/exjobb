@@ -2,6 +2,7 @@ import Verifier
 import TrieModule
 import Step
 import ProblemFormulation
+import Data.HashMap.Strict as M
 
 import System.Environment
 import Control.Monad
@@ -21,9 +22,9 @@ exit    = exitWith ExitSuccess
 die     = exitWith (ExitFailure 1)
 
 
-verbose = verify (myTrie,T.empty) rules bad initial symbols 2
+verbose = verify (myTrie,M.empty) rules bad initial symbols 2
 normal = getSize (verbose)
 
-rules = createRuleTree (concat (map translate transitions))
-myTrie = tAdd T.empty (toConf initial)
+rules = createRuleTree (concat (Prelude.map translate transitions))
+myTrie = tAdd M.empty (toConf initial)
 myConf = ([toConf initial], [])

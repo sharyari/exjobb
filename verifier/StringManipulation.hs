@@ -28,8 +28,8 @@ views node k sl = if S.member sl node then [] else sl:views' node (k-1) sl
 
 views' :: TNode -> Int -> Eval -> [Eval]
 views' node 0 sl = []
-views' node k sl = let bla = (sequence $ [[sl!!0], chooseK k (sl!!1)])++(sequence $ [chooseK k (sl!!0), [sl!!1]]) in
-    L.concatMap (views node k) bla
+views' node k sl =
+    L.concatMap (views node k) $  (sequence $ [[sl!!0], chooseK k (sl!!1)])++(sequence $ [chooseK k (sl!!0), [sl!!1]])
 
 -- This is a function that replaces the nth value of a list
 replaceNth n newVal (x:xs)

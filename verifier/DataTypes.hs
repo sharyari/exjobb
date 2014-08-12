@@ -4,6 +4,7 @@ import Data.Word as W
 import Data.ByteString as B
 import Data.Trie as T
 import Data.HashSet as H
+import Data.HashMap.Strict as M
 
 -- Basic datatype used to work with configurations
 -- The bytestring is the set of states, the string list is the channel evaluation
@@ -15,7 +16,7 @@ type Eval = [CWord]
 type Symbols = [[Word8]]
 
 -- Short name for a configuration tree
-type CTrie = Trie TNode
+type CTrie = HashMap State TNode
 -- Short name for the nodes of a CTrie
 type TNode = HashSet Eval
 
