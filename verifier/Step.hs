@@ -83,3 +83,4 @@ combs = sequence [[1..numStates1],[1..numStates2],[1..numStates3]]
 toConf :: [Word8] -> C
 toConf l = (pack l, [[], []])
 
+

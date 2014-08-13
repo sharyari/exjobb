@@ -13,7 +13,7 @@ initial = [1,1,1]
 transitions :: [([(Int,Int,Int)], (Int,String,CWord))]
 transitions = [s3,s4,s5,s6,s7,s8,s12,s13,s14,s15,s16,s17,s21,s22,s23,s24,s25,s26,s30,s31,s32,s33,s34,s35,r0,r1,r3,r4,r6,r7,r9,r10,sync0,sync1,sync2,sync3,sync4,sync5,sync6,sync7,sync8,sync9,sync10,sync11,sync12,sync13,sync14,sync15,sync16,sync17,sync18,sync19,sync20,sync21,sync22,sync23,sync24,sync25,sync26,sync27,sync28,sync29,sync30,sync31,sync32,sync33,sync34,sync35,sync36,sync37,sync38,sync39,sync40,sync41,sync42,sync43,sync44,sync45,sync46,sync47,sync48,sync49,sync50,sync51,sync52,sync53,sync54,sync55,sync56,sync57,sync58,sync59,sync60,sync61,sync62,sync63]
 
-s3 = ([(0,2,2)], (0,"!",[0]))
+s3 = ([(0,2,2)], (0,"!",[0])) -- This one is tampered with!
 s4 = ([(0,3,3)], (0,"!",[1,0]))
 s5 = ([(0,4,4)], (0,"!",[2,1,0]))
 s6 = ([(0,2,5)], (1,"?",[0]))

@@ -21,25 +21,36 @@ import Control.Parallel.Strategies
 
 -- These functions should be removed and automatized, the include will then be unnecessary
 import Data.ByteString as B
+import Data.HashMap.Strict as M
+import Data.Maybe (fromMaybe, fromJust, isJust)
 
-isBadState bad (state, chan) = or [index state x == y | (x,y) <- bad]
+
+isBadState bad ((state, chan), parent) = or [index state x == y | (x,y) <- bad]
 isBadConfiguration bad (state,eval) = or [index state x == y | (x,y) <- bad]
+
+traceBad set initial ((state, chan)) =
+  if (state == B.empty || (state,chan) == initial) then show () else
+  traceShow ((show $ B.unpack state) ++ show (L.map (fromDigits) chan)) 
+  traceBad set initial (fromMaybe (B.empty,[]) $ M.lookup (state,chan) set)
+
+fromDigits = L.foldl addDigit 0
+   where addDigit num d = 10*num + d
 
 verify :: (CTrie, CTrie) -> Trie [R] -> [(Int, Word8)] -> [Word8]-> Symbols -> Int -> CTrie
 verify (t1,t2) rules bad initial symbols k =
   let
-    result1 = run ([toConf initial],[]) rules k                                   -- Reachability analysis
-    isSafe =  S.size $ S.filter (isBadState bad) result1                          -- Check if any bad states exist
+    result1 = run ([toConf initial]) rules k                                   -- Reachability analysis
+    isSafe =  L.filter (isBadState bad) $ M.toList result1                          -- Check if any bad states exist
     result2 = verify' (t1,[toConf initial],t2) rules bad symbols k False                             -- Create configurations
     isSafe2 = L.length $ L.filter (isBadConfiguration bad) $ M.toList result2     -- Check if any bad conifugrations exist
   in
     isSafe2 `par` isSafe `pseq`
-    if isSafe > 0 then
-      trace "Bad state entered, K= " $ traceShow k $ traceShow "" M.empty
+    if (L.length isSafe) > 0 then
+      trace ("Bad state entered, K = " ++show k) $ traceShow (traceBad result1 (toConf initial) (fst $ L.head $ isSafe)) result2
     else if isSafe2 > 0 then
-      trace "Bad configuration found with K=" $ traceShow k $ verify (t1,t2) rules bad initial symbols (k+1)
+      trace ("Bad configuration found with K = " ++show k) $ verify (t1,t2) rules bad initial symbols (k+1)
     else
-      trace "System found to be safe with K=" $ traceShow k result2
+      trace ("System found to be safe with K = "++show k) result2
 
 
 

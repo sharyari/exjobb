@@ -10,6 +10,7 @@ import Data.HashMap.Strict as M
 -- The bytestring is the set of states, the string list is the channel evaluation
 type C = (State, Eval)
 
+
 type CWord = [Word8]
 type State = B.ByteString
 type Eval = [CWord]
