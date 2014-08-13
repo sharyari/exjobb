@@ -4,55 +4,54 @@ import DataTypes
 import Data.Trie as T
 import Data.HashSet as S
 import Data.HashMap.Strict as M
-import Data.List as L
-import Data.ByteString as B
 import Data.Maybe (fromMaybe, fromJust, isJust)
 
-
-
--- Tries are used to store configurations and to store rules, the latter is static
--- Storing the rules in a trie allows for efficiently finding the relevant rules at each point
 
 
 ------------------------------------------------------
 --------------- SECTION CONFIGURATIONS ---------------
 ------------------------------------------------------
--- ([String], Bool)
 
---This function adds a configuration to the trie
-tAdd :: CMap -> C ->  CMap
-tAdd trie (key, val) =
-    M.insert key (S.insert val $ fromMaybe S.empty (M.lookup key trie)) trie
+-- This function add a configuration to the correct node in a hashmap
+mapAdd :: CMap -> C ->  CMap
+mapAdd hmap (key, val) =
+    M.insert key (S.insert val $ fromMaybe S.empty (M.lookup key hmap)) hmap
 
-tAdd2 trie  [] = trie
-tAdd2 trie (c:onfs) = tAdd2 (tAdd trie c) onfs
+-- This function mearly adds a list of configurations to a hashmap
+-- If the configurations are same-state, use mapAddList instead
+mapAddList hmap  [] = hmap
+mapAddList hmap (c:onfs) = mapAddList (mapAdd hmap c) onfs
 
-tAddList :: CMap -> B.ByteString -> MapNode -> CMap
-tAddList trie key list =
-    M.insert key (S.union list $ fromMaybe S.empty (M.lookup key trie)) trie
+-- This function adds a node to a Hashmap
+mapAddNode :: CMap -> State -> MapNode -> CMap
+mapAddNode hmap key list =
+    M.insert key (S.union list $ fromMaybe S.empty (M.lookup key hmap)) hmap
 
-tChange trie key node =
-  M.insert key node trie
+-- This function returns the accumulated size of the nodes in a hashmap, ie. the
+-- number of configurations.
+getSize hmap = Prelude.foldl (+) 0 $ Prelude.map (S.size . snd) $ M.toList hmap
 
-getSize trie = L.foldl (+) 0 $ L.map (S.size . snd) $ M.toList trie
+-- This function returns the node of a hashmap given a key.
+findNodeInMap state hmap = fromMaybe S.empty $ M.lookup state hmap
 
 
-findStateInTrie state trie = fromMaybe S.empty $ M.lookup state trie
-
-
--- This filters away configurations already seen, avoiding the costly views function. Helps a bit
+-- This filters away configurations already seen, avoiding the costly views function.
 ifSeen :: CMap -> C -> Bool
-ifSeen trie (state, chan) =
-  not $ S.member chan (fromMaybe S.empty $ M.lookup state trie)
+ifSeen hmap (state, chan) =
+  not $ S.member chan (fromMaybe S.empty $ M.lookup state hmap)
 
 ------------------------------------------------------
 ------------------- SECTION RULES --------------------
 ------------------------------------------------------
+-- This function add a rule to a rule-trie
+tAddRule :: RuleTrie -> (State,State, (Int, String, CWord)) -> RuleTrie
+tAddRule trie (key, newState, chmod) =
+    T.insert key ((newState, chmod):(fromMaybe [] $ T.lookup key trie)) trie
 
-tAddRule trie (key,newState,chmod) = let s = T.lookup key trie in
-  if (isJust s) then
-    T.insert key ((newState, chmod):fromJust s) trie
-  else T.insert key ([(newState, chmod)]) trie
-
+-- This function adds a list of rules to a trie
+tAddRuleList :: RuleTrie -> [(State,State, (Int, String, CWord))] -> RuleTrie
 tAddRuleList trie [] = trie
 tAddRuleList trie (h:l) = tAddRuleList (tAddRule trie h) l
+
+-- This function returns the node of a trie given a key.
+findNodeInTrie state hmap = fromMaybe [] $ T.lookup state hmap

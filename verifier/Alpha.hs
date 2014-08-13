@@ -22,10 +22,10 @@ alpha' (x:xs) k (confs,new,seen) =
   let
     state = fst x
     (relevant',irrelevant) = L.partition (\y -> (fst y) == (fst x)) (x:xs)
-    (newConfs, new') = addViews' (L.map snd relevant') k (findStateInTrie state confs, [])
+    (newConfs, new') = addViews' (L.map snd relevant') k (findNodeInMap state confs, [])
   in
     alpha' irrelevant k
-    (tChange confs state newConfs, L.zip (takeRepeat state) new' ++ new, seen) -- This line would fail if there would be more than 1M equal-state
+    (mapAddNode confs state newConfs, L.zip (takeRepeat state) new' ++ new, seen) -- This line would fail if there would be more than 1M equal-state
 
 -- This function finds the views of a Configuration and adds them to a set
 addViews' :: [Eval] -> Int -> (MapNode,[Eval]) -> (MapNode,[Eval])

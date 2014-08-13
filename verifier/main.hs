@@ -1,6 +1,6 @@
 import Verifier
 import TrieModule
-import Step
+import UnOrdered
 import ProblemFormulation
 import Data.HashMap.Strict as M
 
@@ -26,5 +26,5 @@ verbose = verify (myTrie,M.empty) rules bad initial symbols 2
 normal = getSize (verbose)
 
 rules = createRuleTree (concat (Prelude.map translate transitions))
-myTrie = tAdd M.empty (toConf initial)
+myTrie = mapAdd M.empty (toConf initial)
 myConf = ([toConf initial], [])
