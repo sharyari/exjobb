@@ -1,5 +1,5 @@
 package model;
 
 public enum StateType {
-INITIAL,NORMAL,ACCEPTING,BAD
+	INITIAL,NORMAL,ACCEPTING,BAD
 }

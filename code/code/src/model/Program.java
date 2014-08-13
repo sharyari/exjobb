@@ -10,12 +10,28 @@ public class Program {
 	private int number;
 	private String name;
 	
+	// Constructor
 	public Program(String name){
 		this.name= name; //Name is used to create function names
 	}
-	
+
+	//////////////////////
+	////GET DEPARTMENT////
+	//////////////////////
 	public String getName(){
 		return name; 
+	}
+	
+	public int getNumber(){
+		return number;
+	}
+	
+	public State getInitial() {
+		return initial;
+	}
+	
+	public Vector<Transition> getTransitions() {
+		return transitions;
 	}
 	
 	public void addState(State s){
@@ -24,22 +40,21 @@ public class Program {
 		states.add(s);
 	}
 	
-	public State getInitial() {
-		return initial;
-	}
-	
-	// Programs are enumerated when added to a model, all states must be updated
+
+	//////////////////////
+	////SET DEPARTMENT////
+	//////////////////////
 	public void setNumber(int n) {
 		number = n;
+		// Programs are enumerated when added to a model, all states must be updated
 		for(int i=0;i<states.size();i++){
 			states.elementAt(i).setInProgram(number);
 		}
 	}
 	
-	public int getNumber(){
-		return number;
-	}
-		
+	//////////////////////////////
+	////// ADD DEPARTMENT ////////
+	//////////////////////////////
 	public void addTransition(Transition t){
 		transitions.add(t);
 		t.setName(name+counter);
@@ -94,18 +109,18 @@ public class Program {
 		counter++;
 	}
 
-	
+	public void addTransition(Vector<Transition> t){
+		transitions.addAll(t);
+	}
+
 	public void addState(Vector<State> s){
 		states.addAll(s);
 	}
 	
-	public void addTransition(Vector<Transition> t){
-		transitions.addAll(t);
-	}
-	
-	public Vector<Transition> getTransitions() {
-		return transitions;
-	}
+	//////////////////////////////////
+	////// STRING MANIPULATION ///////
+	/////////////////////////////////
+
 
 	public String toString(){
 		String str = "";

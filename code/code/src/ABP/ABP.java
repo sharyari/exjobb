@@ -36,13 +36,13 @@ class ABP {
 
 		
 		sender.addTransition(1, 2,Actions.SND);
-		sender.addTransition(2, 2, m, "!", "a");
-		sender.addTransition(2, 2, a, "?", "b");
-		sender.addTransition(2, 3, a, "?", "a");
+		sender.addTransition(2, 2, m, "!", 0);
+		sender.addTransition(2, 2, a, "?", 1);
+		sender.addTransition(2, 3, a, "?", 0);
 		sender.addTransition(3, 4,Actions.SND);
-		sender.addTransition(4, 4, m, "!", "b");
-		sender.addTransition(4, 4, a, "?", "a");
-		sender.addTransition(4, 1, a, "?", "b");
+		sender.addTransition(4, 4, m, "!", 1);
+		sender.addTransition(4, 4, a, "?", 0);
+		sender.addTransition(4, 1, a, "?", 1);
 
 		
 
@@ -51,13 +51,13 @@ class ABP {
 		receiver.addState(new State(3));
 		receiver.addState(new State(4));
 
-		receiver.addTransition(1, 2, m, "?", "a");
-		receiver.addTransition(1, 1, m, "?", "b");
-		receiver.addTransition(1, 1, a, "!", "b");
+		receiver.addTransition(1, 2, m, "?", 0);
+		receiver.addTransition(1, 1, m, "?", 1);
+		receiver.addTransition(1, 1, a, "!", 1);
 		receiver.addTransition(2, 3,Actions.RCV);
-		receiver.addTransition(3, 4, m, "?", "b");
-		receiver.addTransition(3, 3, m, "?", "a");
-		receiver.addTransition(3, 3, a, "!", "a");
+		receiver.addTransition(3, 4, m, "?", 1);
+		receiver.addTransition(3, 3, m, "?", 0);
+		receiver.addTransition(3, 3, a, "!", 0);
 		receiver.addTransition(4, 1,Actions.RCV);
 	
 

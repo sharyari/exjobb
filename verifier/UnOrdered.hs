@@ -56,6 +56,10 @@ checkPred ((a,b,c):l) il = if ((il!!a) /= b ) then False else checkPred l il
 combs :: [[Int]]
 combs = sequence [[1..numStates1],[1..numStates2],[1..numStates3]]
 
+rules = createRuleTree (Prelude.concat (Prelude.map translate transitions))
+myTrie = mapAdd M.empty (toConf initial)
+myConf = ([toConf initial], [])
+
 
 -- Help function to create empty configuration from int-list. Only needed for initial configuration and debugging
 toConf :: CWord -> C

@@ -11,17 +11,59 @@ public class Transition {
 	private String name;
 	private Actions action;
 	
-	public String toHaskell(){
-		if (sync)
-			return "";
-		String str = name+" = ([";
-		str+=helpHaskell();
-		if (ch == null) {
-			str+="], (1, \"_\", []))\n";
-		} else {
-			str+= "], "+helpHaskell2()+")\n";
-		}
-		return str;
+	//////////////////////////////////////////////
+	/////////////// CONSTRUCTORS /////////////////
+	//////////////////////////////////////////////
+	
+	public Transition (State s1, State s2, Channel ch, String effect, int symbol){
+		this.s1 = s1;
+		this.s2 = s2;
+		this.ch = ch;
+		this.symbol = symbol;
+		this.effect = effect;
+		this.action = Actions.NONE;
+	}
+	
+	public Transition (State s1, State s2){
+		this.s1 = s1;
+		this.s2 = s2;
+		this.action = Actions.NONE;
+		ch = null; symbol = 0; effect="";
+	}
+
+	public Transition (State s1, State s2, Actions a){
+		this.s1 = s1;
+		this.s2 = s2;
+		this.action = a;
+		sync = false;
+		ch = null; symbol = 0; effect="";
+	}
+	
+	//////////////////////////////////////////////
+	////////////// GET DEPARTMENT ////////////////
+	//////////////////////////////////////////////
+
+	
+	public int getS1(){
+		return s1.getNum();
+	}
+	
+	public int getS2(){
+		return s2.getNum();
+	}
+	
+	public String getSymbol(){
+		return symbol+"";
+	}
+	
+	public String getEffect(){
+		return effect;
+	}
+	
+	public String getChannel(){
+		if (ch == null)
+			return null;
+		return ""+ch.getNum();
 	}
 	
 	public boolean isSynchronized(){
@@ -31,7 +73,37 @@ public class Transition {
 	public Actions getAction() {
 		return action;
 	}
+
+	public String getName(){
+		return name;
+	}
+
+
+	//////////////////////////////////////////////
+	////////////// SET DEPARTMENT ////////////////
+	//////////////////////////////////////////////
 	
+	public void setName(String name){
+		this.name = name;
+	}
+	
+	//////////////////////////////////////////////
+	/////////////// MANIPULATION (////////////////
+	//////////////////////////////////////////////
+
+	public void synchronize(){
+		sync = true;
+	}
+	
+	
+	//////////////////////////////////////////////
+	//////////// STRING MANIPULATION /////////////
+	//////////////////////////////////////////////
+	
+	public String toString() {
+		return (s1 + " " + ch + " " + s2);
+	}
+
 	public String helpHaskell(){
 		String str = "";
 		str+="("+s1.getInProgram()+","+s1.getNum()+","+s2.getNum()+")";
@@ -54,65 +126,19 @@ public class Transition {
 		return str;
 	}
 	
-	
-	public Transition (State s1, State s2){
-		this.s1 = s1;
-		this.s2 = s2;
-		this.action = Actions.NONE;
-		ch = null; symbol = 0; effect="";
+	public String toHaskell(){
+		if (sync)
+			return "";
+		String str = name+" = ([";
+		str+=helpHaskell();
+		if (ch == null) {
+			str+="], (1, \"_\", []))\n";
+		} else {
+			str+= "], "+helpHaskell2()+")\n";
+		}
+		return str;
 	}
 
-	public Transition (State s1, State s2, Actions a){
-		this.s1 = s1;
-		this.s2 = s2;
-		this.action = a;
-		sync = false;
-		ch = null; symbol = 0; effect="";
-	}
-	
-	public void setName(String name){
-		this.name = name;
-	}
-	
-	public String getName(){
-		return name;
-	}
-	
-	public Transition (State s1, State s2, Channel ch, String effect, int symbol){
-		this.s1 = s1;
-		this.s2 = s2;
-		this.ch = ch;
-		this.symbol = symbol;
-		this.effect = effect;
-		this.action = Actions.NONE;
-	}
-	public void synchronize(){
-		sync = true;
-	}
-	
-	public String toString() {
-		return (s1 + " " + ch + " " + s2);
-	}
-		
-	public int getS1(){
-		return s1.getNum();
-	}
-	
-	public int getS2(){
-		return s2.getNum();
-	}
-	
-	public String getSymbol(){
-		return symbol+"";
-	}
-	
-	public String getEffect(){
-		return effect;
-	}
 
-	public String getChannel(){
-		if (ch == null)
-			return null;
-		return ""+ch.getNum();
-	}
 }
+
