@@ -1,51 +1,38 @@
 module Alpha where
-import Data.Trie as T
 import Data.HashSet as S
-import Data.Set as S2
 import DataTypes
 import TrieModule
 import StringManipulation
+import UnOrdered
 import Data.List as L
-import Data.Maybe (fromMaybe, fromJust, isJust)
-import Debug.Trace
-
--- This is a function used for merging the trees.
-myFunc a b = Just (S.union a b)
 
 
--- This function creates an empty trie, computes adds all new views and adds them to the trie and then
--- merges the two tries to a new trie V.
-alpha (trie, seen, list) k =
-  let (newTrie, newConfs) = (alpha' (trie,[])  list k) in
-  (newTrie, newConfs, seen)
+-- This is alpha. Alpha just calls alpha'. All this function does is to abstract internal
+-- ugliness from the outside world.
+alpha :: (CMap, CMap, [C]) -> Int -> (CMap,[C],CMap)
+alpha (confs, seen, list) k =
+  alpha' list k (confs,[],seen)
 
-
-
--- This function checks if a configuration has a certain state
-hasState s (state, chan) = (s == state)
--- Get functions, returns the evaluation of a configuration
-getEval (state, chan) = chan
-
--- This is the actual alpha function. It iterates over the configurations and updates the trie with their views
-alpha' :: (CTrie, [C]) -> [C] -> Int -> (CTrie,[C])
-alpha' (trie,new) [] k = (trie,new)
-alpha' (trie,new) ((state, chan):xs) k=
+-- This is the actual alpha function. It will look at the list of new configuration, and take
+-- out all with the same state, and the send them to the function addViews which will calculate
+-- their views and add them to a set. Then, alpha' merges that with the old set.
+alpha' :: [C] -> Int -> (CMap, [C], CMap) -> (CMap,[C],CMap)
+alpha' [] k (confs,new,seen) = (confs,new,seen)
+alpha' (x:xs) k (confs,new,seen) =
   let
-    (relevant',irrelevant) = L.partition (hasState state) ((state, chan):xs)
-    (ntrie, new') = addViews' (L.map getEval relevant') k (findStateInTrie state trie, [])
+    state = fst x
+    (relevant',irrelevant) = L.partition (\y -> (fst y) == (fst x)) (x:xs)
+    (newConfs, new') = addViews' (L.map snd relevant') k (findStateInTrie state confs, [])
   in
-    alpha' (tChange trie state ntrie, (L.map (createConfigurations state) new')++new) irrelevant k
+    alpha' irrelevant k
+    (tChange confs state newConfs, L.zip (takeRepeat state) new' ++ new, seen) -- This line would fail if there would be more than 1M equal-state
 
-createConfigurations states eval = (states, eval)
-
-
-
--- This function finds the views of a function and adds them to a set
-addViews' :: [Eval] -> Int -> (TNode,[Eval]) -> (TNode,[Eval])
+-- This function finds the views of a Configuration and adds them to a set
+addViews' :: [Eval] -> Int -> (MapNode,[Eval]) -> (MapNode,[Eval])
 addViews' [] k (node,new) = (node, new)
-addViews' (x:chans) k (node,n) =
-  let new = views node k x in
-  addViews' chans k (S.union node $ S.fromList $ new, new++n)
+addViews' (x:chans) k (node,new) =
+  let newViews = views node k x in
+  addViews' chans k (S.union node $ S.fromList $ newViews, newViews++new)
 
 
 

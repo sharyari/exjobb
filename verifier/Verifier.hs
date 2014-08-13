@@ -30,13 +30,13 @@ isBadConfiguration bad (state,eval) = or [index state x == y | (x,y) <- bad]
 
 traceBad set initial ((state, chan)) =
   if (state == B.empty || (state,chan) == initial) then show () else
-  traceShow ((show $ B.unpack state) ++ show (L.map (fromDigits) chan)) 
+  traceShow ((show $ B.unpack state) ++ show (L.map (fromDigits) chan))
   traceBad set initial (fromMaybe (B.empty,[]) $ M.lookup (state,chan) set)
 
 fromDigits = L.foldl addDigit 0
    where addDigit num d = 10*num + d
 
-verify :: (CTrie, CTrie) -> Trie [R] -> [(Int, Word8)] -> [Word8]-> Symbols -> Int -> CTrie
+verify :: (CMap, CMap) -> RuleTrie -> [(Int, Word8)] -> [Word8]-> Symbols -> Int -> CMap
 verify (t1,t2) rules bad initial symbols k =
   let
     result1 = run ([toConf initial]) rules k                                   -- Reachability analysis
@@ -58,7 +58,7 @@ verify (t1,t2) rules bad initial symbols k =
 -- It is divided into two almost identical functions:
 -- If gamma gets false, it does the cheaper operation of only stepping (b=False)
 -- If gamma gets true, it creates the longer words (b=True). As long as possible, only step
-verify' :: (CTrie, [C], CTrie) -> Trie [R] -> [(Int,Word8)] -> Symbols -> Int -> Bool -> CTrie
+verify' :: (CMap, [C], CMap) -> RuleTrie -> [(Int,Word8)] -> Symbols -> Int -> Bool -> CMap
 verify' (trie,new, seen) rules bad symbols k b =
   let
     (newTrie, newConf, newSeen) = alpha (step (gamma (trie,new,seen) symbols k b) rules k b) k

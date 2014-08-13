@@ -1,62 +1,44 @@
 module Run where
 import DataTypes
-import Data.Trie as T
-import Prelude as P
-import Data.Maybe (fromMaybe, fromJust, isJust)
-import Data.List as L
+import UnOrdered
 
-import Data.ByteString
+import Prelude as P
+import Data.Trie as T
 import Data.HashMap.Strict as S
 import qualified Data.ByteString.Char8 as B2
-import Debug.Trace
+import Data.Maybe (fromMaybe, fromJust, isJust)
 
-run :: ([C]) -> Trie [R] -> Int -> HashMap C C
-run (a1) b c = run' (S.fromList (L.zip a1 (L.take 4 $ repeat (B2.empty,[]))),S.empty) b c 70
+-- This function will step configurations until no new ones are created any more.
+run :: [C] -> RuleTrie -> Int -> HashMap C C
+run list rules k = run' (S.fromList (P.zip list (takeRepeat (B2.empty,[]))),S.empty) rules k
 
---check [] = ()
---check ((states, chans):xs) = if ((unpack states)!!2 == 4 ) then (states, chans) else check xs
-
-
-run' :: (HashMap C C, HashMap C C) -> Trie [R] -> Int -> Int -> HashMap C C
-run' (new,old) _ _ 0 =  old
-run' (new, old) rules k i
+-- This function takes a list of configurations, and takes a step. It then calls itself with
+-- the newfound configurations as input. If no configurations are found, it stops and returns
+-- a hashmap containing all found configurations.
+run' :: (HashMap C C, HashMap C C) -> RuleTrie -> Int -> HashMap C C
+run' (new, old) rules k
   | new == S.empty = old
-  | otherwise  = 
-  let new' = S.difference (iteration rules (S.toList new) k) new in  
-    run' (new', S.union old new') rules k (i-1)
-
-iteration :: Trie [R] -> [(C,C)] -> Int -> HashMap C C
-iteration r c k = S.fromList (L.concat (L.map (applyRules r k) c))
-
-applyRules :: Trie [R] -> Int -> (C,C) -> [(C,C)]
-applyRules trie k ((states, chan), parent) =
+  | otherwise  =
   let
-    s = T.lookup states trie
+    new' = S.difference (S.fromList $ P.concatMap (applyRules rules k) $ S.toList new) old
   in
-    if (isJust s) then
-      L.concat [applyRule states chan parent x k | x <- (fromJust s)]
-    else []
-
---applyRule :: C -> R -> C
---applyRule Null _ = Null
-applyRule :: ByteString -> Eval -> C -> R -> Int -> [(C,C)]
-applyRule states chan parent (Rule newState (i, "_", symbol)) k =
-  [((newState, chan), (states, chan))]
-applyRule states chan parent (Rule newState (i, "?", symbol)) k =
-  if (P.length (chan!!i) > 0 && [P.last (chan!!i)] == symbol) then
-  [((newState, (replaceNth i k (P.init (chan!!i))  chan)) ,(states, chan))] else []
-applyRule states chan parent (Rule newState (i, "¡", symbol)) k =
-  [((newState, (replaceNth i k (chan!!i++symbol) chan)), (states, chan))]
-applyRule states chan parent (Rule newState (i, "!", symbol)) k =
-  [((newState, (replaceNth i k (symbol++chan!!i) chan)), (states, chan))]
+    run' (new', S.union old new') rules k
 
 
-replaceNth n k newVal l =
-  let diff = (P.length newVal - k) in
-  if (diff > 0) then replaceNth' n (L.take k newVal) l
-   else replaceNth' n newVal l
+applyRules :: RuleTrie -> Int -> (C,C) -> [(C,C)]
+applyRules trie k ((states, chan), parent) =
+  P.concatMap (applyRule states chan k) (fromMaybe [] $ T.lookup states trie)
 
--- This is a function that replaces the nth value of a list
-replaceNth' n newVal (x:xs)
-  | n == 0 = newVal:xs
-  | otherwise = x:replaceNth' (n-1) newVal xs
+
+applyRule :: State -> Eval -> Int -> Rule -> [(C,C)]
+applyRule states chan k (newState, (i, tr, symbol))
+  | tr == "_" =
+    [((newState, chan), (states, chan))]
+  | tr == "?" && P.length (chan!!i) > 0 && [P.last (chan!!i)] == symbol =
+    [((newState, (replaceNth i (P.init (chan!!i))  chan)) ,(states, chan))]
+  | tr == "¡" =
+    [((newState, (replaceNth i (P.take k $ chan!!i++symbol) chan)), (states, chan))]
+  | tr == "!" =
+    [((newState, (replaceNth i (P.take k $ symbol++chan!!i) chan)), (states, chan))]
+  | otherwise = []
+

@@ -17,9 +17,9 @@ type Eval = [CWord]
 type Symbols = [[Word8]]
 
 -- Short name for a configuration tree
-type CTrie = HashMap State TNode
+type CMap = HashMap State MapNode
 -- Short name for the nodes of a CTrie
-type TNode = HashSet Eval
+type MapNode = HashSet Eval
 
 
 -- Basic datatype to apply rules
@@ -28,5 +28,5 @@ type TNode = HashSet Eval
 -- op = ! => append the symbol to the beginning of the chNum:th channel
 -- op = ¡ => append the symbol to the end of the chNum:th channel (used for stacks/lifo)
 -- op = - => leave channels unchanged
-data R = Rule B.ByteString (Int, String, [Word8]) deriving (Show, Eq, Ord)
-
+type Rule = (State, (Int, String, [Word8]))
+type RuleTrie = Trie [Rule]

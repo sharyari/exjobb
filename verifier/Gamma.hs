@@ -9,6 +9,7 @@ import Data.HashMap.Strict as M
 import StringManipulation
 import TrieModule
 import DataTypes
+import UnOrdered
 
 import Debug.Trace
 
@@ -25,7 +26,7 @@ import Debug.Trace
 -- This function takes a trie of configurations, another trie that marks the configurations
 -- which have already stepped and passes them back, with the second trie updated
 -- together with a set of configurations that can be created from that information.
-gamma :: (CTrie, [C], CTrie) -> Symbols -> Int -> Bool -> (CTrie,CTrie, [C])
+gamma :: (CMap, [C], CMap) -> Symbols -> Int -> Bool -> (CMap,CMap, [C])
 gamma (trie, new, seen) symbols k b =
   let newconfs = if b then newConfs seen (M.toList trie) symbols k b else new in
   if b then
@@ -34,7 +35,7 @@ gamma (trie, new, seen) symbols k b =
     (trie, seen, newconfs)
 -- This function creates the new configurations
 -- converting back and forth to a set is faster than "nub", seems like it is always like that
-newConfs :: CTrie -> [(State, TNode)] -> Symbols -> Int -> Bool -> [C]
+newConfs :: CMap -> [(State, MapNode)] -> Symbols -> Int -> Bool -> [C]
 newConfs seen nodes symbols k b =
   (L.concat [L.map (createConfigurations (fst x)) (gamma' seen x symbols k b) | x <- nodes])
 
@@ -43,18 +44,18 @@ newConfs seen nodes symbols k b =
 createConfigurations states eval = (states, eval)
 
 
-gamma' :: CTrie ->  (State, TNode) -> Symbols -> Int -> Bool -> [Eval]
+gamma' :: CMap ->  (State, MapNode) -> Symbols -> Int -> Bool -> [Eval]
 gamma' seen (state,stringset) symbols k b =
     gamma'' stringset (findStateInTrie state seen) symbols k
 
-gamma'' :: TNode -> TNode -> Symbols -> Int -> [Eval]
+gamma'' :: MapNode -> MapNode -> Symbols -> Int -> [Eval]
 gamma'' stringset seen symbols k =
      L.concatMap (nlonger stringset seen symbols k) (S.toList stringset)
 
 -- This function is here only to change the order of a and b, which prevents it from being inline
 unique a b = not $ S.member b a
 
---nlonger :: TNode -> [[ByteString]] -> [([ByteString],Int)]
+--nlonger :: MapNode -> [[ByteString]] -> [([ByteString],Int)]
 nlonger stringset seen symbols k sl =
   nlonger' seen stringset symbols k (L.length sl-1) sl
 

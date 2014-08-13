@@ -20,14 +20,14 @@ import Data.Maybe (fromMaybe, fromJust, isJust)
 -- ([String], Bool)
 
 --This function adds a configuration to the trie
-tAdd :: CTrie -> C ->  CTrie
+tAdd :: CMap -> C ->  CMap
 tAdd trie (key, val) =
     M.insert key (S.insert val $ fromMaybe S.empty (M.lookup key trie)) trie
 
 tAdd2 trie  [] = trie
 tAdd2 trie (c:onfs) = tAdd2 (tAdd trie c) onfs
 
-tAddList :: CTrie -> B.ByteString -> TNode -> CTrie
+tAddList :: CMap -> B.ByteString -> MapNode -> CMap
 tAddList trie key list =
     M.insert key (S.union list $ fromMaybe S.empty (M.lookup key trie)) trie
 
@@ -41,7 +41,7 @@ findStateInTrie state trie = fromMaybe S.empty $ M.lookup state trie
 
 
 -- This filters away configurations already seen, avoiding the costly views function. Helps a bit
-ifSeen :: CTrie -> C -> Bool
+ifSeen :: CMap -> C -> Bool
 ifSeen trie (state, chan) =
   not $ S.member chan (fromMaybe S.empty $ M.lookup state trie)
 
@@ -51,8 +51,8 @@ ifSeen trie (state, chan) =
 
 tAddRule trie (key,newState,chmod) = let s = T.lookup key trie in
   if (isJust s) then
-    T.insert key ((Rule newState chmod):fromJust s) trie
-  else T.insert key ([Rule newState chmod]) trie
+    T.insert key ((newState, chmod):fromJust s) trie
+  else T.insert key ([(newState, chmod)]) trie
 
 tAddRuleList trie [] = trie
 tAddRuleList trie (h:l) = tAddRuleList (tAddRule trie h) l
