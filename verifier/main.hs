@@ -7,12 +7,14 @@ import Data.HashMap.Strict as M
 import System.Environment
 import Control.Monad
 import System.Exit
-
+import Data.IORef
 
 skriv a = putStrLn(show(a))
 
 main = do
   getArgs >>=parse
+
+
 
 parse ["-h"] = usage   >> exit
 parse ["-v"] = skriv (verbose) >> exit

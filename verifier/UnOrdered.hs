@@ -34,8 +34,8 @@ traceBad set initial ((state, chan)) =
 ------------------------------------------------------
 --------------- SECTION INITIALIZATION ---------------
 ------------------------------------------------------
-createRuleTree :: [(CWord, CWord, (Int, String, CWord))] -> RuleTrie
-createRuleTree [] = T.empty
+createRuleTree :: [(CWord, CWord, (Int, String, CWord))] -> RuleMap
+createRuleTree [] = M.empty
 createRuleTree ((w1,w2,tuple):xs) = tAddRule (createRuleTree xs) ((B.pack w1,B.pack w2, tuple))
 
 translate :: ([(Int,Int,Int)], (Int, String, CWord)) -> [(CWord, CWord, (Int, String, CWord))]

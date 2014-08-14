@@ -44,14 +44,14 @@ ifSeen hmap (state, chan) =
 ------------------- SECTION RULES --------------------
 ------------------------------------------------------
 -- This function add a rule to a rule-trie
-tAddRule :: RuleTrie -> (State,State, (Int, String, CWord)) -> RuleTrie
-tAddRule trie (key, newState, chmod) =
-    T.insert key ((newState, chmod):(fromMaybe [] $ T.lookup key trie)) trie
+tAddRule :: RuleMap -> (State,State, (Int, String, CWord)) -> RuleMap
+tAddRule rmap (key, newState, chmod) =
+    M.insert key ((newState, chmod):(fromMaybe [] $ M.lookup key rmap)) rmap
 
 -- This function adds a list of rules to a trie
-tAddRuleList :: RuleTrie -> [(State,State, (Int, String, CWord))] -> RuleTrie
-tAddRuleList trie [] = trie
-tAddRuleList trie (h:l) = tAddRuleList (tAddRule trie h) l
+tAddRuleList :: RuleMap -> [(State,State, (Int, String, CWord))] -> RuleMap
+tAddRuleList rmap [] = rmap
+tAddRuleList rmap (h:l) = tAddRuleList (tAddRule rmap h) l
 
 -- This function returns the node of a trie given a key.
-findNodeInTrie state hmap = fromMaybe [] $ T.lookup state hmap
+findNodeInTrie state hmap = fromMaybe [] $ M.lookup state hmap

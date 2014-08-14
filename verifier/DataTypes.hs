@@ -29,4 +29,4 @@ type MapNode = HashSet Eval
 -- op = ¡ => append the symbol to the end of the chNum:th channel (used for stacks/lifo)
 -- op = - => leave channels unchanged
 type Rule = (State, (Int, String, [Word8]))
-type RuleTrie = Trie [Rule]
+type RuleMap = HashMap State [Rule]

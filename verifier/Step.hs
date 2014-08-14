@@ -8,13 +8,13 @@ import TrieModule
 import UnOrdered
 
 -- This function applies rules on a list of concretizations to create new configurations
-step :: (CMap, CMap, [C]) -> RuleTrie ->  Int -> Bool -> (CMap, CMap, [C])
+step :: (CMap, CMap, [C]) -> RuleMap ->  Int -> Bool -> (CMap, CMap, [C])
 step (confs, seen, newConfs) rules k b=
   (confs, seen, (concatMap (applyRules rules seen confs k b ) newConfs))
 
 -- This function takes a concretization and applies all relevant rules upon it
 -- it then concatenates the result
-applyRules :: RuleTrie -> CMap -> CMap -> Int -> Bool -> C -> [C]
+applyRules :: RuleMap -> CMap -> CMap -> Int -> Bool -> C -> [C]
 applyRules rules seen trie k b (state, chan) =
   if b
   then

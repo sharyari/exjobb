@@ -80,30 +80,32 @@ In a best-case scenario, there would be an equal number of configurations for ev
 
 % Det går inte att beskriva rule-delen här, för det är mer beroende av tries.
 \subsection{Even less naive algorithm}
-\subsubsection{Trie}
-Above it was suggested that the set V could be divided into several sets, distinguished by control-states. The number of control-states in a system is finite and unique; For a system with \e{n} processes, the number of states is $\prod\limits_{i=1}^n|p_i|$. In such a situation, it is possible to use a hash table and provide a hash function that achieves perfect hashing. In this project, we have chosen instead to use a data structure known as a \e{trie}. A trie is an ordered tree data structure, indexed by a string value (i.e. the control state). Doing this has is merely a matter of style, there are no advantages over a hash map other than the hash function being implicit, and that a tree-like structure is less abstract that a hash map, thus being simpler to visualize. In figure \ref{triemerge}, we give an example of performing the $V := V' \cup V$ in a trie.
+\subsubsection{Control-State Partitioning}
+Above it was suggested that the set V could be divided into several sets, distinguished by control-states. The number of control-states in a system is finite and unique; For a system with \e{n} processes, the number of states is $\prod\limits_{i=1}^n|p_i|$. This makes it possible to partition the set of configurations into several smaller disjoint sets, such that all configurations in a set have equal control-state. These sets can be stored in a hashmap indexed by control-state. 
 
-\begin{figure}
-\includegraphics[width=400pt] {bilder/triemerge.png}
-\caption{This picture shows the union of two tries. In this case, there are two processes, the first of which has two states (0 and 1) and the second has three states (0,1 and 2). The union of the trie is the union of their leaves. In the picture, the content of the leaves (0,0) in both threes is made explicit.}
-\label{triemerge}
-\end{figure}
+%\begin{figure}
+%\includegraphics[width=400pt] {bilder/triemerge.png}
+%\caption{This picture shows the union of two tries. In this case, there are two processes, the first of which has two states (0 and 1) and the second has three states (0,1 and 2). The union of the trie is the union of their leaves. In the picture, the content of the leaves (0,0) in both threes is made explicit.}
+%\label{triemerge}
+%\end{figure}
 
 
-\subsubsection{Using the Trie}
-Using the above mentioned data structure, each node in the trie can be a \e{Set} with equal-state configurations, addressed by the common control-state. Compared to the previous solution, this leads to a speed-up when inserting, retrieving and looking for the existence of elements in the sets, as the size of the sets will be smaller than before. Retrieving and inserting nodes into the trie is done in \e{O(n)} where \e{n} is the number of processes in the system.
+\subsubsection{Advantages of Partitioning}
+Using this partitioning, each node in the hashmap is a \e{Set} with equal-state configurations, addressed by the common control-state. Compared to the previous solution, this leads to a speed-up when inserting, retrieving and looking for the existence of elements in the sets, as the size of the sets will be smaller than before. Retrieving and inserting nodes into the hashmap is done in constant time in practice (the number of elements will be static, avoiding the need of resizing the hashmap).
 
-Having divided the configurations into groups according to control-states, consider the act of applying a rule in order to create a new configuration. Recall that any rule has a state-predicate, a channel-predicate, a state-event and a channel-event. If the predicates are fulfilled, a new configuration can be created by applying the events to the current configuration.
+Having partitioned the configurations, consider the act of applying a rule in order to create a new configuration. Recall that any rule has a state-predicate, a channel-predicate, a state-event and a channel-event. If the predicates are fulfilled, a new configuration can be created by applying the events to the current configuration.
 
-We show that by organizing the set of \e{rules} or transitions in a certain way in a trie, one can ensure that the state-predicate is fulfilled without specifically testing for it. A state-predicate is a (possible empty) predicate on the states of the processes in the system, requiring that one or more processes are in a specific state. It is therefore possible to generate a static trie of rules, addressed again by control-states. Considering a transition $t_2$ with no requirements on any processes, the state-predicate will be fulfilled by any configuration, thus a corresponding rule is created in every node of the tree. Consider then instead a transition $t_2$ with requirements on all the processes in the system, i.e. there is only one valid control-state. Such a transition corresponds to a single rule in the node addressed by that control-state. Last, consider a transition $t_3$ with requirements on a true subset of the processes in the system, then the transition can be taken from a number of control-states. These control states can be generated, and the transition will correspond to a set of rules in the nodes corresponding to those control-states.
+By organizing the set of \e{rules} or transitions in a similar way in a hashmap of rules, we can ensure that the state-predicate is fulfilled without specifically testing for it. A state-predicate is a (possible empty) predicate on the states of the processes in the system, requiring that one or more processes are in a specific state. It is therefore possible to generate a static hashmap of rules, addressed again by control-states.
 
-\paragraph{Example.} Consider the alternating bit protocol, as described in \ref{REFERERA DEN MED OBSERVER}. The system has three processes \e{Sender}, \e{Receiver} and \e{Observer} with 4, 4 and 3 states respectively. Consider then the transition with the predicates that the sender is in state 3, the observer in state 3 and they may take the synchronized transition with the action \e{Snd} to states 4 and 2 respectively. This transition has no requirements on the receiver, thus it corresponds to four rules, (3,1,3)->(4,1,2), (3,2,3)->(4,2,2), (3,3,3)->(4,3,2), (3,4,3)->(4,4,2). These rules are inserted in the nodes (3,1,3), (3,2,3), (3,3,3) and (3,4,3).
+Considering a transition $t_2$ with no requirements on any processes, the state-predicate will be fulfilled by any configuration, thus a corresponding rule is created in every node of the tree. Consider then instead a transition $t_2$ with requirements on all the processes in the system, i.e. there is only one valid control-state. Such a transition corresponds to a single rule in the node addressed by that control-state. Last, consider a transition $t_3$ with requirements on a true subset of the processes in the system, then the transition can be taken from a number of control-states. These control states can be generated, and the transition will correspond to a set of rules in the nodes corresponding to those control-states.
+
+\paragraph{Example.} Consider yet again the alternating bit protocol, as described in \ref{REFERERA DEN MED OBSERVER}. The system has three processes \e{Sender}, \e{Receiver} and \e{Observer} with 4, 4 and 3 states respectively. Consider then the transition with the predicates that the sender is in state 3, the observer in state 3 and they may take the synchronized transition with the action \e{Snd} to states 4 and 2 respectively. This transition has no requirements on the receiver, thus it corresponds to four rules, (3,1,3)->(4,1,2), (3,2,3)->(4,2,2), (3,3,3)->(4,3,2), (3,4,3)->(4,4,2). These rules are inserted in the nodes (3,1,3), (3,2,3), (3,3,3) and (3,4,3).
 
 There is a small one-time cost of creating the rule tree, but after creation, it is highly effective. The division by itself ensures that the state-predicate is fulfilled, if not, we never even attempt to apply the rule to a configuration. We illustrate this in figure \ref{applyrule} 
 
 \begin{figure}
 \includegraphics[width=400pt] {bilder/applyrule.png}
-\caption{This picture shows the union of two tries. In this case, there are two processes, the first of which has two states (0 and 1) and the second has three states (0,1 and 2). The union of the trie is the union of their leaves. In the picture, the content of the leaves (0,0) in both threes is made explicit.}
+\caption{This picture shows the process of applying rules. For each control-state, each rules with that state are applied on each configuration with the same state. This will generate new configurations, not necessarily with the same control-state. This is visualized in a tree, rather than a hashmap, only since hashmap are less intuitive to draw.}
 \label{applyrule}
 \end{figure}
 
@@ -139,16 +141,20 @@ There is a small one-time cost of creating the rule tree, but after creation, it
 
 
 \subsection{Final subsection}
-An efficient algorithm in this context is largely an algorithm that avoids performing unnecessary calculations. This can either be done by avoiding to create unnecessary configurations such as was done with the rule-trie above or by avoiding re-calculating previously calculated results. The algorithm as described above reproduces its steps each iteration; if a configuration \e{c} can be extended to a concretization \e{con} at any point in the verification process, then \e{con} can and will be created in every following iteration. This includes checking whether \e{$\alpha_k(con) \subset V$}, applying a set of rules to the configuration and then adding all the views of the resulting configurations to the set. Each time the calculations are performed, the result will be duplicates and no new views are added to the system.
+An efficient algorithm in this context is largely an algorithm that avoids performing unnecessary calculations. This can either be done by avoiding to create unnecessary configurations such as was done with the rule hashmap above or by avoiding re-calculating previously calculated results. The algorithm as described above reproduces its steps each iteration; if a configuration \e{c} can be extended to a concretization \e{con} at any point in the verification process, then \e{con} can and will be created in every following iteration. This includes checking whether \e{$\alpha_k(con) \subset V$}, applying a set of rules to the configuration and then adding all the views of the resulting configurations to the set. Each time the calculations are performed, the result will be duplicates and no new views are added to the system.
 
-We solve this by maintaining another trie, \e{seen}, of configurations in parallell, containing exactly those concretization that have been accepted. If a configuration \e{c} can be extended to the concretization \e{con}, then we first check if \e{con} is an element of seen. If it is, we discard \e{con}, otherwise we add \e{con} to \e{seen} and also to the set of concretizations to be evaluated in this iteration.
+We solve this by maintaining another hashmap, \e{seen}, of configurations in parallell, containing exactly those concretization that have been accepted. If a configuration \e{c} can be extended to the concretization \e{con}, then we first check if \e{con} is an element of seen. If it is, we discard \e{con}, otherwise we add \e{con} to \e{seen} and also to the set of concretizations to be evaluated in this iteration.
 
 Yet another source of repetition is the fact that there are multiple ways to create the same channel evaluations. Therefore, after a rule has been applied to a concretization, it may result in a configuration already in the set. Instead of performing the costly $\alpha$-calculation, we first check if the newly created configuration is not in fact a duplicate by checking if it is already in \e{V}. If so, the configuration can again be discarded.
 
 The final algorithm amounts to the following pseudo-code representation:
 
+\subsection{Reachability Analysis}
+An intricate part of the verification process is to perform a reachability analaysis, looking for bad states. 
+\todo{Wouldn't this be the same as the algorithm above, but without the creation of concretizations and not alloweing words larger than k??? I could re-use all code}.
+
 \subparagraph{Finding Minimal Traces}
-When running the verification too, if a bad state is found we want to produce a trace leading up to the bad state. Preferably, this would be a minimal trace that leads to the bad state.
+When running the verification, if a bad state is found we want to produce a trace leading up to the bad state. Preferably, this would be a minimal trace that leads to the bad state.
  
 The proposed verification method generates a finite set of reachable states (nodes in this context), but it does not record the available transitions between the nodes (i.e. the edges). It is possible to for each node \e{n} to save all nodes \e{n} from which an edge to \e{n'} exists, and thus build the complete reachability graph of the problem. There exists efficient algorithms to solve such a problem, e.g. \e{dijkstra shortest path}, or even the shortest path between any two nodes, e.g. flow-network techniques. Although these algorithms are efficient, building the complete reachability graph would be costly in terms of memory space, as the number of edges may be much larger than the number of states.
 

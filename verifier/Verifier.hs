@@ -13,7 +13,7 @@ import DataTypes
 import Run
 import UnOrdered
 
-verify :: (CMap, CMap) -> RuleTrie -> [(Int, Word8)] -> [Word8]-> Symbols -> Int -> CMap
+verify :: (CMap, CMap) -> RuleMap -> [(Int, Word8)] -> [Word8]-> Symbols -> Int -> CMap
 verify (t1,t2) rules bad initial symbols k =
   let
     result1 = run ([toConf initial]) rules k                                   -- Reachability analysis
@@ -33,7 +33,7 @@ verify (t1,t2) rules bad initial symbols k =
 -- It is divided into two almost identical functions:
 -- If gamma gets false, it does the cheaper operation of only stepping (b=False)
 -- If gamma gets true, it creates the longer words (b=True). As long as possible, only step
-verify' :: (CMap, [C], CMap) -> RuleTrie -> [(Int,Word8)] -> Symbols -> Int -> Bool -> CMap
+verify' :: (CMap, [C], CMap) -> RuleMap -> [(Int,Word8)] -> Symbols -> Int -> Bool -> CMap
 verify' (trie,new, seen) rules bad symbols k b =
   let
     (newTrie, newConf, newSeen) = alpha (step (gamma (trie,new,seen) symbols k b) rules k b) k
