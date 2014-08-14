@@ -27,9 +27,11 @@ In this rest of this section, we show how to implement this algorithm in an effi
 
 
 \subsection{Naive algorithm}
-A naive way to generate configurations would be to perform the described operations in a way corresponding directly to the mathematical notations in section \ref{alphagamma}. This is possible, as most programming languages have built-in datastructures that support set operations. A transition in the transition system corresponds to one or more \e{rules} in the implementation. A rule \e{r} $\in$ \e{R} is a description of a transition, seen as a set of state-predicates, channel-predicates, state-effects and channel-effects.If all predicates are true for a configuration \e{c}, the effects of the rule are applied to \e{c} resulting in a post-value \e{c'}. 
+A naive way to generate configurations would be to perform the described operations such that they correspond directly to the mathematical notations as described in section \ref{alphagamma}. This is possible, as most programming languages have built-in datastructures that support set operations.
 
-In this naive approach, all configurations are stored in a \e{set}, such that each configuration is stored uniquely. For each element \e{c} of the set \e{V}, the function \e{gamma}, \e{step} and \e{alpha} are performed in order, until a fix-point is reached. Assuming that a set of channel symbols and a set of rules \e{R} describing the transitions are known, the algorithm does the following:
+A transition in the transition system corresponds to one or more \e{rules} in the implementation. A rule \e{r} $\in$ \e{R} is a description of a transition, seen as a set of state-predicates, channel-predicates, state-effects and channel-effects.If all predicates are true for a configuration \e{c}, the effects of the rule are applied to \e{c} resulting in a post-value \e{c'}.
+
+In this naive approach, all configurations are stored in a \e{set}, such that each configuration is stored uniquely. For each element \e{c} of the set \e{V}, the function \e{gamma}, \e{step} and \e{alpha} are performed in order, until a \e{fix-point} is reached, i.e. continuing the process does not result in any more configurations being found. Assuming that a set of channel symbols and a set of rules \e{R} describing the transitions are known, the algorithm does the following:
 
 \begin{enumerate}
 \item
@@ -42,11 +44,11 @@ Generate the $post(V)$: For every \e{con} $\in$ $\Gamma(V)$, \e{r} $\in$ \e{R}, 
 Generate Apost(V): For each element \e{p} $\in$ \e{post(V)}, compute its views of size \e{k}. If \e{V'} $\cup$ \e{V} = \e{V}, a fixpoint has been reached, otherwise the processes repeats with \e{V} := \e{V} $\cup$ \e{V'}.
 \end{enumerate}
 
-The bottle-neck in this algorithm lies in \e{gamma}. It first creates all potential concretizations of a configuration \e{c}, i.e. all combinations of channel evaluations where at least one of the channels is of a larger size than in \e{c}. Additionaly, for each of these, all their views must be computed in order to determine whether the concretization should be refuted or not. Although this method is correct, there is significant overlap of concretizations; it is often possible to create the same concretization \e{con} in several ways, and each time, $\alpha_k{con}$, \e{post(con)} and \e{Apost(con)} are calculated. In the next section, we show abstractions of the functions \e{alpha} and \e{gamma} that are less computationally expensive.
+The bottle-neck in this algorithm lies in \e{gamma}. It first creates all potential concretizations of a configuration \e{c}, i.e. all combinations of channel evaluations where at least one of the channels is of a larger size than in \e{c}. Additionaly, for each of these, all their views must be computed in order to determine whether the concretization should be refuted or not. Although this method is correct, there is significant overlap of concretizations; it is often possible to create the same concretization \e{con} in several ways, and each time, $\alpha_k{con}$, \e{post(con)} and \e{Apost(con)} need be performed. In the next section, we show abstractions of the functions \e{alpha} and \e{gamma} that are less computationally expensive.
 
 
 \subsection{Solution}
-We look closer at $\gamma$, in order to address the issues mentioned above. We will show that all concretizations can be found, while considering only a subset of the potential concretizations. Furthermore, it is possible to determine whether a concretization should be refuted or not, while computing only a subset of its views. 
+We look closer at $\gamma$, in order to address the issues mentioned above. We show that all concretizations can be found, while considering only a subset of the potential concretizations. Furthermore, it is possible to determine whether a concretization should be accepted or not, examining only a subset of its views. 
 
 \paragraph{Abstracting the concretizations.}
 Given a configuration \e{c}, with channel evaluations $\xi$ such that all channels have size smaller or equal to \e{k}, a potential concretization of \e{c} is any configuration \e{con} such that \e{con} can be created from \e{c} by appending a symbol to at least one of the channels of \e{c}. As this is a large number of potential configurations, it is desireable to consider only a subset thereof, while still ensuring that all valid concretizations are eventually found.
@@ -69,14 +71,12 @@ size($w_i$)=$k$ if size($\xi(ch)$) $\geq$ $k$
 size($w_i$)= size($\xi(ch)$) if size($\xi(ch)$) < $k$.
 \end{itemize}
 
-\subparagraph{Example.} Suppose we want to determine whether \e{c} = $\conf{S, abc, de}$ is an element of $\gamma_2$. It is then sufficient to check that $\conf{S,ab,de}$ and $\conf{S,bc ,de}$ are in \e{V}.
+\subparagraph{Example.} Suppose we want to determine whether the potential concretization \e{con} = $\conf{S, abc, de}$ is an element of $\gamma_2$. It is then sufficient to check that $c_1$ = $\conf{S,ab,de}$ and $c_2$ = $\conf{S,bc ,de}$ are in \e{V}. The potential concretization must have been created from either $c1$ or $c_2$. Because of this, it is always sufficient to check for the existence of a single configuration, to determine wether \e{con} should be accepted.
 \\\\
 
 Using these abstraction, the computational complexity of the verifier is greatly reduced, but there are yet several ways to optimize the procedure. The bottle-neck with the procedure at its current state is the choice of a \e{Set} as lone data structure to store configurations. We expect the number of configurations to grow rather large, due to state-space explotion which cannot be avoided automatically (in certain cases, it could be reduced by further abstraction of the model under testing or by removing unnecessary redundancy in the model). Assuming the Set is ordered, inserting an element to the set and finding an element in the set is done in \e{O(log n)} where \e{n} is the number of elements in the set. As a consequence, the function \e{alpha} which determines whether the views of a certain configuration are in the set has complexity $O(p \cdot log n)$ where \e{p} = $|\alpha_k(c)$. We observe that by definition, a view (and a configuration) is of type \e{(S $\times$ $\xi$)}. For any configuration \e{c} = $\conf{s}{\xi}$, it's views will be of the type $\conf{s}{\xi'}$, i.e., the configuration and its views have identical control-parts. It is therefore reasonable to divide the single \e{Set} into a Set of \e{Set}s, where each \e{Set} corresponds to a specific control-state. With such a division, it is sufficient to check whether the views of a configuration reside in the \e{Set} that corresponds to its control-state.
 
 In a best-case scenario, there would be an equal number of configurations for every state in the system. The complexity of checking whether $\alpha_k(c)$ $\in$ $V$ is reduced to $O(p \cdot log (n/s))$ where \e{s} denotes the number of states in the system. The gains of these modifications in terms of computational complexity is difficult to determine, as the number of configurations with a certain control-state are not necessarily well-distributed, but we anticipate that the gains in many cases will be close to the best case scenario.
-
-
 
 % Det går inte att beskriva rule-delen här, för det är mer beroende av tries.
 \subsection{Even less naive algorithm}

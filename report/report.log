@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014/Debian) (preloaded format=pdflatex 2014.6.13)  5 AUG 2014 11:28
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014/Debian) (preloaded format=pdflatex 2014.6.13)  14 AUG 2014 13:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1080,6 +1080,9 @@ LaTeX Warning: Label `fig:in' multiply defined.
 LaTeX Warning: Label `sub@fig:in' multiply defined.
 
 
+LaTeX Warning: Label `euclid' multiply defined.
+
+
 ! Package natbib Error: Bibliography not compatible with author-year citations.
 
 (natbib)                Press <return> to continue in numerical citation style.
@@ -1089,9 +1092,11 @@ See the natbib package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.138 ...and\NAT@force@numbers{}\NAT@force@numbers
+l.144 ...and\NAT@force@numbers{}\NAT@force@numbers
                                                   
-? 
+Check the bibliography entries for non-compliant syntax,
+or select author-year BibTeX style, e.g. plainnat
+
 )
 \openout1 = `report.aux'.
 
@@ -1179,7 +1184,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
  (./introduction.tex [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
 Package hyperref Info: bookmark level for unknown todo defaults to 0 on input l
 ine 3.
 
@@ -1303,7 +1308,7 @@ Overfull \hbox (32.17831pt too wide) in paragraph at lines 3--3
  []
 
 
-LaTeX Warning: Marginpar on page 2 moved.
+LaTeX Warning: Marginpar on page 3 moved.
 
 
 Overfull \hbox (11.45975pt too wide) in paragraph at lines 5--5
@@ -1406,7 +1411,7 @@ Overfull \hbox (1.7399pt too wide) in paragraph at lines 5--5
  []
 
 
-LaTeX Warning: Marginpar on page 2 moved.
+LaTeX Warning: Marginpar on page 3 moved.
 
 ) (./definitions.tex
 LaTeX Font Info:    Try loading font information for T1+cmss on input line 11.
@@ -1420,7 +1425,7 @@ Overfull \hbox (65.2279pt too wide) in paragraph at lines 11--15
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[2] [3] [4]
+[3] [4] [5]
 Overfull \hbox (0.76097pt too wide) in paragraph at lines 117--117
 \T1/cmr/m/n/12 case?  
  []
@@ -1440,7 +1445,7 @@ Overfull \hbox (0.76097pt too wide) in paragraph at lines 117--117
 \T1/cmr/m/n/12 case?  
  []
 
-) (./problem.tex) (./model.tex [5]
+) (./problem.tex) (./model.tex [6]
 Overfull \hbox (2.65355pt too wide) in paragraph at lines 37--37
 \T1/cmr/m/n/12 really 
  []
@@ -1593,7 +1598,7 @@ Overfull \hbox (6.89558pt too wide) in paragraph at lines 44--44
  []
 
 
-LaTeX Warning: Marginpar on page 6 moved.
+LaTeX Warning: Marginpar on page 7 moved.
 
 
 Overfull \hbox (5.91252pt too wide) in paragraph at lines 46--46
@@ -1636,9 +1641,9 @@ Overfull \hbox (2.00095pt too wide) in paragraph at lines 46--46
  []
 
 
-LaTeX Warning: Marginpar on page 6 moved.
+LaTeX Warning: Marginpar on page 7 moved.
 
-[6]) (./extensions.tex [7]
+[7]) (./extensions.tex [8]
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 21.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
@@ -1646,15 +1651,15 @@ File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 21.
- [8]
+ [9]
 
 Package caption Warning: \label without proper \caption on input line 69.
 See the caption package documentation for explanation.
 
 
-LaTeX Warning: Reference `abpobserver' on page 9 undefined on input line 58.
+LaTeX Warning: Reference `abpobserver' on page 10 undefined on input line 58.
 
-[9]) (./implementation.tex [10]
+[10]) (./implementation.tex [11]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
 put line 7.
 LaTeX Font Info:    Try loading font information for T1+cmtt on input line 9.
@@ -1721,7 +1726,7 @@ Overfull \hbox (4.60727pt too wide) in paragraph at lines 26--26
 \T1/cmr/m/n/12 When 
  []
 
-[11] [12]
+[12] [13]
 Underfull \hbox (badness 10000) in paragraph at lines 72--74
 
  []
@@ -1731,7 +1736,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 72--74
 
  []
 
-[13] <bilder/triemerge.png, id=285, 984.67876pt x 651.43375pt>
+[14] <bilder/triemerge.png, id=295, 984.67876pt x 651.43375pt>
 File: bilder/triemerge.png Graphic file (type png)
 
 <use bilder/triemerge.png>
@@ -1742,15 +1747,12 @@ Overfull \hbox (2.51501pt too wide) in paragraph at lines 87--88
 [][] 
  []
 
-[14]
+[15]
 
-LaTeX Warning: Reference `REFERERA DEN MED OBSERVER' on page 15 undefined on in
+LaTeX Warning: Reference `REFERERA DEN MED OBSERVER' on page 16 undefined on in
 put line 100.
 
-
-LaTeX Warning: Reference `applyrule' on page 15 undefined on input line 102.
-
-<bilder/applyrule.png, id=294, 1000.73875pt x 638.385pt>
+<bilder/applyrule.png, id=304, 1000.73875pt x 638.385pt>
 File: bilder/applyrule.png Graphic file (type png)
 
 <use bilder/applyrule.png>
@@ -1761,31 +1763,25 @@ Overfull \hbox (2.51501pt too wide) in paragraph at lines 105--106
 [][] 
  []
 
-[15 <./bilder/triemerge.png>] [16 <./bilder/applyrule.png>] [17])
+[16 <./bilder/triemerge.png>] [17 <./bilder/applyrule.png>] [18])
 Overfull \hbox (44.37318pt too wide) in paragraph at lines 312--312
 [][] 
  []
 
-(./report.bbl [18])
+(./report.bbl [19])
 
 Package caption Warning: Unused \captionsetup[lstlisting] on input line 21.
 See the caption package documentation for explanation.
 
-[19]
+[20]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 318.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 318.
  (./report.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 318.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 318.
+Package rerunfilecheck Info: File `report.out' has not changed.
+(rerunfilecheck)             Checksum: 3504127A8D773A511F86AA3CA3DF5E20;1558.
 
-
-Package rerunfilecheck Warning: File `report.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `report.out':
-(rerunfilecheck)             Before: CF8E276B027A5BBC4C390185461DBC55;1492
-(rerunfilecheck)             After:  3504127A8D773A511F86AA3CA3DF5E20;1558.
 
 LaTeX Warning: There were undefined references.
 
@@ -1795,10 +1791,10 @@ LaTeX Warning: There were multiply-defined labels.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 318.
  ) 
 Here is how much of TeX's memory you used:
- 24176 strings out of 493113
- 459229 string characters out of 6137488
- 589644 words of memory out of 5000000
- 27046 multiletter control sequences out of 15000+600000
+ 24178 strings out of 493113
+ 459252 string characters out of 6137488
+ 589047 words of memory out of 5000000
+ 27047 multiletter control sequences out of 15000+600000
  22217 words of font info for 55 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  62i,13n,92p,1499b,1113s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1821,10 +1817,10 @@ e/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf/fonts/type1/
 public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm
 1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfss1095.pfb></usr/share
 /texmf/fonts/type1/public/cm-super/sfti1200.pfb>
-Output written on report.pdf (19 pages, 411023 bytes).
+Output written on report.pdf (20 pages, 411250 bytes).
 PDF statistics:
- 415 PDF objects out of 1000 (max. 8388607)
- 348 compressed objects within 4 object streams
- 90 named destinations out of 1000 (max. 500000)
- 303 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 425 PDF objects out of 1000 (max. 8388607)
+ 357 compressed objects within 4 object streams
+ 91 named destinations out of 1000 (max. 500000)
+ 311 words of extra memory for PDF output out of 10000 (max. 10000000)
 
