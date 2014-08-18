@@ -7,7 +7,7 @@ import UnOrdered
 import Data.List as L
 import Data.Ord
 import Data.HashMap.Strict as M
-
+import Debug.Trace
 -- This is alpha. Alpha just calls alpha'. All this function does is to abstract internal
 -- ugliness from the outside world.
 alpha :: (CMap, CMap, [C]) -> Int -> (CMap,[C],CMap)
