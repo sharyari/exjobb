@@ -2,7 +2,6 @@ module DataTypes where
 --import Data.Set as S
 import Data.Word as W
 import Data.ByteString as B
-import Data.Trie as T
 import Data.HashSet as H
 import Data.HashMap.Strict as M
 

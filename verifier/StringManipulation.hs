@@ -4,20 +4,19 @@ import Data.HashSet as S
 import DataTypes
 import qualified Data.ByteString.Char8 as B2
 import Debug.Trace
-import Data.List
+import Data.List as L
 -- This is a help function for subwords
 -- This can be used as a simple version of subwords
 chooseK :: Int -> CWord -> [CWord]
 chooseK k l =
-    let len = length l in
-    if (len >= k)
+    if (length l > k)
     then
-      Prelude.map (\x -> (take k . drop x) l)  [0..(len-k)]
+      L.map (\x -> (take k . drop x) l)  [0..(length l-k)]
     else
-      [l]
+      []
 
-subwords 0 l = []
-subwords k l = chooseK k l ++ subwords (k-1) l
+
+
 
 -- This returns all views of a configuration, with the states abstracted (as views does not affect them)
 -- views and views' call eachother; views checks if an evaluation is already in the node, if it is, ignore it,
@@ -35,7 +34,4 @@ views node k sl =
 views' :: MapNode -> Int -> Eval -> [Eval]
 views' node 0 sl = []
 views' node k sl =
-    concatMap (views node k) $ 
-      (sequence $ [[sl!!0], chooseK k (sl!!1)])
-      ++
-      (sequence $ [chooseK k (sl!!0), [sl!!1]])
+    concatMap (views node k) (sequence [[sl!!0], chooseK k (sl!!1)] ++ sequence [chooseK k (sl!!0), [sl!!1]])
