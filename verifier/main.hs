@@ -25,6 +25,6 @@ exit    = exitWith ExitSuccess
 die     = exitWith (ExitFailure 1)
 
 
-verbose = verify (myTrie,M.empty) rules bad initial symbols 2
+verbose = verify (myTrie,M.empty) rules bad initial symbols 1
 normal =
   getSize (verbose)
