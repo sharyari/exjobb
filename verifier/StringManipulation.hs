@@ -34,4 +34,9 @@ views node k sl =
 views' :: MapNode -> Int -> Eval -> [Eval]
 views' node 0 sl = []
 views' node k sl =
-    concatMap (views node k) (sequence [[sl!!0], chooseK k (sl!!1)] ++ sequence [chooseK k (sl!!0), [sl!!1]])
+    concatMap (views node k) $ concatMap sequence [test x k sl | x <- [0..(L.length sl-1)]]
+--(sequence [[sl!!0], chooseK k (sl!!1)] ++ sequence [chooseK k (sl!!0), [sl!!1]])
+
+test _ k [] = []
+test 0 k (s:sl) = (chooseK k s):test (-1) k sl
+test n k (s:sl) =  [s]:test (n-1) k sl

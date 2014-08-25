@@ -59,11 +59,10 @@
 		public String toHaskell(){
 			String str = "module ProblemFormulation where\n";
 			str+="import Data.Word\n";
-			str+="import qualified Data.ByteString.Char8 as B2\n";
-			str+="import Data.List as L\n\n\n";
+			str+="import DataTypes\n\n\n";
 			
-			
-			str += "\nsymbols = L.map (L.map B2.pack) [";
+			str += "symbols :: Symbols";
+			str += "\nsymbols = [";
 			for (int i=0;i< channels.size();i++){
 				str+="["+channels.elementAt(i).getSymbols()+"],";
 			}
@@ -78,7 +77,7 @@
 			str = str.substring(0, str.length()-1);
 			str +="]\n";
 
-			str+= "\ntransitions :: [([(Int,Int,Int)], (Int,String,String))]";
+			str+= "\ntransitions :: [([(Int,Int,Int)], (Int,String,CWord))]";
 			str+="\ntransitions = [";
 			String str2 = "";
 			for (int i=0;i<programs.size();i++){
@@ -99,6 +98,12 @@
 			for (int i=0;i<sync.size();i++){
 				str+= sync.elementAt(i).toHaskell();
 			}
+			str+= "bad :: [(Int, Word8)]";
+			str+= "\nbad = [";
+			for (int i=0;i<programs.size();i++)
+				str+=programs.elementAt(i).printBad();
+			str = str.substring(0, str.length()-1);
+			str+= "]";
 			
 			
 		return str;

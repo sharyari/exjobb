@@ -20,10 +20,10 @@ class ABP {
 		mod.addChannel(m);
 		mod.addChannel(a);
 
-		m.addSymbol("a");
-		m.addSymbol("b");
-		a.addSymbol("a");
-		a.addSymbol("b");
+		m.addSymbol(0);
+		m.addSymbol(1);
+		a.addSymbol(0);
+		a.addSymbol(1);
 		
 		Program sender = new Program("s");
 		Program receiver = new Program("r");

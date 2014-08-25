@@ -39,7 +39,7 @@ createRuleTree [] = M.empty
 createRuleTree ((w1,w2,tuple):xs) = tAddRule (createRuleTree xs) ((B.pack w1,B.pack w2, tuple))
 
 translate :: ([(Int,Int,Int)], (Int, String, CWord)) -> [(CWord, CWord, (Int, String, CWord))]
-translate (ilist,tuple) = let res = Prelude.filter (checkPred ilist) combs in [(toW8 x, toW8 (perform ilist x), tuple) | x <- res]
+translate (ilist,tuple) = let res = Prelude.filter (checkPred ilist) (combs numStates) in [(toW8 x, toW8 (perform ilist x), tuple) | x <- res]
 
 toW8 :: [Int] -> CWord
 toW8 [] = []
@@ -53,8 +53,11 @@ checkPred :: [(Int, Int, Int)] -> [Int] -> Bool
 checkPred [] _ = True
 checkPred ((a,b,c):l) il = if ((il!!a) /= b ) then False else checkPred l il
 
-combs :: [[Int]]
-combs = sequence [[1..numStates1],[1..numStates2],[1..numStates3]]
+combs' :: Int -> [Int]
+combs' x = [1..x]
+
+combs :: [Int] -> [[Int]]
+combs ints = sequence $ Prelude.map combs' ints
 
 rules = createRuleTree (Prelude.concat (Prelude.map translate transitions))
 myTrie = mapAdd M.empty (toConf initial)

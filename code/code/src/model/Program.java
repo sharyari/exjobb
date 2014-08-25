@@ -103,7 +103,7 @@ public class Program {
 				s2 = states.elementAt(i);
 			}
 		}
-		Transition t = new Transition(s1,s2, ch, op, j); // catch throw null!
+		Transition t = new Transition(s1,s2, ch, op, j);
 		transitions.add(t);
 		t.setName(name+counter);
 		counter++;
@@ -120,7 +120,14 @@ public class Program {
 	//////////////////////////////////
 	////// STRING MANIPULATION ///////
 	/////////////////////////////////
-
+	public String printBad() {
+		String str = "";
+		for (int i=0;i<states.size();i++){
+			if (states.elementAt(i).getType() == StateType.BAD)
+				str += "("+number+","+states.elementAt(i).getNum()+"),";
+		}
+		return str;
+	}
 
 	public String toString(){
 		String str = "";

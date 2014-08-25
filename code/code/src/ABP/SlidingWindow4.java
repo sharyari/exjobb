@@ -21,14 +21,14 @@ public class SlidingWindow4 {
 		mod.addChannel(m);
 		mod.addChannel(a);
 		
-		m.addSymbol("0");
-		m.addSymbol("1");
-		m.addSymbol("2");
-		m.addSymbol("3");
-		a.addSymbol("0");
-		a.addSymbol("1");
-		a.addSymbol("2");
-		a.addSymbol("3");
+		m.addSymbol(0);
+		m.addSymbol(1);
+		m.addSymbol(2);
+		m.addSymbol(3);
+		a.addSymbol(0);
+		a.addSymbol(1);
+		a.addSymbol(2);
+		a.addSymbol(3);
 		
 		// CREATE PROGRAMS
 		Program sender = new Program("s");

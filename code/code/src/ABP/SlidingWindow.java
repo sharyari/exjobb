@@ -23,12 +23,12 @@ public class SlidingWindow {
 		mod.addChannel(m);
 		mod.addChannel(a);
 		
-		m.addSymbol("0");
-		m.addSymbol("1");
-		m.addSymbol("2");
-		a.addSymbol("0");
-		a.addSymbol("1");
-		a.addSymbol("2");
+		m.addSymbol(0);
+		m.addSymbol(1);
+		m.addSymbol(2);
+		a.addSymbol(0);
+		a.addSymbol(1);
+		a.addSymbol(2);
 
 		// CREATE PROGRAMS
 		Program sender = new Program("s");

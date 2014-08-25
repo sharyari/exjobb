@@ -121,6 +121,9 @@ public class Transition {
 		}
 		if (symbol != 0)
 			tempStr = tempStr.substring(0, tempStr.length()-1);
+		else
+			tempStr +=""+0;
+		
 		str+= new StringBuilder(tempStr).reverse().toString();
 		str+="])";
 		return str;
