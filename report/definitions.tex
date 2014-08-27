@@ -1,4 +1,5 @@
 \section{Definitions and Terms}
+\label{definitions}
 Before formally defining a channel system, we present a simple protocol, the \emph{alternating bit protocol}. This protocol will continuously serve to examplify the theoretical concepts in this section in a practical setting. The formal definition below is associated to systems operating on FIFO buffers, other types of systems are covered in section \ref{extensions}. 
 
 \paragraph{Alternating Bit Protocol.} The Alternating Bit Protocol (ABP) is a distributed protocol for transmitting data from a \e{sender} to a \e{receiver} in a network. The protocol uses two unbounded channels, $ch_M$ used to transmit messages and $ch_A$ to transmit \e{acknowledgements} of received messages. The sender sends a message with sequence number \e{x} $\in$ \{0,1\} to the receiver over channel $ch_M$, who upon reception sends an acknowledgement with the same sequence number over channel $ch_A$. Both the sender and the receiver may send the same message (with the same sequence number) repeatedly. When the sender receives an acknowledgement from the receiver, the next message can be sent using the sequence number \e{1-x} (thus the name Alternating Bit Protocol).
@@ -114,6 +115,7 @@ At times we may use a notation for a configuration \e{c} with explicit processes
 Let $c = \conf{S,\xi}$ be a configuration of the alternating bit protocol, with the channels containing the words 01 and 10 respectively. Then \e{c} may also be denoted as $c = \conf{s,r,ch_M,ch_A}$ or as $c = \conf{s_1,s_2,01,10}$. There are finitely many control states in this system, but an infinite set of channel evaluations. A transmission transition in this system is for example $\langle\conf{s_2,r_1,01,10}$, $ch_m!1$, $\conf{s_2,r_1,011,10}\rangle$. 
 
 \subsection{Reachability and Bad Configurations}
+\label{bad}
 An instance of the \e{reachability problem} is defined by a channel transition system \e{TS} = $\conf{S,\xi}$, a set of initial configurations \e{I} $\subseteq$ $S^+$ and a set \e{BAD} $\subseteq$ $S^+$ of \e{bad configurations}. We assume that \e{Bad} is the upward closure $\{c$ | $ c \in B: b \sqsubseteq c\}$ of a set of a given \e{finite} set of \e{minimal bad configurations}. \todo{Is this true in my case?}
 
 Let \e{c} denote a configuration, then \e{c} is said to be \emph{reachable} in \e{TS}, if there are configurations $c_1...c_l$ such that $c_0$ is an initial configuration of \e{TS} and for each 0 $\leq$ i < l, $\langle c_i, c_{i+1} \rangle \in \rightarrow$.
@@ -121,6 +123,7 @@ Let \e{c} denote a configuration, then \e{c} is said to be \emph{reachable} in \
 We use $\mathcal{R}$ to denote the set of reachable states. We say that the system \e{TS} is \e{safe} if there are no reachable bad configurations, i.e. $\mathcal{R} \cap Bad$ = $\emptyset$.
 
 \subsection{Traces}
+\label{traces}
 % Note that the set $\mathcal{R}$ of reachable \e{configurations} in a channel transition system is an \e{over-approximation} of the reachable \e{states} of a channel system. If $\mathcal{R} \cap Bad$ $\neq$ $\emptyset$, this does not mean that there necessarily exists a bad state in the channel system. If indeed a bad state does exist in a channel system, it is often useful not only to determine which state it is, but how that state can be reached from the initial state of the system.
 
 Suppose $s_n$ is a bad state of a channel system \e{CS}. Then a \e{bad trace} is a sequence \e{t} = $s_0s_1...s_n$ such that for each $0 \leq i \leq (n-1)$, $\conf{s_i,r,s_{i+1}}$ $\in$ $\delta$. If \e{t} is the shortest bad trace in the system, we call it a \e{minimal bad trace}.

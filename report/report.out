@@ -19,6 +19,9 @@
 \BOOKMARK [2][-]{subsection.6.1}{Naive algorithm}{section.6}% 19
 \BOOKMARK [2][-]{subsection.6.2}{Solution}{section.6}% 20
 \BOOKMARK [2][-]{subsection.6.3}{Even less naive algorithm}{section.6}% 21
-\BOOKMARK [3][-]{subsubsection.6.3.1}{Trie}{subsection.6.3}% 22
-\BOOKMARK [3][-]{subsubsection.6.3.2}{Using the Trie}{subsection.6.3}% 23
+\BOOKMARK [3][-]{subsubsection.6.3.1}{Control-State Partitioning}{subsection.6.3}% 22
+\BOOKMARK [3][-]{subsubsection.6.3.2}{Advantages of Partitioning}{subsection.6.3}% 23
 \BOOKMARK [2][-]{subsection.6.4}{Final subsection}{section.6}% 24
+\BOOKMARK [2][-]{subsection.6.5}{Reachability Analysis}{section.6}% 25
+\BOOKMARK [2][-]{subsection.6.6}{Specification Language}{section.6}% 26
+\BOOKMARK [3][-]{subsubsection.6.6.1}{Example}{subsection.6.6}% 27

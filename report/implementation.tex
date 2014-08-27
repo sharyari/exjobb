@@ -150,8 +150,9 @@ Yet another source of repetition is the fact that there are multiple ways to cre
 The final algorithm amounts to the following pseudo-code representation:
 
 \subsection{Reachability Analysis}
-An intricate part of the verification process is to perform a reachability analaysis, looking for bad states. 
-\todo{Wouldn't this be the same as the algorithm above, but without the creation of concretizations and not alloweing words larger than k??? I could re-use all code}.
+An important step of the verification process which has yet to be covered is that of performing a reachability analaysis, in order to find bad states, if any such states are reachable and find a minimal bad trace leading up to the bad state. See sections \ref{bad} and \ref{traces} for formal definitions of bad states and traces respectively.
+
+Below, a simple technique of finding a minimal bad trace is presented, accompanied with a proof that the trace is in fact minimal.
 
 \subparagraph{Finding Minimal Traces}
 When running the verification, if a bad state is found we want to produce a trace leading up to the bad state. Preferably, this would be a minimal trace that leads to the bad state.
@@ -169,6 +170,84 @@ Now suppose a node $n_{i+1}$ is reachable over an edge $e_i$ from a node $n_i$, 
  
 Having shown this, we need only record the information of a single parent of a node, in order to build up a tree from which the shortest path from $n_0$ to any node in the system can efficiently be found.
 
+
+\subsection{Specification Language}
+In order for the verification algorithm to be easily used, a specification language is needed in which algorithms can be formally defined. We expect such a specification language to
+
+\begin{itemize}
+\item
+be expressive enough to express all algorithms that are in the scope of the verification program
+\item
+be independent of the internal representations of the verifier and to demand as little knowledge of the actual verification process as possible from the user
+\item
+to be as clear as possible in order to ensure that the model at hand in fact corresponds to the actual algorithm, the way it was intended
+\end{itemize}
+
+The specification language used is an adaption of previous works by \todo{Fixa referens}. The language simply uses XML to describe an algorithm. There are minor differences between the specification language used here, with respect to that used in by the MPass verification algorithm, and correspond to different expressivness of the models. More specifically, the MPass verifier allows for joint reception and transmission transitions, i.e. a single transition may read a message from a channel and write a message to a channel at the same time. On the other hand, it does not allow for synchronized transitions, this has therefore been added to the language.
+
+\subsubsection{Example}
+We return yet again to the Alternating Bit Protocol to examplify the specification language. Bearing in mind the formal definition in section \ref{CS}, a model needs a set of messages, channels, actions and transitions.
+
+We begin by specifying a new protocol, it's name and that it is operating on FIFO buffers. We then specify a set of messages, a set of channels and a set of actions in a similar manner.
+
+\lstset{language=XML} 
+\begin{lstlisting}[frame=single]
+<protocol name="Alternating Bit Protocol" medium="FIFO>
+<messages>
+      <message>ack0</message>
+      <message>ack1</message>
+      <message>mesg0</message>
+      <message>mesg1</message>
+</messages>
+
+<channels>
+      <channel>c1</channel>
+      <channel>c2</channel>
+</channels>
+
+<actions>
+      <action>Rcv</action>
+      <action>Snd</action>
+</actions>
+\end{lstlisting}
+
+We then continue by defining the different processes in the system, i.e. the sender, receiver and observer. Such a process is defined by its states and its transitions. In the specification language, we differentiate between transitions over an action, and transitions that modify a channel. The latter type is called a \e{rule} in the specification language, in order to comply with the names used in the MPass specification language. This should not be confused with the word as used earlier in this section.
+
+\begin{lstlisting}[frame=single]
+  <role name="SENDER">
+    <states>
+      <state type="initial">Q0</state>
+      <state>Q1</state>
+      <state>Q2</state>
+      <state>Q3</state>
+    </states>
+    <action>
+        <current_state>Q0</current_state>
+        <type>Snd</type>        
+        <next_state>Q1</next_state>
+    </action>
+    <rule>
+        <current_state>Q1</current_state>
+        <send_message>mesg0</send_message>
+        <next_state>Q1</next_state>
+        <channel>c1</channel>
+    </rule>
+\end{lstlisting}
+
+Last, we specify that the processes \texttt{SENDER} and \texttt{OBSERVER}, and  \texttt{RECEIVER} and \texttt{OBSERVER} are to be synchronized over the actions \texttt{Snd} and \texttt{Rcv} respectively. 
+
+\begin{lstlisting}[frame=single]
+<synchronize>
+        <first_role>SENDER</first_role>
+        <second_role>OBSERVER</second_role>
+        <action>Snd</action>
+</synchronize>
+<synchronize>
+        <first_role>RECEIVER</first_role>
+        <second_role>OBSERVER</second_role>
+        <action>Rcv</action>
+</synchronize>
+\end{lstlisting}
 
 \swreceiver
 
