@@ -1,0 +1,211 @@
+package xmlParser;
+import java.io.File;
+import java.io.IOException;
+import java.util.Vector;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import xmlParser.*;
+public class XMLParser {
+public static Vector<Symbol> processMessages(Element node){
+Vector<Symbol> sym = new Vector<Symbol>();
+int numSymbols = 0;
+NodeList symbols = node.getChildNodes();
+for (int j=0;j<symbols.getLength();j++){
+Node symbol = symbols.item(j);
+if (!symbol.getTextContent().startsWith("\n")){ //For some reason, it sees \n as elements
+sym.add(new Symbol(symbol.getTextContent(), numSymbols));
+numSymbols++;
+}
+}
+return sym;
+}
+public static Vector<Channel> processChannels(Element node){
+NodeList channels = node.getChildNodes();
+int numChannels=0;
+Vector<Channel> chans = new Vector<Channel>();
+for (int j=0;j<channels.getLength();j++){
+Node channel = channels.item(j);
+if (!channel.getTextContent().startsWith("\n")){ //For some reason, it sees \n as elements
+chans.add(new Channel(channel.getTextContent(), numChannels));
+numChannels++;
+}
+}
+return chans;
+}
+public static Vector<State> processStates(Node node, int processNumber){
+Vector<State> states = new Vector<State>();
+NodeList sts = node.getChildNodes();
+int numStates=0;
+for (int k=0;k<sts.getLength();k++){
+//For some reason, it sees \n as elements
+if (!sts.item(k).getTextContent().startsWith("\n")){
+numStates++; // States start at 1, I forgot why
+if (sts.item(k).getAttributes().getNamedItem("type") != null){
+if (sts.item(k).getAttributes().getNamedItem("type").getNodeValue().equals("initial"))
+states.addElement(new State(numStates, sts.item(k).getTextContent(), processNumber, true, false)); // TODO
+else if (sts.item(k).getAttributes().getNamedItem("type").getNodeValue().equals("bad"))
+states.addElement(new State(numStates, sts.item(k).getTextContent(), processNumber, false, true));
+} else
+states.addElement(new State(numStates, sts.item(k).getTextContent(), processNumber, false, false));	
+}
+}
+return states;
+}
+public static Rule processRules(Node node, Vector<State> states, Vector<Symbol> symbols, Vector<Channel> channels, int ruleNumber, int processNumber) {
+NodeList pres = node.getChildNodes();
+String state1="", state2="", message="", channel="";
+String type = null;
+for (int k=0;k<pres.getLength();k++){
+String temp = pres.item(k).getTextContent();
+switch (pres.item(k).getNodeName()){
+case "current_state":
+state1 = temp;
+break;
+case "read_message":
+message = temp;
+type="receive";
+break;
+case "channel":
+channel = temp;
+break;
+case "next_state":
+state2 = temp;
+break;
+case "send_message":
+message = temp;
+type="send";
+break;
+}
+}
+return new Rule("p"+processNumber+"r"+ruleNumber, symbols, states, channels, state1, state2, type, message, channel);
+}
+public static Action processActions(Node node, Vector<State> states, int actionNumber, int processNumber) {
+NodeList pres = node.getChildNodes();
+String state1="", state2="", action="";
+for (int k=0;k<pres.getLength();k++){
+String temp = pres.item(k).getTextContent();
+switch (pres.item(k).getNodeName()){
+case "current_state":
+state1 = temp;
+break;
+case "type":
+action = temp;
+break;
+case "next_state":
+state2 = temp;
+break;
+}
+}
+if (action.equals("") || state1.equals("") || state2.equals(""))
+throw new RuntimeException("Action malformated");
+return new Action("p"+processNumber+"a"+actionNumber, states, state1, state2, action, processNumber);
+}
+public static Program processRoles(Element node, Vector<Symbol> symbols, Vector <Channel> channels, int numProcesses){
+NodeList programs = node.getChildNodes();
+Vector<State> states = null;
+Vector<Rule> rules = new Vector<Rule>();
+Vector<Action> actions = new Vector<Action>();
+String name = node.getAttribute("name");
+int numRules=0, numActions=0;
+for (int j=0;j<programs.getLength();j++){
+Node procNodes = programs.item(j);
+switch (procNodes.getNodeName()){
+case "states":
+states=processStates(procNodes, numProcesses);
+break;
+case "rule":
+rules.add(processRules (procNodes, states, symbols, channels, numRules, numProcesses));
+numRules++;
+break;
+case "action":
+actions.add(processActions (procNodes, states, numActions, numProcesses));
+numActions++;
+break;
+}
+}
+return new Program(name, numProcesses, states, rules, actions, channels, symbols);
+}
+public static void main(String[] args) throws ParserConfigurationException,
+SAXException, IOException {
+if(args.length != 1)
+throw new RuntimeException("No protocol supplied.");
+DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+DocumentBuilder builder = factory.newDocumentBuilder();
+Document document = builder.parse(new File(args[0]));
+Vector<Symbol> symbols = null;
+Vector<Channel> channels = null;
+Vector<Program> programs = new Vector<Program>();
+Vector<Synchronized> sync = new Vector<Synchronized>();
+NodeList nodeList = document.getDocumentElement().getChildNodes();
+int numProcesses = 0;
+for (int i = 0; i < nodeList.getLength(); i++) {
+Node node = nodeList.item(i);
+if (node.getNodeType() == Node.ELEMENT_NODE) {
+Element elem = (Element) node;
+switch (elem.getNodeName()){
+case "messages":
+symbols = processMessages(elem);
+break;
+case "channels":
+channels = processChannels(elem);
+break;
+case "role":
+if (symbols == null)
+throw new RuntimeException("No messages defined.");
+if (channels == null)
+throw new RuntimeException("No channels defined.");
+programs.add(processRoles(elem, symbols, channels, numProcesses));
+numProcesses++;
+break;
+case "synchronize":
+sync.addAll(processSynchronizations(elem, programs));
+break;
+}
+}
+}
+Model mod = new Model(programs, channels, symbols, sync);
+System.out.println(mod.toHaskell());
+}
+private static Vector<Synchronized> processSynchronizations(Element elem,
+Vector<Program> programs) {
+NodeList syncs = elem.getChildNodes();
+Program p1=null,p2=null;
+String act = "";
+Action a=null;
+for (int j=0;j<syncs.getLength();j++){
+Node sync = syncs.item(j);
+switch (sync.getNodeName()){
+case "first_role":
+for (int i=0;i<programs.size();i++)
+if (programs.elementAt(i).getFriendlyName().equals(sync.getTextContent()))
+p1 = programs.elementAt(i);
+break;
+case "second_role":
+for (int i=0;i<programs.size();i++)
+if (programs.elementAt(i).getFriendlyName().equals(sync.getTextContent()))
+p2 = programs.elementAt(i);
+break;
+case "action":
+act = sync.getTextContent();
+break;
+}
+}
+if (p1==null || p2==null )
+throw new RuntimeException("Could not determine which roles to synchronize.");
+if (act.equals(""))
+throw new RuntimeException("Could not determine which action to synchronize.");
+Vector<Action> r1 = p1.synchronize(act);
+Vector<Action> r2 = p2.synchronize(act);
+Vector<Synchronized> s = new Vector<Synchronized>();
+for (int i=0;i<r1.size();i++)
+for (int j=0;j<r2.size();j++)
+s.add(new Synchronized(r1.elementAt(i), r2.elementAt(j)));
+return s;
+}
+}

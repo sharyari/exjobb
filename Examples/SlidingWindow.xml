@@ -1,0 +1,249 @@
+<protocol name="Alternating Bit Protocol" medium="STUTT_FIFO" capacity="4">
+  <messages>
+     <message>ack0</message>
+     <message>ack1</message>
+     <message>ack2</message>
+     <message>mesg0</message>
+     <message>mesg1</message>
+     <message>mesg2</message>
+  </messages>
+  <channels>
+     <channel>c1</channel>
+     <channel>c2</channel>
+  </channels>
+  <actions>
+	<action>Rcv</action>
+	<action>Snd</action>
+  </actions>
+  <role name="SENDER">
+    <states>
+      <state type="initial">Q0</state>
+      <state>Q1</state>
+      <state>Q2</state>
+      <state>Q3</state>
+      <state>Q4</state>
+      <state>Q5</state>
+      <state>Q6</state>
+      <state>Q7</state>
+      <state>Q8</state>
+
+    </states>
+    <action id="Q0__SND__OUTBOUND">
+        <current_state>Q0</current_state>
+	<type>Snd</type>	
+        <next_state>Q1</next_state>
+    </action>
+    <action id="Q0__SND__OUTBOUND">
+        <current_state>Q1</current_state>
+	<type>Snd</type>	
+        <next_state>Q2</next_state>
+    </action>
+    <action id="Q4__mesg0__OUTBOUND">
+        <current_state>Q3</current_state>
+        <type>Snd</type>
+        <next_state>Q4</next_state>
+    </action>
+    <action id="Q0__SND__OUTBOUND">
+        <current_state>Q4</current_state>
+	<type>Snd</type>	
+        <next_state>Q5</next_state>
+    </action>
+    <action id="Q0__SND__OUTBOUND">
+        <current_state>Q6</current_state>
+	<type>Snd</type>	
+        <next_state>Q7</next_state>
+    </action>
+    <action id="Q0__SND__OUTBOUND">
+        <current_state>Q7</current_state>
+	<type>Snd</type>	
+        <next_state>Q8</next_state>
+    </action>
+
+    <rule id="Q1__mesg0__OUTBOUND">
+        <current_state>Q1</current_state>
+        <send_message>mesg0</send_message>
+        <next_state>Q1</next_state>
+        <channel>c1</channel>
+    </rule>
+    <rule id="Q1__mesg0__OUTBOUND">
+        <current_state>Q4</current_state>
+        <send_message>mesg1</send_message>
+        <next_state>Q4</next_state>
+        <channel>c1</channel>
+    </rule>
+    <rule id="Q1__mesg0__OUTBOUND">
+        <current_state>Q7</current_state>
+        <send_message>mesg2</send_message>
+        <next_state>Q7</next_state>
+        <channel>c1</channel>
+    </rule>
+
+    <rule id="Q1__mesg0__OUTBOUND">
+        <current_state>Q2</current_state>
+        <send_message>mesg1,mesg0</send_message>
+        <next_state>Q2</next_state>
+        <channel>c1</channel>
+    </rule>
+    <rule id="Q1__mesg0__OUTBOUND">
+        <current_state>Q5</current_state>
+        <send_message>mesg2,mesg1</send_message>
+        <next_state>Q5</next_state>
+        <channel>c1</channel>
+    </rule>
+    <rule id="Q1__mesg0__OUTBOUND">
+        <current_state>Q8</current_state>
+        <send_message>mesg0,mesg2</send_message>
+        <next_state>Q8</next_state>
+        <channel>c1</channel>
+    </rule>
+
+    <rule id="Q2__mesg0__OUTBOUND">
+        <current_state>Q1</current_state>
+        <read_message>ack0</read_message>
+        <next_state>Q3</next_state>
+        <channel>c2</channel>
+    </rule>
+    <rule id="Q2__mesg0__OUTBOUND">
+        <current_state>Q2</current_state>
+        <read_message>ack0</read_message>
+        <next_state>Q4</next_state>
+        <channel>c2</channel>
+    </rule>
+    <rule id="Q2__mesg1__OUTBOUND">
+        <current_state>Q4</current_state>
+        <read_message>ack1</read_message>
+        <next_state>Q6</next_state>
+        <channel>c2</channel>
+    </rule>
+    <rule id="Q2__mesg1__OUTBOUND">
+        <current_state>Q5</current_state>
+        <read_message>ack1</read_message>
+        <next_state>Q7</next_state>
+        <channel>c2</channel>
+    </rule>
+    <rule id="Q2__mesg1__OUTBOUND">
+        <current_state>Q7</current_state>
+        <read_message>ack2</read_message>
+        <next_state>Q0</next_state>
+        <channel>c2</channel>
+    </rule>
+    <rule id="Q2__mesg1__OUTBOUND">
+        <current_state>Q8</current_state>
+        <read_message>ack2</read_message>
+        <next_state>Q1</next_state>
+        <channel>c2</channel>
+    </rule>
+  </role>
+
+  <role name="RECEIVER">
+    <states>
+      <state type="initial">Q0</state>
+      <state>Q1</state>
+      <state>Q2</state>
+      <state>Q3</state>
+      <state>Q4</state>
+      <state>Q5</state>
+    </states>
+    <action>
+        <current_state>Q1</current_state>
+        <type>Rcv</type>
+        <next_state>Q2</next_state>
+    </action>
+    <action id="Q2__ack0__OUTBOUND">
+        <current_state>Q3</current_state>
+        <type>Rcv</type>
+        <next_state>Q4</next_state>
+    </action>
+    <action id="Q2__ack0__OUTBOUND">
+        <current_state>Q5</current_state>
+        <type>Rcv</type>
+        <next_state>Q0</next_state>
+    </action>
+    <rule id="Q2__ack0__OUTBOUND">
+        <current_state>Q0</current_state>
+        <send_message>ack2</send_message>
+        <next_state>Q0</next_state>
+        <channel>c2</channel>
+    </rule>
+    <rule id="Q2__ack0__OUTBOUND">
+        <current_state>Q0</current_state>
+        <read_message>mesg0</read_message>
+        <next_state>Q1</next_state>
+        <channel>c1</channel>
+    </rule>
+    <rule id="Q2__ack0__OUTBOUND">
+        <current_state>Q2</current_state>
+        <send_message>ack0</send_message>
+        <next_state>Q2</next_state>
+        <channel>c2</channel>
+    </rule>
+    <rule id="Q2__ack0__OUTBOUND">
+        <current_state>Q2</current_state>
+        <read_message>mesg1</read_message>
+        <next_state>Q3</next_state>
+        <channel>c1</channel>
+    </rule>
+    <rule id="Q2__ack0__OUTBOUND">
+        <current_state>Q4</current_state>
+        <send_message>ack1</send_message>
+        <next_state>Q4</next_state>
+        <channel>c2</channel>
+    </rule>
+    <rule id="Q2__ack0__OUTBOUND">
+        <current_state>Q4</current_state>
+        <read_message>mesg2</read_message>
+        <next_state>Q5</next_state>
+        <channel>c1</channel>
+    </rule>
+  </role>
+
+<role name="OBSERVER">
+  <states>
+    <state type="initial">Q0</state>
+    <state>Q1</state>
+    <state>Q2</state>
+    <state type="bad">Q3</state>
+  </states>
+
+  <action>
+    <current_state>Q0</current_state>
+    <next_state>Q1</next_state>
+    <type>Snd</type>
+  </action>
+  <action>
+    <current_state>Q1</current_state>
+    <next_state>Q2</next_state>
+    <type>Snd</type>
+  </action>
+  <action>
+    <current_state>Q2</current_state>
+    <next_state>Q3</next_state>
+    <type>Snd</type>
+  </action>
+  <action>
+    <current_state>Q1</current_state>
+    <next_state>Q0</next_state>
+    <type>Rcv</type>
+  </action>
+  <action>
+    <current_state>Q2</current_state>
+    <next_state>Q1</next_state>
+    <type>Rcv</type>
+  </action>
+  <action>
+    <current_state>Q0</current_state>
+    <next_state>Q3</next_state>
+    <type>Rcv</type>
+  </action>
+</role>
+<synchronize>
+	<first_role>SENDER</first_role>
+	<second_role>OBSERVER</second_role>
+	<action>Snd</action>
+</synchronize>
+<synchronize>
+	<first_role>RECEIVER</first_role>
+	<second_role>OBSERVER</second_role>
+	<action>Rcv</action>
+</synchronize>
+</protocol>
