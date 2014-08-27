@@ -1,5 +1,5 @@
 module Step where
-import Data.Trie as T
+
 import Data.Set as S
 import Prelude as P
 
