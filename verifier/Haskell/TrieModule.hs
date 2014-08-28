@@ -1,7 +1,6 @@
 module TrieModule where
 import DataTypes
 
-import Data.Trie as T
 import Data.HashSet as S
 import Data.HashMap.Strict as M
 import Data.Maybe (fromMaybe, fromJust, isJust)

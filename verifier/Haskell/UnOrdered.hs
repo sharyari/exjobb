@@ -1,5 +1,5 @@
 module UnOrdered where
-import Data.Trie as T
+
 import Data.ByteString as B
 import Data.Set as S
 import Data.Maybe (fromMaybe, fromJust, isJust)

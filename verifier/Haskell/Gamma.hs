@@ -1,6 +1,5 @@
 module Gamma where
 import Data.List as L
-import Data.Trie as T
 import Data.HashSet as S
 import qualified Data.ByteString.Char8 as B2
 import Data.Set as Set
