@@ -27,4 +27,4 @@ prof: main.hs
 clean: 
 	$(RM) *.o
 install:
-	sh install.sh
+	sh scripts/install.sh
