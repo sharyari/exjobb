@@ -1,12 +1,31 @@
-exjobb
-======
+======================= Dependencies =========================
 
-SETUP
-
-Dependencies
-
-* JDK 7
+* JDK 7 or better
 * Glasgow Haskell Compiler (ghc)
-* 
+* (Cabal)
+  
 
-ghc: hashset, trie, hashmap
+
+============================ SETUP ===========================
+
+** Cabal should pack together with the ghc compiler, if not, 
+** it must be installed separately. It can be used to install
+** some additional libraries.
+cabal update
+cabal install unordered-containers
+
+** Set up the parser (written in Java) 
+make install
+** this does not work, for example if JDK is not installed, a
+** precompiled version exists. This should only require JRE to
+** be installed.
+cp verifier/Parser.jar .
+
+============================ RUN ============================
+
+** To use the program
+make TARGET=<PATH_TO_PROTOCOL>.xml
+
+** Note that there are example protocols. For example, to run
+** the Alternating Bit Protocol, run
+make TARGET=Examples/ABP.xml
