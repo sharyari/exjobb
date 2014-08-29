@@ -1,6 +1,0 @@
-\newpage
-\section{Introduction}
-The goal of \e{model checking} is to formally verify the correctness of a program with respect to a given specification. In general the problem is to, given a model of a system and a set of properties decide whether the properties are met by the model or not, by performing an exhaustive search in the system. Although different ways of representing the model and the properties have been proposed\todo{citation needed}, most commonly the model is expressed as a \e{finite state machine} and the properties as propositional logic formulae. \todo{FSM becomes TS, prop. logic becomes LTL/CTL?}
-
-A serious limitation of model checking is the problem of \e{state space explosion}, i.e. ... \todo{Adding infinite resources such as numbers or buffers, does it count as state space explosion?}
-

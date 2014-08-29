@@ -66,4 +66,4 @@ myConf = ([toConf initial], [])
 
 -- Help function to create empty configuration from int-list. Only needed for initial configuration and debugging
 toConf :: CWord -> C
-toConf l = (B.pack l, [[], []])
+toConf l = (B.pack l, Prelude.take (Prelude.length symbols) $ repeat [])

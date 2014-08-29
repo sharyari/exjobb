@@ -37,9 +37,11 @@ public class Rule {
 				chan=channels.elementAt(i).getNumber();
 		}
 		if (this.symbol.size() == 0)
-			throw new RuntimeException("Message not known. States "+state1+ " and "+state2+".");
-		if (s1==-1 || s2==-1)
-			throw new RuntimeException("Unknown state");
+			throw new RuntimeException("Message not known \""+symbol+"\". States "+state1+ " and "+state2+".");
+		if (s1==-1)
+			throw new RuntimeException("Unknown state "+ state1);
+		if (s2==-1)
+			throw new RuntimeException("Unknown state "+ state2);
 		
 	}
 	

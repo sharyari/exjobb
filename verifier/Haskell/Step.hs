@@ -6,6 +6,8 @@ import Prelude as P
 import DataTypes
 import TrieModule
 import UnOrdered
+import Debug.Trace
+
 
 -- This function applies rules on a list of concretizations to create new configurations
 step :: (CMap, CMap, [C]) -> RuleMap ->  Int -> Bool -> (CMap, CMap, [C])

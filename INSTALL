@@ -29,3 +29,6 @@ make r=<PATH_TO_PROTOCOL>.xml
 ** Note that there are example protocols. For example, to run
 ** the Alternating Bit Protocol, run
 make r=Examples/ABP.xml
+
+** Or run all the tests automatically
+make test
