@@ -24,8 +24,8 @@ cp verifier/Parser.jar .
 ============================ RUN ============================
 
 ** To use the program
-make TARGET=<PATH_TO_PROTOCOL>.xml
+make r=<PATH_TO_PROTOCOL>.xml
 
 ** Note that there are example protocols. For example, to run
 ** the Alternating Bit Protocol, run
-make TARGET=Examples/ABP.xml
+make r=Examples/ABP.xml
