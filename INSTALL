@@ -2,7 +2,7 @@
 
 * JDK 7 or better
 * Glasgow Haskell Compiler (ghc)
-* (Cabal)
+* Cabal-install
   
 
 

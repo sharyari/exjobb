@@ -1,0 +1,7 @@
+Bad configuration found with K = 1
+Bad configuration found with K = 2
+System found to be safe with K = 3
+
+real	0m0.103s
+user	0m0.100s
+sys	0m0.000s
