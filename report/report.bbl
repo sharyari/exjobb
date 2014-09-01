@@ -1,9 +1,24 @@
 \begin{thebibliography}{1}
 
+\bibitem{287591}
+P.~Abdulla and B.~Jonsson, ``Verifying programs with unreliable channels,'' in
+  {\em Logic in Computer Science, 1993. LICS '93., Proceedings of Eighth Annual
+  IEEE Symposium on}, pp.~160--170, Jun 1993.
+
 \bibitem{parosh}
 P.~Abdulla, F.~Haziza, and L.~Holík, ``All for the price of few,'' in {\em
   Verification, Model Checking, and Abstract Interpretation} (R.~Giacobazzi,
   J.~Berdine, and I.~Mastroeni, eds.), vol.~7737 of {\em Lecture Notes in
   Computer Science}, pp.~476--495, Springer Berlin Heidelberg, 2013.
+
+\bibitem{mcmillan}
+K.~McMillan, ``Applying sat methods in unbounded symbolic model checking,'' in
+  {\em Computer Aided Verification} (E.~Brinksma and K.~Larsen, eds.),
+  vol.~2404 of {\em Lecture Notes in Computer Science}, pp.~250--264, Springer
+  Berlin Heidelberg, 2002.
+
+\bibitem{dijkstra1972}
+E.~W. Dijkstra, ``Information streams sharing a finite buffer,'' {\em
+  Information Processing Letters}, vol.~1, no.~5, pp.~179 -- 180, 1972.
 
 \end{thebibliography}
