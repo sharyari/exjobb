@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{287591}
 P.~Abdulla and B.~Jonsson, ``Verifying programs with unreliable channels,'' in
@@ -11,14 +11,71 @@ P.~Abdulla, F.~Haziza, and L.~Holík, ``All for the price of few,'' in {\em
   J.~Berdine, and I.~Mastroeni, eds.), vol.~7737 of {\em Lecture Notes in
   Computer Science}, pp.~476--495, Springer Berlin Heidelberg, 2013.
 
+\bibitem{emerson2008}
+E.~A. Emerson, ``The beginning of model checking: A personal perspective,'' in
+  {\em 25 Years of Model Checking}, pp.~27--45, Springer, 2008.
+
+\bibitem{pnueli1977}
+A.~Pnueli, ``The temporal logic of programs,'' in {\em Foundations of Computer
+  Science, 1977., 18th Annual Symposium on}, pp.~46--57, IEEE, 1977.
+
+\bibitem{emerson1980}
+E.~A. Emerson and E.~M. Clarke, {\em Characterizing correctness properties of
+  parallel programs using fixpoints}.
+\newblock Springer, 1980.
+
+\bibitem{spin}
+``Spin model checker.'' \url{http://spinroot.com/spin/whatispin.html}, July
+  2014.
+
+\bibitem{nusmv}
+``Nusmv model checker.'' \url{http://nusmv.fbk.eu/}, July 2014.
+
+\bibitem{uppaal}
+``Uppaal model checker.'' \url{http://www.uppaal.org/}, July 2014.
+
+\bibitem{clarke2012}
+E.~M. Clarke, W.~Klieber, M.~Nov{\'a}{\v{c}}ek, and P.~Zuliani, ``Model
+  checking and the state explosion problem,'' in {\em Tools for Practical
+  Software Verification}, pp.~1--30, Springer, 2012.
+
 \bibitem{mcmillan}
 K.~McMillan, ``Applying sat methods in unbounded symbolic model checking,'' in
   {\em Computer Aided Verification} (E.~Brinksma and K.~Larsen, eds.),
   vol.~2404 of {\em Lecture Notes in Computer Science}, pp.~250--264, Springer
   Berlin Heidelberg, 2002.
 
+\bibitem{emerson2000}
+E.~A. Emerson and V.~Kahlon, ``Reducing model checking of the many to the
+  few,'' in {\em Automated Deduction-CADE-17}, pp.~236--254, Springer, 2000.
+
+\bibitem{kaiser2010}
+A.~Kaiser, D.~Kroening, and T.~Wahl, ``Dynamic cutoff detection in
+  parameterized concurrent programs,'' in {\em Computer Aided Verification},
+  pp.~645--659, Springer, 2010.
+
+\bibitem{emerson1995}
+E.~A. Emerson and K.~S. Namjoshi, ``Reasoning about rings,'' in {\em
+  Proceedings of the 22nd ACM SIGPLAN-SIGACT symposium on Principles of
+  programming languages}, pp.~85--94, ACM, 1995.
+
 \bibitem{dijkstra1972}
 E.~W. Dijkstra, ``Information streams sharing a finite buffer,'' {\em
   Information Processing Letters}, vol.~1, no.~5, pp.~179 -- 180, 1972.
+
+\bibitem{baier2008}
+C.~Baier, J.-P. Katoen, {\em et~al.}, {\em Principles of model checking},
+  vol.~26202649.
+\newblock MIT press Cambridge, 2008.
+
+\bibitem{bz83}
+D.~Brand and P.~Zafiropulo, ``On communicating finite-state machines,'' {\em
+  Journal of the ACM (JACM)}, vol.~30, no.~2, pp.~323--342, 1983.
+
+\bibitem{gordon}
+N.~Bertrand and P.~Schnoebelen, ``Model checking lossy channels systems is
+  probably decidable,'' in {\em Foundations of Software Science and Computation
+  Structures} (A.~Gordon, ed.), vol.~2620 of {\em Lecture Notes in Computer
+  Science}, pp.~120--135, Springer Berlin Heidelberg, 2003.
 
 \end{thebibliography}
