@@ -1,9 +1,23 @@
 \begin{thebibliography}{10}
 
-\bibitem{287591}
-P.~Abdulla and B.~Jonsson, ``Verifying programs with unreliable channels,'' in
-  {\em Logic in Computer Science, 1993. LICS '93., Proceedings of Eighth Annual
-  IEEE Symposium on}, pp.~160--170, Jun 1993.
+\bibitem{zuck2004}
+L.~Zuck and A.~Pnueli, ``Model checking and abstraction to the aid of
+  parameterized systems (a survey),'' {\em Computer Languages, Systems \&
+  Structures}, vol.~30, no.~3–4, pp.~139 -- 169, 2004.
+\newblock Analysis and Verification.
+
+\bibitem{counterabstraction}
+A.~Pnueli, J.~Xu, and L.~Zuck, ``Liveness with (0,1, $\infty$)- counter
+  abstraction,'' in {\em Computer Aided Verification} (E.~Brinksma and
+  K.~Larsen, eds.), vol.~2404 of {\em Lecture Notes in Computer Science},
+  pp.~107--122, Springer Berlin Heidelberg, 2002.
+
+\bibitem{invinv}
+T.~Arons, A.~Pnueli, S.~Ruah, Y.~Xu, and L.~Zuck, ``Parameterized verification
+  with automatically computed inductive assertions?,'' in {\em Computer Aided
+  Verification} (G.~Berry, H.~Comon, and A.~Finkel, eds.), vol.~2102 of {\em
+  Lecture Notes in Computer Science}, pp.~221--234, Springer Berlin Heidelberg,
+  2001.
 
 \bibitem{parosh}
 P.~Abdulla, F.~Haziza, and L.~Holík, ``All for the price of few,'' in {\em
@@ -11,43 +25,21 @@ P.~Abdulla, F.~Haziza, and L.~Holík, ``All for the price of few,'' in {\em
   J.~Berdine, and I.~Mastroeni, eds.), vol.~7737 of {\em Lecture Notes in
   Computer Science}, pp.~476--495, Springer Berlin Heidelberg, 2013.
 
-\bibitem{emerson2008}
-E.~A. Emerson, ``The beginning of model checking: A personal perspective,'' in
-  {\em 25 Years of Model Checking}, pp.~27--45, Springer, 2008.
+\bibitem{287591}
+P.~Abdulla and B.~Jonsson, ``Verifying programs with unreliable channels,'' in
+  {\em Logic in Computer Science, 1993. LICS '93., Proceedings of Eighth Annual
+  IEEE Symposium on}, pp.~160--170, Jun 1993.
 
-\bibitem{pnueli1977}
-A.~Pnueli, ``The temporal logic of programs,'' in {\em Foundations of Computer
-  Science, 1977., 18th Annual Symposium on}, pp.~46--57, IEEE, 1977.
+\bibitem{gordon}
+N.~Bertrand and P.~Schnoebelen, ``Model checking lossy channels systems is
+  probably decidable,'' in {\em Foundations of Software Science and Computation
+  Structures} (A.~Gordon, ed.), vol.~2620 of {\em Lecture Notes in Computer
+  Science}, pp.~120--135, Springer Berlin Heidelberg, 2003.
 
-\bibitem{emerson1980}
-E.~A. Emerson and E.~M. Clarke, {\em Characterizing correctness properties of
-  parallel programs using fixpoints}.
-\newblock Springer, 1980.
-
-\bibitem{spin}
-``Spin model checker.'' \url{http://spinroot.com/spin/whatispin.html}, July
-  2014.
-
-\bibitem{nusmv}
-``Nusmv model checker.'' \url{http://nusmv.fbk.eu/}, July 2014.
-
-\bibitem{uppaal}
-``Uppaal model checker.'' \url{http://www.uppaal.org/}, July 2014.
-
-\bibitem{clarke2012}
-E.~M. Clarke, W.~Klieber, M.~Nov{\'a}{\v{c}}ek, and P.~Zuliani, ``Model
-  checking and the state explosion problem,'' in {\em Tools for Practical
-  Software Verification}, pp.~1--30, Springer, 2012.
-
-\bibitem{mcmillan}
-K.~McMillan, ``Applying sat methods in unbounded symbolic model checking,'' in
-  {\em Computer Aided Verification} (E.~Brinksma and K.~Larsen, eds.),
-  vol.~2404 of {\em Lecture Notes in Computer Science}, pp.~250--264, Springer
-  Berlin Heidelberg, 2002.
-
-\bibitem{emerson2000}
-E.~A. Emerson and V.~Kahlon, ``Reducing model checking of the many to the
-  few,'' in {\em Automated Deduction-CADE-17}, pp.~236--254, Springer, 2000.
+\bibitem{namjoshi}
+K.~S. Namjoshi, ``Symmetry and completeness in the analysis of parameterized
+  systems,'' in {\em Verification, Model Checking, and Abstract
+  Interpretation}, pp.~299--313, Springer, 2007.
 
 \bibitem{kaiser2010}
 A.~Kaiser, D.~Kroening, and T.~Wahl, ``Dynamic cutoff detection in
@@ -58,6 +50,32 @@ A.~Kaiser, D.~Kroening, and T.~Wahl, ``Dynamic cutoff detection in
 E.~A. Emerson and K.~S. Namjoshi, ``Reasoning about rings,'' in {\em
   Proceedings of the 22nd ACM SIGPLAN-SIGACT symposium on Principles of
   programming languages}, pp.~85--94, ACM, 1995.
+
+\bibitem{finkel2001}
+A.~Finkel and P.~Schnoebelen, ``Well-structured transition systems
+  everywhere!,'' {\em Theoretical Computer Science}, vol.~256, no.~1,
+  pp.~63--92, 2001.
+
+\bibitem{cousot1977}
+P.~Cousot and R.~Cousot, ``Abstract interpretation: a unified lattice model for
+  static analysis of programs by construction or approximation of fixpoints,''
+  in {\em Proceedings of the 4th ACM SIGACT-SIGPLAN symposium on Principles of
+  programming languages}, pp.~238--252, ACM, 1977.
+
+\bibitem{cousot1979}
+P.~Cousot and R.~Cousot, ``Systematic design of program analysis frameworks,''
+  in {\em Proceedings of the 6th ACM SIGACT-SIGPLAN symposium on Principles of
+  programming languages}, pp.~269--282, ACM, 1979.
+
+\bibitem{raskin2006}
+G.~Geeraerts, J.-F. Raskin, and L.~Van~Begin, ``Expand, enlarge, and check,''
+  in {\em Proceedings of MOVEP06: MOdeling and VErifying parallel processes},
+  p.~4, 2006.
+
+\bibitem{ganty2006}
+P.~Ganty, J.-F. Raskin, and L.~Van~Begin, ``A complete abstract interpretation
+  framework for coverability properties of wsts,'' in {\em Verification, Model
+  Checking, and Abstract Interpretation}, pp.~49--64, Springer, 2006.
 
 \bibitem{dijkstra1972}
 E.~W. Dijkstra, ``Information streams sharing a finite buffer,'' {\em
@@ -72,10 +90,13 @@ C.~Baier, J.-P. Katoen, {\em et~al.}, {\em Principles of model checking},
 D.~Brand and P.~Zafiropulo, ``On communicating finite-state machines,'' {\em
   Journal of the ACM (JACM)}, vol.~30, no.~2, pp.~323--342, 1983.
 
-\bibitem{gordon}
-N.~Bertrand and P.~Schnoebelen, ``Model checking lossy channels systems is
-  probably decidable,'' in {\em Foundations of Software Science and Computation
-  Structures} (A.~Gordon, ed.), vol.~2620 of {\em Lecture Notes in Computer
-  Science}, pp.~120--135, Springer Berlin Heidelberg, 2003.
+\bibitem{le2006}
+T.~Le~Gall, B.~Jeannet, and T.~J{\'e}ron, ``Verification of communication
+  protocols using abstract interpretation of fifo queues,'' in {\em Algebraic
+  Methodology and Software Technology}, pp.~204--219, Springer, 2006.
+
+\bibitem{mpass}
+P.~A. Abdulla, M.~F. Atig, J.~Cederberg, S.~Modi, O.~Rezine, and G.~Saini,
+  ``Mpass: An efficient tool for the analysis of message-passing programs,''
 
 \end{thebibliography}

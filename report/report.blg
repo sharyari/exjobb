@@ -3,52 +3,47 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: report.aux
 The style file: ieeetr.bst
 Database file #1: references.bib
-Warning--entry type for "spin" isn't style-file defined
---line 179 of file references.bib
-Warning--entry type for "nusmv" isn't style-file defined
---line 187 of file references.bib
-Warning--entry type for "uppaal" isn't style-file defined
---line 195 of file references.bib
-Warning--I didn't find a database entry for "Bertrand:2003:MCL:1754809.1754819"
-You've used 17 entries,
+Warning--empty journal in mpass
+Warning--empty year in mpass
+You've used 19 entries,
             1876 wiz_defined-function locations,
-            582 strings with 5879 characters,
-and the built_in function-call counts, 4820 in all, are:
-= -- 473
-> -- 137
+            596 strings with 6778 characters,
+and the built_in function-call counts, 6364 in all, are:
+= -- 618
+> -- 220
 < -- 0
-+ -- 52
-- -- 35
-* -- 329
-:= -- 623
-add.period$ -- 19
-call.type$ -- 17
-change.case$ -- 15
++ -- 78
+- -- 59
+* -- 459
+:= -- 844
+add.period$ -- 20
+call.type$ -- 19
+change.case$ -- 18
 chr.to.int$ -- 0
-cite$ -- 17
-duplicate$ -- 259
-empty$ -- 532
-format.name$ -- 35
-if$ -- 1224
+cite$ -- 21
+duplicate$ -- 345
+empty$ -- 643
+format.name$ -- 59
+if$ -- 1587
 int.to.chr$ -- 0
-int.to.str$ -- 17
-missing$ -- 16
-newline$ -- 56
-num.names$ -- 20
-pop$ -- 86
+int.to.str$ -- 19
+missing$ -- 20
+newline$ -- 62
+num.names$ -- 27
+pop$ -- 87
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 184
+skip$ -- 246
 stack$ -- 0
-substring$ -- 335
-swap$ -- 105
+substring$ -- 478
+swap$ -- 150
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 0
-while$ -- 48
-width$ -- 19
-write$ -- 166
-(There were 4 warnings)
+warning$ -- 2
+while$ -- 65
+width$ -- 21
+write$ -- 196
+(There were 2 warnings)
