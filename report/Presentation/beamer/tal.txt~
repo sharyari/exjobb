@@ -1,0 +1,5 @@
+Hi, I'm Jonathan and I'm going to attempt to explain the subject of my thesis. The preliminary name of the paper is "algorithmic verification of channel Machines using small models", and this is also serves as the outline of my presentation - with only five minutes, I can't go much deeper than explaining the words of the title, and I'll do that in order.
+
+SLIDE
+
+The general definition of verification should be familiar: read it up. Model checking is a technique used for verification. In general, one creates a model describing the behaviour of the the program, or the chip or whatever is going to be verified, then one specifies the inteded properties (i.e. the specification) of the program. Using this, a model checker will automatically checks whether the properties are met. This is usually done by building a graph and carry out an exhaustive search.
