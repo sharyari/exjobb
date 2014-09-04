@@ -191,9 +191,5 @@ sync124 = ([(1,10,1),(2,1,6)], (1,"_",[0]))
 bad :: [(Int, Word8)]
 bad = [(2,6)]
 
-numStates1 :: Int
-numStates1 = 25
-numStates2 :: Int
-numStates2 = 10
-numStates3 :: Int
-numStates3 = 6
+numStates :: [Int]
+numStates = [25,10,6]

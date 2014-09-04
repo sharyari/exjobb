@@ -110,12 +110,9 @@ sync61 = ([(1,8,1),(2,3,2)], (1,"_",[1]))
 sync62 = ([(1,8,1),(2,4,3)], (1,"_",[1]))
 sync63 = ([(1,8,1),(2,1,5)], (1,"_",[1]))
 
-numStates1 :: Int
-numStates1 = 16
-numStates2 :: Int
-numStates2 = 8
-numStates3 :: Int
-numStates3 = 5
+
+numStates :: [Int]
+numStates = [16,8,5]
 
 bad :: [(Int, Word8)]
 bad = [(2,5)]

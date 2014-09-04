@@ -1,50 +1,51 @@
 \select@language {british}
 \contentsline {section}{\numberline {1}Introduction}{3}{section.1}
 \contentsline {paragraph}{Reading this paper}{4}{section*.2}
-\contentsline {section}{\numberline {2}Definitions and Terms}{5}{section.2}
+\contentsline {section}{\numberline {2}Notation and Terminology}{5}{section.2}
+\contentsline {section}{\numberline {3}Model}{5}{section.3}
 \contentsline {paragraph}{Alternating Bit Protocol.}{5}{section*.3}
-\contentsline {subsection}{\numberline {2.1}Channel Systems}{5}{subsection.2.1}
-\contentsline {paragraph}{Definition}{6}{section*.5}
+\contentsline {subsection}{\numberline {3.1}Channel Systems}{5}{subsection.3.1}
+\contentsline {paragraph}{Definition}{5}{section*.5}
 \contentsline {paragraph}{Example.}{6}{section*.6}
-\contentsline {subsection}{\numberline {2.2}Channel Transition Systems}{7}{subsection.2.2}
+\contentsline {subsection}{\numberline {3.2}Channel Transition Systems}{7}{subsection.3.2}
 \contentsline {paragraph}{Definition}{7}{section*.7}
-\contentsline {paragraph}{Example}{7}{section*.8}
-\contentsline {subsection}{\numberline {2.3}Reachability and Bad Configurations}{8}{subsection.2.3}
-\contentsline {subsection}{\numberline {2.4}Traces}{8}{subsection.2.4}
-\contentsline {section}{\numberline {3}Problem Formulation}{8}{section.3}
-\contentsline {section}{\numberline {4}Model}{8}{section.4}
-\contentsline {subsection}{\numberline {4.1}Subwords and Views}{8}{subsection.4.1}
+\contentsline {paragraph}{Example}{8}{section*.8}
+\contentsline {subsection}{\numberline {3.3}Reachability and Bad Configurations}{8}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Traces}{8}{subsection.3.4}
+\contentsline {section}{\numberline {4}Problem Formulation}{8}{section.4}
+\contentsline {section}{\numberline {5}Abstract Interpretation}{9}{section.5}
+\contentsline {subsection}{\numberline {5.1}Subwords and Views}{9}{subsection.5.1}
 \contentsline {paragraph}{Example.}{9}{section*.10}
-\contentsline {subsection}{\numberline {4.2}Abstractions and Concretizations}{9}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Small Model Property}{9}{subsection.4.3}
-\contentsline {subsubsection}{\numberline {4.3.1}Proofs}{9}{subsubsection.4.3.1}
-\contentsline {paragraph}{Transmission rules}{9}{section*.16}
+\contentsline {subsection}{\numberline {5.2}Abstractions and Concretizations}{9}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}Small Model Property}{9}{subsection.5.3}
+\contentsline {subsubsection}{\numberline {5.3.1}Proofs}{10}{subsubsection.5.3.1}
+\contentsline {paragraph}{Transmission rules}{10}{section*.16}
 \contentsline {paragraph}{Reception rules}{10}{section*.17}
 \contentsline {paragraph}{Actions}{10}{section*.19}
-\contentsline {section}{\numberline {5}Extensions}{10}{section.5}
-\contentsline {subsection}{\numberline {5.1}LIFO Channels}{11}{subsection.5.1}
+\contentsline {section}{\numberline {6}Extensions}{10}{section.6}
+\contentsline {subsection}{\numberline {6.1}LIFO Channels}{11}{subsection.6.1}
 \contentsline {paragraph}{Stack Channel System}{11}{section*.20}
 \contentsline {paragraph}{Stack Channel Transmision System}{11}{section*.21}
 \contentsline {paragraph}{Proof of Lemma 1}{12}{section*.22}
-\contentsline {subsection}{\numberline {5.2}Lossy Channels}{12}{subsection.5.2}
+\contentsline {subsection}{\numberline {6.2}Lossy Channels}{12}{subsection.6.2}
 \contentsline {paragraph}{Lossy Channel Systems}{12}{section*.23}
 \contentsline {paragraph}{Lossy Channel Transition Systems}{12}{section*.24}
 \contentsline {paragraph}{Extended Proof of Lemma 1}{12}{section*.25}
-\contentsline {subsection}{\numberline {5.3}Channel Systems with Synchronization}{12}{subsection.5.3}
-\contentsline {subsection}{\numberline {5.4}Alternating Bit Protocol Revised}{13}{subsection.5.4}
-\contentsline {section}{\numberline {6}Verification method}{13}{section.6}
-\contentsline {subsection}{\numberline {6.1}Naive algorithm}{14}{subsection.6.1}
-\contentsline {subsection}{\numberline {6.2}Solution}{15}{subsection.6.2}
-\contentsline {paragraph}{Abstracting the concretizations.}{15}{section*.29}
+\contentsline {subsection}{\numberline {6.3}Channel Systems with Synchronization}{12}{subsection.6.3}
+\contentsline {subsection}{\numberline {6.4}Alternating Bit Protocol Revised}{13}{subsection.6.4}
+\contentsline {section}{\numberline {7}Implementation of the Verification Method}{13}{section.7}
+\contentsline {subsection}{\numberline {7.1}Naive implementation}{14}{subsection.7.1}
+\contentsline {subsection}{\numberline {7.2}Improving the Implementation}{16}{subsection.7.2}
+\contentsline {paragraph}{Abstracting the Concretizations.}{16}{section*.29}
 \contentsline {paragraph}{Reducing the views.}{16}{section*.30}
-\contentsline {subparagraph}{Example.}{16}{section*.31}
-\contentsline {subsection}{\numberline {6.3}Even less naive algorithm}{17}{subsection.6.3}
-\contentsline {subsubsection}{\numberline {6.3.1}Control-State Partitioning}{17}{subsubsection.6.3.1}
-\contentsline {subsubsection}{\numberline {6.3.2}Advantages of Partitioning}{17}{subsubsection.6.3.2}
+\contentsline {subparagraph}{Example.}{17}{section*.31}
+\contentsline {subsection}{\numberline {7.3}Better Implementation}{17}{subsection.7.3}
+\contentsline {subsubsection}{\numberline {7.3.1}Control-State Partitioning}{17}{subsubsection.7.3.1}
+\contentsline {subsubsection}{\numberline {7.3.2}Advantages of Partitioning}{18}{subsubsection.7.3.2}
 \contentsline {paragraph}{Example.}{18}{section*.32}
-\contentsline {subsection}{\numberline {6.4}Final subsection}{19}{subsection.6.4}
-\contentsline {subsection}{\numberline {6.5}Reachability Analysis}{20}{subsection.6.5}
-\contentsline {subparagraph}{Finding Minimal Traces}{20}{section*.34}
-\contentsline {subsection}{\numberline {6.6}Specification Language}{21}{subsection.6.6}
-\contentsline {subsubsection}{\numberline {6.6.1}Example}{21}{subsubsection.6.6.1}
-\contentsline {section}{\numberline {7}Related Work}{24}{section.7}
+\contentsline {subsection}{\numberline {7.4}Final Implementation}{19}{subsection.7.4}
+\contentsline {subsection}{\numberline {7.5}Reachability Analysis}{21}{subsection.7.5}
+\contentsline {subparagraph}{Finding Minimal Traces}{21}{section*.34}
+\contentsline {subsection}{\numberline {7.6}Specification Language}{22}{subsection.7.6}
+\contentsline {subsubsection}{\numberline {7.6.1}Example}{22}{subsubsection.7.6.1}
+\contentsline {section}{\numberline {8}Related Work}{23}{section.8}

@@ -13,6 +13,7 @@ skriv a = putStrLn(show(a))
 
 main = do
   getArgs >>=parse
+  
 
 
 

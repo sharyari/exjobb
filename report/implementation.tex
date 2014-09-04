@@ -1,10 +1,10 @@
-
-\section{Verification method}
-\label{alg1}
-As a result of lemma \ref{lemma1}, if $\gamma_k^{k+1} \cap Bad$ = $\empty$ for any \e{k} $\geq$ 1, then $\gamma_k(V) \cap Bad$ = $\empty$ for any buffer size larger than \e{k}. Given a set of bad states \e{Bad}, a set of initial states \e{I} and a set of transitions, Verifying the correctness of a system can be done with the following algorithm.
+\section{Implementation of the Verification Method}
+\label{implementation}
+As a result of lemma \ref{lemma1}, if $\gamma_k^{k+1} \cap Bad$ = $\empty$ for any \e{k} $\geq$ 1, then $\gamma_k(V) \cap Bad$ = $\empty$ for any buffer size larger than \e{k}. Given a set of bad states \e{Bad}, a set of initial states \e{I} and a set of transitions, Verification of a system can be done with algorithm \ref{alg1}, which was first presented in \cite{parosh}.
 
 \begin{algorithm}
-  \caption{General Verification algorithm}\label{euclid}
+  \caption{General Verification algorithm}
+  \label{alg1}
   \begin{algorithmic}[1]
       \For{\texttt{$True$}}
         \If {$\mathcal{R}_k$ $\cap$ $Bad$ $\neq$ $\emptyset$} 
@@ -33,7 +33,7 @@ In this rest of this section, we show how to implement this algorithm in an effi
 \todo{Is the algorithm guaranteed to terminate? When does it not?}
 
 
-\subsection{Naive algorithm}
+\subsection{Naive implementation}
 A naive way to generate configurations would be to perform the described operations such that they correspond directly to the mathematical notations as described in section \ref{alphagamma}. This is possible, as most programming languages have built-in datastructures that support set operations.
 
 A transition in the transition system corresponds to one or more \e{rules} in the implementation. A rule \e{r} $\in$ \e{R} is a description of a transition, seen as a set of state-predicates, channel-predicates, state-effects and channel-effects.If all predicates are true for a configuration \e{c}, the effects of the rule are applied to \e{c} resulting in a post-value \e{c'}.
@@ -54,10 +54,10 @@ Generate Apost(V): For each element \e{p} $\in$ \e{post(V)}, compute its views o
 The bottle-neck in this algorithm lies in \e{gamma}. It first creates all potential concretizations of a configuration \e{c}, i.e. all combinations of channel evaluations where at least one of the channels is of a larger size than in \e{c}. Additionaly, for each of these, all their views must be computed in order to determine whether the concretization should be refuted or not. Although this method is correct, there is significant overlap of concretizations; it is often possible to create the same concretization \e{con} in several ways, and each time, $\alpha_k{con}$, \e{post(con)} and \e{Apost(con)} need be performed. In the next section, we show abstractions of the functions \e{alpha} and \e{gamma} that are less computationally expensive.
 
 
-\subsection{Solution}
+\subsection{Improving the Implementation}
 We look closer at $\gamma$, in order to address the issues mentioned above. We show that all concretizations can be found, while considering only a subset of the potential concretizations. Furthermore, it is possible to determine whether a concretization should be accepted or not, examining only a subset of its views. 
 
-\paragraph{Abstracting the concretizations.}
+\paragraph{Abstracting the Concretizations.}
 Given a configuration \e{c}, with channel evaluations $\xi$ such that all channels have size smaller or equal to \e{k}, a potential concretization of \e{c} is any configuration \e{con} such that \e{con} can be created from \e{c} by appending a symbol to at least one of the channels of \e{c}. As this is a large number of potential configurations, it is desireable to consider only a subset thereof, while still ensuring that all valid concretizations are eventually found.
 
 We show that it is sufficient to in each iteration consider only the potential concretizations of \e{c}, for which only one channel has been modified, and only modifications where a symbol has been added at the \textbf{end} (or alternatively the beginning) of a channel.
@@ -86,7 +86,7 @@ Using these abstraction, the computational complexity of the verifier is greatly
 In a best-case scenario, there would be an equal number of configurations for every state in the system. The complexity of checking whether $\alpha_k(c)$ $\in$ $V$ is reduced to $O(p \cdot log (n/s))$ where \e{s} denotes the number of states in the system. The gains of these modifications in terms of computational complexity is difficult to determine, as the number of configurations with a certain control-state are not necessarily well-distributed, but we anticipate that the gains in many cases will be close to the best case scenario.
 
 % Det går inte att beskriva rule-delen här, för det är mer beroende av tries.
-\subsection{Even less naive algorithm}
+\subsection{Better Implementation}
 \subsubsection{Control-State Partitioning}
 Above it was suggested that the set V could be divided into several sets, distinguished by control-states. The number of control-states in a system is finite and unique; For a system with \e{n} processes, the number of states is $\prod\limits_{i=1}^n|p_i|$. This makes it possible to partition the set of configurations into several smaller disjoint sets, such that all configurations in a set have equal control-state. These sets can be stored in a hashmap indexed by control-state. 
 
@@ -106,7 +106,7 @@ By organizing the set of \e{rules} or transitions in a similar way in a hashmap 
 
 Considering a transition $t_2$ with no requirements on any processes, the state-predicate will be fulfilled by any configuration, thus a corresponding rule is created in every node of the tree. Consider then instead a transition $t_2$ with requirements on all the processes in the system, i.e. there is only one valid control-state. Such a transition corresponds to a single rule in the node addressed by that control-state. Last, consider a transition $t_3$ with requirements on a true subset of the processes in the system, then the transition can be taken from a number of control-states. These control states can be generated, and the transition will correspond to a set of rules in the nodes corresponding to those control-states.
 
-\paragraph{Example.} Consider yet again the alternating bit protocol, as described in \ref{REFERERA DEN MED OBSERVER}. The system has three processes \e{Sender}, \e{Receiver} and \e{Observer} with 4, 4 and 3 states respectively. Consider then the transition with the predicates that the sender is in state 3, the observer in state 3 and they may take the synchronized transition with the action \e{Snd} to states 4 and 2 respectively. This transition has no requirements on the receiver, thus it corresponds to four rules, (3,1,3)->(4,1,2), (3,2,3)->(4,2,2), (3,3,3)->(4,3,2), (3,4,3)->(4,4,2). These rules are inserted in the nodes (3,1,3), (3,2,3), (3,3,3) and (3,4,3).
+\paragraph{Example.} Consider yet again the alternating bit protocol, as described in \ref{abpobserver}. The system has three processes \e{Sender}, \e{Receiver} and \e{Observer} with 4, 4 and 3 states respectively. Consider then the transition with the predicates that the sender is in state 3, the observer in state 3 and they may take the synchronized transition with the action \e{Snd} to states 4 and 2 respectively. This transition has no requirements on the receiver, thus it corresponds to four rules, (3,1,3)->(4,1,2), (3,2,3)->(4,2,2), (3,3,3)->(4,3,2), (3,4,3)->(4,4,2). These rules are inserted in the nodes (3,1,3), (3,2,3), (3,3,3) and (3,4,3).
 
 There is a small one-time cost of creating the rule tree, but after creation, it is highly effective. The division by itself ensures that the state-predicate is fulfilled, if not, we never even attempt to apply the rule to a configuration. We illustrate this in figure \ref{applyrule} 
 
@@ -147,7 +147,7 @@ There is a small one-time cost of creating the rule tree, but after creation, it
 \end{algorithm}
 
 
-\subsection{Final subsection}
+\subsection{Final Implementation}
 An efficient algorithm in this context is largely an algorithm that avoids performing unnecessary calculations. This can either be done by avoiding to create unnecessary configurations such as was done with the rule hashmap above or by avoiding re-calculating previously calculated results. The algorithm as described above reproduces its steps each iteration; if a configuration \e{c} can be extended to a concretization \e{con} at any point in the verification process, then \e{con} can and will be created in every following iteration. This includes checking whether \e{$\alpha_k(con) \subset V$}, applying a set of rules to the configuration and then adding all the views of the resulting configurations to the set. Each time the calculations are performed, the result will be duplicates and no new views are added to the system.
 
 We solve this by maintaining another hashmap, \e{seen}, of configurations in parallell, containing exactly those concretization that have been accepted. If a configuration \e{c} can be extended to the concretization \e{con}, then we first check if \e{con} is an element of seen. If it is, we discard \e{con}, otherwise we add \e{con} to \e{seen} and also to the set of concretizations to be evaluated in this iteration.
@@ -256,8 +256,11 @@ Last, we specify that the processes \texttt{SENDER} and \texttt{OBSERVER}, and  
 </synchronize>
 \end{lstlisting}
 
+\begin{figure}
+\caption{Right now, these are some randomly floating graphs.}
 \swreceiver
 
 \swobserver
 
 \swsender
+\end{figure}

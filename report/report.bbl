@@ -1,102 +1,123 @@
 \begin{thebibliography}{10}
 
-\bibitem{zuck2004}
-L.~Zuck and A.~Pnueli, ``Model checking and abstraction to the aid of
-  parameterized systems (a survey),'' {\em Computer Languages, Systems \&
-  Structures}, vol.~30, no.~3–4, pp.~139 -- 169, 2004.
-\newblock Analysis and Verification.
-
-\bibitem{counterabstraction}
-A.~Pnueli, J.~Xu, and L.~Zuck, ``Liveness with (0,1, $\infty$)- counter
-  abstraction,'' in {\em Computer Aided Verification} (E.~Brinksma and
-  K.~Larsen, eds.), vol.~2404 of {\em Lecture Notes in Computer Science},
-  pp.~107--122, Springer Berlin Heidelberg, 2002.
-
-\bibitem{invinv}
-T.~Arons, A.~Pnueli, S.~Ruah, Y.~Xu, and L.~Zuck, ``Parameterized verification
-  with automatically computed inductive assertions?,'' in {\em Computer Aided
-  Verification} (G.~Berry, H.~Comon, and A.~Finkel, eds.), vol.~2102 of {\em
-  Lecture Notes in Computer Science}, pp.~221--234, Springer Berlin Heidelberg,
-  2001.
-
 \bibitem{parosh}
-P.~Abdulla, F.~Haziza, and L.~Holík, ``All for the price of few,'' in {\em
-  Verification, Model Checking, and Abstract Interpretation} (R.~Giacobazzi,
-  J.~Berdine, and I.~Mastroeni, eds.), vol.~7737 of {\em Lecture Notes in
-  Computer Science}, pp.~476--495, Springer Berlin Heidelberg, 2013.
+{\sc Abdulla, P., Haziza, F., and Holík, L.}
+\newblock All for the price of few.
+\newblock In {\em Verification, Model Checking, and Abstract Interpretation},
+  R.~Giacobazzi, J.~Berdine, and I.~Mastroeni, Eds., vol.~7737 of {\em Lecture
+  Notes in Computer Science}. Springer Berlin Heidelberg, 2013, pp.~476--495.
 
 \bibitem{287591}
-P.~Abdulla and B.~Jonsson, ``Verifying programs with unreliable channels,'' in
-  {\em Logic in Computer Science, 1993. LICS '93., Proceedings of Eighth Annual
-  IEEE Symposium on}, pp.~160--170, Jun 1993.
-
-\bibitem{gordon}
-N.~Bertrand and P.~Schnoebelen, ``Model checking lossy channels systems is
-  probably decidable,'' in {\em Foundations of Software Science and Computation
-  Structures} (A.~Gordon, ed.), vol.~2620 of {\em Lecture Notes in Computer
-  Science}, pp.~120--135, Springer Berlin Heidelberg, 2003.
-
-\bibitem{namjoshi}
-K.~S. Namjoshi, ``Symmetry and completeness in the analysis of parameterized
-  systems,'' in {\em Verification, Model Checking, and Abstract
-  Interpretation}, pp.~299--313, Springer, 2007.
-
-\bibitem{kaiser2010}
-A.~Kaiser, D.~Kroening, and T.~Wahl, ``Dynamic cutoff detection in
-  parameterized concurrent programs,'' in {\em Computer Aided Verification},
-  pp.~645--659, Springer, 2010.
-
-\bibitem{emerson1995}
-E.~A. Emerson and K.~S. Namjoshi, ``Reasoning about rings,'' in {\em
-  Proceedings of the 22nd ACM SIGPLAN-SIGACT symposium on Principles of
-  programming languages}, pp.~85--94, ACM, 1995.
-
-\bibitem{finkel2001}
-A.~Finkel and P.~Schnoebelen, ``Well-structured transition systems
-  everywhere!,'' {\em Theoretical Computer Science}, vol.~256, no.~1,
-  pp.~63--92, 2001.
-
-\bibitem{cousot1977}
-P.~Cousot and R.~Cousot, ``Abstract interpretation: a unified lattice model for
-  static analysis of programs by construction or approximation of fixpoints,''
-  in {\em Proceedings of the 4th ACM SIGACT-SIGPLAN symposium on Principles of
-  programming languages}, pp.~238--252, ACM, 1977.
-
-\bibitem{cousot1979}
-P.~Cousot and R.~Cousot, ``Systematic design of program analysis frameworks,''
-  in {\em Proceedings of the 6th ACM SIGACT-SIGPLAN symposium on Principles of
-  programming languages}, pp.~269--282, ACM, 1979.
-
-\bibitem{raskin2006}
-G.~Geeraerts, J.-F. Raskin, and L.~Van~Begin, ``Expand, enlarge, and check,''
-  in {\em Proceedings of MOVEP06: MOdeling and VErifying parallel processes},
-  p.~4, 2006.
-
-\bibitem{ganty2006}
-P.~Ganty, J.-F. Raskin, and L.~Van~Begin, ``A complete abstract interpretation
-  framework for coverability properties of wsts,'' in {\em Verification, Model
-  Checking, and Abstract Interpretation}, pp.~49--64, Springer, 2006.
-
-\bibitem{dijkstra1972}
-E.~W. Dijkstra, ``Information streams sharing a finite buffer,'' {\em
-  Information Processing Letters}, vol.~1, no.~5, pp.~179 -- 180, 1972.
-
-\bibitem{baier2008}
-C.~Baier, J.-P. Katoen, {\em et~al.}, {\em Principles of model checking},
-  vol.~26202649.
-\newblock MIT press Cambridge, 2008.
-
-\bibitem{bz83}
-D.~Brand and P.~Zafiropulo, ``On communicating finite-state machines,'' {\em
-  Journal of the ACM (JACM)}, vol.~30, no.~2, pp.~323--342, 1983.
-
-\bibitem{le2006}
-T.~Le~Gall, B.~Jeannet, and T.~J{\'e}ron, ``Verification of communication
-  protocols using abstract interpretation of fifo queues,'' in {\em Algebraic
-  Methodology and Software Technology}, pp.~204--219, Springer, 2006.
+{\sc Abdulla, P., and Jonsson, B.}
+\newblock Verifying programs with unreliable channels.
+\newblock In {\em Logic in Computer Science, 1993. LICS '93., Proceedings of
+  Eighth Annual IEEE Symposium on\/} (Jun 1993), pp.~160--170.
 
 \bibitem{mpass}
-P.~A. Abdulla, M.~F. Atig, J.~Cederberg, S.~Modi, O.~Rezine, and G.~Saini,
-  ``Mpass: An efficient tool for the analysis of message-passing programs,''
+{\sc Abdulla, P.~A., Atig, M.~F., Cederberg, J., Modi, S., Rezine, O., and
+  Saini, G.}
+\newblock Mpass: An efficient tool for the analysis of message-passing
+  programs.
+
+\bibitem{invinv}
+{\sc Arons, T., Pnueli, A., Ruah, S., Xu, Y., and Zuck, L.}
+\newblock Parameterized verification with automatically computed inductive
+  assertions?
+\newblock In {\em Computer Aided Verification}, G.~Berry, H.~Comon, and
+  A.~Finkel, Eds., vol.~2102 of {\em Lecture Notes in Computer Science}.
+  Springer Berlin Heidelberg, 2001, pp.~221--234.
+
+\bibitem{baier2008}
+{\sc Baier, C., Katoen, J.-P., et~al.}
+\newblock {\em Principles of model checking}, vol.~26202649.
+\newblock MIT press Cambridge, 2008.
+
+\bibitem{gordon}
+{\sc Bertrand, N., and Schnoebelen, P.}
+\newblock Model checking lossy channels systems is probably decidable.
+\newblock In {\em Foundations of Software Science and Computation Structures},
+  A.~Gordon, Ed., vol.~2620 of {\em Lecture Notes in Computer Science}.
+  Springer Berlin Heidelberg, 2003, pp.~120--135.
+
+\bibitem{bz83}
+{\sc Brand, D., and Zafiropulo, P.}
+\newblock On communicating finite-state machines.
+\newblock {\em Journal of the ACM (JACM) 30}, 2 (1983), 323--342.
+
+\bibitem{cousot1977}
+{\sc Cousot, P., and Cousot, R.}
+\newblock Abstract interpretation: a unified lattice model for static analysis
+  of programs by construction or approximation of fixpoints.
+\newblock In {\em Proceedings of the 4th ACM SIGACT-SIGPLAN symposium on
+  Principles of programming languages\/} (1977), ACM, pp.~238--252.
+
+\bibitem{cousot1979}
+{\sc Cousot, P., and Cousot, R.}
+\newblock Systematic design of program analysis frameworks.
+\newblock In {\em Proceedings of the 6th ACM SIGACT-SIGPLAN symposium on
+  Principles of programming languages\/} (1979), ACM, pp.~269--282.
+
+\bibitem{dijkstra1972}
+{\sc Dijkstra, E.~W.}
+\newblock Information streams sharing a finite buffer.
+\newblock {\em Information Processing Letters 1}, 5 (1972), 179 -- 180.
+
+\bibitem{emerson1995}
+{\sc Emerson, E.~A., and Namjoshi, K.~S.}
+\newblock Reasoning about rings.
+\newblock In {\em Proceedings of the 22nd ACM SIGPLAN-SIGACT symposium on
+  Principles of programming languages\/} (1995), ACM, pp.~85--94.
+
+\bibitem{finkel2001}
+{\sc Finkel, A., and Schnoebelen, P.}
+\newblock Well-structured transition systems everywhere!
+\newblock {\em Theoretical Computer Science 256}, 1 (2001), 63--92.
+
+\bibitem{ganty2006}
+{\sc Ganty, P., Raskin, J.-F., and Van~Begin, L.}
+\newblock A complete abstract interpretation framework for coverability
+  properties of wsts.
+\newblock In {\em Verification, Model Checking, and Abstract Interpretation\/}
+  (2006), Springer, pp.~49--64.
+
+\bibitem{raskin2006}
+{\sc Geeraerts, G., Raskin, J.-F., and Van~Begin, L.}
+\newblock Expand, enlarge, and check.
+\newblock In {\em Proceedings of MOVEP06: MOdeling and VErifying parallel
+  processes\/} (2006), p.~4.
+
+\bibitem{kaiser2010}
+{\sc Kaiser, A., Kroening, D., and Wahl, T.}
+\newblock Dynamic cutoff detection in parameterized concurrent programs.
+\newblock In {\em Computer Aided Verification\/} (2010), Springer,
+  pp.~645--659.
+
+\bibitem{le2006}
+{\sc Le~Gall, T., Jeannet, B., and J{\'e}ron, T.}
+\newblock Verification of communication protocols using abstract interpretation
+  of fifo queues.
+\newblock In {\em Algebraic Methodology and Software Technology}. Springer,
+  2006, pp.~204--219.
+
+\bibitem{namjoshi}
+{\sc Namjoshi, K.~S.}
+\newblock Symmetry and completeness in the analysis of parameterized systems.
+\newblock In {\em Verification, Model Checking, and Abstract Interpretation\/}
+  (2007), Springer, pp.~299--313.
+
+\bibitem{counterabstraction}
+{\sc Pnueli, A., Xu, J., and Zuck, L.}
+\newblock Liveness with (0,1, $\infty$)- counter abstraction.
+\newblock In {\em Computer Aided Verification}, E.~Brinksma and K.~Larsen,
+  Eds., vol.~2404 of {\em Lecture Notes in Computer Science}. Springer Berlin
+  Heidelberg, 2002, pp.~107--122.
+
+\bibitem{zuck2004}
+{\sc Zuck, L., and Pnueli, A.}
+\newblock Model checking and abstraction to the aid of parameterized systems (a
+  survey).
+\newblock {\em Computer Languages, Systems \& Structures 30}, 3–4 (2004), 139
+  -- 169.
+\newblock Analysis and Verification.
 
 \end{thebibliography}

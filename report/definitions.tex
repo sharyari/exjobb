@@ -1,4 +1,4 @@
-\section{Definitions and Terms}
+\section{Model}
 \label{definitions}
 Before formally defining a channel system, we present a simple protocol, the \emph{alternating bit protocol}. This protocol will continuously serve to examplify the theoretical concepts in this section in a practical setting. The formal definition below is associated to systems operating on FIFO buffers, other types of systems are covered in section \ref{extensions}. 
 
@@ -7,10 +7,10 @@ Before formally defining a channel system, we present a simple protocol, the \em
 This is a simple protocol that operates on unbounded channels. The behaviour of the sender and receiver process is illustrated in figure \ref{abpgraph}.
 
 \begin{figure}[h!]
-\subfloat[Sender]{\label{fig:in}
+\subfloat[Sender]{\label{fig:in1}
 \abpsender{}
 }
-\subfloat[Receiver]{\label{fig:in}
+\subfloat[Receiver]{\label{fig:in2}
 \abpreceiver{}
 }
 \caption{Program graphs of sender and receiver in the ABP protocol.}
@@ -18,7 +18,7 @@ This is a simple protocol that operates on unbounded channels. The behaviour of 
 \end{figure}
 
 \subsection{Channel Systems}
-We present here the basic definition of a finite-state system with unbounded channels. Such a system can be seen as to have two parts, a \e{control part} and a \e{channel part}. The channel part is a set of channels, which may be empty or contain a sequence of messages, a \e{word}. The control part is a labeled finite-state transition system. 
+We present here the basic definition of a finite-state system with unbounded channels. Such a system can be seen as to having two parts, a \e{control part} and a \e{channel part}. The channel part is a set of channels, which may be empty or contain a sequence of messages, a \e{word}. The control part is a labeled finite-state transition system. 
 
 \paragraph{Definition}
 \label{CS}

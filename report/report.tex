@@ -1,12 +1,13 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage{fullpage}
+\RequirePackage[l2tabu, orthodox]{nag}
 \usepackage[british]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage[T1]{fontenc}
-\usepackage{natbib}
-\setcitestyle{square}
+%\usepackage{natbib}
+%\setcitestyle{square}
 \usepackage[utf8]{inputenc}
 %\usepackage{amsthm} \newtheorem{theorem}{Theorem}
 \usepackage{color}
@@ -15,7 +16,7 @@
 \usepackage{todonotes}
 \usepackage{algorithmicx}
 \usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
-
+\usepackage{microtype}
 \usepackage{caption}
 \DeclareCaptionFont{white}{\color{white}}
 \DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
@@ -290,7 +291,7 @@ escapeinside={\#*}{\^^M}
 %Specific for this document
 
 
-\title{\textbf{Algorithmic Analysis of Channel machines\\ Using Small Models}}
+\title{\textbf{Algorithmic Analysis of Channel Machines\\ Using Small Models}}
 
 \author{Jonathan Sharyari}
 \textwidth 5.5in 
@@ -305,6 +306,7 @@ escapeinside={\#*}{\^^M}
 \input{abstract.tex}
 \tableofcontents
 \input{introduction.tex}
+\input{notation.tex}
 \input{definitions.tex}
 \input{problem.tex}
 \input{model.tex}
@@ -312,9 +314,8 @@ escapeinside={\#*}{\^^M}
 \input{implementation.tex}
 \input{relatedwork.tex}
 
-\bibliographystyle{ieeetr} 
+\bibliographystyle{acm} 
 \bibliography{references}
-
 
 
 \end{document}
