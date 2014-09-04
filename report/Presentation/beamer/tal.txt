@@ -1,0 +1,29 @@
+Hi, I'm Jonathan and I'm going to attempt to explain the subject of my thesis. The preliminary name of the paper is "algorithmic verification of channel Machines using small models", and this is also serves as the outline of my presentation - with only five minutes, I can't go much deeper than explaining the words of the title, and I'll do that in order.
+
+SLIDE
+
+The general definition of verification should be familiar: read it up. Model checking is a technique used for verification. In general, one creates a model describing the behaviour of the the program, or the chip or whatever is going to be verified, then one specifies the inteded properties (i.e. the specification) of the program. Using this, a model checker will automatically checks whether the properties are met. This is usually done by building a graph and carry out an exhaustive search.
+
+SLIDE
+
+A channel system is any system that relies on channels for its operation, for example communication protocols, but it could also be for example be a cache coherence protocol, which uses shared memory and can be modeled with a channel.
+
+SLIDE
+
+This is probably nothing new, but the point I want to make is that if the channel is unbounded, the verification of the system will correspond to searching an infinite graph. There are of course techniques to overcome this problem, the simplest being to just bound the channel to be of a certain size and verify that subproblem. Then you deploy your program, and hold your thumbs and hope that no airplanes come crashing down, because there was a fault in the GPS system you were verifying.
+
+SLIDE
+
+There are of course better techniques, but the verification problem is inherently undecidable, so there are no general techniques for this. Small models is one example: for certain classes of problems, let's not go into exactly which classes, it turns out that a small instance of a verification problem will in fact exhibit all the relevant behaviour of the system as a whole, thus verifying the small instance will guarantee that the results would hold for any larger instance. This is pretty much equivalent to the simple solution I explained before, with the tiny difference that I don't need to pray to a divine being to keep the airplanes in the air.
+
+SLIDE
+
+Having explained the keywords, my thesis is about putting these techniques together. I create a model in which I can express the behaviour of channel systems, and I use some techniques to find a small instance of the system that actually does exhibit all the relevant behaviour of the system. This is the theoretical part, and then there is a more practical part of actually implementing the technique.
+
+SLIDE
+
+I've been working on this during the summer, so I've come a bit on the way. What I still need to do is to complete the implementation, and then verify a few communication protocols and analyse the result.
+
+SLIDE
+
+I cut'n'pasted the definition of the word verification from the IEEE Standard Computer Dictionary.
