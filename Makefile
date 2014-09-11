@@ -12,7 +12,7 @@ make: $(HASKELLPATH)/main.hs
 	java -jar parser.jar ${r} > $(HASKELLPATH)/ProblemFormulation.hs
 	$(CC) -o $(HASKELLPATH)/main $(HASKELLPATH)/main.hs $(CFLAGS) -i$(HASKELLPATH)
 	time $(HASKELLPATH)/main
-unopt: main.hs 
+unopt: $(HASKELLPATH)/main.hs 
 	java -jar parser.jar ${r} > $(HASKELLPATH)/ProblemFormulation.hs
 	$(CC) -o $(HASKELLPATH)/main $(HASKELLPATH)/main.hs $(CFLAGS) -i$(HASKELLPATH)
 	$(HASKELLPATH)/main
@@ -20,9 +20,9 @@ eventlog: main.hs
 	java -jar parser.jar ${r} > $(HASKELLPATH)/ProblemFormulation.hs
 	$(CC) -o $(HASKELLPATH)/main $(HASKELLPATH)/main.hs $(CFLAGS) -i$(HASKELLPATH)
 	$(HASKELLPATH)/main
-prof: main.hs 
+prof: $(HASKELLPATH)/main.hs 
 	java -jar parser.jar ${r} > $(HASKELLPATH)/ProblemFormulation.hs
-	$(CC) -o $(HASKELLPATH)/main $(HASKELLPATH)/main.hs $(CFLAGS) -i$(HASKELLPATH)
+	$(CC) -o $(HASKELLPATH)/main $(HASKELLPATH)/main.hs $(CFLAGS4) -i$(HASKELLPATH)
 	$(HASKELLPATH)/main
 
 clean: 

@@ -10,14 +10,14 @@ import Debug.Trace
 
 
 -- This function applies rules on a list of concretizations to create new configurations
-step :: (CMap, CMap, [C]) -> RuleMap ->  Int -> Bool -> (CMap, CMap, [C])
-step (confs, seen, newConfs) rules k b=
-  (confs, seen, (concatMap (applyRules rules seen confs k b ) newConfs))
+step :: Int -> Bool -> (CMap, CMap, [C]) ->(CMap, CMap, [C])
+step k b (confs, seen, newConfs)=
+  (confs, seen, (concatMap (applyRules seen confs k b ) newConfs))
 
 -- This function takes a concretization and applies all relevant rules upon it
 -- it then concatenates the result
-applyRules :: RuleMap -> CMap -> CMap -> Int -> Bool -> C -> [C]
-applyRules rules seen trie k b (state, chan) =
+applyRules :: CMap -> CMap -> Int -> Bool -> C -> [C]
+applyRules seen trie k b (state, chan) =
   if b
   then
     P.filter (ifSeen seen) $ P.filter (ifSeen trie) $ concatMap (applyRule chan k) $ findNodeInTrie state rules

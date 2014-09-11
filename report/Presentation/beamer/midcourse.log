@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014/Debian) (preloaded format=latex 2014.8.25)  4 SEP 2014 13:35
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014/Debian) (preloaded format=latex 2014.8.25)  4 SEP 2014 16:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1212,13 +1212,13 @@ File: uppsala_logo.eps Graphic file (type eps)
 \tf@snm=\write9
 \openout9 = `midcourse.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 99.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 99.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 96.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 96.
  (./midcourse.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 99.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 99.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 96.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 96.
 Package rerunfilecheck Info: File `midcourse.out' has not changed.
-(rerunfilecheck)             Checksum: 739AE38D103FD866E4A12D08C97F00FA;292.
+(rerunfilecheck)             Checksum: 3413A1757CA56A00B7D6E5C279E225B4;241.
 
 
 LaTeX Font Warning: Size substitutions with differences
@@ -1227,15 +1227,15 @@ LaTeX Font Warning: Size substitutions with differences
 Package logreq Info: Writing requests to 'midcourse.run.xml'.
 \openout1 = `midcourse.run.xml'.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 99.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 96.
  ) 
 Here is how much of TeX's memory you used:
- 20825 strings out of 493105
- 393866 string characters out of 6136958
- 567727 words of memory out of 5000000
- 23840 multiletter control sequences out of 15000+600000
+ 20821 strings out of 493105
+ 393830 string characters out of 6136958
+ 566727 words of memory out of 5000000
+ 23836 multiletter control sequences out of 15000+600000
  12273 words of font info for 44 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 56i,17n,72p,945b,1071s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 56i,17n,72p,945b,1075s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on midcourse.dvi (8 pages, 50068 bytes).
+Output written on midcourse.dvi (8 pages, 47624 bytes).

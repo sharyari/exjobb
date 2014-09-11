@@ -9,7 +9,7 @@ import StringManipulation
 import TrieModule
 import DataTypes
 import UnOrdered
-
+import ProblemFormulation
 import Debug.Trace
 
 -- In general, Gamma takes all configurations, i.e. the trie, and for each configuration:
@@ -22,39 +22,39 @@ import Debug.Trace
 -- This function takes a hashmap of configurations, another hashmap that marks the configurations
 -- which have already stepped and passes them back, with the second trie updated
 -- together with a set of configurations that can be created from that information.
-gamma :: (CMap, [C], CMap) -> Symbols -> Int -> Bool -> (CMap,CMap, [C])
-gamma (hmap, new, seen) symbols k b =
-  let newconfs = if b then newConfs seen (M.toList hmap) symbols k else new in
+gamma :: Int -> Bool -> (CMap, [C], CMap) -> (CMap,CMap, [C])
+gamma k b (hmap, new, seen)=
+  let newconfs = if b then newConfs seen (M.toList hmap) k else new in
   if b then
     (hmap,mapAddList seen newconfs, newconfs)
   else
     (hmap, seen, newconfs)
 
 -- This function creates the new concretizations
-newConfs :: CMap -> [(State, MapNode)] -> Symbols -> Int -> [C]
-newConfs seen nodes symbols k =
-  (L.concat [L.zip (takeRepeat $ fst x) (newConfs' (snd x) (findNodeInMap (fst x) seen) symbols k) | x <- nodes])
+newConfs :: CMap -> [(State, MapNode)] -> Int -> [C]
+newConfs seen nodes k =
+  (L.concat [L.zip (takeRepeat $ fst x) (newConfs' (snd x) (findNodeInMap (fst x) seen) k) | x <- nodes])
 
 -- This function creates concretizations from a configuration
-newConfs' :: MapNode -> MapNode -> Symbols -> Int -> [Eval]
-newConfs' stringset seen symbols k =
-     L.concatMap (nlonger stringset seen symbols k) (S.toList stringset)
+newConfs' :: MapNode -> MapNode -> Int -> [Eval]
+newConfs' stringset seen k =
+     L.concatMap (nlonger stringset seen k) (S.toList stringset)
 
 -- This function creates longer evaluations from an evaluation. The work is done
 -- by nlonger', this function only adds the number of evaluations as a parameter
-nlonger :: MapNode -> MapNode -> Symbols -> Int -> Eval -> [Eval]
-nlonger stringset seen symbols k sl =
-  nlonger' seen stringset symbols k (L.length sl-1) sl
+nlonger :: MapNode -> MapNode -> Int -> Eval -> [Eval]
+nlonger stringset seen k sl =
+  nlonger' seen stringset k (L.length sl-1) sl
 
 -- This function creates longer evaluations from an evaluation. Only those evaluations
 -- which have a single symbol added to the end are considered.
-nlonger' :: MapNode -> MapNode -> Symbols -> Int -> Int -> Eval -> [Eval]
-nlonger' seen stringset symbols k (-1) sl = []
-nlonger' seen stringset symbols k n sl =
-  (if (L.length (sl!!n) == k) then (L.filter (\x -> not $ S.member x seen)
-  $ L.filter ((\x -> S.member (replaceNth n (L.take k (x!!n)) x) stringset))
-  [replaceNth n (y:(sl!!n)) sl  | y <- (symbols!!n) ]) else [])
-  ++nlonger' seen stringset symbols k (n-1) sl
+nlonger' :: MapNode -> MapNode -> Int -> Int -> Eval -> [Eval]
+nlonger' seen stringset k (-1) sl = []
+nlonger' seen stringset k n sl =
+  ((if (L.length (sl!!n) == k) then (L.filter (\x -> not $ S.member x seen)
+  $! L.filter ((\x -> S.member (replaceNth n (L.take k (x!!n)) x) stringset))
+  [replaceNth n (y:(sl!!n)) sl  | y <- (symbols!!n) ]) else []))
+  ++nlonger' seen stringset k (n-1) sl
 
 
 -- THIS DOESN'T WORK FOR STACKS RIGHT NOW!!

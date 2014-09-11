@@ -14,9 +14,6 @@ skriv a = putStrLn(show(a))
 main = do
   getArgs >>=parse
   
-
-
-
 parse ["-h"] = usage   >> exit
 parse ["-v"] = skriv (verbose) >> exit
 parse []     = skriv (normal) >> exit
@@ -26,6 +23,6 @@ exit    = exitWith ExitSuccess
 die     = exitWith (ExitFailure 1)
 
 
-verbose = verify (myTrie,M.empty) rules bad initial symbols 1
+verbose = verify (myTrie,M.empty)  1
 normal =
-  getSize (verbose)
+  getSize(verbose)

@@ -35,17 +35,17 @@
 \contentsline {subsection}{\numberline {6.4}Alternating Bit Protocol Revised}{13}{subsection.6.4}
 \contentsline {section}{\numberline {7}Implementation of the Verification Method}{13}{section.7}
 \contentsline {subsection}{\numberline {7.1}Naive implementation}{14}{subsection.7.1}
-\contentsline {subsection}{\numberline {7.2}Improving the Implementation}{16}{subsection.7.2}
-\contentsline {paragraph}{Abstracting the Concretizations.}{16}{section*.29}
+\contentsline {subsection}{\numberline {7.2}Improving the Implementation}{15}{subsection.7.2}
+\contentsline {paragraph}{Abstracting the Concretizations.}{15}{section*.29}
 \contentsline {paragraph}{Reducing the views.}{16}{section*.30}
-\contentsline {subparagraph}{Example.}{17}{section*.31}
+\contentsline {subparagraph}{Example.}{16}{section*.31}
 \contentsline {subsection}{\numberline {7.3}Better Implementation}{17}{subsection.7.3}
 \contentsline {subsubsection}{\numberline {7.3.1}Control-State Partitioning}{17}{subsubsection.7.3.1}
-\contentsline {subsubsection}{\numberline {7.3.2}Advantages of Partitioning}{18}{subsubsection.7.3.2}
+\contentsline {subsubsection}{\numberline {7.3.2}Advantages of Partitioning}{17}{subsubsection.7.3.2}
 \contentsline {paragraph}{Example.}{18}{section*.32}
-\contentsline {subsection}{\numberline {7.4}Final Implementation}{19}{subsection.7.4}
-\contentsline {subsection}{\numberline {7.5}Reachability Analysis}{21}{subsection.7.5}
-\contentsline {subparagraph}{Finding Minimal Traces}{21}{section*.34}
-\contentsline {subsection}{\numberline {7.6}Specification Language}{22}{subsection.7.6}
-\contentsline {subsubsection}{\numberline {7.6.1}Example}{22}{subsubsection.7.6.1}
+\contentsline {subsection}{\numberline {7.4}Final Implementation}{18}{subsection.7.4}
+\contentsline {subsection}{\numberline {7.5}Reachability Analysis}{19}{subsection.7.5}
+\contentsline {subparagraph}{Finding Minimal Traces}{20}{section*.34}
+\contentsline {subsection}{\numberline {7.6}Specification Language}{21}{subsection.7.6}
+\contentsline {subsubsection}{\numberline {7.6.1}Example}{21}{subsubsection.7.6.1}
 \contentsline {section}{\numberline {8}Related Work}{23}{section.8}

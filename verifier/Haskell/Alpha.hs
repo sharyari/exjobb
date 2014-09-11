@@ -10,11 +10,11 @@ import Data.HashMap.Strict as M
 import Debug.Trace
 -- This is alpha. Alpha just calls alpha'. All this function does is to abstract internal
 -- ugliness from the outside world.
-alpha :: (CMap, CMap, [C]) -> Int -> (CMap,[C],CMap)
-alpha (confs, seen, list) k =
-  let new = alpha' (sortBy (comparing fst) list) k in
-  (M.unionWith (S.union) confs (M.fromList new), L.concat $ L.map help new, seen)
-
+alpha :: Int -> (CMap, CMap, [C]) ->  (CMap,[C],CMap)
+alpha k (confs, seen, list) =
+    let new = alpha' (sortBy (comparing fst) list) k in
+    (M.unionWith (S.union) confs (M.fromList new), L.concat $ L.map help new, seen)
+    
 help (a,b) = [(a,x) | x <- S.toList b]
 
 -- This is the actual alpha function. It will look at the list of new configuration, and take
