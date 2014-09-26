@@ -55,3 +55,36 @@ applyRule chan k (newState, (i, tr, symbol))
 
 
 
+step2 :: Int ->  [C] -> [(C,C)]
+step2 k [] = []
+step2 k ((state, chan):xs) =
+  concatMap (applyRule2 state chan k) $ findNodeInTrie state rules
+
+
+applyRule2 :: State -> Eval -> Int -> Rule -> [(C,C)]
+applyRule2 state chan k (newState, (i, tr, symbol))
+  | tr == "_" =
+    [((newState, chan), (state, chan))]
+  | tr == "?" =
+    if length (chan!!i) > 0 && [last (chan!!i)] == symbol then
+      [((newState, replaceNth i (init (chan!!i)) chan), (state, chan))] else []
+  | tr == "¡" =
+    let
+      w = chan!!i++symbol
+      newWord1 = reverse $ take k $ reverse $ w
+      newWord2 = reverse $ take k $ drop 1 $ reverse  $ w
+    in
+     if (length w > k) then
+       [((newState, replaceNth i newWord1 chan),(state, chan)),((newState,replaceNth i newWord2 chan), (state, chan))]
+     else
+       [((newState, replaceNth i w chan), (state, chan))]
+  | tr == "!" =
+    let
+      w = symbol++chan!!i
+      newWord1 = reverse $ take k $ reverse $ w
+      newWord2 = reverse $ take k $ drop 1 $ reverse  $ w
+    in
+      if (length w > k) then
+        [((newState, replaceNth i newWord1 chan), (state, chan)),((newState, replaceNth i newWord2 chan),(state, chan))]
+      else
+        [((newState, replaceNth i w chan), (state, chan))]

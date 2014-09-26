@@ -8,7 +8,7 @@ import Data.HashMap.Strict as M
 -- Basic datatype used to work with configurations
 -- The bytestring is the set of states, the string list is the channel evaluation
 type C = (State, Eval)
-
+type CMap2 = HashMap C C
 
 type CWord = [Word8]
 type State = B.ByteString
