@@ -477,7 +477,7 @@
       
       
         <send_message>Aaf</send_message>
-        <next_state>Q011Q</next_state>
+        <next_state>Invalid</next_state>
         <channel>cs</channel>
       
     </rule>

@@ -10,6 +10,7 @@ import ProblemFormulation
 import StringManipulation
 import Data.Word
 import Debug.Trace
+
 takeRepeat a = Prelude.take 1000000 $ repeat a
 
 -- This is a function that replaces the nth value of a list
@@ -22,14 +23,13 @@ fromDigits :: CWord -> Word8
 fromDigits = Prelude.foldl addDigit 0
    where addDigit num d = 10*num + d
 
-
 isBadState bad ((state, chan), parent) = or [index state x == y | (x,y) <- bad]
 isBadConfiguration bad (state,eval) = or [index state x == y | (x,y) <- bad]
 
 traceBad set initial ((state, chan)) =
   if (state == B.empty || (state,chan) == initial) then show () else
-  traceShow ((show $ B.unpack state) ++ show (Prelude.map (fromDigits) chan))
-  traceBad set initial (fromMaybe (B.empty,[]) $ M.lookup (state,chan) set)
+    traceShow ((show $ B.unpack state) ++ show (Prelude.map (fromDigits) chan))
+    traceBad set initial (fromMaybe (B.empty,[]) $ M.lookup (state,chan) set)
 
 ------------------------------------------------------
 --------------- SECTION INITIALIZATION ---------------

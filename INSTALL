@@ -13,6 +13,7 @@
 ** some additional libraries.
 cabal update
 cabal install unordered-containers
+cabal install textit
 
 ** Set up the parser (written in Java) 
 make install

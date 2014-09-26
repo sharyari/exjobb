@@ -4,6 +4,7 @@ import UnOrdered
 import ProblemFormulation
 import Data.HashMap.Strict as M
 
+import System.TimeIt
 import System.Environment
 import Control.Monad
 import System.Exit
@@ -15,7 +16,7 @@ main = do
   getArgs >>=parse
   
 parse ["-h"] = usage   >> exit
-parse ["-v"] = skriv (verbose) >> exit
+parse ["-l"] = latex >> exit
 parse []     = skriv (normal) >> exit
 
 usage   = putStrLn "Usage: -v verbose"
@@ -23,6 +24,6 @@ exit    = exitWith ExitSuccess
 die     = exitWith (ExitFailure 1)
 
 
-verbose = verify (myTrie,M.empty)  1
+latex = timeIt (skriv $ verify (myTrie, M.empty) 1 False)
 normal =
-  getSize(verbose)
+  verify (myTrie,M.empty) 1 True
