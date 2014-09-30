@@ -51,4 +51,5 @@
 \contentsline {subparagraph}{Finding Minimal Traces}{23}{section*.37}
 \contentsline {subsection}{\numberline {7.6}Specification Language}{24}{subsection.7.6}
 \contentsline {subsubsection}{\numberline {7.6.1}Example}{24}{subsubsection.7.6.1}
-\contentsline {section}{\numberline {8}Related Work}{28}{section.8}
+\contentsline {section}{\numberline {8}Result}{28}{section.8}
+\contentsline {section}{\numberline {9}Related Work}{29}{section.9}

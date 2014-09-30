@@ -21,7 +21,7 @@ verify (t1,t2) k v=
   if (result == "BadConf") then
     verify (t1,t2) (k+1) v
   else
-    result
+    show k ++ " & " ++ result
 
 
 -- This is a function that converts from CMap2 to CMap
@@ -71,6 +71,6 @@ verifyAbstract args k b verbose =
      else
        verifyAbstract (newTrie, newConf, newSeen) k isSame verbose
    else -- bad configuration found
-       traceShow "BadConf" "BadConf"
+       "BadConf"
 
        
