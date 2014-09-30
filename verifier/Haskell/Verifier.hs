@@ -4,16 +4,16 @@ import Data.Word
 import Data.List as L
 import Debug.Trace
 import Data.HashMap.Strict as M
-
+import Data.ByteString as B
 import Step
 import Gamma
 import Alpha
-import TrieModule
+import HashMapModule
 import DataTypes
-import Run
+
 import UnOrdered
 import ProblemFormulation
-
+import Debug.Trace
 -- Verify: If a bad configuration is found, increase k
 verify :: (CMap, CMap) -> Int -> Bool -> [Char]
 verify (t1,t2) k v=
@@ -33,20 +33,24 @@ cmap2tocmap trie =
 -- This means that if a bad configuration is found here, the function is unsafe
 -- This function uses CMap2, which differs from CMap in that it keeps the
 -- parent of all configurations, in order to create a trace if necessary
+-- Note that we are overloading the concept of configuration here
 verifyNoAbstract :: (CMap2, [(C,C)], CMap) -> Int -> Bool -> [Char]
 verifyNoAbstract (trie, [], seen) k verbose =
   -- If nothing more can be done, start over approximating
-  verifyAbstract (cmap2tocmap trie, [], seen) k False verbose 
+    verifyAbstract (cmap2tocmap trie, [], seen) k False verbose 
 verifyNoAbstract (trie, confs, seen) k verbose =
   let
+    -- the last hashmap together with the new configurations found the new hashmap
     newTrie = M.union trie $ M.fromList confs
+    -- Step all new configurations
     newConfs = step2 k $ L.map fst confs
+    -- Check if a bad configuration exists in any of the new configurations
     isSafe = L.filter (isBadConfiguration bad) $ L.map fst confs
   in
-   if (L.length isSafe == 0) then
-    verifyNoAbstract
+   if (L.length isSafe == 0) then 
+    verifyNoAbstract 
     (newTrie, L.filter (\x -> not $ M.member (fst x) newTrie) newConfs, seen) k verbose
-   else
+   else -- Bad configuration was found
      if verbose then
        traceBad newTrie (toConf initial) $ L.head isSafe
      else
@@ -57,16 +61,19 @@ verifyNoAbstract (trie, confs, seen) k verbose =
 verifyAbstract :: (CMap, [C], CMap) -> Int -> Bool -> Bool -> [Char]
 verifyAbstract args k b verbose =
   let
+    -- apply gamma, step and alpha in that order, in order to find a set of new configurations
     (newTrie, newConf, newSeen) = alpha k $! step k b $! gamma k b args
+    -- Check if the new configurations are sound
     isSafe = L.filter (isBadConfiguration bad) $ newConf
+    -- If no new configuratoins are found, set isSame to true
     isSame = L.null newConf
   in
-   if (L.length isSafe == 0) then
-     if isSame && b then
+   if (L.length isSafe == 0) then -- is safe
+     if isSame && b then -- if we found no new configurations twice in a row, search is done
        "Safe"
      else
-       verifyAbstract (newTrie, newConf, newSeen) k isSame verbose
-   else
+       verifyAbstract (newTrie, newConf, newSeen) k False verbose
+   else -- bad configuration found
        "BadConf"
 
        

@@ -1,6 +1,4 @@
-Bad configuration found with K = 1
-System found to be safe with K = 2
 
-real	0m0.006s
-user	0m0.004s
+real	0m0.003s
+user	0m0.000s
 sys	0m0.000s

@@ -1,10 +1,11 @@
 module StringManipulation where
 
 import Data.HashSet as S
-import DataTypes
 import qualified Data.ByteString.Char8 as B2
-import Debug.Trace
+
+import DataTypes
 import Data.List as L
+
 -- This is a help function for subwords
 -- This can be used as a simple version of subwords
 chooseK :: Int -> CWord -> [CWord]
@@ -14,9 +15,6 @@ chooseK k l =
       L.map (\x -> (take k . drop x) l)  [0..(length l-k)]
     else
       []
-
-
-
 
 -- This returns all views of a configuration, with the states abstracted (as views does not affect them)
 -- views and views' call eachother; views checks if an evaluation is already in the node, if it is, ignore it,

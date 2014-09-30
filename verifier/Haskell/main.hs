@@ -1,5 +1,5 @@
 import Verifier
-import TrieModule
+
 import UnOrdered
 import ProblemFormulation
 import Data.HashMap.Strict as M

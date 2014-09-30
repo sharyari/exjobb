@@ -1,25 +1,28 @@
 module Alpha where
+
 import Data.HashSet as S
-import DataTypes
-import TrieModule
-import StringManipulation
-import UnOrdered
 import Data.List as L
-import Data.Ord
 import Data.HashMap.Strict as M
-import Debug.Trace
--- This is alpha. Alpha just calls alpha'. All this function does is to abstract internal
--- ugliness from the outside world.
+
+import DataTypes
+import HashMapModule
+import StringManipulation
+import Data.Ord -- comparing
+
+-- Given a set of new configurations, alpha adds those configurations and their views
+-- to the set of known configurations
 alpha :: Int -> (CMap, CMap, [C]) ->  (CMap,[C],CMap)
 alpha k (confs, seen, list) =
     let new = alpha' (sortBy (comparing fst) list) k in
     (M.unionWith (S.union) confs (M.fromList new), L.concat $ L.map help new, seen)
-    
+
+-- This function converts a state and a list of evaluations to a list of state-evaluation pairs
 help (a,b) = [(a,x) | x <- S.toList b]
 
--- This is the actual alpha function. It will look at the list of new configuration, and take
--- out all with the same state, and the send them to the function addViews which will calculate
--- their views and add them to a set. Then, alpha' merges that with the old set.
+-- This function takes a list of new configuration, and takes out all configurations
+-- with the same state. It then sends them to the function addViews which will calculate
+-- their views and add them to a set. Then, alpha' merges the result with the old set.
+-- Note that this requires the list to be sorted
 alpha' :: [C] -> Int -> [(State,MapNode)]
 alpha' [] k = []
 alpha' xs k =

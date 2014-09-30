@@ -1,24 +1,32 @@
 module DataTypes where
---import Data.Set as S
 import Data.Word as W
 import Data.ByteString as B
 import Data.HashSet as H
 import Data.HashMap.Strict as M
 
--- Basic datatype used to work with configurations
--- The bytestring is the set of states, the string list is the channel evaluation
-type C = (State, Eval)
-type CMap2 = HashMap C C
-
-type CWord = [Word8]
+-- State: the state of a configuration
 type State = B.ByteString
+-- Eval: The evaluation of a set of channels
 type Eval = [CWord]
+-- CWord: the word of a single channel
+type CWord = [Word8]
+-- C: A configuration is a state-evaluation tuple
+type C = (State, Eval)
+
+-- Symbols: Each channel has its list of symbols that it may contain
 type Symbols = [[Word8]]
 
--- Short name for a configuration tree
+-- CMap: A hashmap containing configurations, stored as equal-state configurations
+--       indexed by state. 
 type CMap = HashMap State MapNode
--- Short name for the nodes of a CTrie
+-- MapNode: A set of evaluations
 type MapNode = HashSet Eval
+
+-- CMap2: A Hashmap of configurations, storing the parent node of configurations
+--        This is used when computing the forward-reachability, in order to allow
+--        a minimal trace to be computed. 
+type CMap2 = HashMap C C
+
 
 
 -- Basic datatype to apply rules

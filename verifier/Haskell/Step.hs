@@ -4,9 +4,8 @@ import Data.Set as S
 import Prelude as P
 
 import DataTypes
-import TrieModule
+import HashMapModule
 import UnOrdered
-import Debug.Trace
 
 
 -- This function applies rules on a list of concretizations to create new configurations
@@ -27,64 +26,38 @@ applyRules seen trie k b (state, chan) =
 -- This function applies a single rule to a single concretization
 applyRule ::  Eval -> Int -> Rule -> [C]
 applyRule chan k (newState, (i, tr, symbol))
-  | tr == "_" =
+  | tr == "_" = -- Rule has no channel-predicate
     [(newState, chan)]
-  | tr == "?" =
+  | tr == "?" = -- Rule is a read-operation
     if length (chan!!i) > 0 && [last (chan!!i)] == symbol then
       [(newState, replaceNth i (init (chan!!i))  chan)] else []
-  | tr == "¡" =
+  | tr == "¡" = -- Rule is an append-opration
     let
       w = chan!!i++symbol
       newWord1 = reverse $ take k $ reverse $ w
       newWord2 = reverse $ take k $ drop 1 $ reverse  $ w
     in
+   -- If the produced word is larger than k, create the two k-sized words of the first (k+1) symbols
      if (length w > k) then
        [(newState, replaceNth i newWord1 chan),(newState,replaceNth i newWord2 chan)]
      else
        [(newState, replaceNth i w chan)]
-  | tr == "!" =
+  | tr == "!" = -- rule is a write-operation
     let
-      w = symbol++chan!!i
+      w = symbol++chan!!i 
       newWord1 = reverse $ take k $ reverse $ w
       newWord2 = reverse $ take k $ drop 1 $ reverse  $ w
     in
+     -- If the produced word is larger than k, create the two k-sized words of the first (k+1) symbols
       if (length w > k) then
         [(newState, replaceNth i newWord1 chan),(newState, replaceNth i newWord2 chan)]
       else
         [(newState, replaceNth i w chan)]
 
 
-
+-- This function is analogous to the function step above, but creates configuration-parent
+-- pairs, which may be used to compute a minimal trace
 step2 :: Int ->  [C] -> [(C,C)]
 step2 k [] = []
 step2 k ((state, chan):xs) =
-  concatMap (applyRule2 state chan k) $ findNodeInTrie state rules
-
-
-applyRule2 :: State -> Eval -> Int -> Rule -> [(C,C)]
-applyRule2 state chan k (newState, (i, tr, symbol))
-  | tr == "_" =
-    [((newState, chan), (state, chan))]
-  | tr == "?" =
-    if length (chan!!i) > 0 && [last (chan!!i)] == symbol then
-      [((newState, replaceNth i (init (chan!!i)) chan), (state, chan))] else []
-  | tr == "¡" =
-    let
-      w = chan!!i++symbol
-      newWord1 = reverse $ take k $ reverse $ w
-      newWord2 = reverse $ take k $ drop 1 $ reverse  $ w
-    in
-     if (length w > k) then
-       [((newState, replaceNth i newWord1 chan),(state, chan)),((newState,replaceNth i newWord2 chan), (state, chan))]
-     else
-       [((newState, replaceNth i w chan), (state, chan))]
-  | tr == "!" =
-    let
-      w = symbol++chan!!i
-      newWord1 = reverse $ take k $ reverse $ w
-      newWord2 = reverse $ take k $ drop 1 $ reverse  $ w
-    in
-      if (length w > k) then
-        [((newState, replaceNth i newWord1 chan), (state, chan)),((newState, replaceNth i newWord2 chan),(state, chan))]
-      else
-        [((newState, replaceNth i w chan), (state, chan))]
+  (P.map (\x -> (x, (state, chan))) $ concatMap (applyRule chan k) $ findNodeInTrie state rules)++step2 k xs

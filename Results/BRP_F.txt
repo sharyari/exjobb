@@ -1,6 +1,7 @@
-Bad configuration found with K = 1
-System found to be safe with K = 2
+"[38,20][0,0]"
+"[2,20][0,0]"
+"[1,20][0,0]"
 
-real	0m0.017s
-user	0m0.012s
-sys	0m0.000s
+real	0m0.010s
+user	0m0.004s
+sys	0m0.004s

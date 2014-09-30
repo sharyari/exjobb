@@ -2,15 +2,13 @@ module Gamma where
 import Data.List as L
 import Data.HashSet as S
 import qualified Data.ByteString.Char8 as B2
-import Data.Set as Set
 import Data.HashMap.Strict as M
 
 import StringManipulation
-import TrieModule
+import HashMapModule
 import DataTypes
 import UnOrdered
 import ProblemFormulation
-import Debug.Trace
 
 -- In general, Gamma takes all configurations, i.e. the trie, and for each configuration:
 -- 1. extend the configuration (longer channels)

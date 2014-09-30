@@ -17,14 +17,14 @@ cabal install textit
 
 ** Set up the parser (written in Java) 
 make install
-** this does not work, for example if JDK is not installed, a
-** precompiled version exists. This should only require JRE to
-** be installed.
+** if this does not work, for example if JDK is not installed, a
+** precompiled version exists. This should only require JRE in
+** order to be used
 cp verifier/Parser.jar .
 
 ============================ RUN ============================
 
-** To use the program
+** To use the program, standing in the main directory, run
 make r=<PATH_TO_PROTOCOL>.xml
 
 ** Note that there are example protocols. For example, to run
