@@ -10,14 +10,14 @@ import Gamma
 import Alpha
 import HashMapModule
 import DataTypes
-
+import Run
 import UnOrdered
 import ProblemFormulation
 import Debug.Trace
 -- Verify: If a bad configuration is found, increase k
 verify :: (CMap, CMap) -> Int -> Bool -> [Char]
 verify (t1,t2) k v=
-  let result = (verifyNoAbstract (M.empty,[(toConf initial, toConf initial)],t2) k v) in
+  let result = (verifyNoAbstract [toConf initial] k v) in
   if (result == "BadConf") then
     verify (t1,t2) (k+1) v
   else
@@ -34,22 +34,19 @@ cmap2tocmap trie =
 -- This function uses CMap2, which differs from CMap in that it keeps the
 -- parent of all configurations, in order to create a trace if necessary
 -- Note that we are overloading the concept of configuration here
-verifyNoAbstract :: (CMap2, [(C,C)], CMap) -> Int -> Bool -> [Char]
-verifyNoAbstract (trie, [], seen) k verbose =
+verifyNoAbstract :: [C] -> Int -> Bool -> [Char]
+verifyNoAbstract [] k verbose =
   -- If nothing more can be done, start over approximating
-    verifyAbstract (cmap2tocmap trie, [], seen) k False verbose 
-verifyNoAbstract (trie, confs, seen) k verbose =
+  "Empty"
+verifyNoAbstract confs k verbose =
   let
     -- the last hashmap together with the new configurations found the new hashmap
-    newTrie = M.union trie $ M.fromList confs
-    -- Step all new configurations
-    newConfs = step2 k $ L.map fst confs
+    newTrie = run confs k
     -- Check if a bad configuration exists in any of the new configurations
-    isSafe = L.filter (isBadConfiguration bad) $ L.map fst confs
+    isSafe = L.filter (isBadConfiguration bad) $ L.map fst $ M.toList newTrie
   in
    if (L.length isSafe == 0) then 
-    verifyNoAbstract 
-    (newTrie, L.filter (\x -> not $ M.member (fst x) newTrie) newConfs, seen) k verbose
+     verifyAbstract (cmap2tocmap newTrie, [], M.empty) k False verbose 
    else -- Bad configuration was found
      if verbose then
        traceBad newTrie (toConf initial) $ L.head isSafe
@@ -72,8 +69,8 @@ verifyAbstract args k b verbose =
      if isSame && b then -- if we found no new configurations twice in a row, search is done
        "Safe"
      else
-       verifyAbstract (newTrie, newConf, newSeen) k False verbose
+       verifyAbstract (newTrie, newConf, newSeen) k isSame verbose
    else -- bad configuration found
-       "BadConf"
+       traceShow "BadConf" "BadConf"
 
        
