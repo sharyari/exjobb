@@ -259,7 +259,7 @@ escapeinside={\#*}{\^^M}
 \usetikzlibrary{positioning,shapes,shadows,arrows}
 
 \usepackage{url}
-
+\usepackage{tabularx}
 
 \usepackage{booktabs,array}
 \def\Midrule{\midrule[\heavyrulewidth]}
@@ -324,9 +324,23 @@ escapeinside={\#*}{\^^M}
 \input{result.tex}
 \newpage
 \input{relatedwork.tex}
-
+\newpage
 \bibliographystyle{acm} 
 \bibliography{references}
+
+\appendix
+\begin{table}
+\makebox[\linewidth]{
+\begin{tabular}{c c}
+\swreceiver
+&
+\swobserver
+\\
+\multicolumn{2}{c}{\swsender}
+\end{tabular}
+}
+\caption{Automatas for sender, receiver and observer for the sliding window protocol.}
+\end{table}
 
 
 \end{document}

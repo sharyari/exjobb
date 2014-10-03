@@ -1,0 +1,33 @@
+\section{Result}
+An implementation of this method has been written in the \e{Haskell}\cite{Haskell} programming language, retrievable from \todo{website}. It was used to verify a number of parameterized systems, all of which are communication protocols;
+
+\vspace{10pt}
+\makebox[\linewidth]{
+\begin{tabularx}{0.95\linewidth} {l  X}
+\textsc{abp} & The alternating bit protocol, as described in \ref{abpgraph} with the extension suggested in \ref{abpobserver}. The Alternating Bit Protocol corresponds to the \e{Sliding Window Protocol} with k=2. Automatas for the the Sliding Window Protocl can be found in \ref{SWgraph}.\\
+\textsc{abp\_f} & A purpously faulty version of the \textsc{abp}.\\
+\textsc{sw3} & The sliding window protocol, with k=3. \\
+\textsc{abp\_f} & A purpously faulty version of the \textsc{sw3}. \\
+\textsc{sw4} & The sliding window protocol, with k=3.\\
+\textsc{sw5} & The sliding window protocol, with k=3.\\
+\textsc{brp} & The \e{Bounded Retransmission Protocol}, a variant of the alternating bit protocol. CITATION \\
+\textsc{brp\_f} & A purpously faulty version of the \textsc{brp}.\\
+\end{tabularx}
+}
+\vspace{10pt}
+
+The Backward\todo{???} verifier uses $backward reachability$ to solve this problem, and follows the algorithm described in \cite{287591}. The algorithm was implemented as part of this project with the purpose of comparison in mind. It was therefore implemented, such that it accepts exactly the same input language, as of the verifier of this project.
+
+The $MPass$ verifier addresses the verification bounded-phase reachability problem, i.e. every process may perform only a bounded number of $phases$ during a run in the system. This problem is then translated into a satisfiability formula (a quantifier-free Presburger formula to be exact) which is in turn solved by a third party SMT-solver (Z3 SMT-solver, http://z3.codeplex.com).
+
+\paragraph{Note on the MPass verification results.}
+The input language used in this project (see \ref{speclang}) was based on that of the $MPass$ verifier, but does not fully coincide. The tool ships with some example protocols (\textsc{abp, abp\_f, sw3\_f, brp}), which with minor changes could be adapted such that they would comply to the specification language used here. The remaining protocols were written from scratch, and use specification artifcats not comprehensible by $MPass$. Reformulating these would result in very different models, making it difficult to draw any conclusions from a comparison. For this reason, $MPass$ was only used to verify a subset of the protocols mentioned above.
+
+\subsection{Experimental Results}
+The results can be seen in \ref{comparison}. The table shows the size of the variable $k$, whether the result was safe or unsafe, the runetime and the amount of working memory used by the verifier for each of the communication protocols above. Further, the table shows the runtime and result of two other verifiers, verifying the same protocols. For these verifiers, only the runtime and the safetyness result is specified.
+
+The results were generated on a 3.2GHz Intel Core i3 550 with 4GB of memory, running Debian Linux, using a single core.
+
+\subsection{Analysis of Results}
+
+\input{comparison}

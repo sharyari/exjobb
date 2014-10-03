@@ -1,24 +1,29 @@
 \begin{table}
-\begin{tabular}{| c || c | c | c || c | c || c | c | }
-\hline & \multicolumn{3}{c||}{MYVERI} & \multicolumn{2}{c||}{Backward} & \multicolumn{2}{c||}{MPass} \\
-\cline {2-8} & k & Result & Time (s) & Result & Time (s) & Result & Time (s) \\
+\centering
+\makebox[\linewidth]{
+\begin{tabular}{| c || c | c | c | c || c | c || c | c | }
+\hline & \multicolumn{4}{c||}{\textbf{??}} & \multicolumn{2}{c||}{\textbf{Backward}} & \multicolumn{2}{c|}{\textbf{MPass}} \\
+\cline {2-9} & \textbf{k} & \textbf{Result} & \textbf{Time (s)} & \textbf{Mem (MB)} & \textbf{Result} & \textbf{Time (s)} & \textbf{Result} & \textbf{Time (s)} \\
 \hline
-\textsc{abp} & 2 & Safe & 0.00 & Safe &  0.01 & Safe & 1.04\\
+\textsc{abp} & 2 & Safe & 0.00 & 1 &Safe &  0.01 & Safe & 1.04\\
 \hline
-\textsc{abp\_f} & 1 & Unsafe & 0.00 & Unsafe & 0.01 & Unsafe & 6.04\\
+\textsc{abp\_f} & 1 & Fail & 0.00 & 1 & Fail & 0.01 & Fail & 6.04\\
 \hline
-\textsc{sw3} & 3 & Safe & 0.10 & Safe & 0.17 & -- & --\\
+\textsc{sw3} & 3 & Safe & 0.10 & 3 & Safe & 0.17 & -- & --\\
 \hline
-\textsc{sw3\_f} & 1 & Unsafe & 0.00 & Unsafe & 0.10 & Unsafe & 26.08\\
+\textsc{sw3\_f} & 1 & Fail & 0.00 & 1 & Fail & 0.10 & Fail & 26.08\\
 \hline
-\textsc{sw4} & 4 & Safe & 3.64 & Safe & 2.03 & -- & --\\
+\textsc{sw4} & 4 & Safe & 3.64 & 36 & Safe & 2.03 & -- & --\\
 \hline
-\textsc{sw5} & 5 & Safe & 120.20 & Safe & 24.31 & -- & --\\
+\textsc{sw5} & 5 & Safe & 120.20 & 924 & Safe & 24.31 & -- & --\\
 \hline
-\textsc{brp} & 2 & Safe & 0.02s & timeout & -- & Safe & 1.23\\
+\textsc{brp} & 2 & Safe & 0.02s & 3 & ?? & -- & Safe & 1.23\\
 \hline
-\textsc{brp\_f} & 1 & Unsafe & 0.00 & Unsafe & 0.15 & -- & --\\
+\textsc{brp\_f} & 1 & Fail & 0.00 & 2 & Fail & 0.15 & -- & --\\
 \hline
 \end{tabular}
+}
+\caption{Runtime and verification results for the verification method in this paper, in comparison to backward reachability and the MPass verifier.}
+\label{comparison}
 \end{table}
 

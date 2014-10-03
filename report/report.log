@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014/Debian) (preloaded format=pdflatex 2014.9.26)  30 SEP 2014 19:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014/Debian) (preloaded format=pdflatex 2014.9.26)  3 OCT 2014 17:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1058,50 +1058,61 @@ File: tikzlibraryfadings.code.tex 2009/11/15 v3.0.0 (rcs-revision 1.2)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryfadings.code
 .tex
 File: pgflibraryfadings.code.tex 2008/02/07 v3.0.0 (rcs-revision 1.3)
-))) (/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty
-Package: booktabs 2005/04/14 v1.61803 publication quality tables
-\heavyrulewidth=\dimen181
-\lightrulewidth=\dimen182
-\cmidrulewidth=\dimen183
-\belowrulesep=\dimen184
-\belowbottomsep=\dimen185
-\aboverulesep=\dimen186
-\abovetopsep=\dimen187
-\cmidrulesep=\dimen188
-\cmidrulekern=\dimen189
-\defaultaddspace=\dimen190
-\@cmidla=\count170
-\@cmidlb=\count171
-\@aboverulesep=\dimen191
-\@belowrulesep=\dimen192
-\@thisruleclass=\count172
-\@lastruleclass=\count173
-\@thisrulewidth=\dimen193
-)
+))) (/usr/share/texlive/texmf-dist/tex/latex/tools/tabularx.sty
+Package: tabularx 2014/05/13 v2.10 `tabularx' package (DPC)
+
 (/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
 Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
-\col@sep=\dimen194
-\extrarowheight=\dimen195
+\col@sep=\dimen181
+\extrarowheight=\dimen182
 \NC@list=\toks40
 \extratabsurround=\skip62
 \backup@length=\skip63
 )
-\rowc=\count174
+\TX@col@width=\dimen183
+\TX@old@table=\dimen184
+\TX@old@col=\dimen185
+\TX@target=\dimen186
+\TX@delta=\dimen187
+\TX@cols=\count170
+\TX@ftn=\toks41
+)
+(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2005/04/14 v1.61803 publication quality tables
+\heavyrulewidth=\dimen188
+\lightrulewidth=\dimen189
+\cmidrulewidth=\dimen190
+\belowrulesep=\dimen191
+\belowbottomsep=\dimen192
+\aboverulesep=\dimen193
+\abovetopsep=\dimen194
+\cmidrulesep=\dimen195
+\cmidrulekern=\dimen196
+\defaultaddspace=\dimen197
+\@cmidla=\count171
+\@cmidlb=\count172
+\@aboverulesep=\dimen198
+\@belowrulesep=\dimen199
+\@thisruleclass=\count173
+\@lastruleclass=\count174
+\@thisrulewidth=\dimen200
+)
+\rowc=\count175
 
 (/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty
 Package: amsthm 2009/07/02 v2.20.1
-\thm@style=\toks41
-\thm@bodyfont=\toks42
-\thm@headfont=\toks43
-\thm@notefont=\toks44
-\thm@headpunct=\toks45
+\thm@style=\toks42
+\thm@bodyfont=\toks43
+\thm@headfont=\toks44
+\thm@notefont=\toks45
+\thm@headpunct=\toks46
 \thm@preskip=\skip64
 \thm@postskip=\skip65
 \thm@headsep=\skip66
-\dth@everypar=\toks46
+\dth@everypar=\toks47
 )
-\c@theorem=\count175
-\c@corollary=\count176
+\c@theorem=\count176
+\c@corollary=\count177
  (./report.aux)
 \openout1 = `report.aux'.
 
@@ -1135,17 +1146,17 @@ Package nag Info: Command \RaggedRight not defined, skipping amendment on input
 
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count177
-\scratchdimen=\dimen196
+\scratchcounter=\count178
+\scratchdimen=\dimen201
 \scratchbox=\box64
-\nofMPsegments=\count178
-\nofMParguments=\count179
-\everyMPshowfont=\toks47
-\MPscratchCnt=\count180
-\MPscratchDim=\dimen197
-\MPnumerator=\count181
-\makeMPintoPDFobject=\count182
-\everyMPtoPDFconversion=\toks48
+\nofMPsegments=\count179
+\nofMParguments=\count180
+\everyMPshowfont=\toks48
+\MPscratchCnt=\count181
+\MPscratchDim=\dimen202
+\MPnumerator=\count182
+\makeMPintoPDFobject=\count183
+\everyMPtoPDFconversion=\toks49
 ) ABD: EveryShipout initializing macros
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
@@ -1182,7 +1193,7 @@ Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: hyperref package is loaded.
 Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
-\c@lstlisting=\count183
+\c@lstlisting=\count184
 \AtBeginShipoutBox=\box65
 Package hyperref Info: Link coloring OFF on input line 301.
 
@@ -1192,7 +1203,7 @@ Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count184
+\c@section@level=\count185
 )
 LaTeX Info: Redefining \ref on input line 301.
 LaTeX Info: Redefining \pageref on input line 301.
@@ -1415,7 +1426,7 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
-<bilder/flowchart.png, id=346, 850.377pt x 236.082pt>
+<bilder/flowchart.png, id=356, 850.377pt x 236.082pt>
 File: bilder/flowchart.png Graphic file (type png)
 
 <use bilder/flowchart.png>
@@ -1476,7 +1487,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 81--83
 
  []
 
-[19] [20] <bilder/applyrule.png, id=379, 1000.73875pt x 638.385pt>
+[19] [20] <bilder/applyrule.png, id=389, 1000.73875pt x 638.385pt>
 File: bilder/applyrule.png Graphic file (type png)
 
 <use bilder/applyrule.png>
@@ -1493,16 +1504,40 @@ File: lstlang1.sty 2014/03/04 1.5c listings language file
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2014/03/04 1.5c (Carsten Heinz)
-) [25]
-Overfull \hbox (26.74837pt too wide) in paragraph at lines 266--266
-[][] 
+) [25]) [26]
+(./result.tex
+
+LaTeX Warning: Citation `Haskell' on page 27 undefined on input line 2.
+
+
+Overfull \hbox (10.67427pt too wide) in paragraph at lines 2--2
+[][][][]\T1/cmr/m/n/12 (-20) website  
  []
 
-) [26] [27] (./result.tex (./comparison.tex
 
-Package nag Warning: table with no \caption on input line 23.
+Overfull \hbox (10.67427pt too wide) in paragraph at lines 2--2
+[][][][]\T1/cmr/m/n/12 (-20) website  
+ []
 
-)) [28] (./relatedwork.tex) (./report.bbl
+
+Overfull \hbox (10.67427pt too wide) in paragraph at lines 2--2
+[][][][]\T1/cmr/m/n/12 (-20) website  
+ []
+
+
+Overfull \hbox (10.67427pt too wide) in paragraph at lines 2--2
+[][][][]\T1/cmr/m/n/12 (-20) website  
+ []
+
+
+LaTeX Warning: Reference `SWgraph' on page 27 undefined on input line 16.
+
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 5--18
+[][]
+ []
+
+[27] (./comparison.tex)) [28] (./relatedwork.tex) [29] (./report.bbl
 
 Package nag Warning: Command \sc is an old LaTeX 2.09 command. 
 (nag)                Use \scshape or \textsc instead on input line 4.
@@ -1515,7 +1550,6 @@ Package nag Warning: Command \sc is an old LaTeX 2.09 command.
 Package nag Warning: Command \sc is an old LaTeX 2.09 command. 
 (nag)                Use \scshape or \textsc instead on input line 17.
 
-[29]
 
 Package nag Warning: Command \sc is an old LaTeX 2.09 command. 
 (nag)                Use \scshape or \textsc instead on input line 23.
@@ -1556,6 +1590,7 @@ Package nag Warning: Command \sc is an old LaTeX 2.09 command.
 Package nag Warning: Command \sc is an old LaTeX 2.09 command. 
 (nag)                Use \scshape or \textsc instead on input line 77.
 
+[30]
 
 Package nag Warning: Command \sc is an old LaTeX 2.09 command. 
 (nag)                Use \scshape or \textsc instead on input line 84.
@@ -1568,7 +1603,6 @@ Package nag Warning: Command \sc is an old LaTeX 2.09 command.
 Package nag Warning: Command \sc is an old LaTeX 2.09 command. 
 (nag)                Use \scshape or \textsc instead on input line 96.
 
-[30]
 
 Package nag Warning: Command \sc is an old LaTeX 2.09 command. 
 (nag)                Use \scshape or \textsc instead on input line 103.
@@ -1583,30 +1617,30 @@ Package nag Warning: Command \sc is an old LaTeX 2.09 command.
 
 )
 
-Package nag Warning: 20 complaints in total.
+Package nag Warning: 19 complaints in total.
 
-[31]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 332.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 332.
+[31] [32]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 346.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 346.
  (./report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 332.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 332.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 346.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 346.
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: 19FBC4C761AB49DB9C52293AF87D3437;2001.
+(rerunfilecheck)             Checksum: 6E76FA21F5C5D89ED867A2FFD049737C;2140.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 332.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 346.
  ) 
 Here is how much of TeX's memory you used:
- 26296 strings out of 493104
- 494175 string characters out of 6136932
- 685743 words of memory out of 5000000
- 28806 multiletter control sequences out of 15000+600000
- 32440 words of font info for 168 fonts, out of 8000000 for 9000
+ 26368 strings out of 493104
+ 495196 string characters out of 6136932
+ 688199 words of memory out of 5000000
+ 28865 multiletter control sequences out of 15000+600000
+ 32636 words of font info for 170 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,13n,92p,1508b,1283s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,18n,92p,1508b,1283s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist
@@ -1628,10 +1662,10 @@ public/cm-super/sfrm1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm
 /texmf/fonts/type1/public/cm-super/sfrm1440.pfb></usr/share/texmf/fonts/type1/p
 ublic/cm-super/sfss1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1
 200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on report.pdf (31 pages, 511473 bytes).
+Output written on report.pdf (32 pages, 518639 bytes).
 PDF statistics:
- 645 PDF objects out of 1000 (max. 8388607)
- 561 compressed objects within 6 object streams
- 178 named destinations out of 1000 (max. 500000)
- 27495 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 673 PDF objects out of 1000 (max. 8388607)
+ 584 compressed objects within 6 object streams
+ 184 named destinations out of 1000 (max. 500000)
+ 27511 words of extra memory for PDF output out of 29859 (max. 10000000)
 
