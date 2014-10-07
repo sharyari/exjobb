@@ -1,0 +1,27 @@
+\section{Related Work}
+%Early model checking consisted of mathematically proving correctness, by manual inspection. As this is a cumbersome and error-prone task, much research effors were put in to the automatication of the process\cite{emerson2008}.
+
+%The field first gaind ground with ground breaking work of Pnueli, being the first to suggest the use of \e{temporal logic} to analyse concurrent programs\cite{pnueli1977}. To this end, Pnueli formulated a small set of linear temporal operators, from which LTL-formulas could be formulated with high expressivness. As opposed to linear time logic in which assersions can be made on an execution path, \e{branching time logic} allows for assrsion to be set with respect to all possible future paths. Although several formulations exists, the most widely used is CTL (Computation Tree Logic), as suggested by Clarke and Emerson\cite{emerson1980}. These intitial efforts continue to be researched and extended today, notable is for example timed CTL which allows verification of systems with real-time constraints. A multitude of sophisticated and efficient implementations exists for these logics, well known examples are SPIN\cite{spin}, NuSMV\cite{nusmv} and UPPAAL\cite{uppaal} for LTL, CTL and tCTL respectively.
+
+%Temportal model checking provides effiecient (polynomial or linear) algorithms for verification, but struggles with the much researched state space explosion\cite{clarke2012}. Building upon CTL logic, \e{symbolic model checking} attempts to reduce the state space growth representing states as order binary decision diagrams (OBDDs)\ref{nr 70 in book, Bryant} which may, but are not guaranteed tp, greatly reduce the number of states in the representation. More recent symbolic representations have focused on expressing functions in conjunctive normal form, CNF, thus allowing SAT techniques to be used to perform quantifier elimination.\cite{mcmillan}\todo{find ref, MPass?} 
+
+%Symbolic model checking is useful when the system under observation has a large number of states, for example the verification of a piece of hardware. 
+
+%Regular model checking:
+%\cite{boigelot2003}\cite{resten1997}
+
+\e{Parameterized model checking} focuses verification scenarious where the size of the problem under observation is a parameter of the system, and the size has no trivial upper bound. The goal is to verify the correctness of the system regardless of the value of the parameter. As this generally corresponds to a transition system of infinite size, research in this field of verification focuses on techniques to limit the size of the transition system.
+
+On such method is the \e{invisible invariants} method\cite{invinv}, which similar to \cite{parosh} and \cite{namjoshi} use \e{cut-off} points to check invariants. Such cut-off points can be found dynamicly\cite{kaiser2010} or be constant\cite{emerson1995}. The works of Namjoshi\cite{namjoshi}  show that methods based on process invariants or cut-offs are complete for safety properties.
+
+Small model systems have been investigated in \cite{kaiser2010}, which combines it with ininite state backward coverability analysis. Such methods prevent its use on undecidable reachability problems, such as those considered in \cite{parosh}. The work of \cite{parosh} also show that the problem is decidable for a large class of well quasi-ordered systems, including Petri Nets\cite{parosh}. Practical results indicate that these methods may be decidable for yet larger classes of systems. More on well-structured infinite transition systems can be found in \cite{finkel2001}.
+
+Abstract interpretation techniques were first described by Cousot and Cousot\cite{cousot1977}\cite{cousot1979}. Similar work to \cite{parosh} can be found in \cite{raskin2006, ganty2006}.
+
+% Modelchecking boken, sida 81 påstår att dijkstra var först.
+Edsger Dijkstra was the first to consider the interaction between processes communicating over channels\cite{dijkstra1972}\cite{baier2008}. In \cite{bz83}, the authors show that verification of perfect channels systems is undecidable, by relating it to the simulation of a Turing Machine\cite{bz83}. The decidability of lossy channels has been researched in\cite{287591, gordon}.
+
+
+% Part on other attempts to solve the same problem
+Similar to this thesis, \cite{le2006} make use of abstract interpretation to channel systems, applying the technique to regular model checking. MPass\cite{mpass} is a verification tool for channel systems, that restates the verification problem to an equivalent first-order logic, which is then solved by an SMT solver. Its input language is roughly the same as this thesis, although the tool is more general, being applicable also on \e{stuttering} and unordered channels.
+

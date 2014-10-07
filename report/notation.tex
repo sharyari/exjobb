@@ -1,0 +1,31 @@
+\section{Notation and Terminology}
+\label{notation}
+In this chapter I define some of the notation and terminology used in the paper. Readers familiar with model checking terminology may want to skip this chapter.
+
+\paragraph{General Terminology}
+\begin{itemize}
+\item
+\textbf{Model} checking is the act of verifying the correctness of a system with regard to its specification. In some literature, the term is used to denote \emph{temporal model checking} -- here it is used as a more general term.
+
+\item
+A \textbf{transition system} is related to the concept of finite state automata, but do not need to have a finite number of states and transitions. A transition system also has an initial state and a set of end states.
+\end{itemize}
+
+
+\paragraph{Transition systems}
+\begin{itemize}
+\item
+A \textbf{state} is commonly used to denote the state of an FSM. In this paper, we do not reason about particular FSMs, but only the joint behaviour of several FSMs. State is here used in the meaning \textbf{global state} or equivalently \textbf{control state}.
+
+\item
+With \textbf{evaluation} we refer to the state of all the channels in a system, and use $\xi$ to denote an evaluation. We use $\xi(ch)$ to denote the content of the channel $ch$ of a system. The content of a specific channel is called a \textbf{word}.
+
+\item
+A \textbf{configuration} is used to denote a specific combination of global state and channel evaluation of a channel transition system. 
+\end{itemize}
+
+\paragraph{Miscellaneous}
+\begin{itemize}
+\item
+The \textbf{Upward closure} $U$ of a partially ordered set $(S,\preceq)$ is the subset such that for any $x \in U$ and $x\preceq y$ then $y \in U$.
+\end{itemize}
