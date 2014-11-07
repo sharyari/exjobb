@@ -55,4 +55,4 @@ nlonger' seen stringset k n sl =
   ++nlonger' seen stringset k (n-1) sl
 
 
--- THIS DOESN'T WORK FOR STACKS RIGHT NOW!!
+

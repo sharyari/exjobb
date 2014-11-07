@@ -1,27 +1,29 @@
 \section{Result}
-An implementation of this method has been written in the \e{Haskell}\cite{Haskell} programming language, retrievable from \todo{website}. It was used to verify a number of parameterized systems, all of which are communication protocols;
+An implementation of this method has been written in the \e{Haskell} programming language (\url{https://www.haskell.org/haskellwiki/Haskell}). It was used to verify a number of parameterized systems, all of which are communication protocols;
 
 \vspace{10pt}
 \makebox[\linewidth]{
 \begin{tabularx}{0.95\linewidth} {l  X}
-\textsc{abp} & The alternating bit protocol, as described in \ref{abpgraph} with the extension suggested in \ref{abpobserver}. The Alternating Bit Protocol corresponds to the \e{Sliding Window Protocol} with k=2. Automatas for the the Sliding Window Protocl can be found in \ref{SWgraph}.\\
+\textsc{abp} & The alternating bit protocol, as described in \ref{abpgraph} with the extension suggested in \ref{abpobserver}. The Alternating Bit Protocol corresponds to the \e{Sliding Window Protocol} with k=2. Automatas for the the Sliding Window Protocol can be found in \ref{SWgraph}.\\
 \textsc{abp\_f} & A purpously faulty version of the \textsc{abp}.\\
 \textsc{sw3} & The sliding window protocol, with k=3. \\
 \textsc{abp\_f} & A purpously faulty version of the \textsc{sw3}. \\
 \textsc{sw4} & The sliding window protocol, with k=3.\\
 \textsc{sw5} & The sliding window protocol, with k=3.\\
-\textsc{brp} & The \e{Bounded Retransmission Protocol}, a variant of the alternating bit protocol. CITATION \\
+\textsc{brp} & The \e{Bounded Retransmission Protocol}, a variant of the alternating bit protocol. \\
 \textsc{brp\_f} & A purpously faulty version of the \textsc{brp}.\\
 \end{tabularx}
 }
 \vspace{10pt}
 
-The Backward\todo{???} verifier uses $backward reachability$ to solve this problem, and follows the algorithm described in \cite{287591}. The algorithm was implemented as part of this project with the purpose of comparison in mind. It was therefore implemented, such that it accepts exactly the same input language, as of the verifier of this project.
+The \texttt{Backward} verifier uses \emph{backward reachability} for verification, and follows the algorithm described in \cite{287591}. The algorithm was implemented as part of this project with the purpose of comparison in mind. It was therefore implemented in such a way that it accepts exactly the same specification language, as that of the verifier of this project.
 
-The $MPass$ verifier addresses the verification bounded-phase reachability problem, i.e. every process may perform only a bounded number of $phases$ during a run in the system. This problem is then translated into a satisfiability formula (a quantifier-free Presburger formula to be exact) which is in turn solved by a third party SMT-solver (Z3 SMT-solver, http://z3.codeplex.com).
+The $MPass$ verifier addresses the verification bounded-phase reachability problem, i.e. every process may perform only a bounded number of $phases$ during a run in the system. This problem is then translated into a satisfiability formula (a quantifier-free Presburger formula to be exact) which in turn is solved by a third party SMT-solver (Z3 SMT-solver, \url{http://z3.codeplex.com}).
 
 \paragraph{Note on the MPass verification results.}
 The input language used in this project (see \ref{speclang}) was based on that of the $MPass$ verifier, but does not fully coincide. The tool ships with some example protocols (\textsc{abp, abp\_f, sw3\_f, brp}), which with minor changes could be adapted such that they would comply to the specification language used here. The remaining protocols were written from scratch, and use specification artifcats not comprehensible by $MPass$. Reformulating these would result in very different models, making it difficult to draw any conclusions from a comparison. For this reason, $MPass$ was only used to verify a subset of the protocols mentioned above.
+
+It should be mentioned that the time estimation for the $MPass$ solver is part the time to generate an $SMT$ formula, and part to verify that formula with a third party $SMT$-solver. The times generated in the latter part were approximated to full seconds, meaning the values have a measurement error up to $\pm 0.5$ seconds.
 
 \subsection{Experimental Results}
 The results can be seen in \ref{comparison}. The table shows the size of the variable $k$, whether the result was safe or unsafe, the runetime and the amount of working memory used by the verifier for each of the communication protocols above. Further, the table shows the runtime and result of two other verifiers, verifying the same protocols. For these verifiers, only the runtime and the safetyness result is specified.
@@ -29,5 +31,13 @@ The results can be seen in \ref{comparison}. The table shows the size of the var
 The results were generated on a 3.2GHz Intel Core i3 550 with 4GB of memory, running Debian Linux, using a single core.
 
 \subsection{Analysis of Results}
+The results in \ref{comparison} show that the verification tool is in large efficient, yielding comparable verification times to backward reachability and faster than the $MPass$ verifier for all of the protocols tested. Further, all verifiers yield the same safetyness results, which is to be expected as all three solvers are free from both false positives and negatives.
+
+Examining the sliding window protocols of increasing size, i.e. \textsc{abp}, \textsc{sw3}, \textsc{sw4} and \textsc{sw5}, it is evident that the verifier suffers from a higher degree of exponential growth with respect to the problem size, than does the backward reachability verifier (which also suffers from exponential growth, as this is a inherent property of the model). First and foremost, it is the amount of working memory that is the bottleneck.
+
+Increasing the size of the sliding window protocol means increasing the window size of the protocol -- this not only means that the value of $k$ for which the protocol can be found safe increases, but also that there is additional symbols to consider, and that the number of states and transitions increase (i.e. \ref{abpgraph} compared to \ref{SWgraph}). The number of potential configurations depend on exactly these factors and due to the overapproximation configurations, we expect that a large set of these will be reachable. As the verification tool stores $all$ reachable configurations, without approximation or abstraction, this leads to memory becoming a bottle-neck for this particular protocol.
+
+
+
 
 \input{comparison}

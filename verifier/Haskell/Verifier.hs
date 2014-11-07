@@ -67,7 +67,7 @@ verifyAbstract args k b verbose =
   in
    if (L.length isSafe == 0) then -- is safe
      if isSame && b then -- if we found no new configurations twice in a row, search is done
-       "Safe"
+       traceShow (getSize newTrie) "Safe"
      else
        verifyAbstract (newTrie, newConf, newSeen) k isSame verbose
    else -- bad configuration found

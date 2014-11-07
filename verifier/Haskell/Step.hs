@@ -33,15 +33,15 @@ applyRule chan k (newState, (i, tr, symbol))
       [(newState, replaceNth i (init (chan!!i))  chan)] else []
   | tr == "¡" = -- Rule is an append-opration
     let
-      w = chan!!i++symbol
+      w = (chan!!i)++symbol
       newWord1 = reverse $ take k $ reverse $ w
       newWord2 = reverse $ take k $ drop 1 $ reverse  $ w
     in
-   -- If the produced word is larger than k, create the two k-sized words of the first (k+1) symbols
-     if (length w > k) then
-       [(newState, replaceNth i newWord1 chan),(newState,replaceNth i newWord2 chan)]
-     else
-       [(newState, replaceNth i w chan)]
+     -- If the produced word is larger than k, create the two k-sized words of the first (k+1) symbols
+      if (length w > k) then
+        [(newState, replaceNth i newWord1 chan),(newState, replaceNth i newWord2 chan)]
+      else
+        [(newState, replaceNth i w chan)]
   | tr == "!" = -- rule is a write-operation
     let
       w = symbol++chan!!i 

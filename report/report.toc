@@ -52,7 +52,9 @@
 \contentsline {subsection}{\numberline {7.6}Specification Language}{24}{subsection.7.6}
 \contentsline {subsubsection}{\numberline {7.6.1}Example}{24}{subsubsection.7.6.1}
 \contentsline {section}{\numberline {8}Result}{27}{section.8}
-\contentsline {paragraph}{Note on the MPass verification results.}{27}{section*.41}
-\contentsline {subsection}{\numberline {8.1}Experimental Results}{27}{subsection.8.1}
+\contentsline {paragraph}{Note on the MPass verification results.}{27}{section*.38}
+\contentsline {subsection}{\numberline {8.1}Experimental Results}{28}{subsection.8.1}
 \contentsline {subsection}{\numberline {8.2}Analysis of Results}{28}{subsection.8.2}
-\contentsline {section}{\numberline {9}Related Work}{29}{section.9}
+\contentsline {section}{\numberline {9}Summary and Further Work}{29}{section.9}
+\contentsline {section}{\numberline {10}Related Work}{30}{section.10}
+\contentsline {section}{\numberline {A}Automata for the Sliding Window Protocol}{33}{appendix.A}
