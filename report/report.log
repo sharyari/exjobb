@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.10.7)  7 NOV 2014 10:48
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.10.7)  7 NOV 2014 10:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1204,11 +1204,7 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 \openout6 = `report.toc'.
 
  [2]
-(./introduction.tex [3]
-
-LaTeX Warning: Reference `results' on page 4 undefined on input line 26.
-
-[4]) [5] (./notation.tex
+(./introduction.tex [3] [4]) [5] (./notation.tex
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 8.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
@@ -1386,7 +1382,7 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
-<bilder/flowchart.png, id=361, 850.377pt x 236.082pt>
+<bilder/flowchart.png, id=362, 850.377pt x 236.082pt>
 File: bilder/flowchart.png Graphic file (type png)
 
 <use bilder/flowchart.png>
@@ -1447,7 +1443,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 81--83
 
  []
 
-[19] [20] <bilder/applyrule.png, id=394, 1000.73875pt x 638.385pt>
+[19] [20] <bilder/applyrule.png, id=395, 1000.73875pt x 638.385pt>
 File: bilder/applyrule.png Graphic file (type png)
 
 <use bilder/applyrule.png>
@@ -1466,7 +1462,7 @@ File: lstlang1.sty 2013/08/26 1.5b listings language file
 File: lstmisc.sty 2013/08/26 1.5b (Carsten Heinz)
 ) [25]) [26]
 (./result.tex
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 5--18
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 6--19
 [][]
  []
 
@@ -1561,16 +1557,12 @@ Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 66.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 66.
 Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: 2B11E107DB5DF4B518B9A11835707A61;2278.
-
-
-LaTeX Warning: There were undefined references.
-
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 66.
  ) 
 Here is how much of TeX's memory you used:
  24468 strings out of 493304
  437406 string characters out of 6139871
- 651376 words of memory out of 5000000
+ 649370 words of memory out of 5000000
  26955 multiletter control sequences out of 15000+600000
  34618 words of font info for 178 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
@@ -1598,10 +1590,10 @@ ublic/cm-super/sfrm1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfss1
 095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1095.pfb></usr/share/
 texmf/fonts/type1/public/cm-super/sfti1200.pfb></usr/share/texmf/fonts/type1/pu
 blic/cm-super/sftt1200.pfb>
-Output written on report.pdf (33 pages, 547947 bytes).
+Output written on report.pdf (33 pages, 548014 bytes).
 PDF statistics:
- 697 PDF objects out of 1000 (max. 8388607)
- 602 compressed objects within 7 object streams
+ 698 PDF objects out of 1000 (max. 8388607)
+ 603 compressed objects within 7 object streams
  183 named destinations out of 1000 (max. 500000)
  30087 words of extra memory for PDF output out of 35830 (max. 10000000)
 

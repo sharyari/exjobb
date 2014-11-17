@@ -4,7 +4,7 @@
 EXTS := aux aux.bak log dvi nav snm toc ps pdf
 LATEXMK:=./latexmk
 
-NAME=midcourse
+NAME=slut
 #######################################
 ## TARGETS
 #######################################

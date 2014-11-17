@@ -1,0 +1,353 @@
+\documentclass[handout]{beamer}
+\title[] % (optional, only for long titles)
+{Algorithmic Verification of Channel Machines Using Small Models}
+\author[J, Sharyari | \emph{sharyari@gmail.com}] {Jonathan Sharyari}
+\usetheme[numbers]{Uppsala}
+\subject{Computer Science}
+
+\input{graphs.tex}
+\date[2014-09-09] % appears in the bottom of the sidebar
+{September $9^{th}$, 2014}
+\institute[Dept. of Information Technology] % appears in the footline
+{
+  Department of Information Technology\\
+  Uppsala University \\ \vspace{10pt}
+  Supervisor: Parosh Abdulla \\
+  Reviewer: Mohamed Faouzi Atig
+}
+\usepackage{float}
+\newfloat{algorithm}{t}{lop}
+%\usepackage{subfigure}
+\usepackage{subcaption}
+\usepackage{algpseudocode}
+\usepackage{biblatex}
+%\addbibresource{references.bib}
+\algtext*{EndWhile}% Remove "end while" text
+\algtext*{EndIf}% Remove "end if" text
+\algtext*{EndFor}% Remove "end if" text
+\begin{document}
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+\begin{frame}
+  \tableofcontents
+
+\end{frame}
+
+\section{General Verification}
+\subsection*{1}
+\begin{frame}
+  \frametitle{Verification}
+  \begin{itemize}
+  \item
+    Verification is the “process of evaluating software to determine whether the products of a given development phase satisfy the conditions imposed at the start of that phase”\cite{ordbok}
+  \item
+    Model checking is the task of automatically verifying the correctness of a program, with regard to its specification.
+  \end{itemize}
+\end{frame}
+
+\subsection*{1}
+\begin{frame}
+  \frametitle{Peterson's Mutual Exclusion -- Pseudo Code}
+
+  \begin{algorithmic}
+    \small
+    \While{true} 
+    \State $\langle b_1$:= true, $x$:=true$\rangle$;
+    \State \textbf{await} ($x$=1 $\vee$ $\neq$ $b_2$);
+    \State \textsc{critical section}
+    \State $b_1$ := false
+    \EndWhile
+  \end{algorithmic}
+
+  % This slide should have a simple example, for example two counters or something, to illustrate how graphs are ``searched''.
+  % Introduce the concept of a ``bad state''
+  % Bakery algorithm, forward reachability, backward reachability...
+
+\end{frame}
+
+\subsection*{1}
+\begin{frame}
+  \begin{example}[Program Graphs]
+    \frametitle{Petersons's Mutual Exclusion -- Program Graph}
+    \petersonone
+
+    \petersontwo
+  \end{example}
+  \begin{itemize}
+  \item
+    $\langle$ $c_1$,$c_2$ $\rangle$ is a \emph{bad global state}
+  \end{itemize}
+
+\end{frame}
+
+\subsection*{1}
+\begin{frame}
+  \frametitle{Peterson's Mutual Exclusion -- Transition System}
+  \begin{example}[Transition System]
+    \petersonboth
+  \end{example}
+  % Mention that there are several ways to check for this. This is a case of forward reachability...
+\end{frame}
+
+
+\section{All for the Price of Few}
+\subsection*{1}
+\begin{frame}
+  \frametitle{All for the Price of Few}
+  \begin{itemize}
+  \item Builds upon work by Parosh Abdulla, Fr\'ed\'eric Haziza and Luk\'a\v{s} Hol\'ic, \emph{All for the Price of Few}, 2013
+  \item Parameterized Systems
+  \item Small models 
+  \item View abstraction
+    % The point of this slide is to present their paper, mention some concepts that I'm going to explain and to explain, that I will explain them in the context of their work, as it is less messy
+  \end{itemize}
+\end{frame}
+
+\subsection*{1}
+\subsection{Parameterized Systems}
+\begin{frame}
+  \frametitle{Parameterized Systems}
+  \begin{itemize}
+  \item
+    The size of the system is a parameter of the system
+  \item
+    Results in the verification of an infinite system % One for each size of the system
+  \item
+    Example: unbounded number of participents, unbounded integers, unbounded channels
+    % The point of this slide is to give an idea of why this is a problem, and how this problem surfaces.
+    % If instead of the bakery, we would have a protocol with more actors...
+  \end{itemize}
+\end{frame}
+
+\subsection*{1}
+\begin{frame}
+  \frametitle{Parameterized Systems -- Burns' Protocol}
+  \begin{figure}
+    \begin{example}[Burns' Protocol]
+      \begin{subfigure}[b]{0.49\textwidth}
+        \begin{algorithmic}
+          \footnotesize
+          \State flags[i] :=0;
+          \If{$\exists j<i: flag[i] = 1$} \State \textbf{goto} 1;
+          \EndIf
+          \State flags[i] :=1;
+          \If {$\exists j<i: i: flag[i] = 1$} \State \textbf{goto} 1;
+          \EndIf
+          \State \textbf{await} $\forall$ j$>$i: flag[j] $\neq$ 1;
+          \State flag[i] :=0; \textbf{goto} 1;
+        \end{algorithmic}
+      \end{subfigure}
+      \begin{subfigure}[b]{0.49\textwidth}
+        \burns
+      \end{subfigure}
+    \end{example}
+  \end{figure}
+\end{frame}
+
+
+\subsection{Small Models}
+\begin{frame}
+  \frametitle{Small Models}
+  \begin{itemize}
+  \item
+    In some cases, a ''small'' model of a system may exhibit all the relevant behaviour larger systems. % This is not always possible!
+  \item
+    It suffices to prove the correctness of a small model
+    % The point of this slide is to give an intuitive feeling on how to solve the problem
+  \end{itemize}
+\end{frame}
+
+\subsection*{1}
+\begin{frame}
+  \frametitle{Small Models -- Example}
+  \begin{itemize}
+  \item Finite size instances
+  \item The possible \emph{configurations} for Burns' protocol with $N=5$ processes: $\langle p_1, p_2, p_3, p_4, p_5 \rangle$ with $p_i \in \{1,2,3,4,5,6\}$, $0 \leq i \leq 5$ .
+  \end{itemize}
+\end{frame}
+
+\subsection{View Abstraction}
+\begin{frame}
+  \frametitle{View Abstraction} % mention ``Abstract interpretation''
+  \begin{exampleblock}{}
+    \abstraction
+  \end{exampleblock}
+\end{frame}
+
+
+\subsection{Verification Algorithm}
+\begin{frame}
+  \frametitle{Verification algorithm} % mention ``Abstract interpretation''
+  \footnotesize
+  \begin{algorithmic}[1]
+    \While{\texttt{$True$}}
+    \If {$\mathcal{R}_k$ $\cap$ $Bad$ $\neq$ $\emptyset$} \Comment{True if unsafe}
+    \State return Unsafe
+    \EndIf
+    \State V := $\mu X.\alpha_k(I)$ $\cup$ $Apost_k(X)$ \Comment{fixpoint overapproximation}
+    \If {$\gamma_k(V)$ $\cap$ $Bad$ = $\emptyset$} \Comment{True if safe}
+    \State return Safe     
+    \EndIf
+    \State k := k+1 \Comment{Safe but not a small model}
+    \EndWhile
+  \end{algorithmic}
+\end{frame}
+
+\section{Objective}
+\subsection*{1}
+\begin{frame}
+  \frametitle{Goal}
+  \begin{itemize}
+  \item
+    Adapting the verification method to verify \emph{channel systems}
+  \item
+    Implementing the verification method
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \tableofcontents
+\end{frame}
+
+
+\section{Method}
+\subsection{Channel Systems}
+\begin{frame}
+  \frametitle{Channel Systems}
+  \begin{itemize}
+  \item
+    A channel system is a system that relies on channels for its operation, e.g. communication protocols
+  \item
+    If channels are unbounded, the model checking of such protocols corresponds to searching an infinite graph
+  \end{itemize}
+\end{frame}
+
+\subsection*{1}
+\begin{frame}
+  \begin{example}[ABP Program Graphs]
+    \frametitle{Alternating Bit Protocol -- Program Graphs}
+    \begin{figure}
+      \begin{subfigure}[b]{0.49\textwidth}
+        \abpsender
+        \caption{\tiny ABP sender}
+      \end{subfigure}
+      \begin{subfigure}[b]{0.49\textwidth}
+        \abpreceiver
+        \caption{\tiny ABP receiver}
+      \end{subfigure}
+      \begin{subfigure}[b]{\textwidth}
+        \center
+        \abpobserver
+        \caption{\tiny ABP observer}
+      \end{subfigure}
+    \end{figure}
+  \end{example}
+\end{frame}
+
+\subsection{Transition System}
+\begin{frame}
+  \frametitle{Channel Transition System}
+  \begin{itemize}
+  \item
+    Tuples $\langle S, \xi\rangle$, where $S$ is a global state, and $\xi$ is the \emph{evaluation} of channel states.
+  \item
+    Alternating bit protocol: $\langle [s, r, o], [ch_M, ch_A]\rangle$
+  \end{itemize}
+\end{frame}
+
+\subsection{$\alpha$ and $\gamma$}
+\begin{frame}
+  \frametitle{View Abstraction} % mention ``Abstract interpretation''
+  \begin{exampleblock}{}
+    \abstraction
+  \end{exampleblock}
+\end{frame}
+
+\subsection*{1}
+\begin{frame}
+  \frametitle{Abstraction Function}
+  \begin{itemize}
+  \item
+    Creates views of size $k$ from configurations of size $k+1$
+
+    \begin{example}[$\alpha$ for ABP with $k=2$]
+
+    $\langle S, [110,0]\rangle$ $\in$ $\gamma_{k+1}(V) \Rightarrow$ 
+   
+    \{$\langle S, [11, 0]\rangle$, $\langle S, [11, \varepsilon]\rangle$, $\langle S, [10, 0]\rangle$, $\langle S, [10, \varepsilon]\rangle$, $\langle S, [1, 0]\rangle$, $\langle S, [1,\varepsilon ]\rangle$, $\langle S,[0,0]\rangle$, $\langle S, [0,\varepsilon]\rangle$, $\langle S, [\varepsilon, \varepsilon]$\} $\subseteq$ $V$
+
+    \end{example}
+  \end{itemize}
+\end{frame}
+
+\subsection*{1}
+\begin{frame}
+  \frametitle{Concretization function}
+  \begin{itemize}
+  \item
+    Creates configurations of size $k+1$ from views of size $k$
+
+    \begin{example}[$\gamma$ for ABP with $k=2$]
+    
+ 
+    \{$\langle S, [11, 0]\rangle$, $\langle S, [11, \varepsilon]\rangle$, $\langle S, [10, 0]\rangle$, $\langle S, [10, \varepsilon]\rangle$, $\langle S, [1, 0]\rangle$, $\langle S, [1,\varepsilon ]\rangle$, $\langle S,[0,0]\rangle$, $\langle S, [0,\varepsilon]\rangle$, $\langle S, [\varepsilon, \varepsilon]$\} $\subseteq$ $V$
+
+    $\Rightarrow \langle S, [110,0]\rangle$ $\in$ $\gamma_{k+1}(V)$ 
+
+
+    \end{example}
+  \end{itemize}
+\end{frame}
+
+
+\section{Results}
+\begin{frame}
+  \frametitle{Statistics}
+  \begin{table}
+    \centering
+    \tiny
+
+    \makebox[\linewidth]{
+      \begin{tabular}{| c || c | c | c | c | c || c | c | c || c | c | }
+        \hline & \multicolumn{5}{c||}{} & \multicolumn{3}{c||}{\textbf{Backward}} & \multicolumn{2}{c|}{\textbf{MPass}} \\
+        \cline {2-11} & \textbf{k} & \textbf{size(V)} & \textbf{Result} & \textbf{Time} & \textbf{Mem} & \textbf{Size V} & \textbf{Result} & \textbf{Time} & \textbf{Result} & \textbf{Time} \\
+        \hline
+        \textsc{abp} & 2 & 108 & Safe & 0.00s & 1MB & 56 & Safe &  0.01s & Safe & 1.04s\\
+        \hline
+        \textsc{sw3} & 3 & 4247 & Safe & 0.10s & 3MB & 270 & Safe & 0.17s & -- & --\\
+        \hline
+        \textsc{sw4} & 4 & 98629 & Safe & 3.64s & 36MB & 840 & Safe & 2.03s & -- & --\\
+        \hline
+        \textsc{sw5} & 5 & 1834345 & Safe & 120.20s & 924MB & 2028 & Safe & 24.31s & -- & --\\
+        \hline
+        \textsc{brp} & 2 & 45 & Safe & 0.02s & 3MB & -- & ?? & Timeout & Safe & 1.23s\\
+        \hline
+        \textsc{abp\_f} & 1 & -- & Fail & 0.00s & 1MB & -- & Fail & 0.01s & Fail & 6.04s\\
+        \hline
+        \textsc{sw3\_f} & 1 & -- & Fail & 0.00s & 1MB & -- & Fail & 0.10s & Fail & 26.08s\\
+        \hline
+        \textsc{brp\_f} & 1 & -- & Fail & 0.00 & 2 & -- &  Fail & 0.15 & -- & --\\
+        \hline
+      \end{tabular}
+    }
+
+  \end{table}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{References}
+  %  \printbibliography
+\end{frame}
+
+\begin{frame}[plain]
+  \begin{centering}
+    \pgfimage[height=\textheight]{uppsala_logo}
+    \par
+  \end{centering}
+\end{frame}
+
+
+\end{document}
