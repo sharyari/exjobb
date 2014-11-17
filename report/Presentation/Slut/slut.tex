@@ -21,6 +21,8 @@
 \usepackage{subcaption}
 \usepackage{algpseudocode}
 \usepackage{biblatex}
+\usepackage[usenames,svgnames]{xcolor}
+
 %\addbibresource{references.bib}
 \algtext*{EndWhile}% Remove "end while" text
 \algtext*{EndIf}% Remove "end if" text
@@ -53,7 +55,7 @@
 
   \begin{algorithmic}
     \small
-    \While{true} 
+    \While{true}
     \State $\langle b_1$:= true, $x$:=true$\rangle$;
     \State \textbf{await} ($x$=1 $\vee$ $\neq$ $b_2$);
     \State \textsc{critical section}
@@ -99,7 +101,7 @@
   \begin{itemize}
   \item Builds upon work by Parosh Abdulla, Fr\'ed\'eric Haziza and Luk\'a\v{s} Hol\'ic, \emph{All for the Price of Few}, 2013
   \item Parameterized Systems
-  \item Small models 
+  \item Small models
   \item View abstraction
     % The point of this slide is to present their paper, mention some concepts that I'm going to explain and to explain, that I will explain them in the context of their work, as it is less messy
   \end{itemize}
@@ -159,15 +161,6 @@
   \end{itemize}
 \end{frame}
 
-\subsection*{1}
-\begin{frame}
-  \frametitle{Small Models -- Example}
-  \begin{itemize}
-  \item Finite size instances
-  \item The possible \emph{configurations} for Burns' protocol with $N=5$ processes: $\langle p_1, p_2, p_3, p_4, p_5 \rangle$ with $p_i \in \{1,2,3,4,5,6\}$, $0 \leq i \leq 5$ .
-  \end{itemize}
-\end{frame}
-
 \subsection{View Abstraction}
 \begin{frame}
   \frametitle{View Abstraction} % mention ``Abstract interpretation''
@@ -176,7 +169,22 @@
   \end{exampleblock}
 \end{frame}
 
-
+\subsection*{1}
+\begin{frame}
+\frametitle{View Abstraction -- Example}
+\begin{itemize}
+\item
+Abstraction function $\alpha$: The \emph{subwords} of configurations
+\begin{example}[Abstraction]
+  $\alpha_2$(\{1,2,3\}) = \{\{1,2\},\{2,3\},\{1,3\},\{1\},\{2\},\{3\}\}
+\end{example}
+\item
+Concretization function $\gamma$: The ''inverse'' of the abstraction function
+\begin{example}[Concretization]
+  $\gamma_3$(\{\{1,2\},\{2,3\}, \{1,3\}, \{1\}, \{2\}, \{3\}\}) = \{1,2,3\}
+\end{example}
+\end{itemize}
+\end{frame}
 \subsection{Verification Algorithm}
 \begin{frame}
   \frametitle{Verification algorithm} % mention ``Abstract interpretation''
@@ -188,7 +196,7 @@
     \EndIf
     \State V := $\mu X.\alpha_k(I)$ $\cup$ $Apost_k(X)$ \Comment{fixpoint overapproximation}
     \If {$\gamma_k(V)$ $\cap$ $Bad$ = $\emptyset$} \Comment{True if safe}
-    \State return Safe     
+    \State return Safe
     \EndIf
     \State k := k+1 \Comment{Safe but not a small model}
     \EndWhile
@@ -271,12 +279,14 @@
   \begin{itemize}
   \item
     Creates views of size $k$ from configurations of size $k+1$
+  \item
+    The cross product of the subwords of all channels.
 
     \begin{example}[$\alpha$ for ABP with $k=2$]
 
-    $\langle S, [110,0]\rangle$ $\in$ $\gamma_{k+1}(V) \Rightarrow$ 
-   
-    \{$\langle S, [11, 0]\rangle$, $\langle S, [11, \varepsilon]\rangle$, $\langle S, [10, 0]\rangle$, $\langle S, [10, \varepsilon]\rangle$, $\langle S, [1, 0]\rangle$, $\langle S, [1,\varepsilon ]\rangle$, $\langle S,[0,0]\rangle$, $\langle S, [0,\varepsilon]\rangle$, $\langle S, [\varepsilon, \varepsilon]$\} $\subseteq$ $V$
+    $\langle S, [110,0]\rangle$ $\in$ $\gamma_{k+1}(V) \Rightarrow$
+
+    \{$\langle S, [11, 0]\rangle$, $\langle S, [11, \varepsilon]\rangle$, $\langle S, [10, 0]\rangle$, $\langle S, [10, \varepsilon]\rangle$, $\langle S, [1, 0]\rangle$, $\langle S, [1,\varepsilon ]\rangle$, $\langle S,[0,0]\rangle$, $\langle S, [0,\varepsilon]\rangle$, $\langle S, [\varepsilon, 0]\rangle$, $\langle S, [\varepsilon, \varepsilon]\rangle$\} $\subseteq$ $V$
 
     \end{example}
   \end{itemize}
@@ -288,15 +298,127 @@
   \begin{itemize}
   \item
     Creates configurations of size $k+1$ from views of size $k$
+  \item
+    The ''inverse'' of the abstraction function
 
     \begin{example}[$\gamma$ for ABP with $k=2$]
-    
- 
-    \{$\langle S, [11, 0]\rangle$, $\langle S, [11, \varepsilon]\rangle$, $\langle S, [10, 0]\rangle$, $\langle S, [10, \varepsilon]\rangle$, $\langle S, [1, 0]\rangle$, $\langle S, [1,\varepsilon ]\rangle$, $\langle S,[0,0]\rangle$, $\langle S, [0,\varepsilon]\rangle$, $\langle S, [\varepsilon, \varepsilon]$\} $\subseteq$ $V$
-
-    $\Rightarrow \langle S, [110,0]\rangle$ $\in$ $\gamma_{k+1}(V)$ 
 
 
+    \{$\langle S, [11, 0]\rangle$, $\langle S, [11, \varepsilon]\rangle$, $\langle S, [10, 0]\rangle$, $\langle S, [10, \varepsilon]\rangle$, $\langle S, [1, 0]\rangle$, $\langle S, [1,\varepsilon ]\rangle$, $\langle S,[0,0]\rangle$, $\langle S, [0,\varepsilon]\rangle$, $\langle S, [\varepsilon, 0]\rangle$, $\langle S, [\varepsilon, \varepsilon]\rangle$\} $\subseteq$ $V$
+
+  $\Rightarrow$ \{
+
+${\color{red}\langle S, [110,0]\rangle}$,
+  $\langle S, [110,\varepsilon]\rangle$,
+$\langle S, [111,0]\rangle$,
+$\langle S, [111,\varepsilon]\rangle\}$
+$\in$ $\gamma_{k+1}(V)$
+    \end{example}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Concretization function}
+  \begin{itemize}
+  \item
+    Creates configurations of size $k+1$ from views of size $k$
+  \item
+    The ''inverse'' of the abstraction function
+
+    \begin{example}[$\gamma$ for ABP with $k=2$]
+
+    \{
+    $\langle S, [11, 0]\rangle$,
+    {\color{red}$\langle S, [11, \varepsilon]\rangle$},
+    $\langle S, [10, 0]\rangle$,
+    {\color{red}$\langle S, [10, \varepsilon]\rangle$},
+    $\langle S, [1, 0]\rangle$,
+    {\color{red}$\langle S, [1,\varepsilon ]\rangle$},
+    $\langle S,[0,0]\rangle$,
+    {\color{red}$\langle S, [0,\varepsilon]\rangle$},
+    $\langle S, [\varepsilon, 0]\rangle$,
+    {\color{red}$\langle S, [\varepsilon, \varepsilon]\rangle$}
+    \} $\subseteq$ $V$
+
+    $\Rightarrow$
+
+    \{
+    $\langle S, [110,0]\rangle$,
+    {\color{red}$\langle S, [110,\varepsilon]\rangle$},
+    $\langle S, [111,0]\rangle$,
+    $\langle S, [111,\varepsilon]\rangle\}$
+    $\in$ $\gamma_{k+1}(V)$
+    \end{example}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Concretization function}
+  \begin{itemize}
+  \item
+    Creates configurations of size $k+1$ from views of size $k$
+  \item
+    The ''inverse'' of the abstraction function
+
+    \begin{example}[$\gamma$ for ABP with $k=2$]
+
+    \{
+    {\color{red}$\langle S, [11, 0]\rangle$},
+    {\color{red}$\langle S, [11, \varepsilon]\rangle$},
+    $\langle S, [10, 0]\rangle$,
+    $\langle S, [10, \varepsilon]\rangle$,
+    {\color{red}$\langle S, [1, 0]\rangle$},
+    {\color{red}$\langle S, [1,\varepsilon ]\rangle$},
+    $\langle S,[0,0]\rangle$,
+    $\langle S, [0,\varepsilon]\rangle$,
+    {\color{red}$\langle S, [\varepsilon, 0]\rangle$},
+    {\color{red}$\langle S, [\varepsilon, \varepsilon]\rangle$}
+    \} $\subseteq$ $V$
+
+    $\Rightarrow$
+
+    \{$
+    \langle S, [110,0]\rangle$,
+    $\langle S, [110,\varepsilon]\rangle$,
+    {\color{red}$\langle S, [111,0]\rangle$},
+    $\langle S, [111,\varepsilon]\rangle\}$
+    $\in$ $\gamma_{k+1}(V)$
+    \end{example}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Concretization function}
+  \begin{itemize}
+  \item
+    Creates configurations of size $k+1$ from views of size $k$
+  \item
+    The ''inverse'' of the abstraction function
+
+    \begin{example}[$\gamma$ for ABP with $k=2$]
+
+    \{
+    $\langle S, [11, 0]\rangle$,
+    {\color{red}$\langle S, [11, \varepsilon]\rangle$},
+    $\langle S, [10, 0]\rangle$,
+    $\langle S, [10, \varepsilon]\rangle$,
+    $\langle S, [1, 0]\rangle$,
+    {\color{red}$\langle S, [1,\varepsilon ]\rangle$},
+    $\langle S,[0,0]\rangle$,
+    $\langle S, [0,\varepsilon]\rangle$,
+    $\langle S, [\varepsilon, 0]\rangle$,
+    {\color{red}$\langle S, [\varepsilon, \varepsilon]\rangle$}
+    \} $\subseteq$ $V$
+
+    $\Rightarrow$
+
+    \{
+    $\langle S, [110,0]\rangle$,
+    $\langle S, [110,\varepsilon]\rangle$,
+    $\langle S, [111,0]\rangle$,
+    {\color{red}$\langle S, [111,\varepsilon]\rangle\}$}
+    $\in$ $\gamma_{k+1}(V)$
     \end{example}
   \end{itemize}
 \end{frame}
