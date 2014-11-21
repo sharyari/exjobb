@@ -1,58 +1,58 @@
 \select@language {british}
 \contentsline {section}{\numberline {1}Introduction}{3}{section.1}
-\contentsline {paragraph}{Reading this paper}{4}{section*.2}
+\contentsline {paragraph}{Reading this paper}{4}{section*.8}
 \contentsline {section}{\numberline {2}Notation and Terminology}{6}{section.2}
-\contentsline {paragraph}{General Terminology}{6}{section*.3}
-\contentsline {paragraph}{Transition systems}{6}{section*.4}
-\contentsline {paragraph}{Miscellaneous}{6}{section*.5}
+\contentsline {paragraph}{General Terminology}{6}{section*.9}
+\contentsline {paragraph}{Transition systems}{6}{section*.10}
+\contentsline {paragraph}{Miscellaneous}{6}{section*.11}
 \contentsline {section}{\numberline {3}Model}{7}{section.3}
-\contentsline {paragraph}{Alternating Bit Protocol.}{7}{section*.6}
+\contentsline {paragraph}{Alternating Bit Protocol.}{7}{section*.12}
 \contentsline {subsection}{\numberline {3.1}Channel Systems}{7}{subsection.3.1}
-\contentsline {paragraph}{Definition}{8}{section*.8}
-\contentsline {paragraph}{Example.}{8}{section*.9}
+\contentsline {paragraph}{Definition}{8}{section*.14}
+\contentsline {paragraph}{Example.}{8}{section*.15}
 \contentsline {subsection}{\numberline {3.2}Channel Transition Systems}{9}{subsection.3.2}
-\contentsline {paragraph}{Definition}{9}{section*.10}
-\contentsline {paragraph}{Example}{9}{section*.11}
+\contentsline {paragraph}{Definition}{9}{section*.16}
+\contentsline {paragraph}{Example}{9}{section*.17}
 \contentsline {subsection}{\numberline {3.3}Reachability and Bad Configurations}{10}{subsection.3.3}
 \contentsline {subsection}{\numberline {3.4}Traces}{10}{subsection.3.4}
 \contentsline {section}{\numberline {4}Problem Formulation}{11}{section.4}
 \contentsline {section}{\numberline {5}Abstract Interpretation}{12}{section.5}
 \contentsline {subsection}{\numberline {5.1}Subwords and Views}{12}{subsection.5.1}
-\contentsline {paragraph}{Example.}{12}{section*.13}
+\contentsline {paragraph}{Example.}{12}{section*.19}
 \contentsline {subsection}{\numberline {5.2}Abstractions and Concretizations}{12}{subsection.5.2}
 \contentsline {subsection}{\numberline {5.3}Small Model Property}{12}{subsection.5.3}
 \contentsline {subsubsection}{\numberline {5.3.1}Proofs}{13}{subsubsection.5.3.1}
-\contentsline {paragraph}{Transmission rules}{13}{section*.19}
-\contentsline {paragraph}{Reception rules}{13}{section*.20}
-\contentsline {paragraph}{Actions}{13}{section*.22}
+\contentsline {paragraph}{Transmission rules}{13}{section*.25}
+\contentsline {paragraph}{Reception rules}{13}{section*.26}
+\contentsline {paragraph}{Actions}{13}{section*.28}
 \contentsline {section}{\numberline {6}Extensions}{14}{section.6}
 \contentsline {subsection}{\numberline {6.1}LIFO Channels}{14}{subsection.6.1}
-\contentsline {paragraph}{Stack Channel System}{14}{section*.23}
-\contentsline {paragraph}{Stack Channel Transmision System}{14}{section*.24}
-\contentsline {paragraph}{Proof of Lemma 1}{15}{section*.25}
+\contentsline {paragraph}{Stack Channel System}{14}{section*.29}
+\contentsline {paragraph}{Stack Channel Transmision System}{14}{section*.30}
+\contentsline {paragraph}{Proof of Lemma 1}{15}{section*.31}
 \contentsline {subsection}{\numberline {6.2}Lossy Channels}{15}{subsection.6.2}
-\contentsline {paragraph}{Lossy Channel Systems}{15}{section*.26}
-\contentsline {paragraph}{Lossy Channel Transition Systems}{15}{section*.27}
-\contentsline {paragraph}{Extended Proof of Lemma 1}{15}{section*.28}
+\contentsline {paragraph}{Lossy Channel Systems}{15}{section*.32}
+\contentsline {paragraph}{Lossy Channel Transition Systems}{15}{section*.33}
+\contentsline {paragraph}{Extended Proof of Lemma 1}{15}{section*.34}
 \contentsline {subsection}{\numberline {6.3}Channel Systems with Synchronization}{16}{subsection.6.3}
 \contentsline {subsection}{\numberline {6.4}Alternating Bit Protocol Revised}{16}{subsection.6.4}
 \contentsline {section}{\numberline {7}Implementation of the Verification Method}{17}{section.7}
 \contentsline {subsection}{\numberline {7.1}Naive implementation}{18}{subsection.7.1}
-\contentsline {subsection}{\numberline {7.2}Improving the Implementation}{18}{subsection.7.2}
-\contentsline {paragraph}{Abstracting the Concretizations.}{18}{section*.32}
-\contentsline {paragraph}{Reducing the views.}{19}{section*.33}
-\contentsline {subparagraph}{Example.}{19}{section*.34}
-\contentsline {subsection}{\numberline {7.3}Better Implementation}{20}{subsection.7.3}
-\contentsline {subsubsection}{\numberline {7.3.1}Control-State Partitioning}{20}{subsubsection.7.3.1}
-\contentsline {subsubsection}{\numberline {7.3.2}Advantages of Partitioning}{20}{subsubsection.7.3.2}
-\contentsline {paragraph}{Example.}{21}{section*.35}
-\contentsline {subsection}{\numberline {7.4}Final Implementation}{21}{subsection.7.4}
-\contentsline {subsection}{\numberline {7.5}Reachability Analysis}{22}{subsection.7.5}
-\contentsline {subparagraph}{Finding Minimal Traces}{23}{section*.37}
-\contentsline {subsection}{\numberline {7.6}Specification Language}{24}{subsection.7.6}
-\contentsline {subsubsection}{\numberline {7.6.1}Example}{24}{subsubsection.7.6.1}
+\contentsline {subsection}{\numberline {7.2}Improving the Implementation}{19}{subsection.7.2}
+\contentsline {paragraph}{Abstracting the Concretizations.}{19}{section*.38}
+\contentsline {paragraph}{Reducing the views.}{20}{section*.39}
+\contentsline {subparagraph}{Example.}{20}{section*.40}
+\contentsline {subsection}{\numberline {7.3}Better Implementation}{21}{subsection.7.3}
+\contentsline {subsubsection}{\numberline {7.3.1}Control-State Partitioning}{21}{subsubsection.7.3.1}
+\contentsline {subsubsection}{\numberline {7.3.2}Advantages of Partitioning}{21}{subsubsection.7.3.2}
+\contentsline {paragraph}{Example.}{22}{section*.41}
+\contentsline {subsection}{\numberline {7.4}Final Implementation}{22}{subsection.7.4}
+\contentsline {subsection}{\numberline {7.5}Reachability Analysis}{24}{subsection.7.5}
+\contentsline {subparagraph}{Finding Minimal Traces}{24}{section*.43}
+\contentsline {subsection}{\numberline {7.6}Specification Language}{25}{subsection.7.6}
+\contentsline {subsubsection}{\numberline {7.6.1}Example}{25}{subsubsection.7.6.1}
 \contentsline {section}{\numberline {8}Result}{27}{section.8}
-\contentsline {paragraph}{Note on the MPass verification results.}{27}{section*.38}
+\contentsline {paragraph}{Note on the MPass verification results.}{27}{section*.44}
 \contentsline {subsection}{\numberline {8.1}Experimental Results}{28}{subsection.8.1}
 \contentsline {subsection}{\numberline {8.2}Analysis of Results}{28}{subsection.8.2}
 \contentsline {section}{\numberline {9}Summary and Further Work}{29}{section.9}
