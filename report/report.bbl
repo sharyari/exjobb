@@ -13,6 +13,11 @@
 \newblock In {\em Logic in Computer Science, 1993. LICS '93., Proceedings of
   Eighth Annual IEEE Symposium on\/} (Jun 1993), pp.~160--170.
 
+\bibitem{abdulla2010}
+{\sc Abdulla, P.~A.}
+\newblock Well (and better) quasi-ordered transition systems.
+\newblock {\em Bulletin of Symbolic Logic 16}, 4 (12 2010), 457--515.
+
 \bibitem{mpass}
 {\sc Abdulla, P.~A., Atig, M.~F., Cederberg, J., Modi, S., Rezine, O., and
   Saini, G.}
@@ -62,6 +67,12 @@
 \newblock Information streams sharing a finite buffer.
 \newblock {\em Information Processing Letters 1}, 5 (1972), 179 -- 180.
 
+\bibitem{705644}
+{\sc Emerson, E., and Namjoshi, K.}
+\newblock On model checking for non-deterministic infinite-state systems.
+\newblock In {\em Logic in Computer Science, 1998. Proceedings. Thirteenth
+  Annual IEEE Symposium on\/} (Jun 1998), pp.~70--80.
+
 \bibitem{emerson1995}
 {\sc Emerson, E.~A., and Namjoshi, K.~S.}
 \newblock Reasoning about rings.
@@ -72,6 +83,12 @@
 {\sc Finkel, A., and Schnoebelen, P.}
 \newblock Well-structured transition systems everywhere!
 \newblock {\em Theoretical Computer Science 256}, 1 (2001), 63--92.
+
+\bibitem{fredlund2007mcerlang}
+{\sc Fredlund, L.-{\AA}., and Svensson, H.}
+\newblock Mcerlang: a model checker for a distributed functional programming
+  language.
+\newblock In {\em ACM SIGPLAN Notices\/} (2007), vol.~42, ACM, pp.~125--136.
 
 \bibitem{ganty2006}
 {\sc Ganty, P., Raskin, J.-F., and Van~Begin, L.}
@@ -98,6 +115,11 @@
   of fifo queues.
 \newblock In {\em Algebraic Methodology and Software Technology}. Springer,
   2006, pp.~204--219.
+
+\bibitem{mcmillan1993symbolic}
+{\sc McMillan, K.~L.}
+\newblock {\em Symbolic model checking}.
+\newblock Springer, 1993.
 
 \bibitem{namjoshi}
 {\sc Namjoshi, K.~S.}

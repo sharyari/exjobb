@@ -13,7 +13,7 @@
 \usepackage{color}
 \usepackage{float}
 \usepackage{authblk}
-\usepackage{todonotes}
+%\usepackage{todonotes}
 \usepackage{algorithmicx}
 \usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
 \usepackage{microtype}
@@ -21,6 +21,13 @@
 \DeclareCaptionFont{white}{\color{white}}
 \DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
 \captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+\usepackage{cooltooltips}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{hyperref}
+
+
 
 \usepackage{alltt}
 \usepackage{listings}
@@ -43,7 +50,7 @@ columns=fullflexible,
 escapeinside={\#*}{\^^M}
 }
 
-
+\usepackage{todonotes}
 
 \usepackage{tikz}
 \usetikzlibrary{arrows}

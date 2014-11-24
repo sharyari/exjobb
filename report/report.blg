@@ -1,48 +1,49 @@
-This is BibTeX, Version 0.99d (TeX Live 2014/Debian)
+This is BibTeX, Version 0.99d (TeX Live 2013/Debian)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: report.aux
 The style file: acm.bst
 Database file #1: references.bib
 Warning--empty journal in mpass
-You've used 19 entries,
+Warning--can't use both volume and number fields in fredlund2007mcerlang
+You've used 23 entries,
             2253 wiz_defined-function locations,
-            649 strings with 7246 characters,
-and the built_in function-call counts, 8023 in all, are:
-= -- 795
-> -- 322
+            673 strings with 7813 characters,
+and the built_in function-call counts, 9395 in all, are:
+= -- 931
+> -- 360
 < -- 0
-+ -- 129
-- -- 109
-* -- 578
-:= -- 1205
-add.period$ -- 62
-call.type$ -- 19
-change.case$ -- 105
++ -- 145
+- -- 121
+* -- 674
+:= -- 1405
+add.period$ -- 74
+call.type$ -- 23
+change.case$ -- 122
 chr.to.int$ -- 0
-cite$ -- 20
-duplicate$ -- 358
-empty$ -- 684
-format.name$ -- 109
-if$ -- 1792
+cite$ -- 25
+duplicate$ -- 425
+empty$ -- 815
+format.name$ -- 121
+if$ -- 2099
 int.to.chr$ -- 0
-int.to.str$ -- 19
-missing$ -- 20
-newline$ -- 98
-num.names$ -- 46
-pop$ -- 139
+int.to.str$ -- 23
+missing$ -- 25
+newline$ -- 118
+num.names$ -- 54
+pop$ -- 164
 preamble$ -- 1
-purify$ -- 87
+purify$ -- 101
 quote$ -- 0
-skip$ -- 259
+skip$ -- 306
 stack$ -- 0
-substring$ -- 544
-swap$ -- 135
+substring$ -- 641
+swap$ -- 158
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 74
-warning$ -- 1
-while$ -- 80
-width$ -- 21
-write$ -- 212
-(There was 1 warning)
+type$ -- 88
+warning$ -- 2
+while$ -- 95
+width$ -- 25
+write$ -- 254
+(There were 2 warnings)
