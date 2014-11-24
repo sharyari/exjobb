@@ -1,5 +1,12 @@
 \section{Abstract Interpretation}
 \label{model}
+Formalized by Cousot and Cousot\cite{cousot1977}, abstract interpretation techniques are techniques to approximating programs. Using information about the control and data flow, i.e. the transitions, the program can be verified while verifying only a part of the full transition system, more precisely until a fixpoint is reached.
+
+The goal of this chapter is to show that abstract interpretation techniques can be used in order to create an overapproximation of views $V$. This is done by defining a concretization function $\gamma$ and an abstraction function $\alpha$.
+
+The approximation is said to be a valid abstraction, if, for any transition (function) over the set $V$ Lemma \ref{lemma1} holds. In this section, I first define the concept of a \emph{subword} needed to define the two functions $\alpha$ and $\gamma$. It is then proven that using these functions, Lemma \ref{lemma1} holds for all transitions, as stated in \ref{CTS}.
+
+
 \subsection{Subwords and Views}
 \label{subwords}
 Let $\subword$ be the subword relation, then \e{u} $\subword$ $s_1...s_n$=\e{w} iff \e{u} is an ordered subset of \e{w}. For example, if \e{w}=abc, then the set of subwords of \e{w} is {abc, ab, bc, a, b, c}.

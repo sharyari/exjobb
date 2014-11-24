@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.10.7)  24 NOV 2014 01:37
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.10.7)  24 NOV 2014 09:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1274,7 +1274,7 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 8.
 ) [6]
 (./definitions.tex
-LaTeX Font Info:    Try loading font information for T1+cmss on input line 12.
+LaTeX Font Info:    Try loading font information for T1+cmss on input line 15.
  (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmss.fd
 File: t1cmss.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
@@ -1283,72 +1283,75 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
-Overfull \hbox (65.2279pt too wide) in paragraph at lines 12--16
+Overfull \hbox (65.2279pt too wide) in paragraph at lines 15--19
 [][][][] 
  []
 
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
 [7] [8] [9]) [10] (./problem.tex) [11] (./model.tex
-Overfull \hbox (1.65112pt too wide) in paragraph at lines 37--37
+Overfull \hbox (1.65112pt too wide) in paragraph at lines 44--44
 \T1/cmr/m/n/12 (-20) really 
  []
 
 
-Overfull \hbox (0.5508pt too wide) in paragraph at lines 37--37
+Overfull \hbox (0.5508pt too wide) in paragraph at lines 44--44
 \T1/cmr/m/n/12 (-20) small 
  []
 
 
-Overfull \hbox (4.65057pt too wide) in paragraph at lines 37--37
+Overfull \hbox (4.65057pt too wide) in paragraph at lines 44--44
 \T1/cmr/m/n/12 (-20) model 
  []
 
 
-Overfull \hbox (1.65112pt too wide) in paragraph at lines 37--37
+Overfull \hbox (1.65112pt too wide) in paragraph at lines 44--44
 \T1/cmr/m/n/12 (-20) really 
  []
 
 
-Overfull \hbox (0.5508pt too wide) in paragraph at lines 37--37
+Overfull \hbox (0.5508pt too wide) in paragraph at lines 44--44
 \T1/cmr/m/n/12 (-20) small 
  []
 
 
-Overfull \hbox (4.65057pt too wide) in paragraph at lines 37--37
+Overfull \hbox (4.65057pt too wide) in paragraph at lines 44--44
 \T1/cmr/m/n/12 (-20) model 
  []
 
 
-Overfull \hbox (1.65112pt too wide) in paragraph at lines 37--37
+Overfull \hbox (1.65112pt too wide) in paragraph at lines 44--44
 \T1/cmr/m/n/12 (-20) really 
  []
 
 
-Overfull \hbox (0.5508pt too wide) in paragraph at lines 37--37
+Overfull \hbox (0.5508pt too wide) in paragraph at lines 44--44
 \T1/cmr/m/n/12 (-20) small 
  []
 
 
-Overfull \hbox (4.65057pt too wide) in paragraph at lines 37--37
+Overfull \hbox (4.65057pt too wide) in paragraph at lines 44--44
 \T1/cmr/m/n/12 (-20) model 
  []
 
 
-Overfull \hbox (1.65112pt too wide) in paragraph at lines 37--37
+Overfull \hbox (1.65112pt too wide) in paragraph at lines 44--44
 \T1/cmr/m/n/12 (-20) really 
  []
 
 
-Overfull \hbox (0.5508pt too wide) in paragraph at lines 37--37
+Overfull \hbox (0.5508pt too wide) in paragraph at lines 44--44
 \T1/cmr/m/n/12 (-20) small 
  []
 
 
-Overfull \hbox (4.65057pt too wide) in paragraph at lines 37--37
+Overfull \hbox (4.65057pt too wide) in paragraph at lines 44--44
 \T1/cmr/m/n/12 (-20) model 
  []
 
-
-Overfull \hbox (24.5548pt too wide) in paragraph at lines 41--42
+[12]
+Overfull \hbox (24.5548pt too wide) in paragraph at lines 48--49
 []\T1/cmr/bx/n/12 Lemma 1. []\T1/cmr/m/it/12 (-20) For any $\OML/cmm/m/it/12 k 
 \OMS/cmsy/m/n/12 2 \U/msb/m/n/12 N$\T1/cmr/m/it/12 (-20) , and $\OML/cmm/m/it/1
 2 X \OMS/cmsy/m/n/12 ^^R \OML/cmm/m/it/12 C[]$\T1/cmr/m/it/12 (-20) , $\OML/cmm
@@ -1361,72 +1364,72 @@ m/n/12 (-20) )))$
  []
 
 
-Overfull \hbox (22.55449pt too wide) in paragraph at lines 44--44
+Overfull \hbox (22.55449pt too wide) in paragraph at lines 51--51
 \T1/cmr/m/n/12 (-20) Shouldn't 
  []
 
 
-Overfull \hbox (5.13873pt too wide) in paragraph at lines 44--44
+Overfull \hbox (5.13873pt too wide) in paragraph at lines 51--51
 \T1/cmr/m/n/12 (-20) equal?  
  []
 
 
-Overfull \hbox (22.55449pt too wide) in paragraph at lines 44--44
+Overfull \hbox (22.55449pt too wide) in paragraph at lines 51--51
 \T1/cmr/m/n/12 (-20) Shouldn't 
  []
 
 
-Overfull \hbox (5.13873pt too wide) in paragraph at lines 44--44
+Overfull \hbox (5.13873pt too wide) in paragraph at lines 51--51
 \T1/cmr/m/n/12 (-20) equal?  
  []
 
 
-Overfull \hbox (22.55449pt too wide) in paragraph at lines 44--44
+Overfull \hbox (22.55449pt too wide) in paragraph at lines 51--51
 \T1/cmr/m/n/12 (-20) Shouldn't 
  []
 
 
-Overfull \hbox (5.13873pt too wide) in paragraph at lines 44--44
+Overfull \hbox (5.13873pt too wide) in paragraph at lines 51--51
 \T1/cmr/m/n/12 (-20) equal?  
  []
 
 
-Overfull \hbox (22.55449pt too wide) in paragraph at lines 44--44
+Overfull \hbox (22.55449pt too wide) in paragraph at lines 51--51
 \T1/cmr/m/n/12 (-20) Shouldn't 
  []
 
 
-Overfull \hbox (5.13873pt too wide) in paragraph at lines 44--44
+Overfull \hbox (5.13873pt too wide) in paragraph at lines 51--51
 \T1/cmr/m/n/12 (-20) equal?  
  []
 
 
-LaTeX Warning: Marginpar on page 12 moved.
+LaTeX Warning: Marginpar on page 13 moved.
 
 
-Overfull \hbox (5.05638pt too wide) in paragraph at lines 46--46
+Overfull \hbox (5.05638pt too wide) in paragraph at lines 53--53
 [][][][]\T1/cmr/m/n/12 (-20) Under 
  []
 
 
-Overfull \hbox (5.05638pt too wide) in paragraph at lines 46--46
+Overfull \hbox (5.05638pt too wide) in paragraph at lines 53--53
 [][][][]\T1/cmr/m/n/12 (-20) Under 
  []
 
 
-Overfull \hbox (5.05638pt too wide) in paragraph at lines 46--46
+Overfull \hbox (5.05638pt too wide) in paragraph at lines 53--53
 [][][][]\T1/cmr/m/n/12 (-20) Under 
  []
 
 
-Overfull \hbox (5.05638pt too wide) in paragraph at lines 46--46
+Overfull \hbox (5.05638pt too wide) in paragraph at lines 53--53
 [][][][]\T1/cmr/m/n/12 (-20) Under 
  []
 
 
-LaTeX Warning: Marginpar on page 12 moved.
+LaTeX Warning: Marginpar on page 13 moved.
 
-[12]) [13] (./extensions.tex [14] [15]) [16] (./implementation.tex
+[13]) [14] (./extensions.tex [15] [16]) [17] (./implementation.tex
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
 put line 6.
 LaTeX Font Info:    Try loading font information for T1+cmtt on input line 9.
@@ -1439,7 +1442,7 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
-<bilder/flowchart.png, id=377, 850.377pt x 236.082pt>
+<bilder/flowchart.png, id=387, 850.377pt x 236.082pt>
 File: bilder/flowchart.png Graphic file (type png)
 
 <use bilder/flowchart.png>
@@ -1490,7 +1493,7 @@ Overfull \hbox (3.40132pt too wide) in paragraph at lines 33--33
 \T1/cmr/m/n/12 (-20) When 
  []
 
-[17 <./bilder/flowchart.png>] [18]
+[18 <./bilder/flowchart.png>] [19]
 Underfull \hbox (badness 10000) in paragraph at lines 81--83
 
  []
@@ -1500,7 +1503,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 81--83
 
  []
 
-[19] [20] <bilder/applyrule.png, id=410, 1000.73875pt x 638.385pt>
+[20] [21] <bilder/applyrule.png, id=420, 1000.73875pt x 638.385pt>
 File: bilder/applyrule.png Graphic file (type png)
 
 <use bilder/applyrule.png>
@@ -1511,19 +1514,19 @@ Overfull \hbox (2.51501pt too wide) in paragraph at lines 114--115
 [][] 
  []
 
-[21] [22 <./bilder/applyrule.png>] [23] [24]
+[22] [23 <./bilder/applyrule.png>] [24] [25]
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2013/08/26 1.5b listings language file
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2013/08/26 1.5b (Carsten Heinz)
-) [25]) [26]
+) [26]) [27]
 (./result.tex
 Overfull \hbox (17.62482pt too wide) in paragraph at lines 6--19
 [][]
  []
 
-[27] (./comparison.tex)) [28] (./further.tex) [29] (./relatedwork.tex) [30]
+[28] (./comparison.tex)) [29] (./further.tex) [30] (./relatedwork.tex) [31]
 (./report.bbl
 
 Package nag Warning: Command \sc is an old LaTeX 2.09 command. 
@@ -1577,7 +1580,7 @@ Package nag Warning: Command \sc is an old LaTeX 2.09 command.
 Package nag Warning: Command \sc is an old LaTeX 2.09 command. 
 (nag)                Use \scshape or \textsc instead on input line 77.
 
-[31]
+[32]
 
 Package nag Warning: Command \sc is an old LaTeX 2.09 command. 
 (nag)                Use \scshape or \textsc instead on input line 83.
@@ -1618,30 +1621,36 @@ Package nag Warning: Command \sc is an old LaTeX 2.09 command.
 Package nag Warning: Command \sc is an old LaTeX 2.09 command. 
 (nag)                Use \scshape or \textsc instead on input line 138.
 
-) [32]
+) [33]
 
 Package nag Warning: 23 complaints in total.
 
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 66.
-[33]
+[34]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 66.
  (./report.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 66.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 66.
-Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: 2B11E107DB5DF4B518B9A11835707A61;2278.
 
+
+Package rerunfilecheck Warning: File `report.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `report.out':
+(rerunfilecheck)             Before: 2B11E107DB5DF4B518B9A11835707A61;2278
+(rerunfilecheck)             After:  DB06D7BC070EE9AA9448F45B8E87DE64;2348.
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 66.
  ) 
 Here is how much of TeX's memory you used:
- 24529 strings out of 493304
- 438770 string characters out of 6139871
- 652703 words of memory out of 5000000
- 27004 multiletter control sequences out of 15000+600000
- 34517 words of font info for 177 fonts, out of 8000000 for 9000
+ 24538 strings out of 493304
+ 438886 string characters out of 6139871
+ 652705 words of memory out of 5000000
+ 27006 multiletter control sequences out of 15000+600000
+ 35351 words of font info for 180 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  65i,16n,85p,1508b,1284s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texliv
@@ -1660,17 +1669,18 @@ re/texmf/fonts/type1/public/cm-super/sfbx1095.pfb></usr/share/texmf/fonts/type1
 /public/cm-super/sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfb
 x1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1728.pfb></usr/shar
 e/texmf/fonts/type1/public/cm-super/sfbx2074.pfb></usr/share/texmf/fonts/type1/
-public/cm-super/sfcc1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm
-1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1095.pfb></usr/share
-/texmf/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/p
-ublic/cm-super/sfrm1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfss1
-095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1095.pfb></usr/share/
-texmf/fonts/type1/public/cm-super/sfti1200.pfb></usr/share/texmf/fonts/type1/pu
-blic/cm-super/sftt1200.pfb>
-Output written on report.pdf (33 pages, 551937 bytes).
+public/cm-super/sfcc1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfcc
+1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share
+/texmf/fonts/type1/public/cm-super/sfrm1095.pfb></usr/share/texmf/fonts/type1/p
+ublic/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1
+440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfss1095.pfb></usr/share/
+texmf/fonts/type1/public/cm-super/sfti1095.pfb></usr/share/texmf/fonts/type1/pu
+blic/cm-super/sfti1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt12
+00.pfb>
+Output written on report.pdf (34 pages, 569969 bytes).
 PDF statistics:
- 715 PDF objects out of 1000 (max. 8388607)
- 619 compressed objects within 7 object streams
- 191 named destinations out of 1000 (max. 500000)
- 30097 words of extra memory for PDF output out of 35830 (max. 10000000)
+ 729 PDF objects out of 1000 (max. 8388607)
+ 631 compressed objects within 7 object streams
+ 193 named destinations out of 1000 (max. 500000)
+ 32145 words of extra memory for PDF output out of 35830 (max. 10000000)
 
