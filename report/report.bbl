@@ -127,13 +127,6 @@
 \newblock In {\em Verification, Model Checking, and Abstract Interpretation\/}
   (2007), Springer, pp.~299--313.
 
-\bibitem{counterabstraction}
-{\sc Pnueli, A., Xu, J., and Zuck, L.}
-\newblock Liveness with (0,1, $\infty$)- counter abstraction.
-\newblock In {\em Computer Aided Verification}, E.~Brinksma and K.~Larsen,
-  Eds., vol.~2404 of {\em Lecture Notes in Computer Science}. Springer Berlin
-  Heidelberg, 2002, pp.~107--122.
-
 \bibitem{zuck2004}
 {\sc Zuck, L., and Pnueli, A.}
 \newblock Model checking and abstraction to the aid of parameterized systems (a

@@ -5,45 +5,45 @@ The style file: acm.bst
 Database file #1: references.bib
 Warning--empty journal in mpass
 Warning--can't use both volume and number fields in fredlund2007mcerlang
-You've used 23 entries,
+You've used 22 entries,
             2253 wiz_defined-function locations,
-            673 strings with 7813 characters,
-and the built_in function-call counts, 9395 in all, are:
-= -- 931
-> -- 360
+            666 strings with 7648 characters,
+and the built_in function-call counts, 8857 in all, are:
+= -- 878
+> -- 335
 < -- 0
-+ -- 145
-- -- 121
-* -- 674
-:= -- 1405
-add.period$ -- 74
-call.type$ -- 23
-change.case$ -- 122
++ -- 136
+- -- 113
+* -- 634
+:= -- 1324
+add.period$ -- 70
+call.type$ -- 22
+change.case$ -- 116
 chr.to.int$ -- 0
-cite$ -- 25
-duplicate$ -- 425
-empty$ -- 815
-format.name$ -- 121
-if$ -- 2099
+cite$ -- 24
+duplicate$ -- 401
+empty$ -- 771
+format.name$ -- 113
+if$ -- 1975
 int.to.chr$ -- 0
-int.to.str$ -- 23
-missing$ -- 25
-newline$ -- 118
-num.names$ -- 54
-pop$ -- 164
+int.to.str$ -- 22
+missing$ -- 24
+newline$ -- 113
+num.names$ -- 50
+pop$ -- 156
 preamble$ -- 1
-purify$ -- 101
+purify$ -- 96
 quote$ -- 0
-skip$ -- 306
+skip$ -- 287
 stack$ -- 0
-substring$ -- 641
-swap$ -- 158
+substring$ -- 608
+swap$ -- 147
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 88
+type$ -- 84
 warning$ -- 2
-while$ -- 95
-width$ -- 25
-write$ -- 254
+while$ -- 90
+width$ -- 24
+write$ -- 241
 (There were 2 warnings)

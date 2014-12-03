@@ -6,30 +6,29 @@
 \BOOKMARK [2][-]{subsection.3.3}{Channel Transition Systems}{section.3}% 6
 \BOOKMARK [2][-]{subsection.3.4}{Reachability and Bad Configurations}{section.3}% 7
 \BOOKMARK [2][-]{subsection.3.5}{Traces}{section.3}% 8
-\BOOKMARK [1][-]{section.4}{Problem Formulation}{}% 9
-\BOOKMARK [1][-]{section.5}{Abstract Interpretation}{}% 10
-\BOOKMARK [2][-]{subsection.5.1}{Subwords and Views}{section.5}% 11
-\BOOKMARK [2][-]{subsection.5.2}{Abstractions and Concretizations}{section.5}% 12
-\BOOKMARK [2][-]{subsection.5.3}{Small Model Property}{section.5}% 13
-\BOOKMARK [3][-]{subsubsection.5.3.1}{Proofs}{subsection.5.3}% 14
-\BOOKMARK [1][-]{section.6}{Extensions}{}% 15
-\BOOKMARK [2][-]{subsection.6.1}{LIFO Channels}{section.6}% 16
-\BOOKMARK [2][-]{subsection.6.2}{Lossy Channels}{section.6}% 17
-\BOOKMARK [2][-]{subsection.6.3}{Channel Systems with Synchronization}{section.6}% 18
-\BOOKMARK [2][-]{subsection.6.4}{Alternating Bit Protocol Revised}{section.6}% 19
-\BOOKMARK [1][-]{section.7}{Implementation of the Verification Method}{}% 20
-\BOOKMARK [2][-]{subsection.7.1}{Naive implementation}{section.7}% 21
-\BOOKMARK [2][-]{subsection.7.2}{Improving the Implementation}{section.7}% 22
-\BOOKMARK [2][-]{subsection.7.3}{Better Implementation}{section.7}% 23
-\BOOKMARK [3][-]{subsubsection.7.3.1}{Control-State Partitioning}{subsection.7.3}% 24
-\BOOKMARK [3][-]{subsubsection.7.3.2}{Advantages of Partitioning}{subsection.7.3}% 25
-\BOOKMARK [2][-]{subsection.7.4}{Final Implementation}{section.7}% 26
-\BOOKMARK [2][-]{subsection.7.5}{Reachability Analysis}{section.7}% 27
-\BOOKMARK [2][-]{subsection.7.6}{Specification Language}{section.7}% 28
-\BOOKMARK [3][-]{subsubsection.7.6.1}{Example}{subsection.7.6}% 29
-\BOOKMARK [1][-]{section.8}{Result}{}% 30
-\BOOKMARK [2][-]{subsection.8.1}{Experimental Results}{section.8}% 31
-\BOOKMARK [2][-]{subsection.8.2}{Analysis of Results}{section.8}% 32
-\BOOKMARK [1][-]{section.9}{Summary and Further Work}{}% 33
-\BOOKMARK [1][-]{section.10}{Related Work}{}% 34
-\BOOKMARK [1][-]{appendix.A}{Automata for the Sliding Window Protocol}{}% 35
+\BOOKMARK [1][-]{section.4}{Abstract Interpretation}{}% 9
+\BOOKMARK [2][-]{subsection.4.1}{Subwords and Views}{section.4}% 10
+\BOOKMARK [2][-]{subsection.4.2}{Abstractions and Concretizations}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.3}{Small Model Property}{section.4}% 12
+\BOOKMARK [3][-]{subsubsection.4.3.1}{Proofs}{subsection.4.3}% 13
+\BOOKMARK [1][-]{section.5}{Extensions}{}% 14
+\BOOKMARK [2][-]{subsection.5.1}{LIFO Channels}{section.5}% 15
+\BOOKMARK [2][-]{subsection.5.2}{Lossy Channels}{section.5}% 16
+\BOOKMARK [2][-]{subsection.5.3}{Channel Systems with Synchronization}{section.5}% 17
+\BOOKMARK [2][-]{subsection.5.4}{Alternating Bit Protocol Revised}{section.5}% 18
+\BOOKMARK [1][-]{section.6}{Implementation of the Verification Method}{}% 19
+\BOOKMARK [2][-]{subsection.6.1}{Naive implementation}{section.6}% 20
+\BOOKMARK [2][-]{subsection.6.2}{Improving the Implementation}{section.6}% 21
+\BOOKMARK [2][-]{subsection.6.3}{Better Implementation}{section.6}% 22
+\BOOKMARK [3][-]{subsubsection.6.3.1}{Control-State Partitioning}{subsection.6.3}% 23
+\BOOKMARK [3][-]{subsubsection.6.3.2}{Advantages of Partitioning}{subsection.6.3}% 24
+\BOOKMARK [2][-]{subsection.6.4}{Final Implementation}{section.6}% 25
+\BOOKMARK [2][-]{subsection.6.5}{Reachability Analysis}{section.6}% 26
+\BOOKMARK [2][-]{subsection.6.6}{Specification Language}{section.6}% 27
+\BOOKMARK [3][-]{subsubsection.6.6.1}{Example}{subsection.6.6}% 28
+\BOOKMARK [1][-]{section.7}{Result}{}% 29
+\BOOKMARK [2][-]{subsection.7.1}{Experimental Results}{section.7}% 30
+\BOOKMARK [2][-]{subsection.7.2}{Analysis of Results}{section.7}% 31
+\BOOKMARK [1][-]{section.8}{Summary and Further Work}{}% 32
+\BOOKMARK [1][-]{section.9}{Related Work}{}% 33
+\BOOKMARK [1][-]{appendix.A}{Automata for the Sliding Window Protocol}{}% 34
