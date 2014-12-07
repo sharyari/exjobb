@@ -1,60 +1,57 @@
 \select@language {british}
 \contentsline {section}{\numberline {1}Introduction}{3}{section.1}
 \contentsline {paragraph}{Reading this paper}{5}{section*.3}
-\contentsline {section}{\numberline {2}Notation and Terminology}{6}{section.2}
-\contentsline {paragraph}{General Terminology}{6}{section*.4}
-\contentsline {paragraph}{Transition systems}{6}{section*.5}
-\contentsline {paragraph}{Miscellaneous}{6}{section*.6}
-\contentsline {section}{\numberline {3}Model}{7}{section.3}
-\contentsline {subsection}{\numberline {3.1}Introductory example}{7}{subsection.3.1}
-\contentsline {paragraph}{Alternating Bit Protocol.}{7}{section*.7}
-\contentsline {subsection}{\numberline {3.2}Channel Systems}{7}{subsection.3.2}
-\contentsline {paragraph}{Definition}{7}{section*.9}
-\contentsline {paragraph}{Example.}{8}{section*.10}
-\contentsline {subsection}{\numberline {3.3}Channel Transition Systems}{9}{subsection.3.3}
-\contentsline {paragraph}{Definition}{9}{section*.11}
-\contentsline {paragraph}{Example}{10}{section*.12}
-\contentsline {subsection}{\numberline {3.4}Reachability and Bad Configurations}{10}{subsection.3.4}
-\contentsline {subsection}{\numberline {3.5}Traces}{10}{subsection.3.5}
-\contentsline {section}{\numberline {4}Abstract Interpretation}{11}{section.4}
-\contentsline {subsection}{\numberline {4.1}Subwords and Views}{11}{subsection.4.1}
-\contentsline {paragraph}{Example.}{11}{section*.14}
-\contentsline {subsection}{\numberline {4.2}Abstractions and Concretizations}{11}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Small Model Property}{12}{subsection.4.3}
-\contentsline {subsubsection}{\numberline {4.3.1}Proofs}{12}{subsubsection.4.3.1}
-\contentsline {paragraph}{Transmission rules}{12}{section*.20}
-\contentsline {paragraph}{Reception rules}{12}{section*.21}
-\contentsline {paragraph}{Actions}{13}{section*.23}
-\contentsline {section}{\numberline {5}Extensions}{14}{section.5}
-\contentsline {subsection}{\numberline {5.1}LIFO Channels}{14}{subsection.5.1}
-\contentsline {paragraph}{Stack Channel System}{14}{section*.24}
-\contentsline {paragraph}{Stack Channel Transmision System}{14}{section*.25}
-\contentsline {paragraph}{Proof of Lemma 1}{15}{section*.26}
-\contentsline {subsection}{\numberline {5.2}Lossy Channels}{15}{subsection.5.2}
-\contentsline {paragraph}{Lossy Channel Systems}{15}{section*.27}
-\contentsline {paragraph}{Lossy Channel Transition Systems}{15}{section*.28}
-\contentsline {paragraph}{Extended Proof of Lemma 1}{15}{section*.29}
-\contentsline {subsection}{\numberline {5.3}Channel Systems with Synchronization}{16}{subsection.5.3}
-\contentsline {subsection}{\numberline {5.4}Alternating Bit Protocol Revised}{16}{subsection.5.4}
-\contentsline {section}{\numberline {6}Implementation of the Verification Method}{17}{section.6}
-\contentsline {subsection}{\numberline {6.1}Naive implementation}{18}{subsection.6.1}
-\contentsline {subsection}{\numberline {6.2}Improving the Implementation}{18}{subsection.6.2}
-\contentsline {paragraph}{Abstracting the Concretizations.}{18}{section*.33}
-\contentsline {paragraph}{Reducing the views.}{19}{section*.34}
-\contentsline {subparagraph}{Example.}{19}{section*.35}
-\contentsline {subsection}{\numberline {6.3}Better Implementation}{20}{subsection.6.3}
-\contentsline {subsubsection}{\numberline {6.3.1}Control-State Partitioning}{20}{subsubsection.6.3.1}
-\contentsline {subsubsection}{\numberline {6.3.2}Advantages of Partitioning}{20}{subsubsection.6.3.2}
-\contentsline {paragraph}{Example.}{21}{section*.36}
-\contentsline {subsection}{\numberline {6.4}Final Implementation}{21}{subsection.6.4}
-\contentsline {subsection}{\numberline {6.5}Reachability Analysis}{22}{subsection.6.5}
-\contentsline {subparagraph}{Finding Minimal Traces}{23}{section*.38}
-\contentsline {subsection}{\numberline {6.6}Specification Language}{24}{subsection.6.6}
-\contentsline {subsubsection}{\numberline {6.6.1}Example}{24}{subsubsection.6.6.1}
-\contentsline {section}{\numberline {7}Result}{27}{section.7}
-\contentsline {paragraph}{Note on the MPass verification results.}{27}{section*.39}
-\contentsline {subsection}{\numberline {7.1}Experimental Results}{28}{subsection.7.1}
-\contentsline {subsection}{\numberline {7.2}Analysis of Results}{28}{subsection.7.2}
-\contentsline {section}{\numberline {8}Summary and Further Work}{29}{section.8}
-\contentsline {section}{\numberline {9}Related Work}{30}{section.9}
-\contentsline {section}{\numberline {A}Automata for the Sliding Window Protocol}{33}{appendix.A}
+\contentsline {section}{\numberline {2}Model}{6}{section.2}
+\contentsline {paragraph}{Note on notations.}{6}{section*.4}
+\contentsline {subsection}{\numberline {2.1}Introductory example}{6}{subsection.2.1}
+\contentsline {paragraph}{Alternating Bit Protocol.}{6}{section*.5}
+\contentsline {subsection}{\numberline {2.2}Channel Systems}{6}{subsection.2.2}
+\contentsline {paragraph}{Definition}{7}{section*.7}
+\contentsline {paragraph}{Example.}{8}{section*.8}
+\contentsline {subsection}{\numberline {2.3}Channel Transition Systems}{8}{subsection.2.3}
+\contentsline {paragraph}{Definition}{8}{section*.9}
+\contentsline {paragraph}{Example}{9}{section*.10}
+\contentsline {subsection}{\numberline {2.4}Reachability and Bad Configurations}{9}{subsection.2.4}
+\contentsline {subsection}{\numberline {2.5}Traces}{9}{subsection.2.5}
+\contentsline {section}{\numberline {3}Abstract Interpretation}{10}{section.3}
+\contentsline {subsection}{\numberline {3.1}Subwords and Views}{10}{subsection.3.1}
+\contentsline {paragraph}{Example.}{10}{section*.12}
+\contentsline {subsection}{\numberline {3.2}Abstractions and Concretizations}{10}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Small Model Property}{11}{subsection.3.3}
+\contentsline {subsubsection}{\numberline {3.3.1}Proofs}{11}{subsubsection.3.3.1}
+\contentsline {paragraph}{Transmission rules}{11}{section*.18}
+\contentsline {paragraph}{Reception rules}{11}{section*.19}
+\contentsline {paragraph}{Actions}{12}{section*.21}
+\contentsline {section}{\numberline {4}Extensions}{13}{section.4}
+\contentsline {subsection}{\numberline {4.1}LIFO Channels}{13}{subsection.4.1}
+\contentsline {paragraph}{Stack Channel System}{13}{section*.22}
+\contentsline {paragraph}{Stack Channel Transmision System}{13}{section*.23}
+\contentsline {paragraph}{Proof of Lemma 1}{14}{section*.24}
+\contentsline {subsection}{\numberline {4.2}Lossy Channels}{14}{subsection.4.2}
+\contentsline {paragraph}{Lossy Channel Systems}{14}{section*.25}
+\contentsline {paragraph}{Lossy Channel Transition Systems}{14}{section*.26}
+\contentsline {paragraph}{Extended Proof of Lemma 1}{14}{section*.27}
+\contentsline {subsection}{\numberline {4.3}Channel Systems with Synchronization}{15}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}Alternating Bit Protocol Revised}{15}{subsection.4.4}
+\contentsline {section}{\numberline {5}Implementation of the Verification Method}{16}{section.5}
+\contentsline {subsection}{\numberline {5.1}Naive implementation}{17}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Improving the Implementation}{17}{subsection.5.2}
+\contentsline {paragraph}{Abstracting the Concretizations.}{17}{section*.31}
+\contentsline {paragraph}{Reducing the views.}{18}{section*.32}
+\contentsline {subparagraph}{Example.}{18}{section*.33}
+\contentsline {subsection}{\numberline {5.3}Better Implementation}{19}{subsection.5.3}
+\contentsline {subsubsection}{\numberline {5.3.1}Control-State Partitioning}{19}{subsubsection.5.3.1}
+\contentsline {subsubsection}{\numberline {5.3.2}Advantages of Partitioning}{19}{subsubsection.5.3.2}
+\contentsline {paragraph}{Example.}{20}{section*.34}
+\contentsline {subsection}{\numberline {5.4}Final Implementation}{20}{subsection.5.4}
+\contentsline {subsection}{\numberline {5.5}Reachability Analysis}{21}{subsection.5.5}
+\contentsline {subparagraph}{Finding Minimal Traces}{22}{section*.36}
+\contentsline {subsection}{\numberline {5.6}Specification Language}{23}{subsection.5.6}
+\contentsline {subsubsection}{\numberline {5.6.1}Example}{23}{subsubsection.5.6.1}
+\contentsline {section}{\numberline {6}Result}{26}{section.6}
+\contentsline {paragraph}{Note on the MPass verification results.}{26}{section*.37}
+\contentsline {subsection}{\numberline {6.1}Experimental Results}{27}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}Analysis of Results}{27}{subsection.6.2}
+\contentsline {section}{\numberline {7}Summary and Further Work}{28}{section.7}
+\contentsline {section}{\numberline {8}Related Work}{29}{section.8}
+\contentsline {section}{\numberline {A}Automata for the Sliding Window Protocol}{32}{appendix.A}
