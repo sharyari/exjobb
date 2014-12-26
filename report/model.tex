@@ -1,7 +1,9 @@
+\newpage
 \section{Abstract Interpretation}
 \label{model}
-Formalized by Cousot and Cousot\cite{cousot1977}, abstract interpretation techniques are techniques to approximating programs. Using information about the control and data flow, i.e. the transitions, the program can be verified while verifying only a part of the full transition system, more precisely until a fixpoint is reached.
+Formalized by Cousot and Cousot\cite{cousot1977}, abstract interpretation techniques are techniques to approximating programs. Using information about the control and data flow, i.e. the semantics of a system, the program can be verified without ever generating the full transition system.
 
+\todo[inline]{1. Lemma1 was initially in this section, should I move it back? 2. should these simply be moved to the end of the chapter?}
 The goal of this chapter is to show that abstract interpretation techniques can be used in order to create an overapproximation of views $V$. This is done by defining a concretization function $\gamma$ and an abstraction function $\alpha$.
 
 The approximation is said to be a valid abstraction, if, for any transition (function) over the set $V$ Lemma \ref{lemma1} holds. In this section, I first define the concept of a \emph{subword} needed to define the two functions $\alpha$ and $\gamma$. It is then proven that using these functions, Lemma \ref{lemma1} holds for all transitions, as stated in \ref{CTS}.
@@ -9,10 +11,9 @@ The approximation is said to be a valid abstraction, if, for any transition (fun
 
 \subsection{Subwords and Views}
 \label{subwords}
-Let $\subword$ be the subword relation, then \e{u} $\subword$ $s_1...s_n$=\e{w} iff \e{u} is an ordered subset of \e{w}. For example, if \e{w}=abc, then the set of subwords of \e{w} is {abc, ab, bc, a, b, c}.
+We define the \e{views} of a configurations \e{c} = $\conf{s,\xi}$, to be the set $V$ = \{$\conf{s, \xi'}$ such that $\xi' \subword \xi$.
 
-We define the \e{views} of a configurations to be \e{v'} such that for \e{c} = $\conf{s,\xi}$, \e{v'}=$\conf{s,\xi[ ch \subword \xi(ch)] | ch \in \xi}$. 
-We define size($ch$) to be equivalent to size($\xi(ch)$), i.e. the length of the word on the channel \e{ch}. We define the size of a configuration or a view to equal the size of its longest channel.
+We define size($ch$) to be equivalent to size($\xi(ch)$), i.e. the length of the word on the channel \e{ch}. We define the size of a configuration as well as the size of a view to equal the length of the longest word on its channels.
 
 \paragraph{Example.} Suppose \e{c} is a configuration $\conf{s_1,s_2,ab,cd}$. The configuration is of size 2 and its views are
 
@@ -33,34 +34,35 @@ $\conf{s_1,s_2,\epsilon,\epsilon}$ \\
 
 \subsection{Abstractions and Concretizations}
 \label{alphagamma}
-The abstraction function $\alpha_k: C\rightarrow 2^{C_k}$\todo{?} maps a configuration \e{c} into the set \e{V} of views of size up to \e{k} , such that for each \e{v} $\in$ \e{V}, $\{v\sqsubseteq c\}$. 
+For a given parameter $k \in \mathbb{N}$, we use $C$ and $V$ to denote sets of configurations and views respectively, and $C_k$ and $V_k$ to denote configurations and views of size up to $k$.
+
+The abstraction function $\alpha_k: C\rightarrow 2^{C_k}$\todo{?} maps a configuration \e{c} into the set \e{V} of views of size up to $k$, such that for each $v\in V$, $\{\xi(v)\sqsubseteq \xi(c)\}$ and $size(\xi(c)) \leq k$ . 
 
 The concretization function $\gamma_k: 2^{C_k} \rightarrow 2^C$\todo{?} returns, given a set of views \e{V}, the set of configurations that can be reconstructed from the views in \e{V}, in other words, $\gamma_c(V) = \{c \in C$ | $\alpha_k(c) \subseteq V$\}
 
-For a set \e{V}, we define the \e{post-image} of \e{V}, \e{post(V)} = \{$c'$ | \e{c} $\rightarrow$ \e{c'} $\wedge$ \e{c} $\in$ \e{V}\}. The \e{abstract post-image} of a set \e{V} $\in$ $C_k$ is defined as $Apost_k$(\e{V}) = $\alpha_k(post(\gamma_k(V)))$ In general, $\gamma_k$ is an infinite set of states. We show (\ref{proof}) that we only need to consider those configurations, whose sizes are up to k+1, i.e. a finite set of configurations. We define $\gamma_k^l(V)$ := $\gamma_k(V) \cap C_l$ for some $l\geq 0$. The intuitive meaning of $\gamma_k^l(V)$ is the set of $l$-size configurations for which all views of length at most $k$ are in $V$.
+For a set \e{V}, we define the \e{post-image} of \e{V}, \e{post(V)} = \{$c'$ | \e{c} $\rightarrow$ \e{c'} $\wedge$ \e{c} $\in$ \e{V}\}. The \e{abstract post-image} of a set \e{V} $\subseteq$ $C_k$ is defined as $Apost_k$(\e{V}) = $\alpha_k(post(\gamma_k(V)))$. In general $\gamma_k(V)$ is an infinite set of configurations. We define $\gamma_k^l(V)$ := $\gamma_k(V) \cap C_l$ for some $l\geq 0$. The intuitive meaning of $\gamma_k^l(V)$ is the set of $l$-size configurations for which all views of length at most $k$ are in $V$.
 
 \subsection{Small Model Property}
 \label{proof}
-The property that allows us to verify infinite-state problems, is that transitions have \e{small preconditions}, expressed formally by the following lemma. \todo{Is this really what we call the small model property?}
+Calculating the abstract post-image of a set of views $V \subseteq C_k$ is essentiatial for the verification procedure. As $\gamma_k(V)$ typically is infinite, this cannot be done straightforwardly. It is the main result of \ref{parosh} that it suffices to consider configurations of $\gamma_k(V)$ of sizes up to $k+1$, which is a finite set of configurations for which the abstract post-image can be computed. Formally, they show that
 
 \begin{lemma}
 \label{lemma1}
-For any $k\in\mathbb{N}$, and $X\subseteq C_k$, $\alpha_k(post(\gamma_k(X)))$ $\cup$ $X$ = $\alpha_k(post(\gamma_k^{k+1}(X)))$ $\cup$ $X$.
+For any $k\in\mathbb{N}$, and $V\subseteq C_k$, $\alpha_k(post(\gamma_k(V)))$ $\cup$ $V$ = $\alpha_k(post(\gamma_k^{k+1}(V)))$ $\cup$ $V$.
 \end{lemma}
 
-\todo{Is this correct? Shouldn't it be the fixpoint of the two that is equal?}
+\todo{Why is this correct? Shouldn't it be the fixpoint of the two that is equal?}
 
-\todo{Under what preconditions does this hold?}
-
-We will show that for any configuration \e{c} $\in$ $\gamma_k(V)$ of size $m > k + 1$ such that there is a \e{c'} induced by a transmission rule \e{r} $\in$ $\rightarrow$ from \e{c}, then for each \e{v'} $\in$ $\alpha_k(c')$, the following holds: There is a configuration \e{d} $\in$ $\gamma_k(V)$ of size at most \e{k}+1 with a transition \e{d} $\xrightarrow{r}$ \e{d'} with \e{v'} $\in$ $\alpha_k(d')$. 
+Below, we show that this lemma holds in the context of lossy channel systems. We will show that for any configuration \e{c} $\in$ $\gamma_k(V)$ of size $m > k + 1$ such that there is a configuration \e{c'} where $c' \xrightarrow{r} c$, then for each \e{v'} $\in$ $\alpha_k(c')$, the following holds: There is a configuration \e{d} $\in$ $\gamma_k(V)$ of size at most \e{k}+1 with a transition \e{d} $\xrightarrow{r}$ \e{d'} with \e{v'} $\in$ $\alpha_k(d')$. 
 
 \subsubsection{Proofs}
 
 \paragraph{Transmission rules}
 \label{proofTransmission}
-First we note, that for any configuration \e{c} $\in$ \e{V}, any view \e{v'} $\in$ $\alpha_k(c)$ is also a valid configuration \e{c'} $\in$ $\gamma_k(V)$, since $\alpha_k(v')$ $\subseteq$ $\alpha_k(c)$ and thus \e{v'} $\in$ $\gamma_k^{k+1}(\alpha_k(c))$. Also note that if from \e{c} a transition \e{r} can be fired, then this transition can also be fired from any configuration \e{c'} = \e{v'}, as transmission rules are guarded only by the states of the channel system and not by channel evaluations.
+First we note, that for any configuration \e{c} $\in$ \e{V}, any view \e{v'} $\in$ $\alpha_k(c)$ is also a valid configuration \e{v'} $\in$ $\gamma_k(V)$, since $\alpha_k(v')$ $\subseteq$ $\alpha_k(c)$ and thus \e{v'} $\in$ $\gamma_k^{k+1}(\alpha_k(c))$. Also note that if from \e{c} a transition \e{r} can be fired, then this transition can also be fired from any configuration \e{c'} = \e{v'}, as transmission rules are guarded only by the states of the channel system and not by channel evaluations.
 
 A transmission rule changes the evaluation of at most one channel \e{ch} $\in$ \e{c}, and (possibly) the state of the channel system, thus we need only reason about the evaluations of a single channel \e{ch}.
+
 Let \e{c} = $\conf{S, w}$ $\xrightarrow{ch!w_{m+1}}$ $\conf{S', w \bullet m}$ = \e{c'}.
 
 The views of \e{c'} of size up to k are either of the type 1) $\conf{S', w' \sqsubset w}$, with size($w'$) $\leq$ $k$ (i.e. not including the newly transmitted message) or 2) of the form $\conf{S', w' \bullet m | w' \sqsubseteq w}$ with size($w'$) < $k$.
@@ -76,8 +78,10 @@ $\alpha_2(c')$ = \{$\conf{2,2,a}$, $\conf{2,2,b}$, $\conf{2,2,c}$, $\conf{2,2,d}
 
 \paragraph{Reception rules}
 \label{proofreception}
-As opposed to the transmission rules, reception rules also rely on the state of the channel in order to be fired, but only the state of that channel need be considered. Consider \e{c} = $\conf{S, m\bullet w}$ $\xrightarrow{ch?m}$ $\conf{S, w}$. For any view \e{v'} $\in$ $\alpha_k(c')$ with the word \e{w'} of size at most \e{k} on the channel, there exists a configuration of size at most \e{k+1}, \e{d} = $\conf{S, m\bullet w'}$ $\in$ $\alpha_k(c)$ such that \e{d} $\xrightarrow{ch?m}$ \e{d'} = \e{v'}.
-\todo{Why is that so?}
+As opposed to the transmission rules, reception rules rely both on the state and the evaluation in order to be fired, but only the state of a single channel need be considered.
+
+Consider a configration \e{c} = $\conf{S, m\bullet w}$ $\xrightarrow{ch?m}$ $\conf{S, w}$ = c', such that $size(c)$ $\geq$ $k+1$. For any view \e{v'} $\in$ $\alpha_k(c)$ with the word \e{w'} of size at most \e{k} on the channel, there exists a configuration $d$ of size at most \e{k+1}, \e{d} = $\conf{S, m\bullet w'}$ $\in$ $\alpha_k(c)$ such that \e{d} $\xrightarrow{ch?m}$ \e{d'} = \e{v'}.
+
 
 \paragraph{Actions}
 Actions can in this context be seen as equivalent to a reception rule, reading the empty symbol $\epsilon$ on some channel. The proof then follows directly from \ref{proofreception}.
