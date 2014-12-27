@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.10.7)  26 DEC 2014 18:36
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.10.7)  27 DEC 2014 21:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1226,8 +1226,8 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 \tf@toc=\write6
 \openout6 = `report.toc'.
 
- [2] [3]
-(./introduction.tex [4]
+ [2]
+(./introduction.tex [3]
 Package hyperref Info: bookmark level for unknown todo defaults to 0 on input l
 ine 19.
 
@@ -1293,50 +1293,116 @@ Overfull \hbox (1.1264pt too wide) in paragraph at lines 19--19
 LaTeX Font Info:    Try loading font information for U+dsrom on input line 27.
 (/usr/share/texlive/texmf-dist/tex/latex/doublestroke/Udsrom.fd
 File: Udsrom.fd 1995/08/01 v0.1 Double stroke roman font definitions
-) [5]) [6]
-(./definitions.tex [7] [8] [9]
-Overfull \hbox (20.27953pt too wide) in paragraph at lines 111--111
+) [4]) [5]
+(./definitions.tex [6]
+Overfull \hbox (1.65112pt too wide) in paragraph at lines 28--28
+\T1/cmr/m/n/12 (-20) really 
+ []
+
+
+Overfull \hbox (5.16225pt too wide) in paragraph at lines 28--28
+\T1/cmr/m/n/12 (-20) empty 
+ []
+
+
+Overfull \hbox (3.10907pt too wide) in paragraph at lines 28--28
+\T1/cmr/m/n/12 (-20) string  
+ []
+
+
+Overfull \hbox (1.65112pt too wide) in paragraph at lines 28--28
+\T1/cmr/m/n/12 (-20) really 
+ []
+
+
+Overfull \hbox (5.16225pt too wide) in paragraph at lines 28--28
+\T1/cmr/m/n/12 (-20) empty 
+ []
+
+
+Overfull \hbox (3.10907pt too wide) in paragraph at lines 28--28
+\T1/cmr/m/n/12 (-20) string  
+ []
+
+
+Overfull \hbox (1.65112pt too wide) in paragraph at lines 28--28
+\T1/cmr/m/n/12 (-20) really 
+ []
+
+
+Overfull \hbox (5.16225pt too wide) in paragraph at lines 28--28
+\T1/cmr/m/n/12 (-20) empty 
+ []
+
+
+Overfull \hbox (3.10907pt too wide) in paragraph at lines 28--28
+\T1/cmr/m/n/12 (-20) string  
+ []
+
+
+Overfull \hbox (1.65112pt too wide) in paragraph at lines 28--28
+\T1/cmr/m/n/12 (-20) really 
+ []
+
+
+Overfull \hbox (5.16225pt too wide) in paragraph at lines 28--28
+\T1/cmr/m/n/12 (-20) empty 
+ []
+
+
+Overfull \hbox (3.10907pt too wide) in paragraph at lines 28--28
+\T1/cmr/m/n/12 (-20) string  
+ []
+
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 31.
+(/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 31.
+ [7] [8]
+Overfull \hbox (20.27953pt too wide) in paragraph at lines 101--101
 [][][][]\T1/cmr/m/n/12 (-20) reference, 
  []
 
 
-Overfull \hbox (10.74083pt too wide) in paragraph at lines 111--111
+Overfull \hbox (10.74083pt too wide) in paragraph at lines 101--101
 \T1/cmr/m/n/12 (-20) pseudo- 
  []
 
 
-Overfull \hbox (20.27953pt too wide) in paragraph at lines 111--111
+Overfull \hbox (20.27953pt too wide) in paragraph at lines 101--101
 [][][][]\T1/cmr/m/n/12 (-20) reference, 
  []
 
 
-Overfull \hbox (10.74083pt too wide) in paragraph at lines 111--111
+Overfull \hbox (10.74083pt too wide) in paragraph at lines 101--101
 \T1/cmr/m/n/12 (-20) pseudo- 
  []
 
 
-Overfull \hbox (20.27953pt too wide) in paragraph at lines 111--111
+Overfull \hbox (20.27953pt too wide) in paragraph at lines 101--101
 [][][][]\T1/cmr/m/n/12 (-20) reference, 
  []
 
 
-Overfull \hbox (10.74083pt too wide) in paragraph at lines 111--111
+Overfull \hbox (10.74083pt too wide) in paragraph at lines 101--101
 \T1/cmr/m/n/12 (-20) pseudo- 
  []
 
 
-Overfull \hbox (20.27953pt too wide) in paragraph at lines 111--111
+Overfull \hbox (20.27953pt too wide) in paragraph at lines 101--101
 [][][][]\T1/cmr/m/n/12 (-20) reference, 
  []
 
 
-Overfull \hbox (10.74083pt too wide) in paragraph at lines 111--111
+Overfull \hbox (10.74083pt too wide) in paragraph at lines 101--101
 \T1/cmr/m/n/12 (-20) pseudo- 
  []
 
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 116.
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 120.
+put line 106.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 110.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
@@ -1345,7 +1411,7 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             `cmtt' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-LaTeX Font Info:    Try loading font information for T1+cmss on input line 150.
+LaTeX Font Info:    Try loading font information for T1+cmss on input line 140.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmss.fd
@@ -1356,54 +1422,14 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
-Overfull \hbox (65.2279pt too wide) in paragraph at lines 150--154
+Overfull \hbox (65.2279pt too wide) in paragraph at lines 140--144
 [][][][] 
  []
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[10]
-Overfull \hbox (1.76208pt too wide) in paragraph at lines 190--190
-\T1/cmr/m/n/12 (-20) count 
- []
-
-
-Overfull \hbox (6.56273pt too wide) in paragraph at lines 190--190
-\T1/cmr/m/n/12 (-20) formal 
- []
-
-
-Overfull \hbox (1.76208pt too wide) in paragraph at lines 190--190
-\T1/cmr/m/n/12 (-20) count 
- []
-
-
-Overfull \hbox (6.56273pt too wide) in paragraph at lines 190--190
-\T1/cmr/m/n/12 (-20) formal 
- []
-
-
-Overfull \hbox (1.76208pt too wide) in paragraph at lines 190--190
-\T1/cmr/m/n/12 (-20) count 
- []
-
-
-Overfull \hbox (6.56273pt too wide) in paragraph at lines 190--190
-\T1/cmr/m/n/12 (-20) formal 
- []
-
-
-Overfull \hbox (1.76208pt too wide) in paragraph at lines 190--190
-\T1/cmr/m/n/12 (-20) count 
- []
-
-
-Overfull \hbox (6.56273pt too wide) in paragraph at lines 190--190
-\T1/cmr/m/n/12 (-20) formal 
- []
-
-) [11] (./model.tex [12]
+[9] [10]) [11] (./model.tex [12]
 
 LaTeX Warning: Reference `parosh' on page 13 undefined on input line 47.
 
@@ -1460,15 +1486,7 @@ Overfull \hbox (5.13873pt too wide) in paragraph at lines 54--54
 \T1/cmr/m/n/12 (-20) equal?  
  []
 
-[13]) [14] (./extensions.tex
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 21.
-
-(/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
-File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 21.
- [15]
+[13]) [14] (./extensions.tex [15]
 Overfull \hbox (6.79199pt too wide) in paragraph at lines 44--45
 \T1/cmr/m/n/12 (-20) an ad-di-tional trans-ition $\OMS/cmsy/m/n/12 h\OML/cmm/m/
 it/12 s; ch\OMS/cmsy/m/n/12 ^^C\OML/cmm/m/it/12 ; s\OMS/cmsy/m/n/12 i$ \T1/cmr/
@@ -1477,8 +1495,19 @@ t/12 ch\OT1/cmr/m/n/12 (-20) )$ \T1/cmr/m/n/12 (-20) = $\OML/cmm/m/it/12 w[]w[]
 ::w[]$ $\OMS/cmsy/m/n/12 !$ $\OML/cmm/m/it/12 w[]::w[]w[]::w[]$
  []
 
-[16]) [17] (./implementation.tex
-<bilder/flowchart.png, id=409, 850.377pt x 236.082pt>
+[16]
+Overfull \hbox (87.87306pt too wide) in paragraph at lines 71--71
+[][] 
+ []
+
+
+LaTeX Warning: Float too large for page by 70.50069pt on input line 72.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+) [17] (./implementation.tex
+<bilder/flowchart.png, id=405, 850.377pt x 236.082pt>
 File: bilder/flowchart.png Graphic file (type png)
 
 <use bilder/flowchart.png>
@@ -1529,7 +1558,7 @@ Overfull \hbox (3.40132pt too wide) in paragraph at lines 33--33
 \T1/cmr/m/n/12 (-20) When 
  []
 
-[18 <./bilder/flowchart.png>] [19]
+[18] [19]
 Underfull \hbox (badness 10000) in paragraph at lines 81--83
 
  []
@@ -1539,7 +1568,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 81--83
 
  []
 
-[20] [21] <bilder/applyrule.png, id=443, 1000.73875pt x 638.385pt>
+[20] [21] <bilder/applyrule.png, id=437, 1000.73875pt x 638.385pt>
 File: bilder/applyrule.png Graphic file (type png)
 
 <use bilder/applyrule.png>
@@ -1550,19 +1579,25 @@ Overfull \hbox (2.51501pt too wide) in paragraph at lines 114--115
 [][] 
  []
 
-[22] [23 <./bilder/applyrule.png>] [24] [25]
-(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+[22]
+
+LaTeX Warning: Reference `bad' on page 23 undefined on input line 160.
+
+
+LaTeX Warning: Reference `traces' on page 23 undefined on input line 160.
+
+[23] [24] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2013/08/26 1.5b listings language file
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2013/08/26 1.5b (Carsten Heinz)
-) [26]) [27]
+) [25]) [26]
 (./result.tex
 Overfull \hbox (17.62482pt too wide) in paragraph at lines 6--19
 [][]
  []
 
-[28] (./comparison.tex)) [29] (./further.tex) [30] (./relatedwork.tex) [31]
+[27] (./comparison.tex)) [28] (./further.tex) [29] (./relatedwork.tex) [30]
 (./report.bbl
 
 Package nag Warning: Command \sc is an old LaTeX 2.09 command. 
@@ -1616,7 +1651,7 @@ Package nag Warning: Command \sc is an old LaTeX 2.09 command.
 Package nag Warning: Command \sc is an old LaTeX 2.09 command. 
 (nag)                Use \scshape or \textsc instead on input line 76.
 
-[32]
+[31]
 
 Package nag Warning: Command \sc is an old LaTeX 2.09 command. 
 (nag)                Use \scshape or \textsc instead on input line 82.
@@ -1657,19 +1692,18 @@ Package nag Warning: Command \sc is an old LaTeX 2.09 command.
 Package nag Warning: Command \sc is an old LaTeX 2.09 command. 
 (nag)                Use \scshape or \textsc instead on input line 136.
 
-) [33]
+) [32]
 
 Package nag Warning: 23 complaints in total.
 
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 65.
-[34]
+[33] [34] [35 <./bilder/flowchart.png> <./bilder/applyrule.png>]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 65.
  (./report.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 65.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 65.
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: 96A9B2AA8C30707DB3D3F77F4E84F481;2681.
-
+(rerunfilecheck)             Checksum: 683BBE5EAAAB468237C676AE70299F7A;2560.
 
 LaTeX Warning: There were undefined references.
 
@@ -1679,42 +1713,57 @@ LaTeX Warning: There were multiply-defined labels.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 65.
  ) 
 Here is how much of TeX's memory you used:
- 24563 strings out of 493304
- 439436 string characters out of 6139871
- 648209 words of memory out of 5000000
- 27026 multiletter control sequences out of 15000+600000
- 35697 words of font info for 184 fonts, out of 8000000 for 9000
+ 24584 strings out of 493304
+ 439791 string characters out of 6139871
+ 650463 words of memory out of 5000000
+ 27035 multiletter control sequences out of 15000+600000
+ 35795 words of font info for 186 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 65i,17n,85p,1508b,1284s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texliv
-e/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist
-/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
-8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/s
-hare/texlive/texmf-dist/fonts/type1/public/doublestroke/dsrom12.pfb></usr/share
-/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/
-texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/t
-exmf/fonts/type1/public/cm-super/sfbx1095.pfb></usr/share/texmf/fonts/type1/pub
-lic/cm-super/sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx144
-0.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1728.pfb></usr/share/te
-xmf/fonts/type1/public/cm-super/sfbx2074.pfb></usr/share/texmf/fonts/type1/publ
-ic/cm-super/sfcc1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfcc1200
-.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/tex
-mf/fonts/type1/public/cm-super/sfrm1095.pfb></usr/share/texmf/fonts/type1/publi
-c/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1440.
-pfb></usr/share/texmf/fonts/type1/public/cm-super/sfss1095.pfb></usr/share/texm
-f/fonts/type1/public/cm-super/sfti1095.pfb></usr/share/texmf/fonts/type1/public
-/cm-super/sfti1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1200.p
-fb>
-Output written on report.pdf (34 pages, 572304 bytes).
+ 65i,16n,85p,1508b,1934s stack positions out of 5000i,500n,10000p,200000b,80000s
+pdfTeX warning (dest): name{table.caption.38} has been referenced but does no
+t exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{figure.caption.35} has been referenced but does not
+ exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{figure.caption.29} has been referenced but does not
+ exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{figure.caption.28} has been referenced but does not
+ exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{figure.caption.10} has been referenced but does not
+ exist, replaced by a fixed one
+
+{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texlive/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/public/doublestroke/dsrom12.pfb></usr/share/texlive/
+texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texmf/font
+s/type1/public/cm-super/sfbx1095.pfb></usr/share/texmf/fonts/type1/public/cm-su
+per/sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1440.pfb></u
+sr/share/texmf/fonts/type1/public/cm-super/sfbx1728.pfb></usr/share/texmf/fonts
+/type1/public/cm-super/sfbx2074.pfb></usr/share/texmf/fonts/type1/public/cm-sup
+er/sfcc1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfcc1200.pfb></us
+r/share/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf/fonts/
+type1/public/cm-super/sfrm1095.pfb></usr/share/texmf/fonts/type1/public/cm-supe
+r/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1440.pfb></usr
+/share/texmf/fonts/type1/public/cm-super/sfss1095.pfb></usr/share/texmf/fonts/t
+ype1/public/cm-super/sfti1095.pfb></usr/share/texmf/fonts/type1/public/cm-super
+/sfti1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1200.pfb>
+Output written on report.pdf (35 pages, 582974 bytes).
 PDF statistics:
- 752 PDF objects out of 1000 (max. 8388607)
- 653 compressed objects within 7 object streams
- 192 named destinations out of 1000 (max. 500000)
- 32185 words of extra memory for PDF output out of 35830 (max. 10000000)
+ 759 PDF objects out of 1000 (max. 8388607)
+ 658 compressed objects within 7 object streams
+ 200 named destinations out of 1000 (max. 500000)
+ 32169 words of extra memory for PDF output out of 35830 (max. 10000000)
 
