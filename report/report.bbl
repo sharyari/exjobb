@@ -37,6 +37,11 @@
 \newblock {\em Principles of model checking}, vol.~26202649.
 \newblock MIT press Cambridge, 2008.
 
+\bibitem{bartlett1969note}
+{\sc Bartlett, K.~A., Scantlebury, R.~A., and Wilkinson, P.~T.}
+\newblock A note on reliable full-duplex transmission over half-duplex links.
+\newblock {\em Communications of the ACM 12}, 5 (1969), 260--261.
+
 \bibitem{gordon}
 {\sc Bertrand, N., and Schnoebelen, P.}
 \newblock Model checking lossy channels systems is probably decidable.
