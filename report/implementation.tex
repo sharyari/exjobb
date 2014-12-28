@@ -1,34 +1,8 @@
 \section{Implementation of the Verification Method}
-\label{implementation}
-As a result of lemma \ref{lemma1}, if $\gamma_k^{k+1} \cap Bad$ = $\empty$ for any \e{k} $\geq$ 1, then $\gamma_k(V) \cap Bad$ = $\empty$ for any buffer size larger than \e{k}. Given a set of bad states \e{Bad}, a set of initial states \e{I} and a set of transitions, Verification of a system can be done with algorithm \ref{alg1}, which was first presented in \cite{parosh}.
-
-\begin{algorithm}
-  \caption{General Verification algorithm}
-  \label{alg1}
-  \begin{algorithmic}[1]
-      \For{\texttt{$True$}}
-        \If {$\mathcal{R}_k$ $\cap$ $Bad$ $\neq$ $\emptyset$} 
-        \State return Unsafe
-        \EndIf
-        \State V := $\mu X.\alpha_k(I)$ $\cup$ $Apost_k(X)$
-        \If {$\gamma_k(V)$ $\cap$ $Bad$ = $\emptyset$} 
-        \State return Safe     
-        \EndIf
-        \State k := k+1
-      \EndFor
-\end{algorithmic}
-\end{algorithm}
-
-The algorithm begins by performing a reachability analysis in order to compute $\mathcal{R}_k$ and check for bad states. For any buffer size \e{k}, if a bad state is found to be reachable in $\mathcal{R}_k$, the system is unsafe and the algorithm terminates. If no such bad state was found, the algorithm continues by computing an \e{overapproximation} of configurations of size $k$, reachable through configurations of size at most $k+1$ and checking for bad configurations. This is done by computing $Apost_k$ iteratively until a fixpoint \e{V} is reached. If at this point no bad configuration has been found, the system can be said to be safe (due to the result of \ref{lemma1}) and the algorithm terminates. If on the other hand a bad state was found, the system is not necessarily unsafe, as \e{V} is an over-approximation of the reachable states in $\mathcal{R}_k$, the process is repeated with a buffer size of \e{k+1}. This process is abstractly described in the flowchart in figure \ref{flow}.
-
-\begin{figure}
-\includegraphics[width=400pt] {bilder/flowchart.png}
-\caption{The general flow of the verifier.}
-\label{flow}
-\end{figure}
 
 
-In this rest of this section, we show how to implement this algorithm in an efficient way. We do this by beginning with a naive algorithm computing the configurations, and then step by step locating and addressing the performance issues. 
+
+In this section, we show how to implement the algorithm in \todo{Ref} an efficient way. We do this by beginning with a naive algorithm computing the configurations, and then step by step locating and addressing the performance issues.
 
 \todo{Is the algorithm guaranteed to terminate? When does it not?}
 
@@ -55,7 +29,7 @@ The bottle-neck in this algorithm lies in \e{gamma}. It first creates all potent
 
 
 \subsection{Improving the Implementation}
-We look closer at $\gamma$, in order to address the issues mentioned above. We show that all concretizations can be found, while considering only a subset of the potential concretizations. Furthermore, it is possible to determine whether a concretization should be accepted or not, examining only a subset of its views. 
+We look closer at $\gamma$, in order to address the issues mentioned above. We show that all concretizations can be found, while considering only a subset of the potential concretizations. Furthermore, it is possible to determine whether a concretization should be accepted or not, examining only a subset of its views.
 
 \paragraph{Abstracting the Concretizations.}
 Given a configuration \e{c}, with channel evaluations $\xi$ such that all channels have size smaller or equal to \e{k}, a potential concretization of \e{c} is any configuration \e{con} such that \e{con} can be created from \e{c} by appending a symbol to at least one of the channels of \e{c}. As this is a large number of potential configurations, it is desireable to consider only a subset thereof, while still ensuring that all valid concretizations are eventually found.
@@ -88,7 +62,7 @@ In a best-case scenario, there would be an equal number of configurations for ev
 % Det går inte att beskriva rule-delen här, för det är mer beroende av tries.
 \subsection{Better Implementation}
 \subsubsection{Control-State Partitioning}
-Above it was suggested that the set V could be divided into several sets, distinguished by control-states. The number of control-states in a system is finite and unique; For a system with \e{n} processes, the number of states is $\prod\limits_{i=1}^n|p_i|$. This makes it possible to partition the set of configurations into several smaller disjoint sets, such that all configurations in a set have equal control-state. These sets can be stored in a hashmap indexed by control-state. 
+Above it was suggested that the set V could be divided into several sets, distinguished by control-states. The number of control-states in a system is finite and unique; For a system with \e{n} processes, the number of states is $\prod\limits_{i=1}^n|p_i|$. This makes it possible to partition the set of configurations into several smaller disjoint sets, such that all configurations in a set have equal control-state. These sets can be stored in a hashmap indexed by control-state.
 
 %\begin{figure}
 %\includegraphics[width=400pt] {bilder/triemerge.png}
@@ -108,7 +82,7 @@ Considering a transition $t_2$ with no requirements on any processes, the state-
 
 \paragraph{Example.} Consider yet again the alternating bit protocol, as described in \ref{abpobserver}. The system has three processes \e{Sender}, \e{Receiver} and \e{Observer} with 4, 4 and 3 states respectively. Consider then the transition with the predicates that the sender is in state 3, the observer in state 3 and they may take the synchronized transition with the action \e{Snd} to states 4 and 2 respectively. This transition has no requirements on the receiver, thus it corresponds to four rules, (3,1,3)->(4,1,2), (3,2,3)->(4,2,2), (3,3,3)->(4,3,2), (3,4,3)->(4,4,2). These rules are inserted in the nodes (3,1,3), (3,2,3), (3,3,3) and (3,4,3).
 
-There is a small one-time cost of creating the rule tree, but after creation, it is highly effective. The division by itself ensures that the state-predicate is fulfilled, if not, we never even attempt to apply the rule to a configuration. We illustrate this in figure \ref{applyrule} 
+There is a small one-time cost of creating the rule tree, but after creation, it is highly effective. The division by itself ensures that the state-predicate is fulfilled, if not, we never even attempt to apply the rule to a configuration. We illustrate this in figure \ref{applyrule}
 
 \begin{figure}
 \includegraphics[width=400pt] {bilder/applyrule.png}
@@ -128,18 +102,18 @@ There is a small one-time cost of creating the rule tree, but after creation, it
     \For {state $\in$ nodes(V)}
     \State \hspace{6 mm} S := r(c) | $\forall$ c $\in$ con(state) $\land$ $\forall$ r $\in$ Rules(state)
     \EndFor
-    \\            
+    \\
     \State \textbf{Alpha (V, S):}
     \State \hspace{6 mm} V:= V $\cup$ views(C)
     \\
     \State \textbf{Verifier (V, Rules, Bad):}
     \For{\texttt{$True$}}
-        \If {$\mathcal{R}_k$ $\cap$ $Bad$ $\neq$ $\emptyset$} 
+        \If {$\mathcal{R}_k$ $\cap$ $Bad$ $\neq$ $\emptyset$}
         \State return Unsafe
         \EndIf
         \State V := $\mu Alpha(Step(Gamma(V)))$
-        \If {$\gamma_k(V)$ $\cap$ $Bad$ = $\emptyset$} 
-        \State return Safe     
+        \If {$\gamma_k(V)$ $\cap$ $Bad$ = $\emptyset$}
+        \State return Safe
         \EndIf
         \State k := k+1
       \EndFor
@@ -163,18 +137,18 @@ Below, a simple technique of finding a minimal bad trace is presented, accompani
 
 \subparagraph{Finding Minimal Traces}
 When running the verification, if a bad state is found we want to produce a trace leading up to the bad state. Preferably, this would be a minimal trace that leads to the bad state.
- 
+
 The proposed verification method generates a finite set of reachable states (nodes in this context), but it does not record the available transitions between the nodes (i.e. the edges). It is possible to for each node \e{n} to save all nodes \e{n} from which an edge to \e{n'} exists, and thus build the complete reachability graph of the problem. There exists efficient algorithms to solve such a problem, e.g. \e{dijkstra shortest path}, or even the shortest path between any two nodes, e.g. flow-network techniques. Although these algorithms are efficient, building the complete reachability graph would be costly in terms of memory space, as the number of edges may be much larger than the number of states.
 
- 
+
 We show that due to the method of iteratively constructing the graph, nodes are created in such a way, that if a node $n_{i}$ created in the \e{i}:th iteration is reached by a node $n_{i-1}$ over an edge $e_{i-1}$, the shortest path from the initial node $n_0$ will necessarily be a path $e_1...e_{i-1}$.
- 
+
 \e{Proof.} This is proven using an induction proof. We hypothesize that, if at the point of creation of $n_i$, choosing the parent node $n_{i-1}$ from which an edge $e_{i-1}$ can be taken $n_i$, the path $e_1..e_{i}$ will be the shortest path to $n_i$ and has length \e{i}. Note that the node $n_{i-1}$ must have been created in the previous iteration; had it been created earlier, the edge $e_i$ could have been taken in a previous iteration, and so $n_{i+1}$ would already be a node in the tree.
- 
+
 The base case is that for any node reachable from $n_0$ over any edge $e_0$, $e_0$ will be the shortest path and has length 1. This is trivially true.
- 
+
 Now suppose a node $n_{i+1}$ is reachable over an edge $e_i$ from a node $n_i$, and the node $n_{i+1}$ is not yet in the system. The induction hypothesis states that the path $e_1...e_i$ is the shortest path leading up to $n_i$. If $e_0..e_{i-1}e_i$ would not be the shortest path to $n_{i+1}$, there would be a path $e'_0..e'_{k-1}$ to another node $n_k$ with k < i from which $n_{i+1}$ can be reached. But any such node would have been created in the \e{k}:th iteration of the algorithm, which would contradict the fact that the node $n_{i+1}$ was not already in the system.
- 
+
 Having shown this, we need only record the information of a single parent of a node, in order to build up a tree from which the shortest path from $n_0$ to any node in the system can efficiently be found.
 
 
@@ -198,7 +172,7 @@ We return yet again to the Alternating Bit Protocol to examplify the specificati
 
 We begin by specifying a new protocol, it's name and that it is operating on FIFO buffers. We then specify a set of messages, a set of channels and a set of actions in a similar manner.
 
-\lstset{language=XML} 
+\lstset{language=XML}
 \begin{lstlisting}[frame=single]
 <protocol name="Alternating Bit Protocol" medium="FIFO>
 <messages>
@@ -231,7 +205,7 @@ We then continue by defining the different processes in the system, i.e. the sen
     </states>
     <action>
         <current_state>Q0</current_state>
-        <type>Snd</type>        
+        <type>Snd</type>
         <next_state>Q1</next_state>
     </action>
     <rule>
@@ -242,7 +216,7 @@ We then continue by defining the different processes in the system, i.e. the sen
     </rule>
 \end{lstlisting}
 
-Last, we specify that the processes \texttt{SENDER} and \texttt{OBSERVER}, and  \texttt{RECEIVER} and \texttt{OBSERVER} are to be synchronized over the actions \texttt{Snd} and \texttt{Rcv} respectively. 
+Last, we specify that the processes \texttt{SENDER} and \texttt{OBSERVER}, and  \texttt{RECEIVER} and \texttt{OBSERVER} are to be synchronized over the actions \texttt{Snd} and \texttt{Rcv} respectively.
 
 \begin{lstlisting}[frame=single]
 <synchronize>
@@ -256,4 +230,3 @@ Last, we specify that the processes \texttt{SENDER} and \texttt{OBSERVER}, and  
         <action>Rcv</action>
 </synchronize>
 \end{lstlisting}
-

@@ -177,7 +177,7 @@ escapeinside={\#*}{\^^M}
     (2) edge [bend right] node [below] {SND} (3)
   edge [bend right] node [above] {RCV} (1)
     (3) edge [bend left] node [right] {SND} (4)
-  edge [bend right] node [above] {RCV} (2); 
+  edge [bend right] node [above] {RCV} (2);
 
 \end{tikzpicture}
 }
@@ -295,4 +295,58 @@ escapeinside={\#*}{\^^M}
 \newtheorem{lemma}[theorem]{Lemma}
 
 
+\tikzset{
+  graph vertex/.style={
+    circle,
+    draw,
+  },
+  graph directed edge/.style={
+    ->,
+    >=stealth,
+    thick,
+  },
+  graph tree edge/.style={
+    graph directed edge
+  },
+  graph forward edge/.style={
+    graph directed edge,
+    every edge/.style={
+      edge node={node [fill=white,font=\scriptsize] {f}},
+      loosely dotted,
+      draw,
+    },
+  },
+  graph back edge/.style={
+    graph directed edge,
+    every edge/.style={
+      edge node={node [fill=white,font=\scriptsize] {b}},
+      densely dotted,
+      draw,
+    },
+  },
+  graph cross edge/.style={
+    graph directed edge,
+    every edge/.style={
+      dotted,
+      draw,
+    },
+  },
+}
 
+\newcommand{\abstraction}[1][]{
+\begin{tikzpicture} [->,auto,node distance=2cm and 4cm,line width=0.3mm, font=\footnotesize]
+
+  \node[state] (1) [rectangle, minimum width=3cm] {$V$};
+  \node[state] (2) [rectangle, minimum width=3cm,right=of 1] {$\gamma_k(V)$};
+  \node[state] (3) [rectangle, minimum width=3cm,below=of 2] {$\rho(\gamma_k(V))$};
+  \node[state] (4) [rectangle, minimum width=3cm,left=of 3] {$\alpha_k(\rho(\gamma_k(V)))$};
+
+  \path[every node/.style={font=\sffamily\tiny}]
+    (1) edge node [above] {concretization function} (2)
+    (2) edge node [right] {post-image} (3)
+    (3) edge node [below] {abstraction function} (4);
+  \path[graph cross edge, every node/.style={font=\sffamily\tiny}]
+    (1) edge node [left] {Abstract post-image} (4);
+
+\end{tikzpicture}
+}

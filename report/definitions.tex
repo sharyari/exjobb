@@ -11,6 +11,20 @@ An \emph{alphabet} $\Sigma$ is a finite set of \e{tokens}. We call a sequence $w
 
 Let $\subword$ be the subword relation, then \e{u} $\subword$ $w_1...w_n$=\e{w} iff \e{u} is an ordered subset of \e{w}. For example, if \e{w}=abc, then the set of subwords of \e{w} is {abc, ab, bc, a, b, c}.
 
+\subsubsection{Fixpoints}
+\todo[inline]{I put this here, as it is a rather general.}
+A \e{power set} of a set $A$ is the set of all subsets of A, denoted $2^M$.
+
+Let $f$ be a function $f(A) = A'$, where $A$ and $A'$ are sets. We say that the function $f$ is \e{at a fixpoint}, if $f(A) = A$, and that the function $f$ \e{has a fixpoint} if the continued application of $f$ eventually reaches a fixpoint, i.e. the recurrence relation
+\[\begin{cases}
+  A_0 = I\\
+  A_n = f(A_{n-1})
+\end{cases}\]
+
+with the initial set $I$ eventually reaches $A_i = A_j$, $i \leq j$ and $i \in \mathbb{N}$.
+
+A special case of the Tarski fixed point theorem~\cite{tarski} shows that for a powerset $A$ ordered by set inclusion and a monotonic function $f$, the function $f$ has a non-empty set of fixpoints. This means that the function $f$ on the powerset $V$ eventually reaches a fixed point and we use $V = \mu X.I \cup f(X)$ to denote that $V$ is the fixpoint of the function $f$ when applied to the initial set $I$.
+
 \subsubsection{Guarded Transitions}
 \todo[inline]{Potentially a section on how to read the transition relation notations used below.}
 
@@ -25,10 +39,11 @@ Formally, a lossy channel system \emph{LCS} over a set of processes \e{P}, chann
   \begin{itemize}
     \item $S_i$ is a finite set of control states
     \item $s_i^0$ is the initial control state
-    \item $A_i$ is a set of labeled actions \todo{Do I really need nop? == label with empty string}
+    \item $A_i$ is a set of labeled actions
     \item $\delta_i$ is a finite set of transitions, each of which is a triple of the form $\langle s_i,op,s_i'\rangle$, where $s_i, s_i'\in S_i$ are control states, and $op$ is a label of one of the forms
     \begin{itemize}
       \item \e{ch!m}, where \e{ch} $\in$ \e{Ch} and \e{m} $\in$ \e{M}
+      \todo[inline]{Do I really need nop? or was nop a transition not changing anything?}
       \item \e{ch?m}, where \e{ch} $\in$ \e{Ch} and \e{m} $\in$ \e{M}
       \item \e{a} $\in$ \e{A}.
     \end{itemize}
@@ -46,17 +61,21 @@ $\langle s_i, ch!m, s_i'\rangle$ represents a change of state from $s_i \in S_i$
 $\langle s_i, ch?m, s_i'\rangle$ represents a change of state from $s_i\in S_i$ to $s_i'\in S_i$ while removing the message $m\in M$ from the head of channel $ch \in Ch$
 \end{itemize}
 
-\subsubsection{Configuration}
-Let $\xi : ch \rightarrow \Sigma^*$ be a function that maps the content of a channel $ch \in Ch$ to the word on the channel. We will call this the \emph{evaluation} of the channel. We define a \e{configuration} to be a tuple $C$ = $(s, W)$, such that
+\subsubsection{Configurations}
+Let $\xi : ch \rightarrow \Sigma^*$ be a function that maps the content of a channel $ch \in Ch$ to the word on the channel. We will call this the \emph{evaluation} of the channel. We define a \e{configuration} to be a tuple $c$ = $(S, W)$, such that
 
 \begin{itemize}
   \item $s$ is the global control state:
 
-   $s$ = $(s_1, s_2... s_n)$ s.t. $s_i \in S_i$ is the local control state $P_i$, $1 \leq i \leq n$.
+   $S$ = $(s_1, s_2... s_n)$ s.t. $s_i \in S_i$ is the local control state $P_i$, $1 \leq i \leq n$.
   \item $W$ is an ordered set of channel evaluations: $W$ = $(W_1, W_2...W_m)$ s.t. $W_i$ = $\xi(ch_i)$ for a channel $ch_i \in Ch$, $1 \leq i \leq m$.
 \end{itemize}
 
+We define $state : c -> S$ to be a function mapping a configuration to its state, and $eval : C -> W$ to be a function mapping a configuration to its evaluation, and use the shorthand $c_state = state(c)$ and $c_eval = eval(c)$ for a configuration $c$.
+
 Let $\epsilon$ denote a sequence of empty words. We define $c^0$ to be the initial configuration $((s_1^0, s_2^0...s_n^0), \epsilon)$, i.e. the configuration with all processes in their initial state and all channel evaluations being the empty word.
+
+We define the size of a configuration $c = (S,W)$ to be the length of the longest word $w_i \in W$, i.e. $size(c) = length(w_i)$ if $length w_i \geq length(w_j)$ for all $i \neq j$.
 
 \subsection{Semantics}
 In the following section, we explain the semantics of a lossy channel system, which describes the behaviour of the system.
@@ -72,28 +91,28 @@ The operational behaviour of \e{LCS} is defined by the inifinite-state transitio
   $\rightarrow$ $\subseteq (C \times C)$  is the smallest transition relation defined as follows:
   \begin{itemize}
     \item For each observable action $a_i$ $\in$ $\delta_i$ of $P_i \in P$
-      $$\dfrac{s_i \xrightarrow{a_i} s_i'}{(s, W) \rightarrow (s', W)}$$
+      $$\dfrac{s_i \xrightarrow{a_i} s_i'}{(S, W) \rightarrow (S', W)}$$
       s.t.
-      $$s = (s_1...s_i...s_n) \rightarrow (s_1...s_i'...s_n) = s'$$
+      $$S = (s_1...s_i...s_n) \rightarrow (s_1...s_i'...s_n) = S'$$
     \item For each transmission action $\langle s_i, ch_j!m, s_i' \rangle$ in $\delta_i$ of $P_i \in P$
-      $$\dfrac{s \xrightarrow{ch_j!m} s' \wedge W_j = m_1...m_n}{(s, W) \rightarrow (s', W')}$$
+      $$\dfrac{s \xrightarrow{ch_j!m} s'}{(S, W) \rightarrow (S', W')}$$
       s.t.
-      $$W_j' = m_1...m_n \bullet m, W_i = W_i' \forall i \neq j$$ and $$s = (s_1...s_i...s_n) \rightarrow (s_1...s_i'...s_n) = s'$$
+      $$W_j' = W_j m \forall i \neq j$$ and $$S = (s_1...s_i...s_n) \rightarrow (s_1...s_i'...s_n) = S'$$
     \item For each reception action $\langle s_i, ch_j?m, s_2 \rangle$ in $\delta_i$ of $P_i \in P$
-      $$\dfrac{s \xrightarrow{ch_j?m} s' \wedge W_j = m_1...m_n}{(s, W) \rightarrow (s', W')}$$
+      $$\dfrac{s \xrightarrow{ch_j?m} s' \wedge W_j \in W = mX_1 }{(S, W) \rightarrow (S', W')}$$
       s.t
-      $$W_j' = m_2...m_n, W_i = W_i' \forall i \neq j$$ and $$s = (s_1...s_i...s_n) \rightarrow (s_1...s_i'...s_n) = s'$$
+      $$W_j' = X, W_i = W_i' \forall i \neq j$$ and $$S = (s_1...s_i...s_n) \rightarrow (s_1...s_i'...s_n) = S'$$
     \item
       Additionally, a message can be non-deterministically lost on a channel:
-      $$\dfrac{s \xrightarrow{ch_j^*} s \wedge W_j = m_1...m_{i-1} \bullet m_i \bullet m_{i+1}...m_n}{(s, W) \rightarrow (s, W')}$$
+      $$\dfrac{W_j = X_1mX_2}{(S, W) \rightarrow (S, W')}$$
       s.t.
-      $$W' = m_1...m_{i-1},m_{i+1}...m_n$$
+      $$W' =X_1X_2, W_i = W_i' \forall i \neq j$$
       \todo[inline]{Missing the synchronization-transition right now}
   \end{itemize}
 \end{itemize}
 
 \paragraph{Notations for configurations}
-Depending on the context, different notations to describe a configuration $c\in C$ may be used. For example, c = (s, W) can be denoted as \e{c} = $\conf{s, ch_1,...,ch_p}$, \e{c} = $\conf{s_1,...,s_n, W}$, \e{c} = $\conf{s_1,...,s_n, ch_1,...,ch_p}$.
+Depending on the context, different notations to describe a configuration $c\in C$ may be used. For example, c = (S, W) can be denoted as \e{c} = $\conf{s, ch_1,...,ch_p}$, \e{c} = $\conf{s_1,...,s_n, W}$, \e{c} = $\conf{s_1,...,s_n, ch_1,...,ch_p}$.
 
 \subsection{Alternating Bit Protocol}
 Here we present a simple protocol, the \emph{alternating bit protocol}~\cite{bartlett1969note}. This protocol will serve as a running example of the theoretical concepts in this section and following sections.
@@ -173,7 +192,7 @@ $\langle r_4, Rcv, r_1\rangle$
 Let $c = \conf{S,\xi}$ be a configuration of the alternating bit protocol, with the channels containing the words 01 and 10 respectively. Then \e{c} may also be denoted as $c = \conf{s,r,ch_M,ch_A}$ or as $c = \conf{s_1,s_2,01,10}$. There are finitely many control states in this system (($s_i$,$r_j$) with i,j $\in$ \{1..4\}), but an infinite set of channel evaluations. A transmission transition in this system is for example $\langle\conf{s_2,r_1,01,10}$, $ch_m!1$, $\conf{s_2,r_1,011,10}\rangle$.
 
 \subsubsection{The Verification Problem}
-A channel system can potentially result in a \e{bad} state, i.e. a state representing unintended behaviour. Suppose $Bad$ is a set of bad configurations of a channel system \e{LTS}. Let a \e{trace} be a sequence \e{t} = $c^0c^1...c^n$ such that for each $0 \leq i \leq (n-1)$, $\conf{c^i,c^{i+1}}$ $\in$ $\rightarrow$. If $c^n \subseteq c_bad$ for any $c_bad \in Bad$, we call such a trace a \e{bad trace}. Note that a configuration with a bad control state is a bad configuration, regardless of the content of the channel evaluation. If \e{t} is the shortest bad trace in the system, we call it a \e{minimal bad trace}.
+A channel system can potentially result in a \e{bad} state, i.e. a state representing unintended behaviour. Suppose $Bad$ is a set of bad configurations of a channel system \e{LTS}. Let a \e{trace} be a sequence \e{t} = $c^0c^1...c^n$ such that for each $0 \leq i \leq (n-1)$, $\conf{c^i,c^{i+1}}$ $\in$ $\rightarrow$. We call a trace a \e{bad trace} if $\exists c^bad \in Bad$ such that $c^bad_state = c^n_state$ and $c^n_eval \subseteq c^bad_eval$. Note that a configuration with a bad control state is a bad configuration, regardless of the content of the channel evaluation. If \e{t} is the shortest bad trace in the system, we call it a \e{minimal bad trace}.
 
 Let $\mathcal{R}$ denote the set of all reachable configurations. A configuration \e{c} is said to be \emph{reachable} in \e{LTS} ($c^l \in \mathcal{R}$), if there is a trace from initial configuration $c^0$ to $c^l$. The verification problem is to determine, for a channel transition system \e{LCS} = $\conf{s,W}$ with an initial configuration $c^0$ and a set \e{Bad} $\subseteq$ $S$ of bad configurations, whether a system is safe, that is, does not have any reachable bad configurations. More precisely, this means determining if $\mathcal{R} \cap Bad$  = $\emptyset$.
 
