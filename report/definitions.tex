@@ -4,122 +4,69 @@ In this chapter we will give the formal definition of a channel system. First we
 
 \subsection{Preliminaries}
 \subsubsection{Words and Alphabet}
-\todo[inline]{I realized that using merely messages and words does not suffice: The sender might send the string "abc" as a single message, whereas the receiver can read this message as "a" then "b" then "c", i.e. splitting that message. So message is basically just a word.}
-An \emph{alphabet} $\Sigma$ is a finite set of \e{tokens}. We call a sequence $w$ of tokens a \e{word}, i.e. $w$ = $w_1, w_2..., w_n$ is a word containing the tokens $w_1,...,w_n \in \Sigma$. We define the \e{length} of a word to be the number of tokens in the word, for example, the length of $w$ = $w_1, w_2..., w_n$ is $n$. We use $\Sigma^*$ to denote the set of all possible words over an alphabet, $\Sigma^+$ to denote the set of all words of $\Sigma^*$ of finite length, and $\Sigma_k^+$ to denote all words of $\Sigma^+$ of length \e{at most} $k$. Further we let $\varepsilon$ be the \e{empty word} s.t. $\varepsilon \in \Sigma$, and having the length 0.
+A word  w is a finite sequence of letters  from the alphabet; that is $ w=a_1 a_1 \cdots a_n$. We use $\epsilon$  to denote the empty word. We define the length  of a word  w to be the number of letters appearing in it (i.e., the length of the word $w=a_1 a_2 \cdots a_n$, with $a_1 a_2 \cdots a_n\in \Sigma$, is n). We use $|w|$ to denote the length of the word w. Observe that $|\epsilon|=0$. We use $\Sigma^*$  (resp. $\Sigma^+$) to denote the set of all  words (resp. non-empty words) over the alphabet $\Sigma$.  Let k be a natural number.  We use $\Sigma_k^*$  (resp. $\Sigma_k^+$) to denote the set of all  words (resp. non-empty words)  of length at most k. At times, we use the symbol $\bullet$ to emphasize the concatenation of two words, i.e. $w_1w_2w_3$ can be written as $w_1 \bullet w_2 \bullet w_3$.
 
-\todo[inline]{The missing subword ac is not a mistake. I'm not sure I can argue why it should not be there (can't remember if I need it not to be). In case I need to stick with the definition below, should I then use another symbol that $\subword$?}
+Let the relation $\leq$ be defined such that for $w_i,w_j \in w$, $w_i\leq w_j$ if $i\leq j$. We define the relation $\subword$ to be the \e{subword} relation, s.t. \e{u} $\subword$ $w_1...w_n$=\e{w} iff \e{u} is an ordered subset of \e{w}. Mathematically the subword relation can the be defined such that $u = u_1...u_n \subword w_1...w_n = w$ if $\forall u_i, u_j \in u $ there exists $w_k, w_l \in w$ such that $u_i = w_k$, $u_j = w_l$ and $u_i \leq u_j \iff w_k \leq w_l$.
 
-Let $\subword$ be the subword relation, then \e{u} $\subword$ $w_1...w_n$=\e{w} iff \e{u} is an ordered subset of \e{w}. For example, if \e{w}=abc, then the set of subwords of \e{w} is {abc, ab, bc, a, b, c}.
+As an example, if \e{w}=abc, then the set of subwords of \e{w} is {abc, ab, ac, bc, a, b, c, $\varepsilon$}.
 
 \subsubsection{Fixpoints}
-\todo[inline]{I put this here, as it is a rather general.}
-A \e{power set} of a set $A$ is the set of all subsets of A, denoted $2^M$.
-
-Let $f$ be a function $f(A) = A'$, where $A$ and $A'$ are sets. We say that the function $f$ is \e{at a fixpoint}, if $f(A) = A$, and that the function $f$ \e{has a fixpoint} if the continued application of $f$ eventually reaches a fixpoint, i.e. the recurrence relation
-\[\begin{cases}
-  A_0 = I\\
-  A_n = f(A_{n-1})
-\end{cases}\]
-
-with the initial set $I$ eventually reaches $A_i = A_j$, $i \leq j$ and $i \in \mathbb{N}$.
-
-A special case of the Tarski fixed point theorem~\cite{tarski} shows that for a powerset $A$ ordered by set inclusion and a monotonic function $f$, the function $f$ has a non-empty set of fixpoints. This means that the function $f$ on the powerset $V$ eventually reaches a fixed point and we use $V = \mu X.I \cup f(X)$ to denote that $V$ is the fixpoint of the function $f$ when applied to the initial set $I$.
-
-\subsubsection{Guarded Transitions}
-\todo[inline]{Potentially a section on how to read the transition relation notations used below.}
+Let $A$ be a set. We use $2^A$ to denote the set of all the subsets of $A$. Let $F$ be a function with $2^A$ as its domain and co-domain. We say that $F$ is a \e{monotonic function} if and only if for every subset $X,Y \subseteq A$, if $X \subseteq Y$ then $F(X) \subseteq F(Y)$.  We say that $X$ is a \e{fix-point} of F iff $F(X)=X$. We use $\mu X. F(X)$ to denote the least fixpoint of $F$ with respect to the subset relation (i.e.,  $\mu X. F(X)$ denotes the smallest set $D \subset A$, such that $D$ is a fix-point of $F$). From the Knaster-Tarski theorem~\cite{tarski}, we know that the least-fix point for a monotonic function exists. Furthermore, if $A$ is finite, then the sequence $X_0 = I$, $X_{i+1} = f(A_{n-1})$ for all $i \geq 0$, converges in finitely many iterations to the least-fixpoint of $F$.
 
 \subsection{Lossy Channel Systems}
 \subsubsection{Syntax}
-We present here the syntax of a finite-state system with unbounded channels. Such a system can be seen as to having two parts, a \e{control part} and a \e{channel part}. The channel part is a set of \e{channels} containing a word, which may be $\varepsilon$. The control part is a labeled finite-state transition system.
+We present here the syntax of a finite-state system with unbounded channels. Such a system can be seen as two parts, a \e{control part} and a \e{channel part}. The channel part is a set of \e{channels} containing a word. The control part is a labeled finite-state transition system.
 
 \label{CS}
-Formally, a lossy channel system \emph{LCS} over a set of processes \e{P}, channels \e{Ch} and messages \e{M} is a triple $\conf{P,Ch,M}$, where
+Formally, a lossy channel system \emph{LCS} over a set of processes \e{P}, channels \e{Ch} and messages \e{M} is a tuple $\conf{S,s^0, A, Ch,M, delta}$, where
 \begin{itemize}
-\item[] $P = (p_0,p_1...p_n)$ is a finite set of processes $p_i$ = $(S_i, s_i^0, A_i, \delta_i)$ such that,
-  \begin{itemize}
-    \item $S_i$ is a finite set of control states
-    \item $s_i^0$ is the initial control state
-    \item $A_i$ is a set of labeled actions
-    \item $\delta_i$ is a finite set of transitions, each of which is a triple of the form $\langle s_i,op,s_i'\rangle$, where $s_i, s_i'\in S_i$ are control states, and $op$ is a label of one of the forms
+  \item $S$ is a finite set of control states
+  \item $s^0$ is the initial control state
+  \item $A$ is a set of labeled actions
+  \item \e{Ch} is a finite set of channels,
+  \item $M \subset \Sigma^+$ is a finite set of messages (words) over a finite alphabet $\Sigma$,
+  \item $\delta$ is a finite set of transitions, each of which is a triple of the form $\langle s,op,s'\rangle$, where $s, s'\in S$ are control states, and $op$ is a label of one of the forms
     \begin{itemize}
       \item \e{ch!m}, where \e{ch} $\in$ \e{Ch} and \e{m} $\in$ \e{M}
-      \todo[inline]{Do I really need nop? or was nop a transition not changing anything?}
       \item \e{ch?m}, where \e{ch} $\in$ \e{Ch} and \e{m} $\in$ \e{M}
       \item \e{a} $\in$ \e{A}.
     \end{itemize}
 \end{itemize}
-\item[] \e{Ch} is a finite set of channels,
-\item[] $M \subset \Sigma^+$ is a finite set of messages (words) over a finite alphabet $\Sigma$,
-\end{itemize}
 
-The finite-state control part of \e{LCS} is set of processes \e{P}, each with an initial state $s_i^0$, labeled actions $a_i$ and transitions $\delta_i$. The channel part is represented by the set \e{Ch} of channels, which contain a possibly empty word from $M^+$. The set $A_i$ denotes the set of internal transitions, which only alter the internal state of a process. $\delta_i$ may either be an action from $A_i$, or an action where
+The finite-state control part of \e{LCS} is set of states $S$, with the initial state $s^0$, labeled actions $a$ and transitions $\delta$. The channel part is represented by the set \e{Ch} of channels, which contain a word over $M$. The set $A$ denotes the set of internal transitions, which only alter the control state of the system, wheras $\delta_i$ may either be an action from $A$, or an action where
 
 \begin{itemize}
 \item[]
-$\langle s_i, ch!m, s_i'\rangle$ represents a change of state from $s_i \in S_i$ to $s_i'$ $\in S_i$ while appending the message $m\in M$ to the tail of channel $ch\in Ch$.
+$\langle s, ch!m, s'\rangle$ represents a change of state from $s \in S$ to $s'$ $\in S$ while appending the message $m\in M$ to the tail of channel $ch\in Ch$.
 \item[]
-$\langle s_i, ch?m, s_i'\rangle$ represents a change of state from $s_i\in S_i$ to $s_i'\in S_i$ while removing the message $m\in M$ from the head of channel $ch \in Ch$
+$\langle s, ch?m, s'\rangle$ represents a change of state from $s\in S$ to $s'\in S$ while removing the message $m\in M$ from the head of channel $ch \in Ch$
 \end{itemize}
 
 \subsubsection{Configurations}
-Let $\xi : ch \rightarrow \Sigma^*$ be a function that maps the content of a channel $ch \in Ch$ to the word on the channel. We will call this the \emph{evaluation} of the channel. We define a \e{configuration} to be a tuple $c$ = $(S, W)$, such that
+Let $\xi : ch \rightarrow \Sigma^*$ be a function that maps the content of a channel $ch \in Ch$ to the word on the channel. We will call this the \emph{evaluation} of the channel. We define a \e{configuration} to be a tuple $c$ = $(s, W)$, such that $s$ is the global control state and $W$ is a sequence of channel evaluations: $W$ = $(W_1, W_2...W_m)$ s.t. $W_i$ = $\xi(ch_i)$ for a channel $ch_i \in Ch$, $1 \leq i \leq m$.
+For a sequence of evaluations $W = (W_1, W_2 \cdots W_n)$ we use $W_i$ to denote the $i:th$ evaluation in the sequence.
+Let $C$ denote the set of all possible configurations. We define $state : C \rightarrow S$ to be a function mapping a configuration to its state, and $eval : C -> W$ to be a function mapping a configuration to its evaluation, and use the shorthand $c_{S} = state(c)$ and $c_{E} = eval(c)$ for a configuration $c$.
 
-\begin{itemize}
-  \item $s$ is the global control state:
+Let $\phi$ denote a sequence of empty words, that is $\phi$ = $\Set{\epsilon,\epsilon\cdots\epsilon}$. We define $c^0$ to be the initial configuration $\conf{s^0, \bf\epsilon}$, i.e. the configuration with all processes in their initial state and all channel evaluations being the empty word.
 
-   $S$ = $(s_1, s_2... s_n)$ s.t. $s_i \in S_i$ is the local control state $P_i$, $1 \leq i \leq n$.
-  \item $W$ is an ordered set of channel evaluations: $W$ = $(W_1, W_2...W_m)$ s.t. $W_i$ = $\xi(ch_i)$ for a channel $ch_i \in Ch$, $1 \leq i \leq m$.
-\end{itemize}
-
-We define $state : c -> S$ to be a function mapping a configuration to its state, and $eval : C -> W$ to be a function mapping a configuration to its evaluation, and use the shorthand $c_state = state(c)$ and $c_eval = eval(c)$ for a configuration $c$.
-
-Let $\epsilon$ denote a sequence of empty words. We define $c^0$ to be the initial configuration $((s_1^0, s_2^0...s_n^0), \epsilon)$, i.e. the configuration with all processes in their initial state and all channel evaluations being the empty word.
-
-We define the size of a configuration $c = (S,W)$ to be the length of the longest word $w_i \in W$, i.e. $size(c) = length(w_i)$ if $length w_i \geq length(w_j)$ for all $i \neq j$.
+We define the size of a configuration $c = (s,W)$ with $W=(w_1,w_2,\ldots,w_m)$ to be the length of the longest word $w_i$, i.e., size(c)=$max\{|w_i|~| i \in \{1, ...,m\}\}$
 
 \subsection{Semantics}
-In the following section, we explain the semantics of a lossy channel system, which describes the behaviour of the system.
-%A \e{transition system} is an abstract machine, commonly used in model checking to describe the behaviour of a system. They are in ways similar to the notion of finite state automata, with the difference that the states and transitions in a transition system need not be finite. A state of a transition system describing a program may be determined, for example, the evaluation of all variables in the program. Transitions describe how a system in a certain state can move to another state.
-
-\paragraph{Definition}
-\label{CTS}
-The operational behaviour of \e{LCS} is defined by the inifinite-state transition system \e{LTS} = (\e{C}, $\rightarrow$) where
-\begin{itemize}
-\item[]
-   \e{C} is a possibly infinite set of configurations
-\item[]
-  $\rightarrow$ $\subseteq (C \times C)$  is the smallest transition relation defined as follows:
+In the following section, we explain the semantics of a lossy channel system, which describes the behaviour of the system. The operational behaviour of \e{LCS} induces the inifinite-state transition system \e{LTS} = (\e{C}, $\rightarrow$) where \e{C} is a possibly infinite set of configurations and $\rightarrow$ $\subseteq (C \times C)$  is the smallest transition relation defined as follows:
   \begin{itemize}
-    \item For each observable action $a_i$ $\in$ $\delta_i$ of $P_i \in P$
-      $$\dfrac{s_i \xrightarrow{a_i} s_i'}{(S, W) \rightarrow (S', W)}$$
-      s.t.
-      $$S = (s_1...s_i...s_n) \rightarrow (s_1...s_i'...s_n) = S'$$
-    \item For each transmission action $\langle s_i, ch_j!m, s_i' \rangle$ in $\delta_i$ of $P_i \in P$
-      $$\dfrac{s \xrightarrow{ch_j!m} s'}{(S, W) \rightarrow (S', W')}$$
-      s.t.
-      $$W_j' = W_j m \forall i \neq j$$ and $$S = (s_1...s_i...s_n) \rightarrow (s_1...s_i'...s_n) = S'$$
-    \item For each reception action $\langle s_i, ch_j?m, s_2 \rangle$ in $\delta_i$ of $P_i \in P$
-      $$\dfrac{s \xrightarrow{ch_j?m} s' \wedge W_j \in W = mX_1 }{(S, W) \rightarrow (S', W')}$$
-      s.t
-      $$W_j' = X, W_i = W_i' \forall i \neq j$$ and $$S = (s_1...s_i...s_n) \rightarrow (s_1...s_i'...s_n) = S'$$
-    \item
-      Additionally, a message can be non-deterministically lost on a channel:
-      $$\dfrac{W_j = X_1mX_2}{(S, W) \rightarrow (S, W')}$$
-      s.t.
-      $$W' =X_1X_2, W_i = W_i' \forall i \neq j$$
-      \todo[inline]{Missing the synchronization-transition right now}
+    \item For each action $\conf{s, a, s'}$ $\in$ $\delta$, $\conf{s, W} \xrightarrow{a} \conf{s', W}$. This means that the control state changes with the action $a$.
+    \item For each transmission transition $\langle s, ch_j!m, s' \rangle$ in $\delta$, $\conf{s, W} \xrightarrow{ch_j!m} \conf{s', W'}$ where $W_j' = W_j\bullet m, W_i' = W_i$, $\forall i \neq j$. This means that the control state and the evaluation of the configuratoin change, so that the message $m$ appended to the end of the $j:th$ evaluation.
+    \item For each reception transition $\langle s, ch_j?m, s \rangle$ in $\delta_i$, $\conf{s, W} \xrightarrow{ch_j!m} \conf{s', W'}$ such that if $W_j = m\bullet x$, $W_j' = x, W_i = W_i'$, $\forall i \neq j$. This means that the control state and the evaluation of the configuratoin change, so that the message $m$ is removed from the head of the $j:th$ evaluation.
+    \item Additionally, $\conf{s, W} \xrightarrow{ch_j*} \conf{s, W'}$ such that if $W_j = x_1\bullet m \bullet x_2$, $W_j' = x_1\bullet x_2, W_i = W_i',$ $\forall i \neq j$. This signifies that a message loss has occurred on the $j:th$ channel, leaving the control state unchanged.
   \end{itemize}
-\end{itemize}
 
 \paragraph{Notations for configurations}
-Depending on the context, different notations to describe a configuration $c\in C$ may be used. For example, c = (S, W) can be denoted as \e{c} = $\conf{s, ch_1,...,ch_p}$, \e{c} = $\conf{s_1,...,s_n, W}$, \e{c} = $\conf{s_1,...,s_n, ch_1,...,ch_p}$.
+Depending on the context, different notations to describe a configuration $c\in C$ may be used. For example, $c = \conf{s, W}$ can be denoted as \e{c} = $\conf{s, W_1, W_2, ..., W_3}$ when talking about the specific channel evaluations, or with the words on a channel explicitely written, e.g. \e{c} = $\conf{s, abc, def}$.
 
 \subsection{Alternating Bit Protocol}
 Here we present a simple protocol, the \emph{alternating bit protocol}~\cite{bartlett1969note}. This protocol will serve as a running example of the theoretical concepts in this section and following sections.
 
-The Alternating Bit Protocol (ABP)\todo{reference, and pseudo-code} is a distributed protocol for transmitting data from a \e{sender} to a \e{receiver} in a network. The protocol uses two unbounded channels, $ch_M$ used to transmit messages and $ch_A$ to transmit \e{acknowledgements} of received messages. The sender sends a message with sequence number \e{x} $\in$ \{0,1\} to the receiver over channel $ch_M$, who upon reception sends an acknowledgement with the same sequence number over channel $ch_A$. Both the sender and the receiver may send the same message (with the same sequence number) repeatedly. When the sender receives an acknowledgement from the receiver, the next message can be sent using the sequence number \e{1-x}, hence the name Alternating Bit Protocol.
-
-This is a simple protocol that operates on unbounded channels. The behaviour of the sender and receiver process are illustrated in figures \ref{fig:in1} and \ref{fig:in2}, and the pseudo-code for the algorithm is seen below.
+The Alternating Bit Protocol (ABP)\todo{reference} is a distributed protocol for transmitting data from a \e{sender} to a \e{receiver} in a network. The protocol uses two unbounded channels, $ch_M$ used to transmit messages and $ch_A$ to transmit \e{acknowledgements} of received messages. The sender sends som data with with a sequence number \e{x} $\in$ \{0,1\} to the receiver over channel $ch_M$, who upon reception sends an acknowledgement with the same sequence number over channel $ch_A$. Both the sender and the receiver may send the same message (with the same sequence number) repeatedly. When the sender receives an acknowledgement from the receiver, the next message can be sent using the sequence number \e{1-x}, hence the name Alternating Bit Protocol. The behaviour of the sender and receiver process are illustrated in figures \ref{fig:in1} and \ref{fig:in2}, and the pseudo-code for this algorithm is seen below.
 
 \begin{algorithm}
   \caption{ABP Sender}
@@ -127,7 +74,7 @@ This is a simple protocol that operates on unbounded channels. The behaviour of 
 \begin{algorithmic}[1]
     \State b := False \Comment{Initially False}
     \For{\texttt{$True$}}
-      \State msg.send(data, b);
+      \State msg.send(data, b); \Comment{Send the message}
       \While{ack.receive().b != b} \Comment{Wait until ack has the correct ID}
       \State msg.send(data, b); \Comment{Re-send the message}
       \EndWhile
@@ -144,14 +91,15 @@ This is a simple protocol that operates on unbounded channels. The behaviour of 
     \State b := False \Comment{Initially False}
     \For{\texttt{$True$}}
       \While{msg.receive().b != b} \Comment{Wait until msg has the correct ID}
-      \State ack.send(data, b); \Comment{Re-transmit the acknowledgement}
+      \State ack.send(b); \Comment{(Re-)transmit the acknowledgement}
       \EndWhile
       \State b := !b \Comment{Alternate the bit}
     \EndFor
-
 \end{algorithmic}
 \end{algorithm}
-\ref{abpgraph}.
+
+In the pseudo-code above, both the sender and receiver have an internal boolean variable $b$, which at any time has the value of the ID they expect the next message to have, which may either be False (0) or True (1). The sender will repeatedly send a messages with the current value of b to as ID, until it receives an acknowledgement from the receiver with the same ID, at which point it alternates the value of $b$. The receiver behaves the same as the sender, with the exception that it does not initiate the communication.
+
 
 \begin{figure}[h!]
 \subfloat[Sender]{\label{fig:in1}
@@ -164,37 +112,37 @@ This is a simple protocol that operates on unbounded channels. The behaviour of 
 \label{abpgraph}
 \end{figure}
 
-\paragraph{Syntax.} The alternating bit protocol can be described by a channel system \e{CS} = $\langle S,s_0,A,Ch,M,\delta\rangle$ such that \e{S} = \{(s,r)\} with \e{s} $\in$ $\{s_1,s_2,s_3,s_4\}$, \e{r} $\in$ $\{r_1,r_2,r_3,r_4\}$, $s_0$ is the initial state ($s_1$,$r_1$), \e{A} = \{\e{Snd}, \e{Rcv}\}, \e{Ch} = \{$Ch_M,Ch_A$\}, \e{M} = \{1,0\} and $\delta$ is the set of transitions
-
-\todo[inline]{I refrain from updating these until we've settled for a final version of the syntax and semantics}
+\paragraph{Syntax.} The alternating bit protocol can be described by a channel system \e{CS} = $\conf{S,s^0,A,Ch,M,\delta}$ such that \e{S} = $\{(s_i,r_i)\}$ with $i \in \{1,2,3,4\}$, $s^0$ is the initial state ($s_1$,$r_1$), \e{A} = \{\e{Snd}, \e{Rcv}\}, \e{Ch} = \{$Ch_M,Ch_A$\}, \e{M} = \{1,0\} and $\delta$ is the set of transitions
 
 \begin{ttabular}
-$\langle s_1, Snd, s_2\rangle$ &
-$\langle s_2, ch!0, s_2\rangle$ &
-$\langle s_2, ch?1, s_2\rangle$ &
-$\langle s_2, ch?0, s_3\rangle$ &
-$\langle s_3, Snd, s_4\rangle$ &
-$\langle s_4, ch!1, s_4\rangle$&
-$\langle s_4, ch?0, s_4\rangle$&
-$\langle s_4, ch?1, s_1\rangle$ \\
-
-$\langle r_1, ch!1, r_1\rangle$ &
-$\langle r_1, ch?1, r_1\rangle$&
-$\langle r_1, ch?0, r_2\rangle$&
-$\langle r_2, Rcv, r_3\rangle$&
-$\langle r_3, ch!0, r_3\rangle$&
-$\langle r_3, ch?0, r_3\rangle$&
-$\langle r_3, ch?1, r_4\rangle$&
-$\langle r_4, Rcv, r_1\rangle$
+$\trans{(s_1,r_1)}{Snd}{(s_2, r_1)}$ &
+$\trans{(s_2,r_1)}{ch_M!0}{(s_2, r_1)}$ &
+$\trans{(s_2,r_1)}{ch_A?1}{(s_2, r_1)}$ &
+$\trans{(s_2,r_1)}{ch_A?0}{(s_3, r_1)}$ &
+$\trans{(s_3,r_1)}{Snd}{(s_4, r_1)}$ &
+$\trans{(s_4,r_1)}{ch_M!1}{(s_4, r_1)}$ &
+$\trans{(s_4,r_1)}{ch_A?1}{(s_1, r_1)}$ &
+$\trans{(s_4,r_1)}{ch_A?0}{(s_4, r_1)}$ &
+\\
+$\trans{(s_1,r_1)}{ch_A!1}{(s_1, r_1)}$ &
+$\trans{(s_1,r_1)}{ch_M?1}{(s_1, r_1)}$ &
+$\trans{(s_1,r_1)}{ch_M?0}{(s_2, r_1)}$ &
+$\trans{(s_2,r_1)}{Rcv}{(s_3, r_1)}$ &
+$\trans{(s_3,r_1)}{ch_A!1}{(s_3, r_1)}$ &
+$\trans{(s_3,r_1)}{ch_M?0}{(s_3, r_1)}$ &
+$\trans{(s_3,r_1)}{ch_M?1}{(s_4, r_1)}$ &
+$\trans{(s_4,r_1)}{Rcv}{(s_1, r_1)}$
 \end{ttabular}
 
-\paragraph{Semantics and Notation.}
-Let $c = \conf{S,\xi}$ be a configuration of the alternating bit protocol, with the channels containing the words 01 and 10 respectively. Then \e{c} may also be denoted as $c = \conf{s,r,ch_M,ch_A}$ or as $c = \conf{s_1,s_2,01,10}$. There are finitely many control states in this system (($s_i$,$r_j$) with i,j $\in$ \{1..4\}), but an infinite set of channel evaluations. A transmission transition in this system is for example $\langle\conf{s_2,r_1,01,10}$, $ch_m!1$, $\conf{s_2,r_1,011,10}\rangle$.
+\paragraph{Notations}
+Let $c = \conf{s,W}$ be a configuration of the alternating bit protocol, with the channels containing the words 01 and 10 respectively. Then \e{c} may also be denoted as $c = \conf{s,ch_M,ch_A}$ or as $c = \conf{s,01,10}$. There are finitely many control states in this system (precisely 16), but an infinite set of channel evaluations. The initial configuration $c^0 = \conf{(s_1, r_1), \epsilon}$.
+
+Although the channel system has a finite number of transitions (listed above) between states, the transition system has an infinite number of transitions between configurations, as these depend also on the evaluations. An example of such a transition $\conf{s_2,r_1,01,10}$, $ch_M!1$, $\conf{s_2,r_1,011,10}\rangle$.
 
 \subsubsection{The Verification Problem}
-A channel system can potentially result in a \e{bad} state, i.e. a state representing unintended behaviour. Suppose $Bad$ is a set of bad configurations of a channel system \e{LTS}. Let a \e{trace} be a sequence \e{t} = $c^0c^1...c^n$ such that for each $0 \leq i \leq (n-1)$, $\conf{c^i,c^{i+1}}$ $\in$ $\rightarrow$. We call a trace a \e{bad trace} if $\exists c^bad \in Bad$ such that $c^bad_state = c^n_state$ and $c^n_eval \subseteq c^bad_eval$. Note that a configuration with a bad control state is a bad configuration, regardless of the content of the channel evaluation. If \e{t} is the shortest bad trace in the system, we call it a \e{minimal bad trace}.
+A channel system can potentially reach a \e{bad} state, i.e. a state representing unintended behaviour. Suppose $Bad$ is a set of bad configurations of a lossy transition system \e{LTS}, as defined in \ref{TS}. We call a sequence \e{t} = $c^0c^1\cdots c^n$ of configurations such that for each $0 \leq i \leq (n-1)$, there exists a transition $c^i \rightarrow c^{i+1}$ a \e{trace} from $c^0$ to $c^n$. We call a trace a \e{bad trace} if there exists $c^{bad} \in Bad$ such that $c^{bad}_S = c^n_S$ and $c^n_E \subseteq c^{bad}_E$. Note that a configuration with a bad control state is a bad configuration, regardless of the content of the channel evaluation. If \e{t} is the shortest bad trace in the system, we call it a \e{minimal bad trace}.
 
-Let $\mathcal{R}$ denote the set of all reachable configurations. A configuration \e{c} is said to be \emph{reachable} in \e{LTS} ($c^l \in \mathcal{R}$), if there is a trace from initial configuration $c^0$ to $c^l$. The verification problem is to determine, for a channel transition system \e{LCS} = $\conf{s,W}$ with an initial configuration $c^0$ and a set \e{Bad} $\subseteq$ $S$ of bad configurations, whether a system is safe, that is, does not have any reachable bad configurations. More precisely, this means determining if $\mathcal{R} \cap Bad$  = $\emptyset$.
+A configuration \e{c} is said to be \emph{reachable} in \e{LTS}, if there is a trace from the initial configuration $c^0$ to $c$. Let $\mathcal{R}$ denote the set of all reachable configurations. The verification problem is to determine, for a channel transition system \e{LTS} with an initial configuration $c^0$ and a set \e{Bad} $\subseteq$ $C$ of bad configurations, whether a system is safe, that is, does not have any reachable bad configurations. More precisely, this means determining if $\mathcal{R} \cap Bad$ = $\emptyset$.
 
 
 %A channel system can potentially result in a \e{bad} state, i.e. a state representing unintended behaviour. Suppose $Bad$ is a set of bad control states of a channel system \e{LTS}. Let a \e{trace} be a sequence \e{t} = $c^0c^1...c^n$ such that for each $0 \leq i \leq (n-1)$, $\conf{c^i,c^{i+1}}$ $\in$ $\rightarrow$. If $c^n$ = $(s_bad, W)$ s.t. $s_bad \in Bad$, we call such a trace a \e{bad trace}. Note that a configuration with a bad control state is a bad configuration, regardless of the content of the channel evaluation. If \e{t} is the shortest bad trace in the system, we call it a \e{minimal bad trace}.

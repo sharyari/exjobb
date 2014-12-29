@@ -262,6 +262,7 @@ escapeinside={\#*}{\^^M}
 \newcommand{\Tuple}[1]{\langle#1\rangle}
 \newcommand{\Union}{\cup}
 \newcommand{\conf}[1]{\langle#1\rangle}
+\newcommand{\trans}[3]{#1 \xrightarrow{#2} #3}
 \newcommand{\subword}{\sqsubseteq}
 \newcommand{\e}[1]{\emph{#1}}
 \usetikzlibrary{positioning,shapes,shadows,arrows}
@@ -279,10 +280,10 @@ escapeinside={\#*}{\^^M}
 \let\\\cr
 \valign\bgroup
 \global\rowc\@ne
-\hbox to 7em{\strut \hfill##\hfill}%
+\hbox to 11em{\strut \hfill##\hfill}%
 &&%
 \global\advance\rowc\@ne
-\hbox to 7em{\strut\hfill##\hfill}%
+\hbox to 11em{\strut\hfill##\hfill}%
 \cr}
 \def\endttabular{%
 \crcr\egroup\egroup}
