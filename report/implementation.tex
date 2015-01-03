@@ -1,18 +1,28 @@
 \section{Implementation of the Verification Method}
-
-
-
-In this section, we show how to implement the algorithm in \todo{Ref} an efficient way. We do this by beginning with a naive algorithm computing the configurations, and then step by step locating and addressing the performance issues.
-
-\todo{Is the algorithm guaranteed to terminate? When does it not?}
-
+\label{naive}
+In this chapter, we show how the algorithm in \ref{verificationalgorithm} can be implemented. The implementation is naive, in that it strictly follows the mathematical concepts. We end the chapter by identifying the main drawbacks of the implementation.
 
 \subsection{Naive implementation}
-A naive way to generate configurations would be to perform the described operations such that they correspond directly to the mathematical notations as described in section \ref{alphagamma}. This is possible, as most programming languages have built-in datastructures that support set operations.
-
-A transition in the transition system corresponds to one or more \e{rules} in the implementation. A rule \e{r} $\in$ \e{R} is a description of a transition, seen as a set of state-predicates, channel-predicates, state-effects and channel-effects.If all predicates are true for a configuration \e{c}, the effects of the rule are applied to \e{c} resulting in a post-value \e{c'}.
+A naive way to generate configurations would be to perform the described operations such that they correspond directly to the mathematical notations as described in section \ref{alphagamma}. This is possible, as most programming languages have built-in datastructures that support set operations and tuples.
 
 In this naive approach, all configurations are stored in a \e{set}, such that each configuration is stored uniquely. For each element \e{c} of the set \e{V}, the function \e{gamma}, \e{step} and \e{alpha} are performed in order, until a \e{fix-point} is reached, i.e. continuing the process does not result in any more configurations being found. Assuming that a set of channel symbols and a set of rules \e{R} describing the transitions are known, the algorithm does the following:
+
+\paragraph{Notations}
+In order to differentiate between programming artifacts in the implementation, we say that a transition in the transition system corresponds to one or more \e{rules} in the implementation. A rule \e{r} $\in$ \e{R} is a description of a transition, seen as a set of state-predicates, channel-predicates, state-effects and channel-effects. The state- and channel-predicates describe the state and the evaluation a configuration (or view) must be in, in order to fire the rule. If all predicates are true for a configuration \e{c}, the state and channel-effects of the rule are applied to \e{c} resulting in a post-value \e{c'}.
+
+Note that for a transition $t \in \rightarrow$, the corresponding rule $r$ is different depending on the type of transition. We see $r$ as a tuple, 
+
+\todo{below might be a useful way to talk about rules}.
+\begin{itemize}
+\item
+if $t$ is an action, $r$ has neither channel-predicate nor effect. $r = (s', s)$. Where $s', s \in S$.
+\item
+if $t$ is a transmission, $r$ does not have a channel-predicate. $r = (s', s, m)$ where $s', s \in S$ and $m \in M$.
+\item
+if $t$ is a reception, $r$ has all of these artifacts. $r = (s', s, W, m)$.
+\item
+if $t$ is a message loss, $r$ has no state-predicate nor effect. $r = (W, W')$.
+\end{itemize}
 
 \begin{enumerate}
 \item
@@ -59,6 +69,7 @@ Using these abstraction, the computational complexity of the verifier is greatly
 
 In a best-case scenario, there would be an equal number of configurations for every state in the system. The complexity of checking whether $\alpha_k(c)$ $\in$ $V$ is reduced to $O(p \cdot log (n/s))$ where \e{s} denotes the number of states in the system. The gains of these modifications in terms of computational complexity is difficult to determine, as the number of configurations with a certain control-state are not necessarily well-distributed, but we anticipate that the gains in many cases will be close to the best case scenario.
 
+\newpage
 % Det går inte att beskriva rule-delen här, för det är mer beroende av tries.
 \subsection{Better Implementation}
 \subsubsection{Control-State Partitioning}
@@ -120,7 +131,7 @@ There is a small one-time cost of creating the rule tree, but after creation, it
 \end{algorithmic}
 \end{algorithm}
 
-
+\newpage
 \subsection{Final Implementation}
 An efficient algorithm in this context is largely an algorithm that avoids performing unnecessary calculations. This can either be done by avoiding to create unnecessary configurations such as was done with the rule hashmap above or by avoiding re-calculating previously calculated results. The algorithm as described above reproduces its steps each iteration; if a configuration \e{c} can be extended to a concretization \e{con} at any point in the verification process, then \e{con} can and will be created in every following iteration. This includes checking whether \e{$\alpha_k(con) \subset V$}, applying a set of rules to the configuration and then adding all the views of the resulting configurations to the set. Each time the calculations are performed, the result will be duplicates and no new views are added to the system.
 

@@ -132,6 +132,11 @@
 \newblock In {\em Verification, Model Checking, and Abstract Interpretation\/}
   (2007), Springer, pp.~299--313.
 
+\bibitem{tarski}
+{\sc Tarski, A., et~al.}
+\newblock A lattice-theoretical fixpoint theorem and its applications.
+\newblock {\em Pacific journal of Mathematics 5}, 2 (1955), 285--309.
+
 \bibitem{zuck2004}
 {\sc Zuck, L., and Pnueli, A.}
 \newblock Model checking and abstraction to the aid of parameterized systems (a
