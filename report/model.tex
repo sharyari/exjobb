@@ -86,12 +86,11 @@ $y = z\bullet m$ with $z \subset x$, $|z| \leq (k-1)$. The set $\gamma_k^{k+1}$ 
 \end{enumerate}
 
 
-\paragraph{Message Loss and Reception}
+\paragraph{Actions, Receptions and Message Loss}
 \label{proofreception}
-The proof for reception is trivial, as removing a message from the an evaluation will not result in a word larger than the original. Thus $\alpha_k(c') \subset \alpha_k(c)$.
+Actions can in this context be seen as equivalent to a reception or transmission rule, reading or writing the empty symbol $\epsilon$ on some channel respectively. The proof thus follows from the proof for transmission transitions. The proof for reception is also trivial, as removing a message from an evaluation will not result in a word larger than the original. The resulting set of views will be a subset of the views, if $\rho$ was an action.
 
-\paragraph{Actions}
-Actions can in this context be seen as equivalent to a reception or transmission rule, reading or writing the empty symbol $\epsilon$ on some channel respectively.
+
 
 \subsection{Verification Algorithm}
 \label{verificationalgorithm}
@@ -109,7 +108,7 @@ As a result of lemma \ref{lemma1}, if $\gamma_k^{k+1} \cap Bad$ = $\phi$ for any
     \hspace{16pt}\textbf{if} {$\gamma_k(V)$ $\cap$ $Bad$ = $\emptyset$} \textbf{then return} Safe
 \end{algorithm}
 
-The algorithm begins by performing a reachability analysis, as explained in \ref{reachcompute}in order to compute $\mathcal{R}_k$ and check for bad states. For any buffer size \e{k}, if a bad state is found to be reachable in $\mathcal{R}_k$, the system is unsafe and the algorithm terminates. If no such bad state was found, the algorithm continues by computing an \e{overapproximation} of configurations of size $k$, reachable through configurations of size at most $k+1$ and checking for bad configurations. This is done by computing the fixpoint of $Apost_k$. If at this point no bad configuration has been found, the system can be said to be safe and the algorithm terminates. If on the other hand a bad state was found, the system is not necessarily unsafe, as \e{V} is an overapproximation of the reachable states in $\mathcal{R}_k$. The process is then repeated with a buffer size of \e{k+1}. This process is abstractly described in the flowchart in figure \ref{flow}.
+The algorithm begins by performing a reachability analysis, as explained in \ref{reachcompute} in order to compute $\mathcal{R}_k$ and check for bad states. For any buffer size \e{k}, if a bad state is found to be reachable in $\mathcal{R}_k$, the system is unsafe and the algorithm terminates. If no such bad state was found, the algorithm continues by computing an \e{overapproximation} of configurations of size $k$, reachable through configurations of size at most $k+1$ and checking for bad configurations. This is done by computing the fixpoint of $Apost_k$. If at this point no bad configuration has been found, the system can be said to be safe and the algorithm terminates. If on the other hand a bad state was found, the system is not necessarily unsafe, as \e{V} is an overapproximation of the reachable states in $\mathcal{R}_k$. The process is then repeated with a buffer size of \e{k+1}. This process is abstractly described in the flowchart in figure \ref{flow}.
 
 \begin{figure}
 \includegraphics[width=400pt] {bilder/flowchart.png}
