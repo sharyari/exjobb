@@ -3,47 +3,50 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: report.aux
 The style file: acm.bst
 Database file #1: references.bib
+Warning--to sort, need author or key in foldoc
+Warning--empty author in foldoc
+Warning--empty journal in foldoc
 Warning--empty journal in mpass
 Warning--can't use both volume and number fields in fredlund2007mcerlang
-You've used 24 entries,
+You've used 25 entries,
             2253 wiz_defined-function locations,
-            678 strings with 7964 characters,
-and the built_in function-call counts, 9537 in all, are:
-= -- 948
-> -- 364
+            682 strings with 8017 characters,
+and the built_in function-call counts, 9671 in all, are:
+= -- 961
+> -- 365
 < -- 0
-+ -- 150
++ -- 152
 - -- 123
-* -- 695
-:= -- 1434
-add.period$ -- 76
-call.type$ -- 24
-change.case$ -- 126
+* -- 704
+:= -- 1451
+add.period$ -- 77
+call.type$ -- 25
+change.case$ -- 129
 chr.to.int$ -- 0
-cite$ -- 26
-duplicate$ -- 419
-empty$ -- 825
+cite$ -- 30
+duplicate$ -- 426
+empty$ -- 838
 format.name$ -- 123
-if$ -- 2112
+if$ -- 2140
 int.to.chr$ -- 0
-int.to.str$ -- 24
-missing$ -- 26
-newline$ -- 123
+int.to.str$ -- 25
+missing$ -- 27
+newline$ -- 126
 num.names$ -- 54
-pop$ -- 162
+pop$ -- 166
 preamble$ -- 1
-purify$ -- 104
+purify$ -- 106
 quote$ -- 0
-skip$ -- 298
+skip$ -- 303
 stack$ -- 0
-substring$ -- 670
+substring$ -- 676
 swap$ -- 151
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 92
-warning$ -- 2
+type$ -- 96
+warning$ -- 5
 while$ -- 98
-width$ -- 26
-write$ -- 261
-(There were 2 warnings)
+width$ -- 27
+write$ -- 266
+(There were 5 warnings)
