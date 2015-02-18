@@ -20,7 +20,7 @@ Let $A$ be a set. We use $2^A$ to denote the set of all the subsets of $A$. Let 
 \subsubsection{Syntax}
 We present here the syntax of a finite-state system with unbounded channels. Such a system can be seen as two parts, a \e{control part} and a \e{channel part}. The channel part is a set of \e{channels}, each containing a word. The control part is a labeled finite-state transition system.
 
-Formally, a lossy channel system \emph{LCS} is a tuple $\conf{S,s^0, A, Ch,\xi, \delta}$, where
+Formally, a lossy channel system \emph{LCS} is a tuple $\conf{S,s^0, A, Ch,\Sigma, \delta}$, where
 \begin{itemize}
   \item $S$ is a finite set of control states
   \item $s^0$ is the initial control state
@@ -54,9 +54,11 @@ Let $\xi : Ch \rightarrow \Sigma^*$ be a function that maps the content of each 
 %For a sequence of evaluations $W = (w_1, w_2 \cdots w_n)$ we use $w_i$ to denote the $i$:th evaluation in the sequence.
 Let $c=(s,\xi)$ be a configuration. We use $state(c)$ and $eval(c)$  to denote the state and the evaluation in $c$, respectively and use the shorthand $c_{S} = state(c)$ and $c_{E} = eval(c)$ for a configuration $c$.
 
-Let $\xi^0$ denote the empty channel evaluation such that for each channel ch $\in$ Ch, we $\xi^0(ch)=\epsilon$, that is $\xi^0$ = $\Set{\epsilon,\epsilon\cdots\epsilon}$. We define $c^0$ to be the initial configuration $\conf{s^0, \xi^0}$, i.e. the configuration with all processes in their initial state and all channel evaluations being the empty word.
+Let $\xi^0$ denote the empty channel evaluation such that for each channel ch $\in$ Ch, we $\xi^0(ch)=\epsilon$. We define $c^0$ to be the initial configuration $\conf{s^0, \xi^0}$, i.e. the configuration with all processes in their initial state and all channel evaluations being the empty word.
 
-We define the size of a configuration $c = (s,\xi)$ to be the length of the longest word in the channels, i.e., size(c)=$max\{|\xi(ch)| ch \in Ch\}$
+We define the size of a configuration $c = (s,\xi)$ to be the length of the longest word in the channels, i.e., size(c)=$max\{|\xi(ch)| ch \in Ch\}$.
+
+Finally, we extend the subword relation to the configuration of the lossy channel system as follows: Let c=(s,$\xi$) and c'=(s',$\xi'$) be two configurations of the lossy channel system. We say that c is a sub-configuration of c' (denoted by \todo{I'll think about that}) if and only if s=s' and for every channel ch $\in$ Ch, we have $\xi(ch)$ is a subword of $\xi'(ch)$.
 
 \subsection{Semantics}
 \label{LTS}
@@ -150,9 +152,9 @@ Let $c = \conf{s,\xi}$ be a configuration of the alternating bit protocol, with 
 Although the channel system has a finite number of transitions (listed above) between states, the transition system has an infinite number of transitions between configurations, as these depend also on the evaluations. An example of such a transition $\conf{s_2,r_1,01,10}$, $ch_M!1$, $\conf{s_2,r_1,011,10}\rangle$.
 
 \subsubsection{The Verification Problem}
-A channel system can potentially reach a \e{bad} state, i.e. a state representing unintended behaviour. Suppose $Bad$ is a set of bad configurations of a lossy transition system \e{LTS}, as defined in \ref{LTS}. We call a sequence \e{t} = $c^0c^1\cdots c^n$ of configurations a \e{trace}, if $c^i \rightarrow c^{i+1}, 0 \leq i \leq (n-1)$ and we say that $c^n$ is reachable from $c^0$. We call a trace a \e{bad trace} if there exists $c^{bad} \in Bad$ such that $c^{bad}_S = c^n_S$ and $c^{bad}_E \subword c^{n}_E$. If \e{t} is the shortest bad trace in the system, we call it a \e{minimal bad trace}.
+A channel system can potentially reach a \e{bad} state, i.e. a state representing unintended behaviour. Suppose $Bad$ is a set of bad configurations of a lossy transition system \e{LTS}, as defined in \ref{LTS}. We call a sequence \e{t} = $c_0c_1\cdots c_n$ of configurations a \e{trace}, if $c_i \rightarrow c_{i+1}, 0 \leq i \leq (n-1)$ and we say that $c_n$ is reachable from $c_0$. We call a trace a \e{bad trace} if there exists $c^{bad}$ $\in Bad$ such that $c^{bad}$ is a sub-configuration of $c_n$. If \e{t} is the shortest bad trace in the system, we call it a \e{minimal bad trace}.
 
-A configuration \e{c} is said to be \emph{reachable} in \e{LTS}, if there is a trace from the initial configuration $c^0$ such that $c$ is reachable. Let $\mathcal{R}$ denote the set of all reachable configurations. The verification problem is to determine, for a channel transition system \e{LTS} with an initial configuration $c^0$ and a set \e{Bad} $\subseteq$ $C$ of bad configurations, whether a system is safe, that is, does not have any reachable bad configurations. More precisely, this means determining if $\mathcal{R} \cap Bad$ = $\emptyset$.
+A configuration \e{c} is said to be \emph{reachable} in \e{LTS}, if there is a trace from the initial configuration $c^0$ such that $c$ is reachable. Let $\mathcal{R}$ denote the set of all reachable configurations. The verification problem is to determine, for a channel transition system \e{LTS} with an initial configuration $c^0$ and a set \e{Bad} $\subseteq$ $C$ of bad configurations, whether a system is safe, that is, does not have any reachable bad configurations. More precisely, this means determining if $\mathcal{R} \cap Bad$ = $\emptyset$.3
 
 %I MIGHT WANT THIS AGAIN
 %We assume that \e{Bad} is the upward closure $\{c$ | $ c \in B: b \sqsubseteq c\}$ of a given \e{finite} set of \e{minimal bad configurations}.
