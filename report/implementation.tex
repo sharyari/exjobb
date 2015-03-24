@@ -1,78 +1,63 @@
-\section{Implementation of the Verification Method}
+\section{Naive Implementation of the Verification Method}
 \label{naive}
-In this chapter, we show how the algorithm in \ref{verificationalgorithm} can be implemented. The implementation is naive, in that it strictly follows the mathematical concepts. We end the chapter by identifying the main drawbacks of the implementation.
-
-\subsection{Naive implementation}
-A naive way to generate configurations would be to perform the described operations such that they correspond directly to the mathematical notations as described in section \ref{alphagamma}. This is possible, as most programming languages have built-in datastructures that support set operations and tuples.
-
-In this naive approach, all configurations are stored in a \e{set}, such that each configuration is stored uniquely. For each element \e{c} of the set \e{V}, the function \e{gamma}, \e{step} and \e{alpha} are performed in order, until a \e{fix-point} is reached, i.e. continuing the process does not result in any more configurations being found. Assuming that a set of channel symbols and a set of rules \e{R} describing the transitions are known, the algorithm does the following:
+In this chapter, we show how the algorithm in \ref{verificationalgorithm} can be implemented. The implementation is naïve, in that it strictly follows the mathematical concepts. We end the chapter by identifying the main drawbacks of the implementation, and reason about how the algorithm may be improved.
 
 \paragraph{Notations}
-In order to differentiate between programming artifacts in the implementation, we say that a transition in the transition system corresponds to one or more \e{rules} in the implementation. A rule \e{r} $\in$ \e{R} is a description of a transition, seen as a set of state-predicates, channel-predicates, state-effects and channel-effects. The state- and channel-predicates describe the state and the evaluation a configuration (or view) must be in, in order to fire the rule. If all predicates are true for a configuration \e{c}, the state and channel-effects of the rule are applied to \e{c} resulting in a post-value \e{c'}.
+In order to differentiate programming artifacts in the implementation from the theoretical concepts of the transition system, we introduce the concept of \e{rules}, such that one or more rules in the implementation correspond to a transition in the transition system. A rule \e{r} $\in$ \e{R} is a description of a transition, seen as a set of state-predicates, channel-predicates, state-effects and channel-effects. The state- and channel-predicates describe the state and the evaluation a configuration (or view) must be in, in order to fire the rule. If all predicates are true for a configuration \e{c}, the state and channel-effects of the rule are applied to \e{c} resulting in a post-value \e{c'}.
 
-Note that for a transition $t \in \rightarrow$, the corresponding rule $r$ is different depending on the type of transition. We see $r$ as a tuple, 
+We see $r$ as a tuple, $r = (s', s, \xi', \xi)$. Applying a rule $r$ to a configuration $c' = (s', \xi')$ yields a new configuration $c=(s,\xi)$, if the state- and channel-predicates hold for $c'$, in which case the configuration $c$ is created by applying the state- and channel-effects of $r$ to $c'$.
 
-\todo{below might be a useful way to talk about rules}.
-\begin{itemize}
-\item
-if $t$ is an action, $r$ has neither channel-predicate nor effect. $r = (s', s)$. Where $s', s \in S$.
-\item
-if $t$ is a transmission, $r$ does not have a channel-predicate. $r = (s', s, m)$ where $s', s \in S$ and $m \in M$.
-\item
-if $t$ is a reception, $r$ has all of these artifacts. $r = (s', s, W, m)$.
-\item
-if $t$ is a message loss, $r$ has no state-predicate nor effect. $r = (W, W')$.
-\end{itemize}
+Furthermore, we talk about \e{concretizations} and \e{potential concretizations}. Maintaining a set $V_k$ of views of size at most $k$, a view $v$ may be extended with a symbol on one or more of its channels, yielding the potential concretization $con$. We say that $con$ is accepted, if all the views of $con$ of size up top $k$ are in $V_k$, otherwise, $con$ is refuted. We say that the concretization $con$ is \e{reached} from the view $v$.
+
+\subsection{Naïve implementation}
+A naïve way of generating configurations would be to perform the described operations in such a way that they correspond directly to the mathematical notations described in section \ref{alphagamma}. This is possible to do, as most programming languages have built-in datastructures that support set operations and tuples.
+
+In this naive approach, each configuration is uniquely stored in a \e{set} $V$. For each element \e{c} of the set \e{V}, the functions \e{gamma}, \e{step} and \e{alpha} are performed in that sequence, until a \e{fix-point} is reached, i.e. continuing the process does not result in any more configurations being found. Assuming that a set of channel symbols and a set of rules \e{R} describing the transitions are known, the algorithm does the following:
+
 
 \begin{enumerate}
 \item
-Generate a set $\Gamma(V)$: For each configurations \e{c} $\in$ \e{V}, generate all potential concretizations \e{con} such that \e{|con|} = \e{|c|}+1. For any such potential concretization \e{con}, remove those for which $alpha_k(c')$ $\not\subset$ $V$.
+\textbf{gamma}:
+
+Generate a set $\Gamma(V)$: For each configuration \e{c} $\in$ \e{V}, generate all potential concretizations \e{con} such that |\e{con}| = |\e{c}|+1. For any such potential concretization \e{con}, remove those for which $alpha_k(c')$ $\not\subset$ $V$.
 
 \item
+\textbf{post}:
+
 Generate the $post(V)$: For every \e{con} $\in$ $\Gamma(V)$, \e{r} $\in$ \e{R}, compute \e{r(con)}.
 
 \item
-Generate Apost(V): For each element \e{p} $\in$ \e{post(V)}, compute its views of size \e{k}. If \e{V'} $\cup$ \e{V} = \e{V}, a fixpoint has been reached, otherwise the processes repeats with \e{V} := \e{V} $\cup$ \e{V'}.
-\end{enumerate}
+\textbf{alpha}:
 
-The bottle-neck in this algorithm lies in \e{gamma}. It first creates all potential concretizations of a configuration \e{c}, i.e. all combinations of channel evaluations where at least one of the channels is of a larger size than in \e{c}. Additionaly, for each of these, all their views must be computed in order to determine whether the concretization should be refuted or not. Although this method is correct, there is significant overlap of concretizations; it is often possible to create the same concretization \e{con} in several ways, and each time, $\alpha_k{con}$, \e{post(con)} and \e{Apost(con)} need be performed. In the next section, we show abstractions of the functions \e{alpha} and \e{gamma} that are less computationally expensive.
+Generate Apost(V): For each element \e{p} $\in$ \e{post(V)}, compute its views of size at most \e{k}. If \e{V'} $\cup$ \e{V} = \e{V}, a fixpoint has been reached, otherwise the processes repeats with \e{V} := \e{V} $\cup$ \e{V'}.
+\end{enumerate}
 
 
 \subsection{Improving the Implementation}
-We look closer at $\gamma$, in order to address the issues mentioned above. We show that all concretizations can be found, while considering only a subset of the potential concretizations. Furthermore, it is possible to determine whether a concretization should be accepted or not, examining only a subset of its views.
+Evaluating the procedure described above, we find that the bottle-neck lies the function \e{gamma}. In order to find all the concretizations of the set $V_k$, it first creates all potential concretizations of the set $V_k$, by testing all extensions of the views $v \in V_k$, i.e. all combinations of channel evaluations where at least one of the channels is of a larger size than in \e{v}. For each of these potential concretizations, all its views are created in order to determine whether the concretization should be accepted or not.
 
-\paragraph{Abstracting the Concretizations.}
-Given a configuration \e{c}, with channel evaluations $\xi$ such that all channels have size smaller or equal to \e{k}, a potential concretization of \e{c} is any configuration \e{con} such that \e{con} can be created from \e{c} by appending a symbol to at least one of the channels of \e{c}. As this is a large number of potential configurations, it is desireable to consider only a subset thereof, while still ensuring that all valid concretizations are eventually found.
+Although this method is correct, there is significant overlap of concretizations being considered; it is often possible to create the same concretization \e{con} in several ways, and each time, $\alpha_k{con}$, \e{post(con)} and \e{Apost(con)} are performed. We will show that all concretizations can be found, while considering only a subset of the potential concretizations. Furthermore, it is possible to determine whether a concretization should be accepted or not, examining only a subset of its views. 
 
-We show that it is sufficient to in each iteration consider only the potential concretizations of \e{c}, for which only one channel has been modified, and only modifications where a symbol has been added at the \textbf{end} (or alternatively the beginning) of a channel.
+\paragraph{Reducing the number of Concretizations.}
+Given a configuration \e{c}, with channel evaluations $\xi$ such that all channels have size smaller or equal to \e{k}, a potential concretization of \e{c} is any configuration \e{con} such that \e{con} can be created from \e{c} by appending at least one message to at least one of the channels of \e{c}.
+%This is a large number of potential configurations, for which it would be desireable to consider only a subset, while still ensuring that all valid concretizations are eventually found.
 
-Consider a potential concretization \e{con} of \e{c}, where $n$ channels have been extended by a symbol. If such a potential concretization is valid, any evaluation where $n'<n$ channels have been modified in a similar way will also be a valid concretization. Therefore, \e{con} will eventually be considered also when only one channel is extended in each iteration, but more iterations are required in order to find it.
+Let \e{con} be a concretization reached from \e{v}, where $n$ channels have been extended by a symbol. If such a potential concretization is valid, any evaluation where $n'<n$ channels have been modified in a similar way will also be a valid concretization. Therefore, \e{con} will eventually be considered also when only one channel is extended in each iteration, but more iterations are required in order to reach it.
 
-As an example, consider a concretization with channel evaluation \e{e} = $w_1..w_l$, created by extending some configuration with a single symbol, not necessarily at the end of the channel. If \e{con} is a valid concretization, then a configuration \e{c'} must be in \e{V} such that \e{c'} has the channel evaluation $w_1..w_{l-1}$, since \e{c'} $\in$ $\alpha_k(con)$. This channel evaluation can be extended to \e{con} by adding the symbol $w_l$ at the end of the channel.
+This reduces the number of potential concretizations being inspected in each iteration significantly. If we let $s$ denote the number of different messages that may be on a channel, \e{t} the number of channels and \e{n} = |$V$|, the naive method creates $O(n*(s^k)^t)$ potential concretizations in each iteration. Using this abstraction, the number of potential concretizations is reduced to $O(n*s*t)$.
 
-This shows that any valid concretization will eventually be created, even if only a subset of potential concretizations are created in each iteration. This result highly reduces the number of potential concretizations inspected. If \e{s} = |$symbols$|, \e{t} is the number of channels and \e{n} = |$V$|, the naive method creates $O(n*(s^k)^t)$ potential concretizations in each iteration. Using this abstraction, the number of potential concretizations is reduced to $O(n*s*t)$.
+\paragraph{Reducing the number of views.}
+Suppose we want to determine whether a potential concretization \e{con} should be accepted or refuted. If $con = (s, w_1, \ldots, w_n) $ was created by extending some view $v = (s, w'_1, \dots, w'_n) \in V_k$ by adding a single message to a single channel such that $w_p = w'_p \bullet m$ for some $p<=m$ and $w_i = w'_i$ for all $i<=m, i \neq p$. Then, if $w_p = m_1, m_2 \ldots m$, it suffices to check whether there is a view $v' = (s, w_1, \ldots, w_n) \in V_k$ such that $w_p = m_2\ldots m$, in order to determine if $con$ can be accepted or not.
 
-\paragraph{Reducing the views.}
-Suppose we want to determine whether \e{c} $\in$ $\gamma_k(V)$ given a configuration \e{c} and a set \e{V}. This would require that all views \e{v} $\in$ $\alpha_k(c)$ are in \e{V}. Consider a view \e{v} = $\conf{S, \xi(ch)=w}$ with size($w$) = $k$; if \e{v} $\in$ \e{V} then necessarily, any \e{v'} = $\conf{S, \xi(ch)=w'}$ with \e{w'} $\sqsubseteq$ \e{w} $\in$ \e{V}. Consequently, it is sufficient to assure that all configurations \e{c} = $\conf{S,\xi(ch_i)=w_i}$ are in \e{V}, with
-
-\begin{itemize}
-\item
-size($w_i$)=$k$ if size($\xi(ch)$) $\geq$ $k$
-\item
-size($w_i$)= size($\xi(ch)$) if size($\xi(ch)$) < $k$.
-\end{itemize}
-
-\subparagraph{Example.} Suppose we want to determine whether the potential concretization \e{con} = $\conf{S, abc, de}$ is an element of $\gamma_2$. It is then sufficient to check that $c_1$ = $\conf{S,ab,de}$ and $c_2$ = $\conf{S,bc ,de}$ are in \e{V}. The potential concretization must have been created from either $c1$ or $c_2$. Because of this, it is always sufficient to check for the existence of a single configuration, to determine wether \e{con} should be accepted.
-\\\\
-
-Using these abstraction, the computational complexity of the verifier is greatly reduced, but there are yet several ways to optimize the procedure. The bottle-neck with the procedure at its current state is the choice of a \e{Set} as lone data structure to store configurations. We expect the number of configurations to grow rather large, due to state-space explotion which cannot be avoided automatically (in certain cases, it could be reduced by further abstraction of the model under testing or by removing unnecessary redundancy in the model). Assuming the Set is ordered, inserting an element to the set and finding an element in the set is done in \e{O(log n)} where \e{n} is the number of elements in the set. As a consequence, the function \e{alpha} which determines whether the views of a certain configuration are in the set has complexity $O(p \cdot log n)$ where \e{p} = $|\alpha_k(c)$. We observe that by definition, a view (and a configuration) is of type \e{(S $\times$ $\xi$)}. For any configuration \e{c} = $\conf{s}{\xi}$, it's views will be of the type $\conf{s}{\xi'}$, i.e., the configuration and its views have identical control-parts. It is therefore reasonable to divide the single \e{Set} into a Set of \e{Set}s, where each \e{Set} corresponds to a specific control-state. With such a division, it is sufficient to check whether the views of a configuration reside in the \e{Set} that corresponds to its control-state.
-
-In a best-case scenario, there would be an equal number of configurations for every state in the system. The complexity of checking whether $\alpha_k(c)$ $\in$ $V$ is reduced to $O(p \cdot log (n/s))$ where \e{s} denotes the number of states in the system. The gains of these modifications in terms of computational complexity is difficult to determine, as the number of configurations with a certain control-state are not necessarily well-distributed, but we anticipate that the gains in many cases will be close to the best case scenario.
+\subparagraph{Example.} Suppose we want to determine whether the potential concretization \e{con} = $\conf{s, abc, de}$ created from the view $v = (s, ab, de)$ is an element of $V_2$. It is then sufficient to check that $v'$ = $\conf{S,bc,de}$ is an element of $V_k$.
 
 \newpage
-% Det går inte att beskriva rule-delen här, för det är mer beroende av tries.
-\subsection{Better Implementation}
-\subsubsection{Control-State Partitioning}
+\section{Improved Implementation}
+
+Using the results of the last chapter, the computational complexity of the verifier is greatly reduced, but there are yet several ways to optimize the procedure. The bottle-neck with the procedure at its current state is the choice of a \e{Set} as lone data structure to store configurations. We expect the number of configurations to grow rather large, due to state-space explotion which cannot be avoided automatically (in certain cases, it could be reduced by further abstraction of the model under testing or by removing unnecessary redundancy in the model). Assuming the Set is ordered, inserting an element to the set and finding an element in the set is done in \e{O(log n)} where \e{n} is the number of elements in the set. As a consequence, the function \e{alpha} which determines whether the views of a certain configuration are in the set has complexity $O(p \cdot log n)$ where \e{p} = $|\alpha_k(c)$. We observe that by definition, a view (and a configuration) is of type \e{(S $\times$ $\xi$)}. For any configuration \e{c} = $\conf{s}{\xi}$, it's views will be of the type $\conf{s}{\xi'}$, i.e., the configuration and its views have identical control-parts. It is therefore reasonable to divide the single \e{Set} into a Set of \e{Set}s, where each \e{Set} corresponds to a specific control-state. With such a division, it is sufficient to check whether the views of a configuration reside in the \e{Set} that corresponds to its control-state.
+
+In a best-case scenario, there would be an equal number of configurations for every state in the system. The complexity of checking whether $\alpha_k(c)$ $\in$ $V$ is reduced to $O(p \cdot log (n/s))$ where \e{s} denotes the number of states in the system. The gains of these modifications in terms of computational complexity is difficult to determine, as the number of configurations with a certain control-state are not necessarily well-distributed, but we anticipate that the gains in many cases will be close to the best case scenario.
+\subsection{Control-State Partitioning}
 Above it was suggested that the set V could be divided into several sets, distinguished by control-states. The number of control-states in a system is finite and unique; For a system with \e{n} processes, the number of states is $\prod\limits_{i=1}^n|p_i|$. This makes it possible to partition the set of configurations into several smaller disjoint sets, such that all configurations in a set have equal control-state. These sets can be stored in a hashmap indexed by control-state.
 
 %\begin{figure}
@@ -82,7 +67,7 @@ Above it was suggested that the set V could be divided into several sets, distin
 %\end{figure}
 
 
-\subsubsection{Advantages of Partitioning}
+\subsection{Advantages of Partitioning}
 Using this partitioning, each node in the hashmap is a \e{Set} with equal-state configurations, addressed by the common control-state. Compared to the previous solution, this leads to a speed-up when inserting, retrieving and looking for the existence of elements in the sets, as the size of the sets will be smaller than before. Retrieving and inserting nodes into the hashmap is done in constant time in practice (the number of elements will be static, avoiding the need of resizing the hashmap).
 
 Having partitioned the configurations, consider the act of applying a rule in order to create a new configuration. Recall that any rule has a state-predicate, a channel-predicate, a state-event and a channel-event. If the predicates are fulfilled, a new configuration can be created by applying the events to the current configuration.
@@ -132,7 +117,7 @@ There is a small one-time cost of creating the rule tree, but after creation, it
 \end{algorithm}
 
 \newpage
-\subsection{Final Implementation}
+\section{Final Implementation}
 An efficient algorithm in this context is largely an algorithm that avoids performing unnecessary calculations. This can either be done by avoiding to create unnecessary configurations such as was done with the rule hashmap above or by avoiding re-calculating previously calculated results. The algorithm as described above reproduces its steps each iteration; if a configuration \e{c} can be extended to a concretization \e{con} at any point in the verification process, then \e{con} can and will be created in every following iteration. This includes checking whether \e{$\alpha_k(con) \subset V$}, applying a set of rules to the configuration and then adding all the views of the resulting configurations to the set. Each time the calculations are performed, the result will be duplicates and no new views are added to the system.
 
 We solve this by maintaining another hashmap, \e{seen}, of configurations in parallell, containing exactly those concretization that have been accepted. If a configuration \e{c} can be extended to the concretization \e{con}, then we first check if \e{con} is an element of seen. If it is, we discard \e{con}, otherwise we add \e{con} to \e{seen} and also to the set of concretizations to be evaluated in this iteration.
