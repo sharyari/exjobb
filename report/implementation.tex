@@ -8,7 +8,7 @@ In this chapter, we use the terms \e{concretizations} and \e{potential concretiz
 \subsection{Naïve implementation}
 A naïve way of generating configurations would be to perform the described operations in such a way that they correspond exactly to the mathematical notations described in section \ref{alphagamma}. This is possible to do, as most programming languages have built-in datastructures that support set operations and tuples.
 
-In this naive approach, each configuration is uniquely stored in a \e{set} $V_k$. For each element \e{c} of the set $V_k$, the concretization, post-image and abstraction functions are  ppliedin that sequence, until $V_k$ reaches a \e{fix-point}, i.e. continuing the process does not result in any more configurations being found. Assuming that a set of channel symbols and a set of rules \e{R} describing the transitions are known, the algorithm does the following:
+In this naive approach, each configuration is uniquely stored in a \e{set} $V_k$. For each element \e{c} of the set $V_k$, the concretization, post-image and abstraction functions are  ppliedin that sequence, until $V_k$ reaches a \e{fix-point}, i.e. continuing the process does not result in any more configurations being found. Assuming that a set of channel symbols and a set of rules \e{R} describing the transitions are known, the algorithm uses the following functions:
 
 
 \begin{enumerate}
@@ -20,14 +20,43 @@ Generate a set $\gamma_k^{k+1}$: For each configuration \e{c} $\in$ $V_k$, gener
 \item
 \textbf{Post-image}:
 
-Generate the set $post(\gamma(V_k))$: For every \e{con} $\in$ $\gamma(V_k)$, \e{r} $\in$ $\delta$, compute $\delta(con)$.
+Generate the set $post(\gamma(V_k))$: For every \e{con} $\in$ $\gamma(V_k)$, \e{r} $\in$ $\delta$, compute $r(con)$.
 
 \item
 \textbf{Abstraction Function}:
 
 Generate $Apost(V_k)$: For each element \e{p} $\in$ $post(\gamma(V_k))$, compute the set $V'$ of views of size at most \e{k}. If \e{V'} $\cup$ $V_k$ = $V_k$, a fixpoint has been reached, otherwise repeat the process with $V_k$ := $V_k$ $\cup$ $V'$.
+
+\item
+\textbf{Reachable configurations}
+
+
+Computing the set $\mathcal{R}_k$ can be done in a multitude of ways, the simplest being to iteratively calculate the post-image of each configuration in the set. That is, $\mathcal{R}_k$ is initially $\conf{s^0, \xi^0}$, then for each $c \in \mathcal{R}_k^i$, $c \in \mathcal{R}_k^{i+1}$ and for each $r \in \delta$, $r(c) \in \mathcal{R}_k^{i+1}$ if $size(r(c)) \leq k$. 
+
 \end{enumerate}
 
+The pseudo-code implementing algorithm \ref{alg1} can be seen in listing \ref{naive}. 
+
+\begin{algorithm}
+  \caption{Pseudo-code for algorithm \ref{alg1}.}
+	\label{naive}
+  \begin{algorithmic}[1]
+    \State \textbf{Verifier (V, Rules, Bad):}
+	\State V := \{($s_0$, $\xi^0$)\}
+	\State V' := $\emptyset$
+    \For{\texttt{$True$}}
+        \If {$\mathcal{R}_k$ $\cap$ $Bad$ $\neq$ $\emptyset$}
+        \State return Unsafe
+        \EndIf
+	\State\textbf{while} (V $\neq$ V $\cup$ V')
+        \State \hspace{10pt} V' := $\alpha_k(post(\gamma_k^{k+1}(V)))$
+        \If {$V$ $\cap$ $Bad$ = $\emptyset$}
+        \State return Safe
+        \EndIf
+        \State k := k+1
+      \EndFor
+\end{algorithmic}
+\end{algorithm}
 
 \subsection{Improving the Implementation}
 Evaluating the procedure described above, we find that the bottle-neck lies the concretization function. In order to find all the concretizations of the set $V_k$, it first creates all potential concretizations of the set $V_k$, by testing all extensions of the views $v \in V_k$, i.e. all combinations of channel evaluations where at least one of the channels is of a larger size than in \e{v}. For each of these potential concretizations, all its views are created in order to determine whether the concretization should be accepted or not.
@@ -132,6 +161,7 @@ There is a small one-time cost of creating the rule tree, but after creation, it
       \EndFor
 \end{algorithmic}
 \end{algorithm}
+
 
 \newpage
 \section{Final Implementation}
