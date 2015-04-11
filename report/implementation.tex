@@ -1,53 +1,70 @@
 \section{Naive Implementation of the Verification Method}
 \label{naive}
-In this chapter, we show how the algorithm in \ref{verificationalgorithm} can be implemented. The implementation is naïve, in that it strictly follows the mathematical concepts. We end the chapter by identifying the main drawbacks of the implementation, and reason about how the algorithm may be improved.
+In this chapter, we show how the algorithm in \ref{verificationalgorithm} can be implemented. The implementation is naïve, in that it strictly follows the mathematical concepts. Finally, we identify the main drawbacks of this naïve implementation and suggest an improved implementation.
 
 \paragraph{Notations}
-In order to differentiate programming artifacts in the implementation from the theoretical concepts of the transition system, we introduce the concept of \e{rules}, such that one or more rules in the implementation correspond to a transition in the transition system. A rule \e{r} $\in$ \e{R} is a description of a transition, seen as a set of state-predicates, channel-predicates, state-effects and channel-effects. The state- and channel-predicates describe the state and the evaluation a configuration (or view) must be in, in order to fire the rule. If all predicates are true for a configuration \e{c}, the state and channel-effects of the rule are applied to \e{c} resulting in a post-value \e{c'}.
-
-We see $r$ as a tuple, $r = (s', s, \xi', \xi)$. Applying a rule $r$ to a configuration $c' = (s', \xi')$ yields a new configuration $c=(s,\xi)$, if the state- and channel-predicates hold for $c'$, in which case the configuration $c$ is created by applying the state- and channel-effects of $r$ to $c'$.
-
-Furthermore, we talk about \e{concretizations} and \e{potential concretizations}. Maintaining a set $V_k$ of views of size at most $k$, a view $v$ may be extended with a symbol on one or more of its channels, yielding the potential concretization $con$. We say that $con$ is accepted, if all the views of $con$ of size up top $k$ are in $V_k$, otherwise, $con$ is refuted. We say that the concretization $con$ is \e{reached} from the view $v$.
+In this chapter, we use the terms \e{concretizations} and \e{potential concretizations}. The reason for this is that there is no straigh-forward way to go from a set of views to a corresponding set of concretizations. In order to find the concretizations, we generate all of the \e{potential} concretizations, i.e. any extension of a view already in the set with any symbol in the alphabet. Maintaining a set $V_k$ of views of size at most $k$, a view $v\in V_k$ may be extended with a symbol on one or more of its channels, yielding the potential concretization $con$. We say that $con$ is \e{accepted}, if all the views of $con$ of size up top $k$ are in $V_k$, otherwise, $con$ is \e{refuted}. Note that a concretization may be refuted in one iteration but accepted in another, as the set of views $V_k$ may grow to include a larger set of views. We say that the an accepted concretization $con$ is \e{reached} from the view $v$.
 
 \subsection{Naïve implementation}
-A naïve way of generating configurations would be to perform the described operations in such a way that they correspond directly to the mathematical notations described in section \ref{alphagamma}. This is possible to do, as most programming languages have built-in datastructures that support set operations and tuples.
+A naïve way of generating configurations would be to perform the described operations in such a way that they correspond exactly to the mathematical notations described in section \ref{alphagamma}. This is possible to do, as most programming languages have built-in datastructures that support set operations and tuples.
 
-In this naive approach, each configuration is uniquely stored in a \e{set} $V$. For each element \e{c} of the set \e{V}, the functions \e{gamma}, \e{step} and \e{alpha} are performed in that sequence, until a \e{fix-point} is reached, i.e. continuing the process does not result in any more configurations being found. Assuming that a set of channel symbols and a set of rules \e{R} describing the transitions are known, the algorithm does the following:
+In this naive approach, each configuration is uniquely stored in a \e{set} $V_k$. For each element \e{c} of the set $V_k$, the concretization, post-image and abstraction functions are  ppliedin that sequence, until $V_k$ reaches a \e{fix-point}, i.e. continuing the process does not result in any more configurations being found. Assuming that a set of channel symbols and a set of rules \e{R} describing the transitions are known, the algorithm does the following:
 
 
 \begin{enumerate}
 \item
-\textbf{gamma}:
+\textbf{Concretization function}:
 
-Generate a set $\Gamma(V)$: For each configuration \e{c} $\in$ \e{V}, generate all potential concretizations \e{con} such that |\e{con}| = |\e{c}|+1. For any such potential concretization \e{con}, remove those for which $alpha_k(c')$ $\not\subset$ $V$.
-
-\item
-\textbf{post}:
-
-Generate the $post(V)$: For every \e{con} $\in$ $\Gamma(V)$, \e{r} $\in$ \e{R}, compute \e{r(con)}.
+Generate a set $\gamma_k^{k+1}$: For each configuration \e{c} $\in$ $V_k$, generate all potential concretizations \e{con}. For any such potential concretization \e{con}, remove those for which $\alpha_k(c')$ $\not\subseteq$ $V_k$.
 
 \item
-\textbf{alpha}:
+\textbf{Post-image}:
 
-Generate Apost(V): For each element \e{p} $\in$ \e{post(V)}, compute its views of size at most \e{k}. If \e{V'} $\cup$ \e{V} = \e{V}, a fixpoint has been reached, otherwise the processes repeats with \e{V} := \e{V} $\cup$ \e{V'}.
+Generate the set $post(\gamma(V_k))$: For every \e{con} $\in$ $\gamma(V_k)$, \e{r} $\in$ $\delta$, compute $\delta(con)$.
+
+\item
+\textbf{Abstraction Function}:
+
+Generate $Apost(V_k)$: For each element \e{p} $\in$ $post(\gamma(V_k))$, compute the set $V'$ of views of size at most \e{k}. If \e{V'} $\cup$ $V_k$ = $V_k$, a fixpoint has been reached, otherwise repeat the process with $V_k$ := $V_k$ $\cup$ $V'$.
 \end{enumerate}
 
 
 \subsection{Improving the Implementation}
-Evaluating the procedure described above, we find that the bottle-neck lies the function \e{gamma}. In order to find all the concretizations of the set $V_k$, it first creates all potential concretizations of the set $V_k$, by testing all extensions of the views $v \in V_k$, i.e. all combinations of channel evaluations where at least one of the channels is of a larger size than in \e{v}. For each of these potential concretizations, all its views are created in order to determine whether the concretization should be accepted or not.
+Evaluating the procedure described above, we find that the bottle-neck lies the concretization function. In order to find all the concretizations of the set $V_k$, it first creates all potential concretizations of the set $V_k$, by testing all extensions of the views $v \in V_k$, i.e. all combinations of channel evaluations where at least one of the channels is of a larger size than in \e{v}. For each of these potential concretizations, all its views are created in order to determine whether the concretization should be accepted or not.
 
-Although this method is correct, there is significant overlap of concretizations being considered; it is often possible to create the same concretization \e{con} in several ways, and each time, $\alpha_k{con}$, \e{post(con)} and \e{Apost(con)} are performed. We will show that all concretizations can be found, while considering only a subset of the potential concretizations. Furthermore, it is possible to determine whether a concretization should be accepted or not, examining only a subset of its views. 
+Although this method is correct, there is significant overlap of concretizations being considered; it is often possible to create the same concretization \e{con} in several ways, and each time the abstract post-image must be calculated. We will show that all concretizations can be found, while considering only a subset of the potential concretizations. Furthermore, it is possible to determine whether a concretization should be accepted or not, examining only a subset of its views. 
+
+\paragraph{Simplified Subword Relation}
+Using the fact that the verification algorithm is recursive, ending first when no new configurations can be found, we can re-define the subword relation such that not all views are created at a certain time, but still guaranteeing that all views are found eventually.
+We redefine the subword relation in section \ref{words}, such that a word $w' \subword w = a_1a_2\ldots a_n$ if $w' = a_ia_{i+1}\ldots a_j$ for some $0 \leq i \leq n$, $0 \leq j \leq n$. As an example, if \e{w}=$abc$, then the set of subwords of \e{w} is \e{abc, ab, bc, a, b, c, $\varepsilon$}. 
+
+\begin{proof}
+Consider a subword of $w = a_1a_2\ldots a_n$ that is a subword according to the original definition of the subword relation, but not by the simplified subword relation, $w' = a_ia_{i+1}\ldots a_ja_la_{l+1}\ldots a_m$, $l > j+1$. If a view $v'$ with the word $w'$ on one of its channels should be accepted, then the set $V_k$ of views necessarily also contains views $v'_1$, $v'_2$, \ldots with the words $a_ia_{i+1}\ldots a_j$, $a_ia_{i+1}\ldots a_ja_l$, $a_ia_{i+1}\ldots a_ja_la_{l+1}\ldots a_{m-1}$ on the channel respectively.
+
+The view $v'_1$ with the word $a_ia_{i+1}\ldots a_j$ would be created with the simplified subword relation, as it is an unbroken sequence of messages. Then the view $v'_2$ with the word $a_ia_{i+1}\ldots a_ja_l$ is a potential concretization of $v'_1$, which would be accepted. The view $v'_3$ with the word $a_ia_{i+1}\ldots a_ja_la_{l+1}$ on the channel is in turn a potential concretization of $v'_2$, which would again be accepted. Continuing in this way, the view with the word $w'$ on the channel will eventually be created and accepted.
+\end{proof}
 
 \paragraph{Reducing the number of Concretizations.}
-Given a configuration \e{c}, with channel evaluations $\xi$ such that all channels have size smaller or equal to \e{k}, a potential concretization of \e{c} is any configuration \e{con} such that \e{con} can be created from \e{c} by appending at least one message to at least one of the channels of \e{c}.
+Given a configuration \e{c}, with channel evaluations $\xi$ such that $size(c) \leq k$, a potential concretization of \e{c} is any configuration \e{con} such that \e{con} can be created from \e{c} by appending at least one message to at least one of the channels of \e{c}.
 %This is a large number of potential configurations, for which it would be desireable to consider only a subset, while still ensuring that all valid concretizations are eventually found.
 
-Let \e{con} be a concretization reached from \e{v}, where $n$ channels have been extended by a symbol. If such a potential concretization is valid, any evaluation where $n'<n$ channels have been modified in a similar way will also be a valid concretization. Therefore, \e{con} will eventually be considered also when only one channel is extended in each iteration, but more iterations are required in order to reach it.
+Let \e{con} be a concretization reached from \e{v}, where $n$ channels have been extended by a symbol. If such a potential concretization is accepted, any view $v'$ where $n'<n$ channels have been modified in a similar way will also be a valid concretization, since $v' \subword v$. Therefore, \e{con} will eventually be considered also when only one channel is extended in each iteration, but $n$ iterations are required in order to reach it.
 
-This reduces the number of potential concretizations being inspected in each iteration significantly. If we let $s$ denote the number of different messages that may be on a channel, \e{t} the number of channels and \e{n} = |$V$|, the naive method creates $O(n*(s^k)^t)$ potential concretizations in each iteration. Using this abstraction, the number of potential concretizations is reduced to $O(n*s*t)$.
+This reduces the number of potential concretizations being inspected in each iteration significantly. If we let $s$ denote the size of the alphabet, $t$ the number of channels and $n$ = $size(V_k)$ in a certain iteration we can create upper limits on the number of potential concretizations that are considered. In the naïve version, a potential concretization is created for each combination of symbols $s$ that can be added to a channel (up to $s^k$ combinations), each combination of such extensions on the $t$ different channels. As this must be done for each of the $n$ existing views, the result is a worst case of $O(n*(s^k)^t)$ potential concretizations that may be considered in a single iteration. Using the suggested abstraction, the number of potential concretizations is reduced such that each of the $n$ views is extended with at most 1 symbol on each of its channels, resulting in a worst case of $O(n*s*t)$ potential concretizations.
 
 \paragraph{Reducing the number of views.}
-Suppose we want to determine whether a potential concretization \e{con} should be accepted or refuted. If $con = (s, w_1, \ldots, w_n) $ was created by extending some view $v = (s, w'_1, \dots, w'_n) \in V_k$ by adding a single message to a single channel such that $w_p = w'_p \bullet m$ for some $p<=m$ and $w_i = w'_i$ for all $i<=m, i \neq p$. Then, if $w_p = m_1, m_2 \ldots m$, it suffices to check whether there is a view $v' = (s, w_1, \ldots, w_n) \in V_k$ such that $w_p = m_2\ldots m$, in order to determine if $con$ can be accepted or not.
+Another limitation of the naïve approach is that in order to determine wether a potential concretization should be refuted or accepted, as a potential concretization is accepted only if all its views are already in the set $V_k$. If potential concretizations are generated as suggested above, the number of views that need be created can be considerably reduced, using the fact that the potential concretization differs from some already existing view by a single symbol on a single channel.
+Suppose we want to determine whether a potential concretization \e{con}, genereated from a view $v$ should be accepted or refuted. We know that $con$ has been genereated from $v$ by adding a single symbol $m$ on one of the channels of $v$, whereas the state of $con$ and $v$ are the same, as is the content of the other channels.
+
+\begin{lemma}
+Say $con = (s, w_1, \ldots, w_n)$ was created by extending some view $v = (s, w'_1, \ldots, w'_n) \in V_k$ by adding a single message to a single channel such that $w_p = w'_p \bullet m$ for some $p\leq m$ and $w_i = w'_i$ for all $i \neq p$. Then, if $w_p = m_1, m_2 \ldots m$, it suffices to check whether there is a view $v' = (s, w_1, \ldots, w_n) \in V_k$ such that $w_p = m_2\ldots m$, in order to determine if $con$ can be accepted or not.
+\end{lemma}
+
+\begin{proof}
+Using the simplified subword relation, the views of $con$ either contain the new symbol $m$ in the word $w_p$, or they do not. Any view of $con$ not containing the symbol $m$ in $w_p$ is also a view of $v$, and must exist in $V_k$. Any view containing $m$ in the word $w_p$ does so with $m$ as its last symbol, i.e. there is a prefix of size at most $k$ followed by the message $m$. Any such word is a subword of the largest possible view containing the message $m$, i.e. $m_2\ldots m$.
+
+\end{proof}
+
 
 \subparagraph{Example.} Suppose we want to determine whether the potential concretization \e{con} = $\conf{s, abc, de}$ created from the view $v = (s, ab, de)$ is an element of $V_2$. It is then sufficient to check that $v'$ = $\conf{S,bc,de}$ is an element of $V_k$.
 

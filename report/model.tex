@@ -6,7 +6,7 @@ The goal of this chapter is to formalize the use of \e{small models} for the ver
 
 \subsection{Views}
 \label{subwords}
-We define a \e{view} $v= \conf{s, \xi}$ to be a minimal representation of a set of configurations $C_v$, such that for any $c \in C_v$, $v_E \subseteq c_E$ and $v_S = c_S$. Note that a view is itself a configuration, as they have the same representation, and we use the same terminology and notation for them, for example $|v|$ to denote the size. The difference is that a configuration is a single entity, whereas the view is an abstract representation of a larger set of configurations.
+We define a \e{view} $v= \conf{s, \xi}$ to be a minimal representation of a set of configurations $C_v$, such that for any $c \in C_v$, $v \subword c$. Note that a view is itself a configuration, as they have the same representation, and we use the same terminology and notation for them, for example $|v|$ to denote the size. The difference is that a configuration is a single entity, whereas the view is an abstract representation of a larger set of configurations.
 
 \paragraph{Example.} Let the view $v = \conf{(s_1, r_1), ab, cd}$, then the set $C_v$ is an infinite set, s.t. $\conf{(s_1, r_1), ab, cd} \in C_v$, $\conf{(s_1, r_1), abab, cdcd} \in C_v$ but $\conf{(s_1, r_1), ab, epsilon} \notin C_v$
 
@@ -15,29 +15,45 @@ We define a \e{view} $v= \conf{s, \xi}$ to be a minimal representation of a set 
 \label{alphagamma}
 For a given parameter $k \in \mathbb{N}$, we use $C$ and $V$ to denote sets of configurations and views respectively, and $C_k$ and $V_k$ to denote the set of all configurations and views respectively of size up to $k$.
 
-The abstraction function $\alpha_k: C\rightarrow 2^{C_k}$ maps a configuration $c$ into the powerset $V$ of views of size up to $k$, such that for each $v\in V$, $\{v_E \subseteq c_E\}$, $v_S = c_S$ and $|v|) \leq k$.
+The abstraction function $\alpha_k: C\rightarrow 2^{V_k}$ maps a configuration $c$ into a set $V'$ of views of size up to $k$, such that for each $v\in V'$, $v \subword c$ and $size(v) \leq k$.
 
-\paragraph{Example.} Suppose \e{c} is a configuration $\conf{s_1,r_2,ab,cd}$. The configuration is of size 2 and $\alpha_2^3(c)$ is the set
+\paragraph{Example.} Suppose \e{c} is a configuration $\conf{s, ab,cd}$. The configuration is of size 2 and $\alpha_2(c)$ is the set
+
 
 \begin{ttabular}
-$\{\conf{(s_1,r_2),ab,cd}$ \\
-$\conf{(s_1,r_2),a,cd}$ &
-$\conf{(s_1,r_2),b,cd}$ &
-$\conf{(s_1,r_2),\epsilon,cd}$ \\
-$\conf{(s_1,r_2),a,c}$ &
-$\conf{(s_1,r_2),b,c}$ &
-$\conf{(s_1,r_2),\epsilon,c}$ \\
-$\conf{(s_1,r_2),a,d}$ &
-$\conf{(s_1,r_2),b,d}$ &
-$\conf{(s_1,r_2),\epsilon,d}$ \\
-$\conf{(s_1,r_2),a, \epsilon}$ &
-$\conf{(s_1,r_2),b, \epsilon}$ &
-$\conf{(s_1,r_2),\epsilon,\epsilon}\}$ \\
+$\conf{s,ab,cd}$ \\
+$\conf{s,a,cd}$ &
+$\conf{s,b,cd}$ &
+$\conf{s,\epsilon,cd}$ \\
+$\conf{s,a,c}$ &
+$\conf{s,b,c}$ &
+$\conf{s,\epsilon,c}$ \\
+$\conf{s,a,d}$ &
+$\conf{s,b,d}$ &
+$\conf{s,\epsilon,d}$ \\
+$\conf{s,a, \epsilon}$ &
+$\conf{s,b, \epsilon}$ &
+$\conf{s,\epsilon,\epsilon}$ \\
 \end{ttabular}
+%\begin{ttabular}
+%$\conf{(s),ab,cd}$ \\
+%$\conf{(s),a,cd}$ &
+%$\conf{(s),b,cd}$ &
+%$\conf{(s),\epsilon,cd}$ \\
+%$\conf{(s),a,c}$ &
+%$\conf{(s),b,c}$ &
+%$\conf{(s),\epsilon,c}$ \\
+%$\conf{(s),a,d}$ &
+%$\conf{(s),b,d}$ &
+%$\conf{(s),\epsilon,d}$ \\
+%$\conf{(s),a, \epsilon}$ &
+%$\conf{(s),b, \epsilon}$ &
+%$\conf{(s),\epsilon,\epsilon}$ \\
+%\end{ttabular}
 
 
-\subsection{Concretisation function}
-The concretisation function $\gamma_k: 2^{C_k} \rightarrow 2^C$ returns, for a given set of views \e{V}, the set of configurations that can be reconstructed from the views in $V$, in other words, $\gamma_k(V) = \{c \in C$ | $\alpha_k(c) \subseteq V$\}
+\subsection{Concretization function}
+The concretization function $\gamma_k: 2^{V_k} \rightarrow 2^C$ returns, for a given set of views \e{V}, the set of configurations that can be reconstructed from the views in $V$, in other words, $\gamma_k(V) = \{c \in C$ | $\alpha_k(c) \subseteq V$\}
 
 In general $\gamma_k(V)$ is an infinite set of configurations. We define $\gamma_k^l(V)$ := $\gamma_k(V) \cap C_l$ for some $l\geq 0$. The intuitive meaning is that $\gamma_k^l(V)$ is the set of configurations of size at most $l$ for which all views of length at most $k$ are in $V$.
 
@@ -63,7 +79,7 @@ Let LTS be a lossy transition system, with an initial configuration $c^0$. Then 
 
 \subsection{Small Models}
 \label{proof}
-Calculating the abstract post-image of a set of views $V \subseteq C_k$ is essentiatial for the verification procedure. As $\gamma_k(V)$ typically is infinite, this cannot be done straightforwardly. The main result of ~\cite{parosh} that it suffices to consider configurations of $\gamma_k(V)$ of sizes up to $k+1$ (i.e. $\gamma_k^{k+1}$), which is a finite set of configurations for which the abstract post-image can be computed. Formally, they show that
+Calculating the abstract post-image of a set of views $V \subseteq C_k$ is essential for the verification procedure. As $\gamma_k(V)$ typically is infinite, this cannot be done straightforwardly. The main result of ~\cite{parosh} that it suffices to consider configurations of $\gamma_k(V)$ of sizes up to $k+1$ (i.e. $\gamma_k^{k+1}$), which is a finite set of configurations for which the abstract post-image can be computed. Formally, they show that
 
 \begin{lemma}
 \label{lemma1}
@@ -72,19 +88,21 @@ For any $k\in\mathbb{N}$, and $X\subseteq C_k$, $\alpha_k(\rho(\gamma_k(X)))$ $\
 %\todo{Why is this correct? Shouldn't it be the fixpoint of the two that is equal?}
 
 \subsubsection{Proof of lemma 1}
-We want to show that the set $\gamma_k^{k+1}(X)$ of views of size at most $k+1$ is an abstract representation of the full set $\gamma_k(X)$. In order to do this, we need to show that for any reachable configuration $c$ of larger size than $k+1$, all the views of $c$ of size at most $k$ are included in the set $\gamma_k(X)$ (i.e., the configuration $c$ is abstractly represented). More precisely, we want to show that for any configuration $c \in$ $\rho(\gamma_k(X))$ of size $m > k + 1$ such that there is a transition  $c' \xrightarrow{r} c$, then for each view $v' \in$ $\alpha_k(c)$, the following holds: There is a configuration $d'$ $\in$ $\gamma_k^{k+1}(X)$ of size at most $k+1$ and transition $ d' \xrightarrow{r} d$ s.t. $v \in$ $\alpha_k(d)$.
+We want to show that the set $\gamma_k^{k+1}(X)$ of views of size at most $k+1$ is an abstract representation of the full set $\gamma_k(X)$. In order to do this, 
+%we need to show that for any reachable configuration $c$ of larger size than $k+1$, all the views of $c$ of size at most $k$ are included in the set $\gamma_k(X)$ (i.e., the configuration $c$ is abstractly represented). More precisely, 
+we want to show that for any configuration $c \in$ $\rho(\gamma_k(X))$ of size $m > k + 1$ such that there is a transition  $c' \xrightarrow{r} c$, then for each view $v' \in$ $\alpha_k(c)$, the following holds: There is a configuration $d'$ $\in$ $\gamma_k^{k+1}(X)$ of size at most $k+1$ and transition $ d' \xrightarrow{r} d$ s.t. $v \in$ $\alpha_k(d)$.
 
 Note that by design (see section \ref{LTS}), transitions only change a single evaluation, therefore, although the set of evaluations may contain multiple evaluation, we direct our focus to a single evaluation in this section.
 
 \paragraph{Transmissions}
 \label{proofTransmission}
-Consider a configuration $c' = \conf{s', x} \in \gamma_k(X)$ and a transition $r: c' \xrightarrow{ch!m} c = \conf{s,x \bullet m}$. The views $v = \conf{s', y}$ of size at most $k$ of $c$ are all have evaluations of two types:
+Consider a configuration $c' = \conf{s', x} \in \gamma_k(X)$ and a transition $r: c' \xrightarrow{ch!m} c = \conf{s,x \bullet m}$. Any view $v = \conf{s', y}$ of size at most $k$ of $c$ is on one of the following forms:
 
 \begin{enumerate}
 \item
-$y \subseteq x$, $|v| \leq k$. In this case, the set $\gamma_k^{k+1}(X)$ includes all the configurations $d'$ = $\conf{s', y}$, as $d_E' \subword c_E'$. Then $d' \xrightarrow{ch!m} d$ yields $d = \conf{s, y\bullet m}$, for which $\conf{s, y} = v$ is a view.
+$y \subword x$, $|y| \leq k$. In this case, the set $\gamma_k^{k+1}(X)$ includes all the configurations $d'$ = $\conf{s', y}$, as $d_E' \subword c_E'$. Then $d' \xrightarrow{ch!m} d$ yields $d = \conf{s, y\bullet m}$, for which $\conf{s, y} = v$ is a view.
 \item
-$y = z\bullet m$ with $z \subseteq x$, $|z| \leq (k-1)$. The set $\gamma_k^{k+1}(X)$ includes all the configurations $d'$ = $\conf{s', z}$, as $d_E' \leq c_E'$. Then $d' \xrightarrow{ch!m} d$ yields $d = \conf{s, z\bullet m}$ which is of size at most $k$, meaning it is also a view, $d$ = $v$.
+$y = z\bullet m$ with $z \subword x$, $|z| \leq (k-1)$. The set $\gamma_k^{k+1}(X)$ includes all the configurations $d'$ = $\conf{s', z}$, as $d_E' \leq c_E'$. Then $d' \xrightarrow{ch!m} d$ yields $d = \conf{s, z\bullet m}$ which is of size at most $k$, meaning it is also a view, $d$ = $v$.
 \end{enumerate}
 
 
@@ -98,7 +116,7 @@ Note that receptions transitions can be seen as a special case of a message loss
 
 \subsection{Verification Algorithm}
 \label{verificationalgorithm}
-As a result of lemma \ref{lemma1}, if $\gamma_k^{k+1} \cap Bad$ = $\emptyset$ for any \e{k} $\geq$ 1, then $\gamma_l^{l+1}(V) \cap Bad$ = $\emptyset$ for any $l \geq k$. \todo[inline]{You commented that this was not true. I changed this a little bit $\gamma_l^{l+1}$ instead of $\gamma_k^l$, but I doubt that was what you meant. Why would this be wrong?} Given a set of bad states \e{Bad}, a set of initial states \e{I} and a set of transitions, verification of a system can be done with algorithm \ref{alg1}, which was first presented in \cite{parosh}.
+Suppose $Bad$ is a set of bad states, such that $|b| = 0$ for all $b \in Bad$. As a result of lemma \ref{lemma1}, if $\gamma_k^{k+1}(V) \cap Bad$ = $\emptyset$ for any \e{k} $\geq$ $1$, then $\gamma_l^{l+1}(V) \cap Bad$ = $\emptyset$ for any $l \geq k$. Given a set of bad states \e{Bad}, a set of initial states \e{I} and a set of transitions, verification of a system can be done with algorithm \ref{alg1}, which was first presented in \cite{parosh}.
 
 \begin{algorithm}
   \caption{General Verification algorithm}
