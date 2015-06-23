@@ -11,12 +11,22 @@ As an example, if $\conf{s, a, b} \in X_k$, then $\conf{s, a, bb}$ is a potentia
 
 \subsection{Naïve implementation}
 \label{apost}
-A naïve way of implementing algorithm \ref{verificationalgorithm} would be to implement it in a way that corresponds exactly to the mathematical notations. This is possible to do, as most programming languages have built-in datastructures that support set operations.
+A naïve way of implementing algorithm \ref{verificationalgorithm} would be to implement it in a way that corresponds exactly to the mathematical notations. This is possible to do, as most programming languages have built-in data structures that support set operations. We maintain a \e{set} $X_k = \{v | size(v) < k\}$ of views such that all views are uniquely stored in $X_k$, and we will assume that an alphabet, the set $Bad$ of bad states and a set of transitions \e{R} describing the transitions are known. The the implementation of the algorithm performs three tasks:
 
-We maintain a \e{set} $X_k = \{v | size(v) < k\}$ of views such that all views are uniquely stored in $X_k$. On line 3 of algorithm \ref{verificationalgorithm}, the concretization, post-image and abstraction functions are applied in sequence on each element $v \in X_k$, until $X_k$ reaches a \e{fix-point}, i.e. $Apost(X_k) = X_k$. A fix-point is guaranteed to be reached, as the set $V_k$ is a finite set. Assuming that an alphabet and a set of transitions \e{R} describing the transitions are known, the algorithm must compute the fix-point reached by continued application of the abstract post-image of a set (line 3), and also the set $\mathcal{R}_k$ of reachable configurations (line 2).
+\begin{enumerate}
+\item
+Compute the set $\mathcal{R}_k$ of reachable configurations of size up to k, used on line 2 of algorithm \ref{verificationalgorithm}. In section \ref{part2} we show how to compute the set $\mathcal{R}_k$.
 
+\item
+Compute the set $V_k$ of configurations, i.e. the fixpoint of $X_k$. We know that such a fixpoint exists, due to the Knaster-Tarski theorem\cite{tarski}, and we compute it by iteratively applying the Abstract post-image of $X_k$. This is used on line 3 of algorithm \ref{verificationalgorithm}. The procedure is explained in section \ref{part1}.
+\todo[inline]{In your e-mail you suggested referencing the kleen iteration. I could do this, but I have not mentioned it in the previous chapters, which I probably should do if I choose to reference it here. I believe it should be enough to state that a fix-point must be reached, as the set $V_k$ is finite. Otherwise, where should I mention it and in what depth?}
+%Now to compute it, we need only to compute the concretisation of size size at most k+1 and then the fixpoint can be compute  using the Kleen iteration...
+\item
+We need to be able to compute the intersection of a set of configurations with the set $Bad$ of bad configurations. This is done both on line 2 and 3 of algorithm \ref{verificationalgorithm}. The procedure is explained below in section \ref{part3}.
+\end{enumerate}
 
-\paragraph{Abstract Post-image.}
+\subsubsection{Abstract Post-image}
+\label{part1}
 In order to compute the abstract post-image, the concretization function, the post-image and the abstraction functions below are applied in order:
 
 \begin{enumerate}
@@ -36,13 +46,21 @@ Generate the set $post(\gamma(X_k))$: For every configuration $c$ $\in$ $\gamma_
 Generate $Apost(X_k)$: For each \e{c} $\in$ $\rho(\gamma_k^k+1(X_k))$, compute the set $V'$ of views of size at most \e{k}. If \e{V'} $\cup$ $X_k$ = $X_k$, a fixpoint has been reached, otherwise repeat the process with $X_k$ := $X_k$ $\cup$ $V'$.
 \end{enumerate}
 
-\paragraph{Reachable configurations, $\mathcal{R}_k$}.
+\subsubsection{Reachable configurations, $\mathcal{R}_k$}
+\label{part2}
 On line 2 of algorithm \ref{verificationalgorithm}, the set of all reachable configurations of size up to $k$, $\mathcal{R}_k$, is required. Computing the set $\mathcal{R}_k$ can be done in a multitude of ways. A simple way is to iteratively calculate the post-image of each configuration in the set, as follows:
 
 we maintain a set $R$, initially containing only the initial configuration$\conf{s^0, \xi^0}$. Then iteratively, for each $c \in R$, and for each $\rho \in \delta$ compute $\rho(c)$. $\rho(c) \in R$ if  $size(\rho(c)) \leq k$.
 
 If $size(\rho(c)) = l > k$, there is a buffer overflow. Here we assume that such an overflow is handled by removing the last symbols of the word, i.e., if $c = \conf{s, w_1, w_2,..., w_i, ...,  w_m}$ with $w_i = a_1a_2...a_ka_{k+1}...a_l$ is reached, the configuration $c' = \conf{s, w_1, w_2, ..., w_i', ..., w_n}$ with $w_i' = a_1a_2...a_k$ is added to the set $R$.
 
+\subsubsection{Checking for bad configurations}
+\label{part3}
+A bad configuration is any configuration which is in a \e{state} considered to be bad, independent of the channel evaluation. Thus, the set $Bad$ can be expressed as a minimal state of configurations, such that and bad configuration $b \in Bad$ is of the format $b = (s, \xi^0)$. Checking for bad configurations can be done by for for each configuration $c = (s, \xi)$ check if $c' = (s, \xi^0) \in Bad$.
+
+\todo[inline]{Actually, this paragraph would need an explanation on how to find a bad trace leading to the bad configuration. I've written about that in chapter 6 already, and I suggest I leave it there for now.}
+
+\paragraph{Pseudo-code}.
 The pseudo-code implementing algorithm \ref{verificationalgorithm} can be seen in listing \ref{naive}. 
 
 \begin{algorithm}
@@ -137,7 +155,7 @@ The last chapter showed how the calculation of the set $V_k$ of configurations c
 
 The algorithm implementation in chapter \ref{naive} uses a \e{set} to store configurations, therefore the time to insert and perform a lookup in the set increases with its size, which can often be expected to grow large, due to often unavoidable state-space explotion. Using an ordered set, inserting an element to the set and finding an element in the set is done in \e{O(log n)} where \e{n} denotes the number of elements in the set.
 
-We will show that partitioning the set of configurations into a combined hashmap and set-datastructure, the time required to perform any set operation can be significantly reduced. Additionally, by structuring the set $R$ of transitions in a similar manner, the time to calculate the post-image of configurations can be decreased as well.
+We will show that partitioning the set of configurations into a combined hashmap and set data structure, the time required to perform any set operation can be significantly reduced. Additionally, by structuring the set $R$ of transitions in a similar manner, the time to calculate the post-image of configurations can be decreased as well.
 
 \subsection{Control-State Partitioning}
 Consider a configuration $c \in X \subseteq V_k$. By definition the views of $c$ = $\conf{s, \xi}$ has views of type $\conf{s,\xi'}$, i.e., the configuration and its views have the same control-state as $c$. The time required for inserting the views of $c$ to the set $X$, i.e performing the set operation $\alpha(c) \cup X$ or conversely, checking whether the views of $c \subseteq X$ (in order to accept or refute $c$), depends on the size of the set $X$, in which all configurations are uniquely stored. By partitioning the set $X$ into several disjoint sets, such that each set contains only configurations with the same control-state, these tasks can be performed more effectively.
