@@ -6,7 +6,7 @@ The goal of this chapter is to formalize the use of \e{small models} for the ver
 
 \subsection{Views}
 \label{subwords}
-We define a \e{view} $v= \conf{s, \xi}$ to be a minimal representation of a set of configurations $C_v$, such that for any $c \in C_v$, $v \subword c$. Note that a view is itself a configuration, as they have the same representation, and we use the same terminology and notation for them, for example $|v|$ to denote the size. The difference is that a configuration is a single entity, whereas the view is an abstract representation of a larger set of configurations.
+We define a \e{view} $v= \conf{s, \xi}$ to be a minimal representation of a set of configurations $C_v$, such that for any $c \in C_v$, $v \subword c$. Note that a view is itself a configuration, as they have the same representation, and we use the same terminology and notation for them, for example $size(v)$ to denote the size. The difference is that a configuration is a single entity, whereas the view is an abstract representation of a larger set of configurations.
 
 \paragraph{Example.} Let the view $v = \conf{(s_1, r_1), ab, cd}$, then the set $C_v$ is an infinite set, s.t. $\conf{(s_1, r_1), ab, cd} \in C_v$, $\conf{(s_1, r_1), abab, cdcd} \in C_v$ but $\conf{(s_1, r_1), ab, epsilon} \notin C_v$
 
@@ -17,60 +17,48 @@ For a given parameter $k \in \mathbb{N}$, we use $C$ and $V$ to denote sets of c
 
 The abstraction function $\alpha_k: C\rightarrow 2^{V_k}$ maps a configuration $c$ into a set $V'$ of views of size up to $k$, such that for each $v\in V'$, $v \subword c$ and $size(v) \leq k$.
 
-\paragraph{Example.} Suppose \e{c} is a configuration $\conf{s, ab,cd}$. The configuration is of size 2 and $\alpha_2(c)$ is the set
+\paragraph{Example.} Suppose \e{c} is a configuration $\conf{s, ab,de}$. The configuration is of size 2 and $\alpha_2(c)$ is the set
 
 
-\begin{ttabular}
-$\conf{s,ab,cd}$ \\
-$\conf{s,a,cd}$ &
-$\conf{s,b,cd}$ &
-$\conf{s,\epsilon,cd}$ \\
-$\conf{s,a,c}$ &
-$\conf{s,b,c}$ &
-$\conf{s,\epsilon,c}$ \\
+\begin{ttabulartwo}
+$\conf{s,ab,de}$ &
+$\conf{s,a,de}$ &
+$\conf{s,b,de}$ &
+$\conf{s,\epsilon,de}$ \\
+$\conf{s,ab,d}$ & 
 $\conf{s,a,d}$ &
 $\conf{s,b,d}$ &
 $\conf{s,\epsilon,d}$ \\
+$\conf{s,ab,e}$ &
+$\conf{s,a,e}$ &
+$\conf{s,b,e}$ &
+$\conf{s,\epsilon,e}$ \\
+$\conf{s,ab, \epsilon}$ &
 $\conf{s,a, \epsilon}$ &
 $\conf{s,b, \epsilon}$ &
 $\conf{s,\epsilon,\epsilon}$ \\
-\end{ttabular}
-%\begin{ttabular}
-%$\conf{(s),ab,cd}$ \\
-%$\conf{(s),a,cd}$ &
-%$\conf{(s),b,cd}$ &
-%$\conf{(s),\epsilon,cd}$ \\
-%$\conf{(s),a,c}$ &
-%$\conf{(s),b,c}$ &
-%$\conf{(s),\epsilon,c}$ \\
-%$\conf{(s),a,d}$ &
-%$\conf{(s),b,d}$ &
-%$\conf{(s),\epsilon,d}$ \\
-%$\conf{(s),a, \epsilon}$ &
-%$\conf{(s),b, \epsilon}$ &
-%$\conf{(s),\epsilon,\epsilon}$ \\
-%\end{ttabular}
+\end{ttabulartwo}
 
 
 \subsection{Concretization function}
-The concretization function $\gamma_k: 2^{V_k} \rightarrow 2^C$ returns, for a given set of views \e{V}, the set of configurations that can be reconstructed from the views in $V$, in other words, $\gamma_k(V) = \{c \in C$ | $\alpha_k(c) \subseteq V$\}
+The concretization function $\gamma_k: 2^{V_k} \rightarrow 2^C$ returns, for a given set of views \e{V'}, the set of configurations that can be reconstructed from the views in $V'$, in other words, $\gamma_k(V') = \{c \in C$ | $\alpha_k(c) \subseteq V'$\}
 
-In general $\gamma_k(V)$ is an infinite set of configurations. We define $\gamma_k^l(V)$ := $\gamma_k(V) \cap C_l$ for some $l\geq 0$. The intuitive meaning is that $\gamma_k^l(V)$ is the set of configurations of size at most $l$ for which all views of length at most $k$ are in $V$.
+In general $\gamma_k(V')$ is an infinite set of configurations. We define $\gamma_k^l(V')$ := $\gamma_k(V') \cap C_l$ for some $l\geq 0$. The intuitive meaning is that $\gamma_k^l(V')$ is the set of configurations of size at most $l$ for which all views of length at most $k$ are in $V'$.
 
 \subsection{Post-Image}
 For a configuration $c\in C$ of a lossy transition system $LTS = (C,\rightarrow)$, we define the \e{post-image} of \e{c} denoted $\rho(c)$ = \{$c'$ | $c \rightarrow c'$\}. Intuitively, the post-image of a configuration is the configuration obtained by firing the transitions of the transition system.
 
-For a \e{set} of configurations $V$ we define the post-image of the set $\rho(V)$ = \{$c' | c \rightarrow c', c \in V$\}. This means that the post-image of a set $V$ of configurations is the set $\rho(V)$ containing the post-images of each configurations $c\in V$.
+For a \e{set} of configurations $V'$ we define the post-image of the set $\rho(V')$ = \{$c' | c \rightarrow c', c \in V'$\}. This means that the post-image of a set $V'$ of configurations is the set $\rho(V')$ containing the post-images of each configurations $c\in V'$.
 
 \subsection{Abstract Post-Image}
-The \e{abstract post-image} of a set \e{V} $\subseteq$ $C_k$ is defined as $Apost_k$(\e{V}) = $\alpha_k(\rho(\gamma_k(V)))$. This means that the abstract post-image of a set $V$ is the set obtained by applying $\gamma_k$, $\rho$ and $\alpha_k$ in order to the set $V$. The procedure is illustrated in figure \ref{apost}.
+The \e{abstract post-image} of a set \e{V'} $\subseteq$ $C_k$ is defined as $Apost_k$(\e{V'}) = $\alpha_k(\rho(\gamma_k(V')))$. This means that the abstract post-image of a set $V'$ is the set obtained by applying $\gamma_k$, $\rho$ and $\alpha_k$ in order to the set $V'$. The procedure is illustrated in figure \ref{apost}.
 \begin{figure}
 \abstraction
 \caption{The application order of the $\alpha$, $\rho$ and $\gamma$}
 \label{apost}
 \end{figure}
 
-Note that since $V \subseteq Apost_k(V)$, $Apost_k$ is a monotonic function, thus by the Knaster-Tarski theorem, the function $Apost_k$ has a fixpoint.
+Note that since $V' \subseteq Apost_k(V')$, $Apost_k$ is a monotonic function, thus by the Knaster-Tarski theorem, the function $Apost_k$ has a fixpoint.
 %\todo[inline]{Even the infinite powerset must reach a fixpoint, right?}
 
 \subsection{Reachability Analysis}
@@ -79,11 +67,11 @@ Let LTS be a lossy transition system, with an initial configuration $c^0$. Then 
 
 \subsection{Small Models}
 \label{proof}
-Calculating the abstract post-image of a set of views $V \subseteq C_k$ is essential for the verification procedure. As $\gamma_k(V)$ typically is infinite, this cannot be done straightforwardly. The main result of ~\cite{parosh} that it suffices to consider configurations of $\gamma_k(V)$ of sizes up to $k+1$ (i.e. $\gamma_k^{k+1}$), which is a finite set of configurations for which the abstract post-image can be computed. Formally, they show that
+Calculating the abstract post-image of a set of views $V' \subseteq V_k$ is essential for the verification procedure. As $\gamma_k(V')$ typically is infinite, this cannot be done straightforwardly. The main result of ~\cite{parosh} that it suffices to consider configurations of $\gamma_k(V')$ of sizes up to $k+1$ (i.e. $\gamma_k^{k+1}$), which is a finite set of configurations for which the abstract post-image can be computed. Formally, they show that
 
 \begin{lemma}
 \label{lemma1}
-For any $k\in\mathbb{N}$, and $X\subseteq C_k$, $\alpha_k(\rho(\gamma_k(X)))$ $\cup$ $X$ = $\alpha_k(\rho(\gamma_k^{k+1}(X)))$ $\cup$ $X$.
+For any $k\in\mathbb{N}$, and $X\subseteq V_k$, $\alpha_k(\rho(\gamma_k(X)))$ $\cup$ $X$ = $\alpha_k(\rho(\gamma_k^{k+1}(X)))$ $\cup$ $X$.
 \end{lemma}
 %\todo{Why is this correct? Shouldn't it be the fixpoint of the two that is equal?}
 
@@ -116,21 +104,23 @@ Note that receptions transitions can be seen as a special case of a message loss
 
 \subsection{Verification Algorithm}
 \label{verificationalgorithm}
-Suppose $Bad$ is a set of bad states, such that $|b| = 0$ for all $b \in Bad$. As a result of lemma \ref{lemma1}, if $\gamma_k^{k+1}(V) \cap Bad$ = $\emptyset$ for any \e{k} $\geq$ $1$, then $\gamma_l^{l+1}(V) \cap Bad$ = $\emptyset$ for any $l \geq k$. Given a set of bad states \e{Bad}, a set of initial states \e{I} and a set of transitions, verification of a system can be done with algorithm \ref{alg1}, which was first presented in \cite{parosh}.
+Suppose $Bad$ is a set of bad configurations, such that $|b| = 0$ for all $b \in Bad$. As a result of lemma \ref{lemma1}, if $\gamma_k^{k+1}(V') \cap Bad$ = $\emptyset$ for any \e{k} $\geq$ $1$, then $\gamma_l^{l+1}(V') \cap Bad$ = $\emptyset$ for any $l \geq k$. Given a set of bad configurations \e{Bad}, a set of initial configurations \e{I} and a set of transitions, verification of a system can be done with algorithm \ref{alg1}, which was first presented in \cite{parosh}.
 
 \begin{algorithm}
+\begin{algorithmic}[1]
   \caption{General Verification algorithm}
   \label{alg1}
-    \hspace{8pt}\textbf{for} $k := 1$ \textbf{to} $\infty$
+    \State \hspace{8pt}\textbf{for} $k := 1$ \textbf{to} $\infty$
 
-    \hspace{16pt}\textbf{if} $\mathcal{R}_k$ $\cap$ $Bad$ $\neq$ $\emptyset$ \textbf{then return} Unsafe
+    \State \hspace{16pt}\textbf{if} $\mathcal{R}_k$ $\cap$ $Bad$ $\neq$ $\emptyset$ \textbf{then return} Unsafe
 
-    \hspace{16pt}$V := \mu X.\alpha_k(I)$ $\cup$ $Apost_k(X)$
+    \State \hspace{16pt}$V' := \mu X.\alpha_k(I)$ $\cup$ $Apost_k(X)$
 
-    \hspace{16pt}\textbf{if} {$\gamma_k(V)$ $\cap$ $Bad$ = $\emptyset$} \textbf{then return} Safe
+    \State \hspace{16pt}\textbf{if} {$\gamma_k(V')$ $\cap$ $Bad$ = $\emptyset$} \textbf{then return} Safe
+\end{algorithmic}
 \end{algorithm}
 
-The algorithm begins by performing a reachability analysis, as explained in \ref{reachcompute} in order to compute $\mathcal{R}_k$ and check for bad states. For any buffer size \e{k}, if a bad state is found to be reachable in $\mathcal{R}_k$, the system is unsafe and the algorithm terminates. If no such bad state was found, the algorithm continues by computing a set of configurations $X$, for which the set of concretizations $\gamma_k(X)$ is an \e{overapproximation} of reachable configurations of size $k$, reachable through configurations of size at most $k+1$ and checking for bad configurations. This is done by computing the fixpoint of $Apost_k$. If at this point no bad configuration has been found, the system can be said to be safe and the algorithm terminates. If on the other hand a bad state was found, the system is not necessarily unsafe, as \e{V} is an overapproximation of the reachable states in $\mathcal{R}_k$. The process is then repeated with a buffer size of \e{k+1}. This process is abstractly described in the flowchart in figure \ref{flow}.
+The algorithm begins by performing a reachability analysis, as explained in \ref{reachcompute} in order to compute $\mathcal{R}_k$ and check for bad configurations. For any buffer size \e{k}, if a bad configuration is found to be reachable in $\mathcal{R}_k$, the system is unsafe and the algorithm terminates. If no such bad state was found, the algorithm continues by computing a set of configurations $V'$, for which the set of concretizations $\gamma_k(V')$ is an \e{overapproximation} of reachable configurations of size $k$, reachable through configurations of size at most $k+1$ and checking for bad configurations. This is done by computing the fixpoint of $Apost_k$. If at this point no bad configuration has been found, the system can be said to be safe and the algorithm terminates. If on the other hand a bad state was found, the system is not necessarily unsafe, as \e{V} is an overapproximation of the reachable states in $\mathcal{R}_k$. The process is then repeated with a buffer size of \e{k+1}. This process is abstractly described in the flowchart in figure \ref{flow}.
 
 \begin{figure}
 \includegraphics[width=400pt] {bilder/flowchart.png}

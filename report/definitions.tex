@@ -63,11 +63,11 @@ Finally, we extend the subword relation to the configuration of the lossy channe
 
 \subsection{Semantics}
 \label{LTS}
-In the following section, we explain the semantics of a lossy channel system, which describes the behaviour of the system. The operational behaviour of \e{LCS} induces the inifinite-state transition system \e{LTS} = (\e{C}, $\rightarrow$) where $C$ is a set of configurations and $\rightarrow$ $\subseteq (C \times C)$ is the smallest transition relation defined as follows:
+In the following section, we explain the semantics of a lossy channel system, which describes the behaviour of the system. The operational behaviour of \e{LCS} induces the infinite-state transition system \e{LTS} = (\e{C}, $\rightarrow$) where $C$ is a set of configurations and $\rightarrow$ $\subseteq (C \times C)$ is the smallest transition relation defined as follows:
   \begin{itemize}
     \item For each transition $\conf{s, a, s'}$ $\in$ $\delta$ and each channel evaluation $\xi$, $\conf{s, \xi} \xrightarrow{a} \conf{s', \xi}$. This means that the control state changes with the action $a$.
-    \item For each transmission transition $( s, ch!m, s' )$ in $\delta$ and channel evaluations $\xi$ and $\xi'$, $\conf{s, \xi} \xrightarrow{ch!m} \conf{s', \xi'}$, $\xi'(ch) = \xi(ch)\bullet m$, and $\xi'(ch')=\xi(ch')$ for all $ch' \in Ch \setminus ch$. This means that the control state and the evaluation of the configuratoin change, so that the message $m$ is appended to the content of the channel $ch$.
-    \item For each reception transition $( s, ch?m, s )$ in $\delta$ and channel evaluations $\xi$ and $\xi'$, $\conf{s, \xi} \xrightarrow{ch!m} \conf{s', \xi'}$ such that $\xi(ch)=m \bullet \xi'(ch) $ and $\xi'(ch')=\xi(ch')$ for all $ch' \in Ch \setminus ch$. This means that the control state and the evaluation of the configuratoin change, so that the message $m$ is removed from the content of the channel $ch$.
+    \item For each transmission transition $( s, ch!m, s' )$ in $\delta$ and channel evaluations $\xi$ and $\xi'$, $\conf{s, \xi} \xrightarrow{ch!m} \conf{s', \xi'}$, $\xi'(ch) = \xi(ch)\bullet m$, and $\xi'(ch')=\xi(ch')$ for all $ch' \in Ch \setminus ch$. This means that the control state and the evaluation of the configuration change, so that the message $m$ is appended to the content of the channel $ch$.
+    \item For each reception transition $( s, ch?m, s )$ in $\delta$ and channel evaluations $\xi$ and $\xi'$, $\conf{s, \xi} \xrightarrow{ch!m} \conf{s', \xi'}$ such that $\xi(ch)=m \bullet \xi'(ch) $ and $\xi'(ch')=\xi(ch')$ for all $ch' \in Ch \setminus ch$. This means that the control state and the evaluation of the configuration change, so that the message $m$ is removed from the content of the channel $ch$.
     \item For each state $s \in S$ and channel evaluations $\xi$ and $\xi'$, $\conf{s, \xi} \xrightarrow{*} \conf{s, \xi'}$ such that $\xi'(ch)$ is a subword of $\xi(ch)$ for all $ch \in Ch$. This means that any message can be lost at any time.
   \end{itemize}
 
@@ -135,7 +135,7 @@ $\trans{(s_2,r_i)}{ch_A?0}{(s_3, r_i)}$ &
 $\trans{(s_3,r_i)}{Snd}{(s_4, r_i)}$ &
 $\trans{(s_4,r_i)}{ch_M!1}{(s_4, r_i)}$ &
 $\trans{(s_4,r_i)}{ch_A?1}{(s_i, r_i)}$ &
-$\trans{(s_4,r_i)}{ch_A?0}{(s_4, r_i)}$ &
+$\trans{(s_5,r_i)}{ch_A?0}{(s_4, r_i)}$ &
 \\
 $\trans{(s_i, r_1)}{ch_A!1}{(s_i, r_1)}$ &
 $\trans{(s_i, r_1)}{ch_M?1}{(s_i, r_1)}$ &
