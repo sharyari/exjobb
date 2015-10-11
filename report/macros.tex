@@ -9,7 +9,7 @@
 %\usepackage{natbib}
 %\setcitestyle{square}
 \usepackage[utf8]{inputenc}
-%\usepackage{amsthm} \newtheorem{theorem}{Theorem}
+\usepackage{amsthm}
 \usepackage{color}
 \usepackage{float}
 \usepackage{authblk}
@@ -222,6 +222,10 @@ escapeinside={\#*}{\^^M}
     \renewcommand{\dblfloatpagefraction}{0.7}	% require fuller float pages
 
 % remember to use [htp] or [htpb] for placement
+
+
+\theoremstyle{definition}
+\newtheorem{exmp}{Example}[section]
 
 
 \usepackage{fancyvrb}

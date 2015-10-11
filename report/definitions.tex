@@ -74,7 +74,7 @@ In the following section, we explain the semantics of a lossy channel system, wh
 \paragraph{Notations for configurations}
 Depending on the context, different notations to describe a configuration $c\in C$ may be used. For example, $c = \conf{s, \xi}$ can be denoted as \e{c} = $\conf{s, w_1, w_2, ..., w_n}$ when the set of channels is ordered (e.g., $Ch=\{ch_1,ch_2, \ldots,ch_n\}$).
 
-We refer to the act of taking a transition $c' \xrightarrow{r} c$, as \emph{firing} the transition $r=\conf{s,\tau,s'}$ from $c$ to $c'$ such that $state(c)=s$ and $state(c')=s'$.
+We refer to the act of taking a transition $c' \xrightarrow{r} c$, as \emph{firing} the transition $r=\conf{s,\tau,s'}$ from $c$ to $c'$ such that $state(c)=s$ and $state(c')=s'$. Alternatively, we may denote $c' \xrightarrow{r} c$ as $c = r(c)$.
 
 \subsection{Alternating Bit Protocol}
 Here we present a simple protocol, the \emph{alternating bit protocol}~\cite{bartlett1969note}. This protocol will serve as a running example of the theoretical concepts in this and following sections.
@@ -154,7 +154,9 @@ Although the channel system has a finite number of transitions (listed above) be
 
 \subsubsection{The Verification Problem}
 \label{badconf}
-A channel system can potentially reach a \e{bad} state, i.e. a state representing unintended behaviour. Suppose $Bad$ is a set of bad configurations of a lossy transition system \e{LTS}, as defined in \ref{LTS}. We call a sequence \e{t} = $c_0c_1\ldots c_n$ of configurations a \e{trace}, if $c_i \rightarrow c_{i+1}, 0 \leq i \leq (n-1)$ and we say that $c_n$ is reachable from $c_0$. We call a trace a \e{bad trace} if there exists $c^{bad}$ $\in Bad$ such that $c^{bad}$ is a sub-configuration of $c_n$. If \e{t} is the shortest bad trace in the system, we call it a \e{minimal bad trace}.
+A channel system can potentially reach a \e{bad} state, i.e. a state representing unintended behaviour. We call a configuration $\conf{s, \xi}$ such that $s$ is a bad state a \e{bad configuration}, regardless of the channel evaluation.
+
+Suppose $Bad$ is a set of bad configurations of a lossy transition system \e{LTS}. We call a sequence \e{t} = $c_0c_1\ldots c_n$ of configurations a \e{trace}, if $c_i \rightarrow c_{i+1}, 0 \leq i \leq (n-1)$ and we say that $c_n$ is reachable from $c_0$. We call a trace a \e{bad trace} if there exists $c^{bad}$ $\in Bad$ such that $c^{bad}$ is a sub-configuration of $c_n$. If \e{t} is the shortest bad trace in the system, we call it a \e{minimal bad trace}.
 
 A configuration \e{c} is said to be \emph{reachable} in \e{LTS}, if there is a trace from the initial configuration $c^0$ such that $c$ is reachable. Let $\mathcal{R}$ denote the set of all reachable configurations. The verification problem is to determine, for a channel transition system \e{LTS} with an initial configuration $c^0$ and a set \e{Bad} $\subseteq$ $C$ of bad configurations, whether a system is safe, that is, does not have any reachable bad configurations. More precisely, this means determining if $\mathcal{R} \cap Bad$ = $\emptyset$.
 
