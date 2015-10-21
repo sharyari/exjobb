@@ -14,7 +14,7 @@ Let $\sigma : \Sigma^* \rightarrow \Sigma^*$ be a mapping between words, s.t. $\
 As an example, if \e{w}=abc, then the set of subwords of \e{w} is {abc, ab, ac, bc, a, b, c, $\varepsilon$}.
 
 \subsubsection{Fixpoints}
-Let $A$ be a set. We use $2^A$ to denote the set of all the subsets of $A$. Let $F$ be a function with $2^A$ as its domain and co-domain. We say that $F$ is a \e{monotonic function} if and only if for every subset $X,Y \subseteq A$, if $X \subseteq Y$ then $F(X) \subseteq F(Y)$.  We say that $X$ is a \e{fixpoint} of F iff $F(X)=X$. We use $\mu X. F(X)$ to denote the least fixpoint of $F$ with respect to the subset relation (i.e.,  $\mu X. F(X)$ denotes the smallest set $D \subseteq A$, such that $D$ is a fixpoint of $F$). From the Knaster-Tarski theorem~\cite{tarski}, we know that the least-fix point for a monotonic function exists. Furthermore, if $A$ is finite, then the sequence $X_0 = I$, $X_{i+1} = f(A_{n-1})$ for all $i \geq 0$, converges in finitely many iterations to the least-fixpoint of $F$.
+Let $A$ be a set. We use $2^A$ to denote the set of all the subsets of $A$. Let $F$ be a function with $2^A$ as its domain and co-domain. We say that $F$ is a \e{monotonic function} if and only if for every subset $X,Y \subseteq A$, if $X \subseteq Y$ then $F(X) \subseteq F(Y)$.  We say that $X$ is a \e{fixpoint} of F iff $F(X)=X$. We use $\mu X. F(X)$ to denote the least fixpoint of $F$ with respect to the subset relation (i.e.,  $\mu X. F(X)$ denotes the smallest set $D \subseteq A$, such that $D$ is a fixpoint of $F$). From the Knaster-Tarski theorem~\cite{tarski}, we know that the least-fix point for a monotonic function exists. Furthermore, if $A$ is finite, then the sequence $X_0 = I$, $X_{i+1} = f(A_{n-1})$ for all $i \geq 0$, converges in finitely many iterations to the least-fixpoint of $F$; we refer to this as the \e{Kleen iteration}.
 
 \subsection{Lossy Channel Systems}
 \label{CS}
@@ -63,7 +63,7 @@ Finally, we extend the subword relation to the configuration of the lossy channe
 
 \subsection{Semantics}
 \label{LTS}
-In the following section, we explain the semantics of a lossy channel system, which describes the behaviour of the system. The operational behaviour of \e{LCS} induces the infinite-state transition system \e{LTS} = (\e{C}, $\rightarrow$) where $C$ is a set of configurations and $\rightarrow$ $\subseteq (C \times C)$ is the smallest transition relation defined as follows:
+In the following section, we explain the semantics of a lossy channel system, which describes the behaviour of the system. The operational behaviour of \e{LCS} induces the infinite-state transition system \e{LTS} = (\e{C}, $\rightarrow$) where $C$ is the set of configurations and $\rightarrow$ $\subseteq (C \times C)$ is the smallest transition relation defined as follows:
   \begin{itemize}
     \item For each transition $\conf{s, a, s'}$ $\in$ $\delta$ and each channel evaluation $\xi$, $\conf{s, \xi} \xrightarrow{a} \conf{s', \xi}$. This means that the control state changes with the action $a$.
     \item For each transmission transition $( s, ch!m, s' )$ in $\delta$ and channel evaluations $\xi$ and $\xi'$, $\conf{s, \xi} \xrightarrow{ch!m} \conf{s', \xi'}$, $\xi'(ch) = \xi(ch)\bullet m$, and $\xi'(ch')=\xi(ch')$ for all $ch' \in Ch \setminus ch$. This means that the control state and the evaluation of the configuration change, so that the message $m$ is appended to the content of the channel $ch$.

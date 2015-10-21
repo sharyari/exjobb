@@ -3,15 +3,18 @@
 In this chapter, we show how the algorithm in \ref{verificationalgorithm} could be implemented. The implementation is naïve, it strictly follows the mathematical concepts. Then we identify the main drawbacks of this naïve implementation and suggest some improvements.
 
 \subsection{Definitions and Notations}
-In this chapter, we introduce the term \e{potential concretizations}. The reason for the introduction of this term recides in the fact that there is no easy way to directly compute the set of concretizations corresponding to a set of views, i.e. from a set $X_k$ of configurations of size at most $k$ finding $\gamma(X_k)$ of concretizations of size at most $k+1$. Instead, in order to find the concretizations, we generate all of the \e{potential} concretizations, such that a potential configuration is any configuration $con$, $size(v) < size(con) \leq k+1$ for some $v \in X_k$, i.e. any extension of a view already in the set with any symbol in the alphabet.
+%\todo[inline]{You commented that the change to using $X$ rather than $V$ as in the last chapter is confusing. In my opinion, this distinction makes it more clear that $X$ denotes something that is changing continously, whereas $V$ in this chapter is only used to denote the ''static'' set $V_k$}
+In this chapter, we introduce the term \e{potential concretizations}. The reason for the introduction of this term resides in the fact that no easy direct way has been found to compute the set of concretizations corresponding to a set of views, i.e. from a set $X_k$ of configurations of size at most $k$ finding $\gamma(X_k)$ of concretizations of size at most $k+1$. Instead, in order to find the concretizations, we generate all of the \e{potential} concretizations, such that a potential configuration is any configuration $con$, $size(v) < size(con) \leq k+1$ for some $v \in X_k$, i.e. any extension of a view already in the set with any symbol in the alphabet.
 
-We maintain a set $X_k$ of views, and denote its state in a specific iteration of algorithm \ref{verificationalgorithm} by $X_k^i$ , such that $X_k^0$ = $\{c^0\}$ and $X_k^m$ = $V_k$ for some $m$.
+In order to compute the fixpoint $V_k$ in algorithm \ref{verificationalgorithm} we use the kleen iteration where $X_k^0$ is the set of initial configurations $I$ and we use $X_k^j$ to denote the value of the variable $X$ in the $j_th$ Kleen iteration. We assume that when the fixpoint converges, we have that $X_k^m=V_k$.
+
+%andthe and We maintain a set $X_k$ of views, and denote its state in a specific iteration of algorithm \ref{verificationalgorithm} by $X_k^i$ , such that $X_k^0$ = $\{c^0\}$ and $X_k^m$ = $V_k$ for some $m$.
  
 A view $v\in X_k$ may be extended with a symbol on one or more of its channels, yielding the potential concretization $con$. We say that $con$ is \e{accepted}, if all the views of $con$ of size up top $k$ are in $X_k$, otherwise, $con$ is \e{refuted}. 
 
 As an example, let $\conf{s, a, b} \in X_k^i$, then $\conf{s, a, bb}$ is a potential configuration. We say that $con$ is \e{accepted}, if $\alpha_k(con) \subseteq X_k^i$, otherwise, $con$ is \e{refuted}. Note that if $\alpha_k(con) \not\subseteq X_k^i$, there may be $X_k^j$, $i < j$ such that $\alpha_k(con) \subseteq X_k^j$, i.e. a potential configuration may be refuted in one iteration, but accepted in another.
 
-We say that the an accepted concretization $con$ is \e{reached} from the view $v$.
+We say that an accepted concretization $con$ is \e{reached} from the view $v$.
 
 \subsection{Naïve implementation}
 \label{apost}
@@ -23,7 +26,6 @@ Compute the set $\mathcal{R}_k$ of reachable configurations of size up to k, use
 
 \item
 Compute the set $V_k$ of configurations, i.e. the fixpoint of $X_k$. We know that such a fixpoint exists, due to the Knaster-Tarski theorem\cite{tarski}, and we compute it by iteratively applying the Abstract post-image of $X_k$. This is used on line 3 of algorithm \ref{verificationalgorithm}. The procedure is explained in section \ref{part1}.
-\todo[inline]{You commented a while ago that I should reference the Kleene iteration here. I'm really not traversed at all on order theory, but is the difference between the Kleen iteration and the Knaster-Tarski theorem that large, that it merits them both to be mentioned? I fail to see why the result of the Knaster-Tarski theorem would not suffice.}
 %\todo[inline]{Note to self: Mention the Kleen iteration in section 2.1.2 and reference it here}
 %Now to compute it, we need only to compute the concretisation of size size at most k+1 and then the fixpoint can be compute  using the Kleen iteration...
 \item
@@ -32,7 +34,7 @@ We need to be able to compute the intersection of a set of configurations with t
 
 \subsubsection{Abstract Post-image}
 \label{part1}
-In order to compute the abstract post-image $\gamma_k^{k+1}$ of a set $X_k^i$, the concretization function, the post-image and the abstraction functions below are applied in order on $X_k^i$:
+In order to compute the abstract post-image $Apost$ of a set $X_k^i$, the concretization function, the post-image and the abstraction functions below are applied in order on $X_k^i$:
 
 
 \begin{enumerate}
@@ -46,7 +48,7 @@ This results in the set of accepted potential concretizations.
 \item
 \textbf{Post-image}:
 \todo[inline]{I added a definition of r(c) in section 2.3}
-Generate the set $\rho(\gamma_k^{k+1}(X_k^i))$: For every concretization $con$ $\in$ $\gamma_k^{k+1}(X_k^i)$, $r$ $\in$ $\delta$, $r(con) \in post(\gamma_k^{k+1}(X_k^i))$, i.e. the post-image of the concretization $con$.
+Generate the set $\rho(\gamma_k^{k+1}(X_k^i))$: For every concretization $con$ $\in$ $\gamma_k^{k+1}(X_k^i)$, $r$ $\in$ $\delta$, compute $r(con) \in post(\gamma_k^{k+1}(X_k^i))$, i.e. the post-image of the concretization $con$.
 
 \item
 \textbf{Abstraction Function}:
@@ -78,24 +80,28 @@ The pseudo-code implementing algorithm \ref{verificationalgorithm} can be seen i
 	\label{naive}
   \begin{algorithmic}[1]
     \State \textbf{Verifier (V, Rules, Bad):}
+    \For{\texttt{$True$}}
+	\State \% Set initial values
 	\State $X_k$ := \{($s_0$, $\xi^0$)\}
 	\State V' := $\emptyset$
-	\State $R_k$ := \{($s_0, \xi^0$)\}
+	\State $R_0$ := \{($s_0, \xi^0$)\}
 	\State R' := $\emptyset$
-    \For{\texttt{$True$}}
+	\State $i$ :=$0$
+	\State
 	\State \% Calculation of $R_k$
 	\State \textbf{do}
-	\State \hspace{10pt} $R_k$ := $R_k$ $\cup$ $R'$
-        \State \hspace{10pt} $R'$ := $post(R')$
-	\State \hspace{10pt} \textbf{while} ($R_k$ $\neq$ $R_k$ $\cup$ $R'$)
-        \If {$\mathcal{R}_k$ $\cap$ $Bad$ $\neq$ $\emptyset$}
+        \State \hspace{10pt} $R'$ := $post(R_i)$
+	\State \hspace{10pt} $R_{i+1}$ := $R_i$ $\cup$ $R'$
+	\State \hspace{10pt} $i$ := $i+1$
+	\State \textbf{while} ($R_i$ $\neq$ $R_{i-1}$ $\cup$ $R'$)
+        \If {$\mathcal{R}_i$ $\cap$ $Bad$ $\neq$ $\emptyset$}
         \State return Unsafe
         \EndIf 
 	\State 
 	\State \% Fix-point calculation
 	\State \textbf{do}
 	\State \hspace{10pt} $X_k$ := $X_k$ $\cup$ $V'$
-        \State \hspace{10pt} $V'$ := $\alpha_k(post(\gamma_k^{k+1}(V)))$
+        \State \hspace{10pt} $V'$ := $\alpha_k(post(\gamma_k^{k+1}(X_k)))$
 	\State \hspace{10pt} \textbf{while} ($X_k$ $\neq$ $X_k$ $\cup$ $V'$)
         \If {$X_k$ $\cap$ $Bad$ = $\emptyset$}
 	\todo[inline]{You said: "You should make clear that bad configuration talks only about the state". This is stated above in section 4.2.3, and it should have been explained in 2.4.1 as well but it had been removed during restructuring. I have added it there there as well.}
@@ -108,7 +114,7 @@ The pseudo-code implementing algorithm \ref{verificationalgorithm} can be seen i
 
 \subsection{Improving the Algorithm}
 Evaluating the procedure described above, we find that the bottle-neck lies within the concretization function:
- In order to compute $\gamma(X_k)$, all potential concretizations of the set $X_k$ of size up to $k+1$ are comuted by creating all extensions of the views $v \in X_k$, i.e. all potential configurations $con$ created from $v$ such that at least one word of the channel evaluation is of a larger size than in $v$. For each of these potential concretizations, $\alpha_k(con)$ is created in order to determine whether the concretization should be accepted or refuted.
+ In order to compute $\gamma(X_k)$, all potential concretizations of the set $X_k$ of size up to $k+1$ are computed by creating all extensions of the views $v \in X_k$, i.e. all potential configurations $con$ created from $v$ such that at least one word of the channel evaluation is of a larger size than in $v$. For each of these potential concretizations, $\alpha_k(con)$ is created in order to determine whether the concretization should be accepted or refuted.
 
 Although this method is correct, there is significant overlap of concretizations being considered as it is often possible to create the same concretization \e{con} in several ways. For example, if $X_k$ contains the views $v_1$ = $\conf{s, \epsilon, ab}$ and $v_2$ = $\conf{s, ab, \epsilon}$, then the concretization $\conf{s, ab,ab}$ can, and will, be reached from both $v_1$ and $v_2$, by adding the symbols $ab$ to the first and second channel of $v_1$ and $v_2$ respectively.
 
@@ -123,15 +129,19 @@ This leads to the conclusion that decreasing the number of potential concretizat
 \label{newsubword}
 We redefine the subword relation in section \ref{words}, such that a word $w' \models w = a_1a_2\ldots a_n$ if $w' = a_ia_{i+1}\ldots a_j$ for some $0 \leq i \leq n$, $0 \leq j \leq n$, where $\models$ denotes the new subword relation. 
 
-\paragraph{example.} Let $w$=$abc$. Then the set of subwords of \e{w} is \e{abc, ab, bc, a, b, c, $\varepsilon$}. Note that if $w' \models w \implies w' \subword w$, but $w' \subword w \centernot\implies w' \models w$. 
+\paragraph{Example.} Let $w$=$abc$. Then the set of subwords of \e{w} is \e{abc, ab, bc, a, b, c, $\varepsilon$}. Note that if $w' \models w \implies w' \subword w$, but $w' \subword w \centernot\implies w' \models w$. 
 
 \begin{lemma}
-Let the set $X$ denote a fixpoint of algorithm \ref{verificationalgorithm} reached using the definition of the subword relation as defined in section \ref{words}, and the set $Y$ denote a fixpoint of the algorithm using the above definition of the subword relation, then $X=Y$.
+Let the set $Y$ denote a fixpoint of algorithm \ref{verificationalgorithm} reached using the definition of the subword relation as defined in section \ref{words}, and let the set $X$ denote a fixpoint of the algorithm using the above definition of the subword relation, then $X=Y$.
 \end{lemma}
 \begin{proof}
-Consider $w = a_ia_{i+1}\ldots a_m$ and a word $w' = a_ia_{i+1}\ldots a_ja_la_{l+1}\ldots a_m$, $0 \leq i \leq j$, $l > j+1$. Then $w' \subword w = a_1a_2\ldots a_n$, but $w' \centernot\models w$.
+Consider $v$ be a view with the word $w = a_ia_{i+1}\ldots a_m$ on one of its channels, and let $v\in Y_k^p$ for some $p \leq 0$ and $v\in X_k^i$ for some $i \leq 0$.
 
-Let $v'\in V_k$ be a view with the word $w'$ on one of its channels. Then there are views $v'_1$, $v'_2$\ldots with words $w'_1, w'_2\ldots$ on their channels such that
+Let the view $v'$ be a view with the word $w' = a_ia_{i+1}\ldots a_ja_la_{l+1}\ldots a_m$ on the same channel. Then $v' \in Y_k^{p+1}$ as $w' \subword w$, but $v' \centernot\in X_k^{i+1}$ since $w' \centernot\models w$. We will show that there is a set $X_k^l$ such that $v'\in X_k^l$.
+
+% is a view, $0 \leq i \leq j$, $l > j+1$. Then $w'= a_1a_2\ldots a_n \subword w$, but $w' \centernot\models w$, i.e, 
+
+Note that there are views $v'_1, v'_2\ldots v'_m$ with words $w'_1, w'_2\ldots w'_m$ on their channels such that
 
 \hspace{10mm}
 $w'_1$ =  $a_ia_{i+1}\ldots a_j$
@@ -145,18 +155,19 @@ $w'_2$ = $a_ia_{i+1}\ldots a_ja_l$
 \hspace{10mm}
 $w'_{m}$ = $a_ia_{i+1}\ldots a_ja_la_{l+1}\ldots a_{m-1} = w'$.
 
-Note that $v'_x \in V_k$ as $w'_x \subword w'$ for all $1 \leq x \leq m$. Also, $w'_1 \models w'$, thus $v'_1 \in V_k^i$ for some iteration $i$. As $w'_y \models w'_{y+1}$ for each $1 \leq y \leq m-1$, $v'_2 \in X_k^{j+1}, V'_2 \in X_k^{j+2} \ldots v'_m \in X_k^{j+m+1}$ the verification algorithm using the simplified subword relation is guaranteed to find each of the views of $v$ within $m$ iterations.
+%Then $v'_x \in V_k^{p+1}$ as $w'_x \subword w$ for all $1 \leq x \leq m$.
+We know that $w'_1 \models w'$, thus $v'_1 \in X_k^{i+1}$, but $v'_x \centernot\in X_k^i$ for $x > 1$. As $w'_y \models w'_{y+1}$ for each $1 \leq y \leq m-1$, $v'_2 \in X_k^{i+2}, v'_3 \in X_k^{j+3} \ldots v'_m \in X_k^{i+m} = X_k^l$. Thus the verification algorithm using the simplified subword relation is guaranteed to find each of the views of $v$ within $m$ iterations.
 
 %The view $v'_1$ with the word $a_ia_{i+1}\ldots a_j \models w$ would be created, as it is an unbroken sequence of messages. Then the view $v'_2$ with the word $a_ia_{i+1}\ldots a_ja_l$ is a potential concretization of $v'_1$, which would be accepted. The view $v'_3$ with the word $a_ia_{i+1}\ldots a_ja_la_{l+1}$ on the channel is in turn a potential concretization of $v'_2$, which would again be accepted. Continuing in this way, the view with the word $w'$ on the channel will eventually be created and accepted.
 \end{proof}
 
 
 \paragraph{Reducing the number of concretizations.}
-We can show that when creating the potential concretizations of a view $v$, we need not generate the full set of potential concretizations and instead limit the algorithm to generate all those potential concretizations $con$ reachable from $v$ by the extension of a single channel with a single symbol.
+We can show that when creating the potential concretizations of a view $v$, we need not generate the full set of potential concretizations and instead limit the algorithm to generate all those potential concretizations $con$ that can be created from $v$ by the extension of a single channel with a single symbol.
 %Given a configuration \e{c}, with channel evaluations $\xi$ such that $size(c) \leq k$, a potential concretization of \e{c} is any configuration \e{con} such that \e{con} can be created from \e{c} by appending at least one message to at least one of the channels of \e{c}.
 %This is a large number of potential configurations, for which it would be desireable to consider only a subset, while still ensuring that all valid concretizations are eventually found.
 
-Consider a potential concretization $con = (s, w'_1, w'_2, \ldots, w'_n)$ reached from the view $v = (s, w_1, w_2, \ldots, w_n)$ such that $w'_i \models w_i$ for each $i \leq n$. If the generation of potential concretizations would be limited such that only one word $w_i$ would be extended in each iteration, the concretization $con$ would still eventually be reached, as the views $v \models \conf{s, w'_1, w_2, w_3 \ldots, w_n} \models \conf{s, w'_1, w'_2, w_3, \ldots, w_n} \models \ldots \models \conf{s, w'_1, w'_2, \ldots, w'_{n-1}, w_n} \models con$.
+Consider a potential concretization $con = (s, w'_1, w'_2, \ldots, w'_n)$ created from the view $v = (s, w_1, w_2, \ldots, w_n)$ such that $w'_i \models w_i$ for each $i \leq n$. If the generation of potential concretizations would be limited such that only one word $w_i$ would be extended in each iteration, the concretization $con$ would still eventually be reached, as the views $v \models \conf{s, w'_1, w_2, w_3 \ldots, w_n} \models \conf{s, w'_1, w'_2, w_3, \ldots, w_n} \models \ldots \models \conf{s, w'_1, w'_2, \ldots, w'_{n-1}, w_n} \models con$.
 
 % If such a potential concretization is accepted, any view $v'$ where $n'<n$ channels have been modified in a similar way will also be a valid concretization, since $v' \subword v$. Therefore, \e{con} will eventually be considered also when only one channel is extended in each iteration, but $n$ iterations are required in order to reach it.
 \todo[inline]{You are correct that adding a single message to the channels would lead to an exponential blow-up in the presence of many channels, but I do not create all the possible combinations, only a linear number of combinations. To be fair, I have added that an exponential increase in the number of iterations is possible (although I believe it to be highly unlikely in practice).}

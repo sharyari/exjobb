@@ -104,7 +104,8 @@ Note that receptions transitions can be seen as a special case of a message loss
 
 \subsection{Verification Algorithm}
 \label{verificationalgorithm}
-Suppose $Bad$ is a set of bad configurations, such that $|b| = 0$ for all $b \in Bad$. As a result of lemma \ref{lemma1}, if $\gamma_k^{k+1}(V') \cap Bad$ = $\emptyset$ for any \e{k} $\geq$ $1$, then $\gamma_l^{l+1}(V') \cap Bad$ = $\emptyset$ for any $l \geq k$. Given a set of bad configurations \e{Bad}, a set of initial configurations \e{I} and a set of transitions, verification of a system can be done with algorithm \ref{alg1}, which was first presented in \cite{parosh}.
+\todo[inline]{You suggested I change from $V'$ to $V_k$ in the algorithm. I assume this applies to this entire subsection, and changed it accordingly}
+Suppose $Bad$ is a set of bad configurations, such that $|b| = 0$ for all $b \in Bad$. As a result of lemma \ref{lemma1}, if $\gamma_k^{k+1}(V_k) \cap Bad$ = $\emptyset$ for any \e{k} $\geq$ $1$, then $\gamma_l^{l+1}(V_k) \cap Bad$ = $\emptyset$ for any $l \geq k$. Given a set of bad configurations \e{Bad}, a set of initial configurations \e{I} and a set of transitions, verification of a system can be done with algorithm \ref{alg1}, which was first presented in \cite{parosh}.
 
 \begin{algorithm}
 \begin{algorithmic}[1]
@@ -114,13 +115,13 @@ Suppose $Bad$ is a set of bad configurations, such that $|b| = 0$ for all $b \in
 
     \State \hspace{16pt}\textbf{if} $\mathcal{R}_k$ $\cap$ $Bad$ $\neq$ $\emptyset$ \textbf{then return} Unsafe
 
-    \State \hspace{16pt}$V' := \mu X.\alpha_k(I)$ $\cup$ $Apost_k(X)$
+    \State \hspace{16pt}$V_k := \mu X.\alpha_k(I)$ $\cup$ $Apost_k(X)$
 
-    \State \hspace{16pt}\textbf{if} {$\gamma_k(V')$ $\cap$ $Bad$ = $\emptyset$} \textbf{then return} Safe
+    \State \hspace{16pt}\textbf{if} {$\gamma_k(V_k)$ $\cap$ $Bad$ = $\emptyset$} \textbf{then return} Safe
 \end{algorithmic}
 \end{algorithm}
 
-The algorithm begins by performing a reachability analysis, as explained in \ref{reachcompute} in order to compute $\mathcal{R}_k$ and check for bad configurations. For any buffer size \e{k}, if a bad configuration is found to be reachable in $\mathcal{R}_k$, the system is unsafe and the algorithm terminates. If no such bad state was found, the algorithm continues by computing a set of configurations $V'$, for which the set of concretizations $\gamma_k(V')$ is an \e{overapproximation} of reachable configurations of size $k$, reachable through configurations of size at most $k+1$ and checking for bad configurations. This is done by computing the fixpoint of $Apost_k$. If at this point no bad configuration has been found, the system can be said to be safe and the algorithm terminates. If on the other hand a bad state was found, the system is not necessarily unsafe, as \e{V} is an overapproximation of the reachable states in $\mathcal{R}_k$. The process is then repeated with a buffer size of \e{k+1}. This process is abstractly described in the flowchart in figure \ref{flow}.
+The algorithm begins by performing a reachability analysis, as explained in \ref{reachcompute} in order to compute $\mathcal{R}_k$ and check for bad configurations. For any buffer size \e{k}, if a bad configuration is found to be reachable in $\mathcal{R}_k$, the system is unsafe and the algorithm terminates. If no such bad state was found, the algorithm continues by computing a set of configurations $V'$, for which the set of concretizations $\gamma_k^{k+1}(V_k)$ is an \e{overapproximation} of reachable configurations of size $k$, reachable through configurations of size at most $k+1$ and checking for bad configurations. This is done by computing the fixpoint of $Apost_k$. If at this point no bad configuration has been found, the system can be said to be safe and the algorithm terminates. If on the other hand a bad state was found, the system is not necessarily unsafe, as $V_k$ is an overapproximation of the reachable states in $\mathcal{R}_k$. The process is then repeated with a buffer size of \e{k+1}. This process is abstractly described in the flowchart in figure \ref{flow}.
 
 \begin{figure}
 \includegraphics[width=400pt] {bilder/flowchart.png}
