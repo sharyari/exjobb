@@ -3,7 +3,7 @@
 In this chapter, we show how the algorithm in \ref{verificationalgorithm} could be implemented. The implementation is naïve, it strictly follows the mathematical concepts. Then we identify the main drawbacks of this naïve implementation and suggest some improvements.
 
 \subsection{Definitions and Notations}
-%\todo[inline]{You commented that the change to using $X$ rather than $V$ as in the last chapter is confusing. In my opinion, this distinction makes it more clear that $X$ denotes something that is changing continously, whereas $V$ in this chapter is only used to denote the ''static'' set $V_k$}
+\todo[inline]{You commented that the change to using $X$ rather than $V$ as in the last chapter is confusing. In my opinion, this distinction makes it more clear that $X$ denotes a programming artifact. If you think it is better, I can change to $X$ in the previous chapter as well (if not, I will atleast change it so that I don't mix them in the last chapter as it is now)}
 In this chapter, we introduce the term \e{potential concretizations}. The reason for the introduction of this term resides in the fact that no easy direct way has been found to compute the set of concretizations corresponding to a set of views, i.e. from a set $X_k$ of configurations of size at most $k$ finding $\gamma(X_k)$ of concretizations of size at most $k+1$. Instead, in order to find the concretizations, we generate all of the \e{potential} concretizations, such that a potential configuration is any configuration $con$, $size(v) < size(con) \leq k+1$ for some $v \in X_k$, i.e. any extension of a view already in the set with any symbol in the alphabet.
 
 In order to compute the fixpoint $V_k$ in algorithm \ref{verificationalgorithm} we use the kleen iteration where $X_k^0$ is the set of initial configurations $I$ and we use $X_k^j$ to denote the value of the variable $X$ in the $j_th$ Kleen iteration. We assume that when the fixpoint converges, we have that $X_k^m=V_k$.
@@ -17,7 +17,7 @@ As an example, let $\conf{s, a, b} \in X_k^i$, then $\conf{s, a, bb}$ is a poten
 We say that an accepted concretization $con$ is \e{reached} from the view $v$.
 
 \subsection{Naïve implementation}
-\label{apost}
+\label{Apost}
 A naïve way of implementing algorithm \ref{verificationalgorithm} would be to implement it in a way that corresponds exactly to the mathematical notations. This is possible to do, as most programming languages have built-in data structures that support set operations. We maintain a \e{set} $X_k = \{v | size(v) \leq k\}$ of views such that all views are uniquely stored in $X_k$, and we will assume that an alphabet $\Sigma$, the set $Bad$ of bad states and a set of transitions $\delta$ are known. The the implementation of the algorithm performs three tasks:
 
 \begin{enumerate}
@@ -74,7 +74,7 @@ A bad configuration is any configuration which is in a \e{state} considered to b
 The pseudo-code implementing algorithm \ref{verificationalgorithm} can be seen in listing \ref{naive}. 
 
 \begin{algorithm}
-  \caption{Pseudo-code for algorithm \ref{alg1}.}
+  \caption{Pseudo-code for algorithm \ref{verificationalgorithm}.}
 	\label{naive}
   \begin{algorithmic}[1]
     \State \textbf{Verifier (V, Rules, Bad):}
@@ -175,11 +175,14 @@ When generating potential configurations as explained above, the task of accepti
 Suppose we want to determine whether a potential concretization \e{con} reached from $v$ should be accepted or refuted. We know that $con$ has been genereated from $v$ by adding a single symbol $m$ on one of the channels of $v$, whereas the state of $con$ and $v$ are the same, as is the content of the other channels.
 
 \begin{lemma}
-Let $con = (s, w_1, \ldots, w_n)$ be a concretization created by extending some view $v = (s, w'_1, \ldots, w'_n) \in X_k$ by adding a single message to a single channel such that $w_p = w'_p \bullet m$ for some $p\leq n$ and $w_i = w'_i$ for all $i \neq p$. Then, if $w_p = m_1 m_2 \ldots m$, it suffices to check whether there is a view $v' = (s, w_1, \ldots, w_n) \in X_k$ such that $w_p = m_2\ldots m$, in order to determine if $con$ can be accepted or not.
+Let $v' = (s, w'_1, \ldots, w'_n)$ be the concretization created by extending the view $v = (s, w_1, \ldots, w_n) \in X_k$ by adding a single message to a single channel such that $w'_p = w_p \bullet m$ for some $p\leq n$ and $w'_i = w_i$ for all $i \neq p$. Then, if $w'_p = m_1 m_2 \ldots m$, it suffices to check whether there is a view $v'' = (s, w''_1, \ldots, w''_n) \in X_k$ such that $w''_p = m_2\ldots m$, in order to determine if $con$ can be accepted or not.
 \end{lemma}
 
 \begin{proof}
-Using the simplified subword relation, the views of $con$ either contain the new symbol $m$ in the word $w_p$, or they do not. Any view of $con$ not containing the symbol $m$ in $w_p$ is also a view of $v$, and thus an element of $X_k$. Any view containing $m$ in the word $w_p$ does so with $m$ as its last symbol, i.e. there is a prefix of size at most $k$ followed by the message $m$. Any such word is a subword of the largest possible view containing the message $m$, i.e. $m_2\ldots m$.
+By definition, $v'$ is accepted if $\alpha_k(v') \subseteq X_k$. Although $|v'| = k+1$, a view $v'_x \in \alpha_k(v')$ is at most of length $k$ and contains a word $w_{x_p}$ on its $p:th$ channel. If $w_{x_p}$ does not contain the added symbol $m$, $v_x \models v$ from which it follows that $v_x \in X_k$. If $w_{x_p}$ does contain the message $m$, $v_x \models v''$, thus $v_x \in X_k$ if $v'' \in X_k$. Therefore, it follows from $v'' \in X_k$ that $\alpha_k(v') \subseteq X_k$.
+
+
+%Using the simplified subword relation, the views of $con$ either contain the new symbol $m$ in the word $w_p$, or they do not. Any view of $con$ not containing the symbol $m$ in $w_p$ is also a view of $v$, and thus an element of $X_k$. Any view containing $m$ in the word $w_p$ does so with $m$ as its last symbol, i.e. there is a prefix of size at most $k$ followed by the message $m$. Any such word is a subword of the largest possible view containing the message $m$, i.e. $m_2\ldots m$.
 
 \end{proof}
 
@@ -189,7 +192,7 @@ Using the simplified subword relation, the views of $con$ either contain the new
 \newpage
 \newpage
 \section{Improved Implementation}
-In the last chapter, it was explained how redefining the subword relation could effectivize the calculation of the set $V_k$ of reachable configurations, leading to a lower computational complexity in each iteration for the cost of an increased number of iterations. In this chapter, we will show how storing the set $V_k$ and the set $\delta$ of transitions partitioned into disjunct sets of configurations and transitions respectively, we can further improve the implementation of algorithm \ref{alg1}.
+In the last chapter, it was explained how redefining the subword relation could effectivize the calculation of the set $V_k$ of reachable configurations, leading to a lower computational complexity in each iteration for the cost of an increased number of iterations. In this chapter, we will show how storing the set $V_k$ and the set $\delta$ of transitions partitioned into disjunct sets of configurations and transitions respectively, we can further improve the implementation of algorithm \ref{verificationalgorithm}.
 
 %The algorithm implementation in chapter \ref{naive} uses a \e{set} to store configurations, therefore the time to insert and perform a lookup in the set increases with its size, which can often be expected to grow large, due to often unavoidable state-space explotion. Using an ordered set, inserting an element to the set and finding an element in the set is done in \e{O(log n)} where \e{n} denotes the number of elements in the set.
 
@@ -198,40 +201,43 @@ In the last chapter, it was explained how redefining the subword relation could 
 \subsection{Set Implementation}
 In chapter \ref{naive}, the set $V_k$ of reachable configurations was computed, by iteratively calculating the abstract post-image of a set $X_k^i$. The abstraction function, and consequently , the concretization functions heavily depend on the use of standard set operations; insert, union and membership checks. The time to perform these operations is dependent on the number of elements in the set $X_k^i$.
 
-Consider a configuration $c \in X_k^i \subseteq V_k$. By definition the views of $c$ = $\conf{s, \xi}$ has views of type $\conf{s,\xi'}$, that is, the configuration and its views have the same control-state $s$ as $c$. The time required for inserting the views of $c$ to the set $X_k$, that is, performing the set operation $\alpha_k(c) \cup X$ or conversely, checking whether $\alpha_k(c) \subseteq X_k^i$ (in order to accept or refute $c$), depends on the size of the full set $X_k$.
+Consider a configuration $c \in X_k^i \subseteq V_k$. By definition the views of $c$ = $\conf{s, \xi}$  are of type $\conf{s,\xi'}$, that is, the configuration and its views have the same control-state $s$. The time required for inserting the views of $c$ to the set $X_k$, that is, performing the set operation $\alpha_k(c) \cup X$ or conversely, checking whether $\alpha_k(c) \subseteq X_k^i$ (in order to accept or refute $c$), depends on the size of the full set $X_k$.
 
 Due to the fact that the views of a configuration necessarily have the same control-state as the configuration itself, the time to perform these basic set operations can be greatly reduced, by partitioning the set $X_k$ into several disjoint sets, such that each set corresponds to a unique control-state.
 \subsection{Control-State Partitioning}
 \subsubsection{Notation}
-Let $S$ denote a finite set of control states and $W_s$ denote a finite set of configurations, all of which having the control state $s$. We define a \e{hashmap} $H$, indexed by control states $s \in S$ and storing sets of configurations $W_s \subseteq V_k$. Then $H$ can be viewed as a functions $H : s \in S \rightarrow W_s \subseteq V_k$, i.e., given a control state $s$, the hashmap returns the set of configurations with the control state $s$. 
+Let $S$ denote a finite set of control states and $W_s$ denote a finite set of configurations, all of which have the control state $s$. We define a \e{hashmap} $H_k$, indexed by control states $s \in S$ and storing sets of configurations $W_s \subseteq V_k$. Then $H_k$ can be viewed as a functions $H_k : s \in S \rightarrow W_s \subseteq V_k$, i.e., given a control state $s$, the hashmap returns the set of configurations with the control state $s$. 
 
-Similarly, let $S$ denote a finite set of control states and $\delta_s$ denote a finite set of transitions, such that any $r \in \delta_s$ is of the form $r = (s, op, s')$. We define a hashmap $D$ indexed by control-state $s \in S$ and storing sets of transitions $\delta_s \subseteq \delta$. Then $D$ can be viewed as a function $D_ s \in S \rightarrow \delta_s \subseteq \delta$, i.e., given a control state, the hashmap return the set of all transitions applicable on configurations with the control-state $s$.
+In analogy with $X_k$ in the previous chapter, let $H_k^i$ denote the state of the hashmap $H$ in interation $i$.
+
+Similarly, let $S$ denote a finite set of control states and $\delta_s$ denote a finite set of transitions, such that any $r \in \delta_s$ is of the form $r = (s, op, s')$. We define a hashmap $D$ indexed by control-state $s \in S$ and storing sets of transitions $\delta_s \subseteq \delta$. Then $D$ can be viewed as a function $D : s \in S \rightarrow \delta_s \subseteq \delta$, i.e., given a control state, the hashmap return the set of all transitions applicable on configurations with the control-state $s$.
 
 \subsubsection{Abstract Post-Image}
-The goal is to modify the implementation of the abstraction, post-image and concretization functions in section \ref{Apost}, using the hashmaps $H$ and $D$ as a replacement for the set $X_k$ of configuratios and $\delta$ of transitions respectively. This is done in such a manner, that by the end of and iteration $i$
+The goal is to modify the implementation of the abstraction, post-image and concretization functions in section \ref{Apost}, using the hashmaps $H_k$ and $D$ as a replacement for the set $X_k$ of configuratios and $\delta$ of transitions respectively. This is done in such a manner, that by the end of and iteration $i$
 
-$\bigcup\limits_{s \in S} H^i(s)$ = $X_k^i$.
+$\bigcup\limits_{s \in S} H_k^i(s)$ = $X_k^i$.
 
 We define the concretization function, post-image and abstraction function defined in section \ref{apost}, as follows:
 
 \begin{enumerate}
 \item
 \textbf{Concretization function}:
-Generate the set $\gamma_k^{k+1}(X_k^i)$. For each view \e{v} $\in$ $X_k^i$, generate all potential concretizations \e{con}. Then $con \in \gamma_k^{k+1}(X_k)$ if $\alpha_k(con) \subseteq X_k^i$.
-
-This results in the set of accepted potential concretizations.
+Generate the set $\gamma_k^{k+1}(H_k^i)$. For each state $s \in S$, create all potential concretizations $con$ reachable from  $v \in H_k^i(s)$. Then $con \in \gamma_k^{k+1}(H_k^i(s))$ if $\alpha_k(con) \subseteq H_k^i(s)$.
 
 \item
 \textbf{Post-image}:
-Generate the set $\rho(\gamma_k^{k+1}(X_k^i))$: For every concretization $con$ $\in$ $\gamma_k^{k+1}(X_k^i)$, $r$ $\in$ $\delta$, $r(con) \in post(\gamma_k^{k+1}(X_k^i))$, i.e. the post-image of the concretization $con$.
+Generate the set $\rho(\gamma_k^{k+1}(H_k^i))$: For every concretization $con$ $\in$ $\gamma_k^{k+1}(H_k^i)$, $r$ $\in$ $D(s)$, $r(con) \in post(\gamma_k^{k+1}(H_k^i))$, i.e. the post-image of the concretization $con$.
 
 \item
 \textbf{Abstraction Function}:
-Generate $Apost(X_k^i)$: For each \e{c} $\in$ $\rho(\gamma_k^{k+1}(X_k^i))$, compute $\alpha_k(c)$. Let $V' = \{\alpha_k(c)|c \in \rho(\gamma_k^{k+1}(X_k^i))\}$ of views of size at most \e{k}. Then $X_k^{i+1} = X_k^i \cup V'$. If $X_k^i$ = $X_k^{i+1}$, a fixpoint has been reached.
+Generate $Apost(H_k^i)$: Let $H'$ be an empty hashmap. For each $c \in \rho(\gamma_k^{k+1}(H_k^i))$, $state(c) = s$,  add $\alpha_k(c)$ to $H'(s)$. Then $H_k^{i+1} = H_k^i \cup H'$. If $H_k^i$ = $H_k^{i+1}$, a fixpoint has been reached.
 \end{enumerate}
 
 \subsubsection{Post-image}
-\paragraph{example}
+\paragraph{Example}
+
+\todo[inline]{The picture is not up-to-date any more, but it shows the general idea}
+
 Figure \ref{applyrule} illustrates the calculation of the post-image using the partitioned data-types. In order to clarify the procedure, the hashmaps are illustrated in the form of trees such that each leaf corresponds to a set $W_s$ of channel evaluations or $\delta_s$ of transitions, and the path from the root node to the leaf corresponds to the control-state.
 
 \begin{figure}
@@ -243,9 +249,9 @@ Figure \ref{applyrule} illustrates the calculation of the post-image using the p
 
 
 \subsection{Advantages of Partitioning}
-Having partitioned the set $X$ of configurations into a hashmap of $X_k$ of sets, all set operations are made more effective. In a best-case scenario, there would be approximately the same number of configurations for every state in the system. The complexity of checking whether $\alpha_k(c)$ $\in$ $V$ is reduced to $O(log (n/|S|))$ where $S$ is the set of control-states in the system. The complexity of inserting an element is naturally the same.
+Having partitioned the set $X_k$ of configurations into a hashmap $H_k$ of sets, all set operations are made more effective. In a best-case scenario, there would be approximately the same number of configurations for every state in the system. A lower bound for the complexity of checking whether $\alpha_k(c)$ $\in$ $V$ is reduced to $O(log (n/|s|))$ where $s$ is the set of control-states in the system, compared to $O(log(n))$ using $X_k$. The complexity of inserting an element is naturally the same.
 
-Additionally, the complexity of calculating the set of post-images of a set $\gamma_k^{k+1}(X)$ is reduced, as we need not perform the calculation of each each $\rho = (s, op, s') \in \delta$ on each $c \in \gamma_k^{k+1}(X)$, but only on the subset of configurations for which $state(c) = s$.
+Additionally, the complexity of calculating the set of post-images of a set $\gamma_k^{k+1}(H_k)$ is reduced compared to $\gamma_k^{k+1}(H_k)$, as we need not perform the calculation of each $\rho = (s, op, s') \in \delta$ on each $c \in \gamma_k^{k+1}(H_k)$, but only on the subset $H_k(s)$ of transitions, which can be found in constant time.
 
 
 \begin{algorithm}
