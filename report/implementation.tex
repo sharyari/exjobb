@@ -47,14 +47,12 @@ This results in the set of accepted potential concretizations.
 
 \item
 \textbf{Post-image}:
-\todo[inline]{I added a definition of r(c) in section 2.3}
 Generate the set $\rho(\gamma_k^{k+1}(X_k^i))$: For every concretization $con$ $\in$ $\gamma_k^{k+1}(X_k^i)$, $r$ $\in$ $\delta$, compute $r(con) \in post(\gamma_k^{k+1}(X_k^i))$, i.e. the post-image of the concretization $con$.
 
 \item
 \textbf{Abstraction Function}:
 Generate $Apost(X_k^i)$: For each \e{c} $\in$ $\rho(\gamma_k^{k+1}(X_k^i))$, compute $\alpha_k(c)$. Let $V' = \{\alpha_k(c)|c \in \rho(\gamma_k^{k+1}(X_k^i))\}$ of views of size at most \e{k}. Then $X_k^{i+1} = X_k^i \cup V'$. If $X_k^i$ = $X_k^{i+1}$, a fixpoint has been reached.
 
-\todo[inline]{You said I should comment that calculating $alpha_k(c)$ is easy. It's technically easy, but not computationally (but it becomes easy later, when I redefine the subword relation)}
 %Computing $\alpha_k(c)$ for a concretization $c$ is easy, as finding views $v \subword c$ is easy. 
 \end{enumerate}
 
@@ -104,7 +102,6 @@ The pseudo-code implementing algorithm \ref{verificationalgorithm} can be seen i
         \State \hspace{10pt} $V'$ := $\alpha_k(post(\gamma_k^{k+1}(X_k)))$
 	\State \hspace{10pt} \textbf{while} ($X_k$ $\neq$ $X_k$ $\cup$ $V'$)
         \If {$X_k$ $\cap$ $Bad$ = $\emptyset$}
-	\todo[inline]{You said: "You should make clear that bad configuration talks only about the state". This is stated above in section 4.2.3, and it should have been explained in 2.4.1 as well but it had been removed during restructuring. I have added it there there as well.}
         \State return Safe
         \EndIf
         \State k := k+1
@@ -170,7 +167,6 @@ We can show that when creating the potential concretizations of a view $v$, we n
 Consider a potential concretization $con = (s, w'_1, w'_2, \ldots, w'_n)$ created from the view $v = (s, w_1, w_2, \ldots, w_n)$ such that $w'_i \models w_i$ for each $i \leq n$. If the generation of potential concretizations would be limited such that only one word $w_i$ would be extended in each iteration, the concretization $con$ would still eventually be reached, as the views $v \models \conf{s, w'_1, w_2, w_3 \ldots, w_n} \models \conf{s, w'_1, w'_2, w_3, \ldots, w_n} \models \ldots \models \conf{s, w'_1, w'_2, \ldots, w'_{n-1}, w_n} \models con$.
 
 % If such a potential concretization is accepted, any view $v'$ where $n'<n$ channels have been modified in a similar way will also be a valid concretization, since $v' \subword v$. Therefore, \e{con} will eventually be considered also when only one channel is extended in each iteration, but $n$ iterations are required in order to reach it.
-\todo[inline]{You are correct that adding a single message to the channels would lead to an exponential blow-up in the presence of many channels, but I do not create all the possible combinations, only a linear number of combinations. To be fair, I have added that an exponential increase in the number of iterations is possible (although I believe it to be highly unlikely in practice).}
 Using this approach, the number of potential concretizations considered each iteration is reduced significantly. Using the same notation as above, we let $s$ denote the size of the alphabet, $t$ the number of channels and $n$ = $size(X_k^i)$ in a certain iteration $i$, the number of potential concretizations is reduced such that each of the $n$ views is extended with at most one symbol on each of its channels, resulting in a upper bound of $O(n*s*t)$ potential concretizations. Although the number of potential configurations generated each iteration is reduced, the number of iterations required in order to create the potential configurations increases, possibly by an exponential factor.
 
 \paragraph{Reducing the number of views.}
@@ -191,6 +187,7 @@ Using the simplified subword relation, the views of $con$ either contain the new
 \subparagraph{Example.} Suppose we want to determine whether the potential concretization \e{con} = $\conf{s, abc, de}$ created from the view $v = (s, ab, de)$ $\in X_k$. It is then sufficient to check that $v'$ = $\conf{s,bc,de}$ is an element of $X_k$, as any other view is either a subword of $v$ and is already in $X_k$, or a subword of $v'$, and therefore in $X_k$ if $v' \in X_k$.
 
 \newpage
+\newpage
 \section{Improved Implementation}
 In the last chapter, it was explained how redefining the subword relation could effectivize the calculation of the set $V_k$ of reachable configurations, leading to a lower computational complexity in each iteration for the cost of an increased number of iterations. In this chapter, we will show how storing the set $V_k$ and the set $\delta$ of transitions partitioned into disjunct sets of configurations and transitions respectively, we can further improve the implementation of algorithm \ref{alg1}.
 
@@ -199,23 +196,23 @@ In the last chapter, it was explained how redefining the subword relation could 
 %We will show that partitioning the set of configurations into a combined hashmap and set data structure, the time required to perform any set operation can be significantly reduced. Additionally, by structuring the set $R$ of transitions in a similar manner, the time to calculate the post-image of configurations can be decreased as well.
 
 \subsection{Set Implementation}
-In chapter \ref{naive}, the set $V_k$ of reachable configurations was computed, by iteratively calculating the abstract post-image of a set $X_k^i$. Doing this, the abstraction and concretization functions heavily depend on the use of standard set operations; insert, union and membership checks. The time to perform these operations is dependent on the number of elements in the set.
+In chapter \ref{naive}, the set $V_k$ of reachable configurations was computed, by iteratively calculating the abstract post-image of a set $X_k^i$. The abstraction function, and consequently , the concretization functions heavily depend on the use of standard set operations; insert, union and membership checks. The time to perform these operations is dependent on the number of elements in the set $X_k^i$.
 
-Consider a configuration $c \in X \subseteq V_k$. By definition the views of $c$ = $\conf{s, \xi}$ has views of type $\conf{s,\xi'}$, that is, the configuration and its views have the same control-state as $c$. The time required for inserting the views of $c$ to the set $X_k$, that is, performing the set operation $\alpha(c) \cup X$ or conversely, checking whether the views of $c \subseteq X$ (in order to accept or refute $c$), depends on the size of the full set $X_k$, in which all configurations are uniquely stored.
+Consider a configuration $c \in X_k^i \subseteq V_k$. By definition the views of $c$ = $\conf{s, \xi}$ has views of type $\conf{s,\xi'}$, that is, the configuration and its views have the same control-state $s$ as $c$. The time required for inserting the views of $c$ to the set $X_k$, that is, performing the set operation $\alpha_k(c) \cup X$ or conversely, checking whether $\alpha_k(c) \subseteq X_k^i$ (in order to accept or refute $c$), depends on the size of the full set $X_k$.
 
-Due to the fact that the views of a configuration necessarily have the same control-state as the configuration itself, the time to perform these basic set operations can be greatly reduced, ny partitioning the set $X_k$ into several disjoint sets, such that each set corresponds to a unique control-state.
+Due to the fact that the views of a configuration necessarily have the same control-state as the configuration itself, the time to perform these basic set operations can be greatly reduced, by partitioning the set $X_k$ into several disjoint sets, such that each set corresponds to a unique control-state.
 \subsection{Control-State Partitioning}
 \subsubsection{Notation}
-Let $S$ denote a finite set of control states and $W_s$ denote a finite set of channel configuration, all of which having the control state $s$. We define a \e{hashmap} $H$, indexed by control-states $s \in S$ and storing sets of configurations $W_s \subseteq W$. Then $H$ can be viewed as a functions $H : s \in S -> W_s \subseteq W$, i.e., given a control state $s$, the hashmap returns the set of configurations with the control state $s$. 
+Let $S$ denote a finite set of control states and $W_s$ denote a finite set of configurations, all of which having the control state $s$. We define a \e{hashmap} $H$, indexed by control states $s \in S$ and storing sets of configurations $W_s \subseteq V_k$. Then $H$ can be viewed as a functions $H : s \in S \rightarrow W_s \subseteq V_k$, i.e., given a control state $s$, the hashmap returns the set of configurations with the control state $s$. 
 
-Similarly, let $S$ denote a finite set of control states and $\delta_s$ denote a finite set of transitions, such that any $r \in \delta_s$ is of the form $(s, op, s')$. We define a hashmap $D$ indexed by control-state $s \in S$ and storing sets of transitions $\delta_s \subseteq \delta$. Then $D$ can be viewed as a function $D_ s \in S -> \delta_s \subseteq W$, i.e., given a control state, the hashmap return the set of all transitions applicable on configurations with the control-state $s$.
+Similarly, let $S$ denote a finite set of control states and $\delta_s$ denote a finite set of transitions, such that any $r \in \delta_s$ is of the form $r = (s, op, s')$. We define a hashmap $D$ indexed by control-state $s \in S$ and storing sets of transitions $\delta_s \subseteq \delta$. Then $D$ can be viewed as a function $D_ s \in S \rightarrow \delta_s \subseteq \delta$, i.e., given a control state, the hashmap return the set of all transitions applicable on configurations with the control-state $s$.
 
 \subsubsection{Abstract Post-Image}
-The goal is to modify the implementation of the abstraction, post-image and concretization functions in section \ref{Apost}, using the hashmap $H$ as a replacement for the set $X_k$ and $D$ as a replacement for $\delta$. This is done in such a manner, that by the end of and iteration $i$
+The goal is to modify the implementation of the abstraction, post-image and concretization functions in section \ref{Apost}, using the hashmaps $H$ and $D$ as a replacement for the set $X_k$ of configuratios and $\delta$ of transitions respectively. This is done in such a manner, that by the end of and iteration $i$
 
 $\bigcup\limits_{s \in S} H^i(s)$ = $X_k^i$.
 
-We can now redefine the concretization function, post-image and abstraction function defined in section \ref{apost}, as follows:
+We define the concretization function, post-image and abstraction function defined in section \ref{apost}, as follows:
 
 \begin{enumerate}
 \item
@@ -279,7 +276,6 @@ Additionally, the complexity of calculating the set of post-images of a set $\ga
       \EndFor
 \end{algorithmic}
 \end{algorithm}
-
 
 
 \newpage
