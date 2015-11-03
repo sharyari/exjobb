@@ -19,6 +19,7 @@
 \usepackage{microtype}
 \usepackage{caption}
 \usepackage{dsfont}
+\usepackage{svg}
 \DeclareCaptionFont{white}{\color{white}}
 \DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
 \captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
@@ -57,7 +58,7 @@ escapeinside={\#*}{\^^M}
 \usepackage{tikz}
 \usetikzlibrary{arrows}
 \usetikzlibrary{automata,positioning}
-
+\usepackage{forest}
 
 \newcommand{\abpsender}[1][]{
 \begin{tikzpicture} [->,auto,node distance=2.6cm,line width=0.4mm]
@@ -223,10 +224,13 @@ escapeinside={\#*}{\^^M}
 
 % remember to use [htp] or [htpb] for placement
 
-
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section] % reset theorem numbering for each chapter
 \theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition} % definition numbers are dependent on theorem numbers
+\newtheorem{theorem}[thm]{Theorem}
+\newtheorem{lemma}[thm]{Lemma}
 \newtheorem{exmp}{Example}[section]
-
 
 \usepackage{fancyvrb}
 %\DefineVerbatimEnvironment{code}{Verbatim}{fontsize=\small
@@ -309,10 +313,6 @@ escapeinside={\#*}{\^^M}
 
 
 \usepackage{amsthm}
-\theoremstyle{plain}
-\newtheorem{theorem}{Theorem}
-\newtheorem{corollary}{Corollary}[theorem]
-\newtheorem{lemma}[theorem]{Lemma}
 
 
 \tikzset{

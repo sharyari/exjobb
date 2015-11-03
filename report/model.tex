@@ -8,8 +8,9 @@ The goal of this chapter is to formalize the use of \e{small models} for the ver
 \label{subwords}
 We define a \e{view} $v= \conf{s, \xi}$ to be a minimal representation of a set of configurations $C_v$, such that for any $c \in C_v$, $v \subword c$. Note that a view is itself a configuration, as they have the same representation, and we use the same terminology and notation for them, for example $size(v)$ to denote the size. The difference is that a configuration is a single entity, whereas the view is an abstract representation of a larger set of configurations.
 
-\paragraph{Example.} Let the view $v = \conf{(s_1, r_1), ab, cd}$, then the set $C_v$ is an infinite set, s.t. $\conf{(s_1, r_1), ab, cd} \in C_v$, $\conf{(s_1, r_1), abab, cdcd} \in C_v$ but $\conf{(s_1, r_1), ab, epsilon} \notin C_v$
-
+\begin{exmp}
+Let the view $v = \conf{(s_1, r_1), ab, cd}$, then the set $C_v$ is an infinite set, s.t. $\conf{(s_1, r_1), ab, cd} \in C_v$, $\conf{(s_1, r_1), abab, cdcd} \in C_v$ but $\conf{(s_1, r_1), ab, epsilon} \notin C_v$
+\end{exmp}
 
 \subsection{Abstraction function}
 \label{alphagamma}
@@ -75,10 +76,11 @@ For any $k\in\mathbb{N}$, and $X\subseteq V_k$, $\alpha_k(\rho(\gamma_k(X)))$ $\
 \end{lemma}
 %\todo{Why is this correct? Shouldn't it be the fixpoint of the two that is equal?}
 
-\subsubsection{Proof of lemma 1}
+\begin{proof}
 We want to show that the set $\gamma_k^{k+1}(X)$ of views of size at most $k+1$ is an abstract representation of the full set $\gamma_k(X)$. In order to do this, 
 %we need to show that for any reachable configuration $c$ of larger size than $k+1$, all the views of $c$ of size at most $k$ are included in the set $\gamma_k(X)$ (i.e., the configuration $c$ is abstractly represented). More precisely, 
 we want to show that for any configuration $c \in$ $\rho(\gamma_k(X))$ of size $m > k + 1$ such that there is a transition  $c' \xrightarrow{r} c$, then for each view $v' \in$ $\alpha_k(c)$, the following holds: There is a configuration $d'$ $\in$ $\gamma_k^{k+1}(X)$ of size at most $k+1$ and transition $ d' \xrightarrow{r} d$ s.t. $v \in$ $\alpha_k(d)$.
+\end{proof}
 
 Note that by design (see section \ref{LTS}), transitions only change a single evaluation, therefore, although the set of evaluations may contain multiple evaluation, we direct our focus to a single evaluation in this section.
 
@@ -104,7 +106,6 @@ Note that receptions transitions can be seen as a special case of a message loss
 
 \subsection{Verification Algorithm}
 \label{verificationalgorithm}
-\todo[inline]{You suggested I change from $V'$ to $V_k$ in the algorithm. I assume this applies to this entire subsection, and changed it accordingly}
 Suppose $Bad$ is a set of bad configurations, such that $|b| = 0$ for all $b \in Bad$. As a result of lemma \ref{lemma1}, if $\gamma_k^{k+1}(V_k) \cap Bad$ = $\emptyset$ for any \e{k} $\geq$ $1$, then $\gamma_l^{l+1}(V_k) \cap Bad$ = $\emptyset$ for any $l \geq k$. Given a set of bad configurations \e{Bad}, a set of initial configurations \e{I} and a set of transitions, verification of a system can be done with algorithm \ref{alg1}, which was first presented in \cite{parosh}.
 
 \begin{algorithm}
