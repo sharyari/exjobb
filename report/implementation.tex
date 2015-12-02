@@ -3,10 +3,9 @@
 In this chapter, we show how the algorithm in \ref{verificationalgorithm} could be implemented. The implementation is naïve, it strictly follows the mathematical concepts. Then we identify the main drawbacks of this naïve implementation and suggest some improvements.
 
 \subsection{Definitions and Notations}
-\todo[inline]{You commented that the change to using $X$ rather than $V$ as in the last chapter is confusing. In my opinion, this distinction makes it more clear that $X$ denotes a programming artifact. If you think it is better, I can change to $X$ in the previous chapter as well (if not, I will atleast change it so that I don't mix them in the last chapter as it is now)}
 In this chapter, we introduce the term \e{potential concretizations}. The reason for the introduction of this term resides in the fact that no easy direct way has been found to compute the set of concretizations corresponding to a set of views, i.e. from a set $X_k$ of configurations of size at most $k$ finding $\gamma(X_k)$ of concretizations of size at most $k+1$. Instead, in order to find the concretizations, we generate all of the \e{potential} concretizations, such that a potential concretization is any configuration $con$, $size(v) < size(con) \leq k+1$ for some $v \in X_k$, i.e. any extension of a view already in the set with any symbol in the alphabet.
 
-In order to compute the fixpoint $V_k$ in algorithm \ref{verificationalgorithm} we use the kleen iteration where $X_k^0$ is the set of initial configurations $I$ and we use $X_k^j$ to denote the value of the variable $X$ in the $j_{th}$ Kleen iteration. We assume that when the fixpoint converges, we have that $X_k^m=V_k$.
+In order to compute the fixpoint $V_k$ in algorithm \ref{verificationalgorithm} we use the Kleen iteration where $X_k^0$ is the set of initial configurations $I$ and we use $X_k^j$ to denote the value of the variable $X$ in the $j_{th}$ Kleen iteration. We assume that when the fixpoint converges, we have that $X_k^m=V_k$.
 
 %andthe and We maintain a set $X_k$ of views, and denote its state in a specific iteration of algorithm \ref{verificationalgorithm} by $X_k^i$ , such that $X_k^0$ = $\{c^0\}$ and $X_k^m$ = $V_k$ for some $m$.
  
@@ -66,12 +65,13 @@ Let $R_0$ denote the set containing the initial configuration $\conf{s^0, \xi^0}
 
 \subsubsection{Checking for bad configurations}
 \label{part3}
-A bad configuration is any configuration which is in a \e{state} considered to be bad, independent of the channel evaluation. Thus, the set $Bad$ can be expressed as a minimal state of configurations, such that a bad configuration $b \in Bad$ is of the format $b = (s, \xi^0)$. Checking for bad configurations can be done for each configuration $c = (s, \xi)$ check if $c' = (s, \xi^0) \in Bad$.
+\todo[inline]{I do mean the empty word below, and not the initial channel content.}
+A bad configuration is any configuration which is in a \e{state} considered to be bad, independent of the channel evaluation. Thus, the set $Bad$ can be expressed by its minimal set of configurations, such that a bad configuration $b \in Bad$ is of the format $b = (s, \xi^0)$. Checking for bad configurations can be done for each configuration $c = (s, \xi)$ check if $c' = (s, \xi^0) \in Bad$.
 
 \todo[inline]{Note to self: this paragraph would need an explanation on how to find a bad trace leading to the bad configuration. I've written about that in chapter 6 already, and I suggest I leave it there for now.}
 
 \paragraph{Pseudo-code}
-The pseudo-code implementing algorithm \ref{verificationalgorithm} can be seen in listing \ref{naive}. 
+The pseudo-code implementing algorithm \ref{verificationalgorithm} can be found in listing \ref{naive}. 
 
 \begin{algorithm}
   \caption{Pseudo-code for algorithm \ref{verificationalgorithm}.}
@@ -89,21 +89,21 @@ The pseudo-code implementing algorithm \ref{verificationalgorithm} can be seen i
 	\State
 	\State \% Calculation of $R_k$
 	\State \textbf{do}
-	\todo[inline]{I don't see the problem with the line below}
-        \State \hspace{10pt} $R'$ := $post(R_i)$
+        \State \hspace{10pt} $R'$ := $\rho_x(R_i)$
 	\State \hspace{10pt} $R_{i+1}$ := $R_i$ $\cup$ $R'$
 	\State \hspace{10pt} $i$ := $i+1$
-	\State \textbf{while} ($R_i$ $\neq$ $R_{i-1}$ $\cup$ $R'$)
+	\State \textbf{while} ($R_i$ $\neq$ $R_{i-1}$)
         \If {$\mathcal{R}_i$ $\cap$ $Bad$ $\neq$ $\emptyset$}
         \State return Unsafe
         \EndIf 
 	\State 
 	\State \% Fix-point calculation
 	\State \textbf{do}
-        \State \hspace{10pt} $V'$ := $\alpha_k(post(\gamma_k^{k+1}(X_j)))$
+        \State \hspace{10pt} $X'$ := $\alpha_k(\rho_k(\gamma_k^{k+1}(X_j)))$
 	\State \hspace{10pt} $X_{j+1}$ := $X_j$ $\cup$ $X'$
 	\State \hspace{10pt} \textbf{while} ($X_{j+1}$ $\neq$ $X_j$)
-        \If {$X_k$ $\cap$ $Bad$ = $\emptyset$}
+	\State \hspace{10pt} $j$ := $j+1$
+        \If {$X_j$ $\cap$ $Bad$ = $\emptyset$}
         \State return Safe
         \EndIf
         \State k := k+1
@@ -138,9 +138,9 @@ Note that when using algorithm \ref{verificationalgorithm}, each time a new reac
 Let the set $Y$ denote a fixpoint of algorithm \ref{verificationalgorithm} reached using the definition of the subword relation as defined in section \ref{words}, and let the set $X$ denote a fixpoint of the algorithm using the above definition of the subword relation, then $X=Y$.
 \end{lemma}
 \begin{proof}
-Consider $v$ be a view with the word $w = a_ia_{i+1}\ldots a_m$ on one of its channels, and let $v\in Y_k^p$ for some $p \leq 0$ and $v\in X_k^i$ for some $i \leq 0$.
+Let $v$ be a view with the word $w = a_ia_{i+1}\ldots a_m$ on its channel (assuming for simplicity that there is only one), and let $v\in Y_k^p$ for some $p \leq 0$ and $v\in X_k^i$ for some $i \leq 0$.
 
-Let the view $v'$ be a view with the word $w' = a_ia_{i+1}\ldots a_ja_la_{l+1}\ldots a_m$ on the same channel. Then $v' \in Y_k^{p+1}$ as $w' \subword w$, but $v' \centernot\in X_k^{i+1}$ since $w' \centernot\models w$. We will show that there is a set $X_k^l$ such that $v'\in X_k^l$.
+Let the view $v'$ be a view with the word $w' = a_ia_{i+1}\ldots a_ja_la_{l+1}\ldots a_m$ on the channel. Then $v' \in Y_k^p$ as $w' \subword w$, but $v' \centernot\in X_k^i$ since $w' \centernot\models w$. We will show that there is a set $X_k^q$, $q > i$ such that $v'\in X_k^q$.
 
 % is a view, $0 \leq i \leq j$, $l > j+1$. Then $w'= a_1a_2\ldots a_n \subword w$, but $w' \centernot\models w$, i.e, 
 
@@ -159,7 +159,8 @@ $w'_2$ = $a_ia_{i+1}\ldots a_ja_l$
 $w'_{m}$ = $a_ia_{i+1}\ldots a_ja_la_{l+1}\ldots a_{m} = w'$.
 
 %Then $v'_x \in V_k^{p+1}$ as $w'_x \subword w$ for all $1 \leq x \leq m$.
-We know that $w'_1 \models w'$, thus $v'_1 \in X_k^{i+1}$, but $v'_x \centernot\in X_k^i$ for $x > 1$. As $w'_y \models w'_{y+1}$ for each $1 \leq y \leq m$, $v'_2 \in X_k^{i+2}, v'_3 \in X_k^{j+3} \ldots v'_m \in X_k^{i+m} = X_k^l$. Thus the verification algorithm using the simplified subword relation is guaranteed to find each of the views of $v$ within $m$ iterations.
+\todo[inline]{Fix this}
+We know that $w'_1 \models w'$, thus $v'_1 \in X_k^{i}$, but $v'_x \centernot\in X_k^i$ for $x > 1$. As $w'_y \models w'_{y+1}$ for each $1 \leq y \leq m$, $v'_2 \in X_k^{i+1}$ as it is a valid , $v'_3 \in X_k^{j+2} \ldots v'_m \in X_k^{i+m-1} = X_k^l$. Thus the verification algorithm using the simplified subword relation is guaranteed to find each of the views of $v$ within $m-1$ iterations.
 
 %The view $v'_1$ with the word $a_ia_{i+1}\ldots a_j \models w$ would be created, as it is an unbroken sequence of messages. Then the view $v'_2$ with the word $a_ia_{i+1}\ldots a_ja_l$ is a potential concretization of $v'_1$, which would be accepted. The view $v'_3$ with the word $a_ia_{i+1}\ldots a_ja_la_{l+1}$ on the channel is in turn a potential concretization of $v'_2$, which would again be accepted. Continuing in this way, the view with the word $w'$ on the channel will eventually be created and accepted.
 \end{proof}
@@ -185,7 +186,7 @@ Let $v' = (s, w'_1, \ldots, w'_n)$ be the concretization created by extending th
 \end{lemma}
 
 \begin{proof}
-By definition, $v'$ is accepted if $\alpha_k(v') \subseteq X_k$. Although $|v'| = k+1$, a view $v'_x \in \alpha_k(v')$ is at most of length $k$ and contains a word $w_{x_p}$ on its $p:th$ channel. If $w_{x_p}$ does not contain the added symbol $m$, $v_x \models v$ from which it follows that $v_x \in X_k$, . If $w_{x_p}$ does contain the message $m$, $v_x \models v''$, thus $v_x \in X_k$ if $v'' \in X_k$. Therefore, it follows from $v'' \in X_k$ that $\alpha_k(v') \subseteq X_k$.
+By definition, $v'$ is accepted if $\alpha_k(v') \subseteq X_k$. For any view $v'_x \in \alpha_k(v')$, $|v'_x| < |v'|$. Thus, the word $w_{x_p}$ on the $p:th$ channel of $v'_x$ can either contain the first message $m_1$, or the last message $m$, but not both. If $w_{x_p}$ does not contain the added symbol $m$, $v_x \models v$ from which it follows that $v_x \in X_k$ since $v \in X_k$. If on the other hand, $w_{x_p}$ does contain the message $m$, $v_x \models v''$, thus $v_x \in X_k$ if $v'' \in X_k$. Therefore, it follows from $v'' \in X_k$ that $\alpha_k(v') \subseteq X_k$.
 
 
 %Using the simplified subword relation, the views of $con$ either contain the new symbol $m$ in the word $w_p$, or they do not. Any view of $con$ not containing the symbol $m$ in $w_p$ is also a view of $v$, and thus an element of $X_k$. Any view containing $m$ in the word $w_p$ does so with $m$ as its last symbol, i.e. there is a prefix of size at most $k$ followed by the message $m$. Any such word is a subword of the largest possible view containing the message $m$, i.e. $m_2\ldots m$.
@@ -205,7 +206,7 @@ In the last chapter, it was explained how redefining the subword relation could 
 %We will show that partitioning the set of configurations into a combined hashmap and set data structure, the time required to perform any set operation can be significantly reduced. Additionally, by structuring the set $R$ of transitions in a similar manner, the time to calculate the post-image of configurations can be decreased as well.
 
 \subsection{Set Implementation}
-In chapter \ref{naive}, the set $V_k$ was computed, by iteratively calculating the abstract post-image of a set $X_k^i$. The abstraction function, and consequently , the concretization functions heavily depend on the use of standard set operations; insert, union and membership checks. The time to perform these operations is dependent on the number of elements in the set $X_k^i$.
+In chapter \ref{naive}, the set $V_k$ was computed, by iteratively calculating the abstract post-image of a set $X_k^i$. The abstraction function, and consequently, the concretization functions heavily depend on the use of standard set operations; insert, union and membership checks. The time to perform these operations is dependent on the number of elements in the set $X_k^i$.
 
 %Consider a configuration $c \in X_k^i \subseteq V_k$. By definition the views of $c$ = $\conf{s, \xi}$  are of type $\conf{s,\xi'}$, that is, the configuration and its views have the same control-state $s$. The time required for inserting the views of $c$ to the set $X_k$, that is, performing the set operation $\alpha_k(c) \cup X$ or conversely, checking whether $\alpha_k(c) \subseteq X_k^i$ (in order to accept or refute $c$), depends on the size of the full set $X_k$.
 
@@ -217,7 +218,7 @@ Let $S$ denote a finite set of control states and $W_s$ denote a finite set of c
 
 In analogy with $X_k$ in the previous chapter, let $H_k^i$ denote the state of the hashmap $H_k$ in interation $i$.
 
-Similarly, let $S$ denote a finite set of control states and $\delta_s$ denote a finite set of transitions, such that any $r \in \delta_s$ is of the form $r = (s, op, s')$. We define a hashmap $D$ indexed by control-state $s \in S$ and storing sets of transitions $\delta_s \subseteq \delta$. Then $D$ can be viewed as a function $D : s \in S \rightarrow \delta_s \subseteq \delta$, i.e., given a control state, the hashmap return the set of all transitions applicable on configurations with the control-state $s$.
+Similarly, let $\delta_s$ denote a finite set of transitions, such that any $r \in \delta_s$ is of the form $r = (s, op, s')$. We define a hashmap $D$ indexed by control-state $s \in S$ and storing sets of transitions $\delta_s \subseteq \delta$. Then $D$ can be viewed as a function $D : s \in S \rightarrow \delta_s \subseteq \delta$, i.e., given a control state, the hashmap return the set of all transitions applicable on configurations with the control-state $s$.
 
 \subsubsection{Abstract Post-Image}
 The goal is to modify the implementation of the abstraction, post-image and concretization functions in section \ref{Apost}, using the hashmaps $H_k$ and $D$ as a replacement for the set $X_k$ of configurations and $\delta$ of transitions respectively. This is done in such a manner, that by the end of iteration $i$
@@ -244,6 +245,9 @@ Generate $Apost(H_k^i)$: Let $H'$ be an empty hashmap. For each $c \in \rho(\gam
 
 Figure \ref{applyrule} illustrates the calculation of the post-image using the partitioned data-types. In order to clarify the procedure, the hashmaps are illustrated in the form of trees such that each leaf corresponds to a set $W_s$ of channel evaluations or $\delta_s$ of transitions, and the path from the root node to the leaf corresponds to the control-state.
 
+
+
+\todo[inline]{Fix this, picture unclear?}
 \begin{figure}
 \centering
 \def\svgwidth{\columnwidth}
@@ -257,76 +261,77 @@ Figure \ref{applyrule} illustrates the calculation of the post-image using the p
 \subsection{Advantages of Partitioning}
 Having partitioned the set $X_k$ of views into a hashmap $H_k$, all set operations are made more effective since the algorithm is working a much smaller subset of views. Using a hashmap, the relevant subset itself can be found in constant time.
 
-Additionally, computing the post-images of a set $gamma_k^{k+}(H_k)$ is also faster. Where previously all transitions where applied to all views, they are only applied to views which are in a state where the transition can be fired.
-\todo[inline]{I removed the complexity part.}
+Additionally, computing the post-images of a set $\gamma_k^{k+}(H_k)$ is also faster. Where previously all transitions where applied to all views, they are only applied to views which are in a state where the transition can be fired.
 %A lower bound for the complexity of checking whether $\alpha_k(c)$ $\in$ $V$ is reduced to $O(log (n/|s|))$ where $s$ is the set of control-states in the system, compared to $O(log(n))$ using $X_k$. The complexity of inserting an element is naturally the same.
 
 Additionally, the complexity of calculating the set of post-images of a set $\gamma_k^{k+1}(H_k)$ is reduced compared to $\gamma_k^{k+1}(H_k)$, as we need not perform the calculation of each $\rho = (s, op, s') \in \delta$ on each $c \in \gamma_k^{k+1}(H_k)$, but only on the subset $H_k(s)$ of transitions, which can be found in constant time.
 
 
-\begin{algorithm}
-  \caption{The verification algorithm from section \ref{alg1} in somewhat higher detail. This version includes }\label{euclid}
-  \begin{algorithmic}[1]
-    \State \textbf{Gamma (V, Seen):}
-    \State \hspace{6 mm} con' := concretizations (V)
-    \State \hspace{6 mm} con  := c | c $\in$ con $\land$ c $\notin$ Seen
-    \\
-    \State \textbf{Step (Con, Rules):}
-    \For {state $\in$ nodes(V)}
-    \State \hspace{6 mm} S := r(c) | $\forall$ c $\in$ con(state) $\land$ $\forall$ r $\in$ Rules(state)
-    \EndFor
-    \\
-    \State \textbf{Alpha (V, S):}
-    \State \hspace{6 mm} V:= V $\cup$ views(C)
-    \\
-    \State \textbf{Verifier (V, Rules, Bad):}
-    \For{\texttt{$True$}}
-        \If {$\mathcal{R}_k$ $\cap$ $Bad$ $\neq$ $\emptyset$}
-        \State return Unsafe
-        \EndIf
-        \State V := $\mu Alpha(Step(Gamma(V)))$
-        \If {$\gamma_k(V)$ $\cap$ $Bad$ = $\emptyset$}
-        \State return Safe
-        \EndIf
-        \State k := k+1
-      \EndFor
-\end{algorithmic}
-\end{algorithm}
+%\begin{algorithm}
+%  \caption{The verification algorithm from section \ref{alg1} in somewhat higher detail. This version includes }\label{euclid}
+%  \begin{algorithmic}[1]
+%    \State \textbf{Gamma (V, Seen):}
+%    \State \hspace{6 mm} con' := concretizations (V)
+%    \State \hspace{6 mm} con  := c | c $\in$ con $\land$ c $\notin$ Seen
+%    \\
+%    \State \textbf{Step (Con, Rules):}
+%    \For {state $\in$ nodes(V)}
+%    \State \hspace{6 mm} S := r(c) | $\forall$ c $\in$ con(state) $\land$ $\forall$ r $\in$ Rules(state)
+%    \EndFor
+%    \\
+%    \State \textbf{Alpha (V, S):}
+%    \State \hspace{6 mm} V:= V $\cup$ views(C)
+%    \\
+%    \State \textbf{Verifier (V, Rules, Bad):}
+%    \For{\texttt{$True$}}
+%        \If {$\mathcal{R}_k$ $\cap$ $Bad$ $\neq$ $\emptyset$}
+%        \State return Unsafe
+%        \EndIf
+%        \State V := $\mu Apost(V)$
+%        \If {$\gamma_k(V)$ $\cap$ $Bad$ = $\emptyset$}
+%        \State return Safe
+%        \EndIf
+%        \State k := k+1
+%      \EndFor
+%\end{algorithmic}
+%\end{algorithm}
 
 
 \newpage
 \section{Final Implementation}
-An efficient algorithm in this context is largely an algorithm that avoids performing unnecessary calculations. This can either be done by avoiding to create unnecessary configurations such as was done with the rule hashmap above or by avoiding re-calculating previously calculated results. The algorithm as described above reproduces its steps each iteration; if a configuration \e{c} can be extended to a concretization \e{con} at any point in the verification process, then \e{con} can and will be created in every following iteration. This includes checking whether \e{$\alpha_k(con) \subset V$}, applying a set of rules to the configuration and then adding all the views of the resulting configurations to the set. Each time the calculations are performed, the result will be duplicates and no new views are added to the system.
+An efficient algorithm in this context is largely an algorithm that avoids performing unnecessary calculations. This can either be done by avoiding to create unnecessary configurations such as was done by redefining the subword relation, or by avoiding recalculating previously calculated results. The algorithm as described above reproduces its steps each iteration; if a configuration \e{c} can be extended to a concretization \e{con} at any point in the verification process, then \e{con} can and will be created in every following iteration. This includes checking whether \e{$\alpha_k(con) \subseteq V$}, applying a set of rules to the configuration and then adding all the views of the resulting configurations to the set. Each time the calculations are performed, the result will be duplicates and no new views are added to the system.
 
-We solve this by maintaining another hashmap, \e{seen}, of configurations in parallell, containing exactly those concretization that have been accepted. If a configuration \e{c} can be extended to the concretization \e{con}, then we first check if \e{con} is an element of seen. If it is, we discard \e{con}, otherwise we add \e{con} to \e{seen} and also to the set of concretizations to be evaluated in this iteration.
+We solve this by maintaining another hashmap, \e{seen}, of concretizations in parallell, containing exactly those concretizations that have been accepted. If a configuration \e{c} can be extended to the concretization \e{con}, then we first check if \e{con} is an element of $seen$. If it is, we discard \e{con}, otherwise we add \e{con} to \e{seen} and also to the set of concretizations to be evaluated in this iteration.
 
-Yet another source of repetition is the fact that there are multiple ways to create the same channel evaluations. Therefore, after a rule has been applied to a concretization, it may result in a configuration already in the set. Instead of performing the costly $\alpha$-calculation, we first check if the newly created configuration is not in fact a duplicate by checking if it is already in \e{V}. If so, the configuration can again be discarded.
+Yet another source of repetition is the fact that there are multiple ways to create the same channel evaluations. Therefore, after a rule has been applied to a concretization $con$, it may result in a configuration already in the set. Rather than calculating $\alpha_k(post(con))$, we first check if the newly created configuration $post(con)$ is not in fact a duplicate by checking if it is already in \e{V}. If so, the configuration can again be discarded and the computationally heavy $\alpha$ function can be avoided.
 
-The final algorithm amounts to the following pseudo-code representation:
+%The final algorithm amounts to the following pseudo-code representation:
 
 \subsection{Reachability Analysis}
-An important step of the verification process which has yet to be covered is that of performing a reachability analaysis, in order to find bad states, if any such states are reachable and find a minimal bad trace leading up to the bad state. See sections \ref{bad} and \ref{traces} for formal definitions of bad states and traces respectively.
+An important step of the verification process which has yet to be covered is that of performing a reachability analaysis, in order to find bad states, if any such states are reachable and find a minimal bad trace leading up to the bad state. See section \ref{badconf} for formal definitions of bad states and traces respectively.
 
 Below, a simple technique of finding a minimal bad trace is presented, accompanied with a proof that the trace is in fact minimal.
 
 \subparagraph{Finding Minimal Traces}
-When running the verification, if a bad state is found we want to produce a trace leading up to the bad state. Preferably, this would be a minimal trace that leads to the bad state.
+When running the verification, if a bad state is found we want to produce a trace leading up to the bad state. Preferably, this would be a minimal trace leading to the bad state.
 
-The proposed verification method generates a finite set of reachable states (nodes in this context), but it does not record the available transitions between the nodes (i.e. the edges). It is possible to for each node \e{n} to save all nodes \e{n} from which an edge to \e{n'} exists, and thus build the complete reachability graph of the problem. There exists efficient algorithms to solve such a problem, e.g. \e{dijkstra shortest path}, or even the shortest path between any two nodes, e.g. flow-network techniques. Although these algorithms are efficient, building the complete reachability graph would be costly in terms of memory space, as the number of edges may be much larger than the number of states.
+The proposed verification method generates a finite set of reachable states (nodes in this context), but it does not record the transitions between the nodes (i.e. the edges). It is possible for each node \e{n} to carry a reference to each node \e{n'} from which it is reachable, and thus build the complete reachability graph of the problem. There exists efficient algorithms to solve such problems, e.g. \e{dijkstra shortest path}, or even the shortest path between any two nodes, e.g. flow-network techniques. Although these algorithms are efficient, building the complete reachability graph would be costly in terms of memory space, as the number of edges may be much larger than the number of states.
 
+We show that due to the method of iteratively constructing the graph, a trace leading to a bad state can be found adding only a small bit of information to the nodes, and that such a trace will in fact be minimal.
 
-We show that due to the method of iteratively constructing the graph, nodes are created in such a way, that if a node $n_{i}$ created in the \e{i}:th iteration is reached by a node $n_{i-1}$ over an edge $e_{i-1}$, the shortest path from the initial node $n_0$ will necessarily be a path $e_1...e_{i-1}$.
+\begin{lemma}
+let $n_0,n_1\ldots n_m$ be nodes, such that for each $i \leq 0$, $n_i$ has been created in the \e{i}:th iteration of the reachability analysis algorithm, reached by a node $n_{i-1}$ over an edge $e_{i-1}$. Then the shortest path from the initial node $n_0$ to node $n_m$ will necessarily be a path $e_0...e_{i-1}$. The trace $t = n_0,n_1\ldots n_m$ is a minimal trace and is of length $m$.
+\end{lemma}
 
-\e{Proof.} This is proven using an induction proof. We hypothesize that, if at the point of creation of $n_i$, choosing the parent node $n_{i-1}$ from which an edge $e_{i-1}$ can be taken $n_i$, the path $e_1..e_{i}$ will be the shortest path to $n_i$ and has length \e{i}. Note that the node $n_{i-1}$ must have been created in the previous iteration; had it been created earlier, the edge $e_i$ could have been taken in a previous iteration, and so $n_{i+1}$ would already be a node in the tree.
+\begin{proof}
+This is proven using an induction proof over the number of iterations $i$. In the base case, $i=0$, it holds that for any node reachable from $n_0$ over any edge $e_0$, $e_0$ will be the shortest path and has length 1. This is trivially true. Now suppose a node $n_{i+1}$ is reachable over an edge $e_i$ from a node $n_i$, and the node $n_{i+1}$ is not yet in the system. The induction hypothesis states that the path $e_1...e_i$ is the shortest path leading up to $n_i$.
+Looked at from another angle, if $e_0..e_{i-1}e_i$ would not be the shortest path to $n_{i+1}$, there would be a path $e'_0..e'_{k-1}$ to another node $n_k$ with k < i from which $n_{i+1}$ can be reached. But any such node would have been created in the \e{k}:th iteration of the algorithm, which would contradict the fact that the node $n_{i+1}$ was not already in the system.
+\end{proof}
 
-The base case is that for any node reachable from $n_0$ over any edge $e_0$, $e_0$ will be the shortest path and has length 1. This is trivially true.
+Having shown this, a minimal trace can be found by for each node $n_i$ also storing the node $n_{i-1}$ from which it was first reached (a node may have several parent, but only one parent need be stored). 
 
-Now suppose a node $n_{i+1}$ is reachable over an edge $e_i$ from a node $n_i$, and the node $n_{i+1}$ is not yet in the system. The induction hypothesis states that the path $e_1...e_i$ is the shortest path leading up to $n_i$. If $e_0..e_{i-1}e_i$ would not be the shortest path to $n_{i+1}$, there would be a path $e'_0..e'_{k-1}$ to another node $n_k$ with k < i from which $n_{i+1}$ can be reached. But any such node would have been created in the \e{k}:th iteration of the algorithm, which would contradict the fact that the node $n_{i+1}$ was not already in the system.
-
-Having shown this, we need only record the information of a single parent of a node, in order to build up a tree from which the shortest path from $n_0$ to any node in the system can efficiently be found.
-
-
-\subsection{Specification Language}
+\newpage
+\section{Specification Language}
 \label{speclang}
 In order for the verification algorithm to be easily used, a specification language is needed in which algorithms can be formally defined. We expect such a specification language to
 
@@ -336,18 +341,18 @@ be expressive enough to express all algorithms that are in the scope of the veri
 \item
 be independent of the internal representations of the verifier and to demand as little knowledge of the actual verification process as possible from the user
 \item
-to be as clear as possible in order to ensure that the model at hand in fact corresponds to the actual algorithm, the way it was intended
+to be as clear as possible in order to ensure that the model at hand in fact corresponds to the actual algorithm, in the way it was intended
 \end{itemize}
 
-The specification language used is an adaption of previous works in \cite{mpass}. The language simply uses XML to describe an algorithm. There are minor differences between the specification language used here, with respect to that used in by the MPass verification algorithm, and correspond to different expressivness of the models. More specifically, the MPass verifier allows for joint reception and transmission transitions, i.e. a single transition may read a message from a channel and write a message to a channel at the same time. On the other hand, it does not allow for synchronized transitions, this has therefore been added to the language.
+The specification language used is an adaption of previous works in \cite{mpass}. The language simply uses XML to describe an algorithm. There are minor differences between the specification language used here, with respect to that used in by the MPass verification algorithm, and correspond to differences in the expressiveness of the models. More specifically, the MPass verifier allows for joint reception and transmission transitions, i.e. a single transition may read a message from a channel and write a message to a channel at the same time. On the other hand, it does not allow for synchronized transitions, this has therefore been added to the specification language below.
 
-\subsubsection{Example}
-We return yet again to the Alternating Bit Protocol to examplify the specification language. Bearing in mind the formal definition in section \ref{CS}, a model needs a set of messages, channels, actions and transitions.
+\begin{exmp}
+We illustrate the specification language with a working example for the Alternating Bit Protocol to examplify the specification language. Bearing in mind the formal definition in section \ref{CS}, a model needs a set of messages, channels, actions and transitions.
 
-We begin by specifying a new protocol, it's name and that it is operating on FIFO buffers. We then specify a set of messages, a set of channels and a set of actions in a similar manner.
+We begin by specifying a new protocol, its name and that it is operating on FIFO buffers. We then specify a set of messages, a set of channels and a set of actions in a similar manner.
 
-\lstset{language=XML}
-\begin{lstlisting}[frame=single]
+%\lstset{language=XML}
+\begin{lstlisting}[frame=single, showstringspaces=false]
 <protocol name="Alternating Bit Protocol" medium="FIFO>
 <messages>
       <message>ack0</message>
@@ -367,7 +372,7 @@ We begin by specifying a new protocol, it's name and that it is operating on FIF
 </actions>
 \end{lstlisting}
 
-We then continue by defining the different processes in the system, i.e. the sender, receiver and observer. Such a process is defined by its states and its transitions. In the specification language, we differentiate between transitions over an action, and transitions that modify a channel. The latter type is called a \e{rule} in the specification language, in order to comply with the names used in the MPass specification language. This should not be confused with the word as used earlier in this section.
+We then continue by defining the different processes in the system, i.e. the sender, receiver and observer. Such a process is defined by its states and its transitions. In the specification language, we differentiate between transitions over an action, and transitions that modify a channel. The latter type is called a \e{rule} in the specification language, in order to comply with the names used in the MPass specification language.
 
 \begin{lstlisting}[frame=single]
   <role name="SENDER">
@@ -388,6 +393,7 @@ We then continue by defining the different processes in the system, i.e. the sen
         <next_state>Q1</next_state>
         <channel>c1</channel>
     </rule>
+  </role>
 \end{lstlisting}
 
 Last, we specify that the processes \texttt{SENDER} and \texttt{OBSERVER}, and  \texttt{RECEIVER} and \texttt{OBSERVER} are to be synchronized over the actions \texttt{Snd} and \texttt{Rcv} respectively.
@@ -404,3 +410,4 @@ Last, we specify that the processes \texttt{SENDER} and \texttt{OBSERVER}, and  
         <action>Rcv</action>
 </synchronize>
 \end{lstlisting}
+\end{exmp}

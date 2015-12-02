@@ -9,7 +9,7 @@ The goal of this chapter is to formalize the use of \e{small models} for the ver
 We define a \e{view} $v= \conf{s, \xi}$ to be a minimal representation of a set of configurations $C_v$, such that for any $c \in C_v$, $v \subword c$. Note that a view is itself a configuration, as they have the same representation, and we use the same terminology and notation for them, for example $size(v)$ to denote the size. The difference is that a configuration is a single entity, whereas the view is an abstract representation of a larger set of configurations.
 
 \begin{exmp}
-Let the view $v = \conf{(s_1, r_1), ab, cd}$, then the set $C_v$ is an infinite set, s.t. $\conf{(s_1, r_1), ab, cd} \in C_v$, $\conf{(s_1, r_1), abab, cdcd} \in C_v$ but $\conf{(s_1, r_1), ab, epsilon} \notin C_v$
+Let the view $v = \conf{(s_1, r_1), ab, cd}$, then the set $C_v$ is an infinite set, s.t. $\conf{(s_1, r_1), ab, cd} \in C_v$, $\conf{(s_1, r_1), abab, cdcd} \in C_v$ but $\conf{(s_1, r_1), ab, \epsilon} \notin C_v$
 \end{exmp}
 
 \subsection{Abstraction function}
@@ -72,37 +72,37 @@ Calculating the abstract post-image of a set of views $V' \subseteq V_k$ is esse
 
 \begin{lemma}
 \label{lemma1}
-For any $k\in\mathbb{N}$, and $X\subseteq V_k$, $\alpha_k(\rho(\gamma_k(X)))$ $\cup$ $X$ = $\alpha_k(\rho(\gamma_k^{k+1}(X)))$ $\cup$ $X$.
+For any $k\in\mathbb{N}$, and $V'\subseteq V_k$, $\alpha_k(\rho(\gamma_k(V')))$ $\cup$ $V'$ = $\alpha_k(\rho(\gamma_k^{k+1}(V')))$ $\cup$ $V'$.
 \end{lemma}
 %\todo{Why is this correct? Shouldn't it be the fixpoint of the two that is equal?}
 
 \begin{proof}
-We want to show that the set $\gamma_k^{k+1}(X)$ of views of size at most $k+1$ is an abstract representation of the full set $\gamma_k(X)$. In order to do this, 
+We want to show that the set $\gamma_k^{k+1}(V')$ of views of size at most $k+1$ is an abstract representation of the full set $\gamma_k(V')$. In order to do this, 
 %we need to show that for any reachable configuration $c$ of larger size than $k+1$, all the views of $c$ of size at most $k$ are included in the set $\gamma_k(X)$ (i.e., the configuration $c$ is abstractly represented). More precisely, 
-we want to show that for any configuration $c \in$ $\rho(\gamma_k(X))$ of size $m > k + 1$ such that there is a transition  $c' \xrightarrow{r} c$, then for each view $v' \in$ $\alpha_k(c)$, the following holds: There is a configuration $d'$ $\in$ $\gamma_k^{k+1}(X)$ of size at most $k+1$ and transition $ d' \xrightarrow{r} d$ s.t. $v \in$ $\alpha_k(d)$.
+we want to show that for any configuration $c \in$ $\rho(\gamma_k(V'))$ of size $m > k + 1$ such that there is a transition  $c' \xrightarrow{r} c$, then for each view $v' \in$ $\alpha_k(c)$, the following holds: There is a configuration $d'$ $\in$ $\gamma_k^{k+1}(V')$ of size at most $k+1$ and transition $ d' \xrightarrow{r} d$ s.t. $v \in$ $\alpha_k(d)$.
 \end{proof}
 
 Note that by design (see section \ref{LTS}), transitions only change a single evaluation, therefore, although the set of evaluations may contain multiple evaluation, we direct our focus to a single evaluation in this section.
 
 \paragraph{Transmissions}
 \label{proofTransmission}
-Consider a configuration $c' = \conf{s', x} \in \gamma_k(X)$ and a transition $r: c' \xrightarrow{ch!m} c = \conf{s,x \bullet m}$. Any view $v = \conf{s', y}$ of size at most $k$ of $c$ is on one of the following forms:
+Consider a configuration $c' = \conf{s', x} \in \gamma_k(V')$ and a transition $r: c' \xrightarrow{ch!m} c = \conf{s,x \bullet m}$. Any view $v = \conf{s', y}$ of size at most $k$ of $c$ is on one of the following forms:
 
 \begin{enumerate}
 \item
-$y \subword x$, $|y| \leq k$. In this case, the set $\gamma_k^{k+1}(X)$ includes all the configurations $d'$ = $\conf{s', y}$, as $d_E' \subword c_E'$. Then $d' \xrightarrow{ch!m} d$ yields $d = \conf{s, y\bullet m}$, for which $\conf{s, y} = v$ is a view.
+$y \subword x$, $|y| \leq k$. In this case, the set $\gamma_k^{k+1}(V')$ includes all the configurations $d'$ = $\conf{s', y}$, as $d_E' \subword c_E'$. Then $d' \xrightarrow{ch!m} d$ yields $d = \conf{s, y\bullet m}$, for which $\conf{s, y} = v$ is a view.
 \item
-$y = z\bullet m$ with $z \subword x$, $|z| \leq (k-1)$. The set $\gamma_k^{k+1}(X)$ includes all the configurations $d'$ = $\conf{s', z}$, as $d_E' \leq c_E'$. Then $d' \xrightarrow{ch!m} d$ yields $d = \conf{s, z\bullet m}$ which is of size at most $k$, meaning it is also a view, $d$ = $v$.
+$y = z\bullet m$ with $z \subword x$, $|z| \leq (k-1)$. The set $\gamma_k^{k+1}(V')$ includes all the configurations $d'$ = $\conf{s', z}$, as $d_E' \leq c_E'$. Then $d' \xrightarrow{ch!m} d$ yields $d = \conf{s, z\bullet m}$ which is of size at most $k$, meaning it is also a view, $d$ = $v$.
 \end{enumerate}
 
 
 \paragraph{Actions}
-Consider a configuration $c' = \conf{s', x} \in \gamma_k(X)$ and a transition $r: c' \xrightarrow{a} c = \conf{s, x}$. Since $r$ is an action, it can be fired regardless of the channel evaluation. Therefore, if $r$ can be fired from the configuration $c'$, it may also be fired from any view $v' = \conf{s', y}$ of size at most $k$ of $c'$, resulting in a view $v =  \conf{s, y}$.
+Consider a configuration $c' = \conf{s', x} \in \gamma_k(V')$ and a transition $r: c' \xrightarrow{a} c = \conf{s, x}$. Since $r$ is an action, it can be fired regardless of the channel evaluation. Therefore, if $r$ can be fired from the configuration $c'$, it may also be fired from any view $v' = \conf{s', y}$ of size at most $k$ of $c'$, resulting in a view $v =  \conf{s, y}$.
 
-Let $\{\conf{s', w_1}, \conf{s', w_2}, \ldots,  \conf{s', w_n}\}$ be the views of $c'$, then the transition $r$ can be fired from each of these, resulting in a set $\{\conf{s, w_1}, \conf{s, w_2},\ldots \conf{s, w_n}\}$, which is the complete set of views of size at most $k$ of $c$, showing that $c$ is abstractly represented in $\gamma_k(X)$.
+Let $\{\conf{s', w_1}, \conf{s', w_2}, \ldots,  \conf{s', w_n}\}$ be the views of $c'$, then the transition $r$ can be fired from each of these, resulting in a set $\{\conf{s, w_1}, \conf{s, w_2},\ldots \conf{s, w_n}\}$, which is the complete set of views of size at most $k$ of $c$, showing that $c$ is abstractly represented in $\gamma_k(V')$.
 
 \paragraph{Receptions and Message Loss}
-Note that receptions transitions can be seen as a special case of a message loss, where messages are lost in FIFO order, i.e. a proof of lemma 1 for message loss directly applies to the reception transitions. Consider a configuration $c' = \conf{s', x} \in \gamma_k(X)$ and a transition $r: c' \xrightarrow{*} c = \conf{s', y}$. Since $y \subword x$, the set of views $V$ of $c$ is a subset of the set of views $V'$ of $c'$.
+Note that receptions transitions can be seen as a special case of a message loss, where messages are lost in FIFO order, i.e. a proof of lemma 1 for message loss directly applies to the reception transitions. Consider a configuration $c' = \conf{s', x} \in \gamma_k(V')$ and a transition $r: c' \xrightarrow{*} c = \conf{s', y}$. Since $y \subword x$, the set of views $V$ of $c$ is a subset of the set of views $V'$ of $c'$.
 
 \subsection{Verification Algorithm}
 \label{verificationalgorithm}

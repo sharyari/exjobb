@@ -5,7 +5,7 @@ An implementation of this method has been written in the \e{Haskell} programming
 \vspace{10pt}
 \makebox[\linewidth]{
 \begin{tabularx}{0.95\linewidth} {l  X}
-\textsc{abp} & The alternating bit protocol, as described in \ref{abpgraph} with the extension suggested in \ref{abpobserver}. The Alternating Bit Protocol corresponds to the \e{Sliding Window Protocol} with k=2. Automatas for the the Sliding Window Protocol can be found in \ref{SWgraph}.\\
+\textsc{abp} & The alternating bit protocol, as described in \ref{abpgraph} with the extension suggested in \ref{abpobserver}. The Alternating Bit Protocol corresponds to the \e{Sliding Window Protocol} with k=2. Automata for the the Sliding Window Protocol can be found in \ref{SWgraph}.\\
 \textsc{abp\_f} & A purpously faulty version of the \textsc{abp}.\\
 \textsc{sw3} & The sliding window protocol, with k=3. \\
 \textsc{abp\_f} & A purpously faulty version of the \textsc{sw3}. \\
@@ -27,7 +27,7 @@ The input language used in this project (see \ref{speclang}) was based on that o
 It should be mentioned that the time estimation for the $MPass$ solver is part the time to generate an $SMT$ formula, and part to verify that formula with a third party $SMT$-solver. The times generated in the latter part were approximated to full seconds, meaning the values have a measurement error up to $\pm 0.5$ seconds.
 
 \subsection{Experimental Results}
-The results can be seen in \ref{comparison}. The table shows the size of the variable $k$, whether the result was safe or unsafe, the runetime and the amount of working memory used by the verifier for each of the communication protocols above. Further, the table shows the runtime and result of two other verifiers, verifying the same protocols. For these verifiers, only the runtime and the safetyness result is specified.
+The results can be seen in \ref{comparison}. The table shows the size of the variable $k$, whether the result was safe or unsafe, the runetime and the amount of working memory used by the verifier for each of the communication protocols above. Further, the table shows the runtime and result of two other verifiers, verifying the same protocols. For these verifiers, only the runtime and the safety result is specified.
 
 The results were generated on a 3.2GHz Intel Core i3 550 with 4GB of memory, running Debian Linux, using a single core.
 
