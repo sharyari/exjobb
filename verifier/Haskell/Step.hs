@@ -11,7 +11,7 @@ import UnOrdered
 -- This function applies rules on a list of concretizations to create new configurations
 step :: Int -> Bool -> (CMap, CMap, [C]) ->(CMap, CMap, [C])
 step k b (confs, seen, newConfs)=
-  (confs, seen, (concatMap (applyRules seen confs k b ) newConfs))
+  (confs, seen,(P.filter (ifSeen confs) $ P.filter (ifSeen seen) newConfs) ++ (concatMap (applyRules seen confs k b ) newConfs))
 
 -- This function takes a concretization and applies all relevant rules upon it
 -- it then concatenates the result

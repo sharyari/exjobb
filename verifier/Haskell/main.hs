@@ -26,5 +26,5 @@ die     = exitWith (ExitFailure 1)
 
 latex = timeIt (skriv $ verify (myTrie, M.empty) 1 False)
 normal =
-  "There is no message loss in the Run.hs file at the moment"
-  --verify (myTrie,M.empty) 1 True
+--  "There is no message loss in the Run.hs file at the moment"
+  verify (myTrie,M.empty) 1 True

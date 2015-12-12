@@ -1,6 +1,6 @@
 \section{Result}
 \label{results}
-An implementation of this method has been written in the \e{Haskell} programming language (\url{https://www.haskell.org/haskellwiki/Haskell}). It was used to verify a number of parameterized systems, all of which are communication protocols;
+An implementation of this method, henceforth called $\myname$ has been written in the \e{Haskell} programming language (\url{https://www.haskell.org/haskellwiki/Haskell}). It was used to verify a number of parameterized systems, all of which are communication protocols;
 
 \vspace{10pt}
 \makebox[\linewidth]{
@@ -32,7 +32,7 @@ The results can be seen in \ref{comparison}. The table shows the size of the var
 The results were generated on a 3.2GHz Intel Core i3 550 with 4GB of memory, running Debian Linux, using a single core.
 
 \subsection{Analysis of Results}
-The results in \ref{comparison} show that the verification tool is in large efficient, yielding comparable verification times to backward reachability and faster than the $MPass$ verifier for all of the protocols tested. Further, all verifiers yield the same safetyness results, which is to be expected as all three solvers are free from both false positives and negatives.
+The results in \ref{comparison} show that the verification tool is in large efficient, yielding comparable verification times to backward reachability and faster than the $MPass$ verifier for all of the protocols tested. Further, all verifiers yield the same safeness results, which is to be expected as all three solvers are free from both false positives and negatives.
 
 Examining the sliding window protocols of increasing size, i.e. \textsc{abp}, \textsc{sw3}, \textsc{sw4} and \textsc{sw5}, it is evident that the verifier suffers from a higher degree of exponential growth with respect to the problem size, than does the backward reachability verifier (which also suffers from exponential growth, as this is a inherent property of the model). First and foremost, it is the amount of working memory that is the bottleneck.
 
