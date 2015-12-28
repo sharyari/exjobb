@@ -69,6 +69,7 @@ In the following section, we explain the semantics of a lossy channel system, wh
     \item For each transmission transition $( s, ch!m, s' )$ in $\delta$ and channel evaluations $\xi$ and $\xi'$, $\conf{s, \xi} \xrightarrow{ch!m} \conf{s', \xi'}$, $\xi'(ch) = \xi(ch)\bullet m$, and $\xi'(ch')=\xi(ch')$ for all $ch' \in Ch \setminus ch$. This means that the control state and the evaluation of the configuration change, so that the message $m$ is appended to the content of the channel $ch$.
     \item For each reception transition $( s, ch?m, s )$ in $\delta$ and channel evaluations $\xi$ and $\xi'$, $\conf{s, \xi} \xrightarrow{ch!m} \conf{s', \xi'}$ such that $\xi(ch)=m \bullet \xi'(ch) $ and $\xi'(ch')=\xi(ch')$ for all $ch' \in Ch \setminus ch$. This means that the control state and the evaluation of the configuration change, so that the message $m$ is removed from the content of the channel $ch$.
     \item For each state $s \in S$ and channel evaluations $\xi$ and $\xi'$, $\conf{s, \xi} \xrightarrow{*} \conf{s, \xi'}$ such that $\xi'(ch)$ is a subword of $\xi(ch)$ for all $ch \in Ch$. This means that any message can be lost at any time.
+    \item For each state $s \in S$ and channel evaluation $\xi$, $\conf{s, \xi} \xrightarrow{i} \conf{s, \xi}$. This means that from each configuration, there is a transition leading back to that configuration with the state and evaluation left unchanged. This may be thought of as an \e{identity transition}.
   \end{itemize}
 
 \paragraph{Notations for configurations}

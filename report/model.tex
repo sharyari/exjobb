@@ -77,6 +77,7 @@ For any $k\in\mathbb{N}$, and $V'\subseteq V_k$, $\alpha_k(\rho(\gamma_k(V')))$ 
 %\todo{Why is this correct? Shouldn't it be the fixpoint of the two that is equal?}
 
 \begin{proof}
+\phantom\qedhere
 We want to show that the set $\gamma_k^{k+1}(V')$ of views of size at most $k+1$ is an abstract representation of the full set $\gamma_k(V')$. In order to do this, 
 %we need to show that for any reachable configuration $c$ of larger size than $k+1$, all the views of $c$ of size at most $k$ are included in the set $\gamma_k(X)$ (i.e., the configuration $c$ is abstractly represented). More precisely, 
 we want to show that for any configuration $c \in$ $\rho(\gamma_k(V'))$ of size $m > k + 1$ such that there is a transition  $c' \xrightarrow{r} c$, then for each view $v' \in$ $\alpha_k(c)$, the following holds: There is a configuration $d'$ $\in$ $\gamma_k^{k+1}(V')$ of size at most $k+1$ and transition $ d' \xrightarrow{r} d$ s.t. $v \in$ $\alpha_k(d)$.
