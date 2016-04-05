@@ -72,7 +72,8 @@ Calculating the abstract post-image of a set of views $V' \subseteq V_k$ is esse
 
 \begin{lemma}
 \label{lemma1}
-For any $k\in\mathbb{N}$, and $V'\subseteq V_k$, $\alpha_k(\rho(\gamma_k(V')))$ $\cup$ $V'$ = $\alpha_k(\rho(\gamma_k^{k+1}(V')))$ $\cup$ $V'$.
+For any $k\in\mathbb{N}$, $\alpha_k(\rho(\gamma_k(V')))$ = $\alpha_k(\rho(\gamma_k^{k+1}(V')))$.
+%For any $k\in\mathbb{N}$, and $V'\subseteq V_k$, $\alpha_k(\rho(\gamma_k(V')))$ $\cup$ $V'$ = $\alpha_k(\rho(\gamma_k^{k+1}(V')))$ $\cup$ $V'$.
 \end{lemma}
 %\todo{Why is this correct? Shouldn't it be the fixpoint of the two that is equal?}
 
@@ -83,7 +84,7 @@ We want to show that the set $\gamma_k^{k+1}(V')$ of views of size at most $k+1$
 we want to show that for any configuration $c \in$ $\rho(\gamma_k(V'))$ of size $m > k + 1$ such that there is a transition  $c' \xrightarrow{r} c$, then for each view $v' \in$ $\alpha_k(c)$, the following holds: There is a configuration $d'$ $\in$ $\gamma_k^{k+1}(V')$ of size at most $k+1$ and transition $ d' \xrightarrow{r} d$ s.t. $v \in$ $\alpha_k(d)$.
 \end{proof}
 
-Note that by design (see section \ref{LTS}), transitions only change a single evaluation, therefore, although the set of evaluations may contain multiple evaluation, we direct our focus to a single evaluation in this section.
+Note that by design (see section \ref{LTS}), transitions only change a single evaluation, therefore, although the set of evaluations may contain multiple evaluations, we direct our focus to a single evaluation in this section.
 
 \paragraph{Transmissions}
 \label{proofTransmission}
@@ -123,7 +124,7 @@ Suppose $Bad$ is a set of bad configurations, such that $|b| = 0$ for all $b \in
 \end{algorithmic}
 \end{algorithm}
 
-The algorithm begins by performing a reachability analysis, as explained in \ref{reachcompute} in order to compute $\mathcal{R}_k$ and check for bad configurations. For any buffer size \e{k}, if a bad configuration is found to be reachable in $\mathcal{R}_k$, the system is unsafe and the algorithm terminates. If no such bad state was found, the algorithm continues by computing a set of configurations $V'$, for which the set of concretizations $\gamma_k^{k+1}(V_k)$ is an \e{overapproximation} of reachable configurations of size $k$, reachable through configurations of size at most $k+1$ and checking for bad configurations. This is done by computing the fixpoint of $Apost_k$. If at this point no bad configuration has been found, the system can be said to be safe and the algorithm terminates. If on the other hand a bad state was found, the system is not necessarily unsafe, as $V_k$ is an overapproximation of the reachable states in $\mathcal{R}_k$. The process is then repeated with a buffer size of \e{k+1}. This process is abstractly described in the flowchart in figure \ref{flow}.
+The algorithm begins by performing a reachability analysis, as explained in \ref{reachcompute}, in order to compute $\mathcal{R}_k$ and check for bad configurations. For any buffer size \e{k}, if a bad configuration is found to be reachable in $\mathcal{R}_k$, the system is unsafe and the algorithm terminates. If no such bad state was found, the algorithm continues by computing a set of configurations $V'$, for which the set of concretizations $\gamma_k^{k+1}(V_k)$ is an \e{overapproximation} of reachable configurations of size $k$, reachable through configurations of size at most $k+1$ and checking for bad configurations. This is done by computing the fixpoint of $Apost_k$. If at this point no bad configuration has been found, the system can be said to be safe and the algorithm terminates. If on the other hand a bad state was found, the system is not necessarily unsafe, as $V_k$ is an overapproximation of the reachable states in $\mathcal{R}_k$. The process is then repeated with a buffer size of \e{k+1}. This process is abstractly described in the flowchart in figure \ref{flow}.
 
 \begin{figure}
 \includegraphics[width=400pt] {bilder/flowchart.png}

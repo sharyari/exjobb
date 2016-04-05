@@ -1,6 +1,6 @@
-\section{Naive Implementation of the Verification Method}
+\section{Naïve Implementation of the Verification Method}
 \label{naive}
-In this chapter, we show how the algorithm in \ref{verificationalgorithm} could be implemented. The implementation is naïve, it strictly follows the mathematical concepts. Then we identify the main drawbacks of this naïve implementation and suggest some improvements.
+In this chapter, we show how the algorithm in \ref{verificationalgorithm} could be implemented. The implementation is naïve, as it strictly follows the mathematical concepts. Following this, we identify the main drawbacks of this naïve implementation and suggest some improvements.
 
 \subsection{Definitions and Notations}
 In this chapter, we introduce the term \e{potential concretizations}. The reason for the introduction of this term resides in the fact that no easy direct way has been found to compute the set of concretizations corresponding to a set of views, i.e. from a set $X_k$ of configurations of size at most $k$ finding $\gamma(X_k)$ of concretizations of size at most $k+1$. Instead, in order to find the concretizations, we generate all of the \e{potential} concretizations, such that a potential concretization is any configuration $con$, $size(v) < size(con) \leq k+1$ for some $v \in X_k$, i.e. any extension of a view already in the set with any symbol in the alphabet.
@@ -70,11 +70,11 @@ A bad configuration is any configuration which is in a \e{state} considered to b
 %\todo[inline]{Note to self: this paragraph would need an explanation on how to find a bad trace leading to the bad configuration. I've written about that in chapter 6 already, and I suggest I leave it there for now.}
 
 \paragraph{Pseudo-code}
-The pseudo-code implementing algorithm \ref{verificationalgorithm} can be found in listing \ref{naive}. 
+The pseudo-code implementing algorithm \ref{verificationalgorithm} is shown in algorithm \ref{naivealg}. 
 
 \begin{algorithm}
   \caption{Pseudo-code for algorithm \ref{verificationalgorithm}.}
-	\label{naive}
+	\label{naivealg}
   \begin{algorithmic}[1]
     \State \textbf{Verifier (V, Rules, Bad):}
     \For{\texttt{$True$}}
@@ -110,18 +110,18 @@ The pseudo-code implementing algorithm \ref{verificationalgorithm} can be found 
 \end{algorithmic}
 \end{algorithm}
 
-\subsection{Evaluation of Algorithm \ref{verificationalgorithm}}
+\subsection{Evaluation of Algorithm \ref{naivealg}}
 Evaluating the procedure described above, we find that the bottle-neck lies within the concretization function:
  In order to compute $\gamma(X_k)$, all potential concretizations of the set $X_k$ of size up to $k+1$ are computed by creating all extensions of the views $v \in X_k$, i.e. all potential concretizations $con$ created from $v$ such that at least one word of the channel evaluation is of a larger size than in $v$. For each of these potential concretizations, $\alpha_k(con)$ is created in order to determine whether the concretization should be accepted or refuted.
 
 Although this method is correct, there is significant overlap of concretizations being considered as it is often possible to create the same concretization \e{con} in several ways. For example, if $X_k$ contains the views $v_1$ = $\conf{s, \epsilon, ab}$ and $v_2$ = $\conf{s, ab, \epsilon}$, then the concretization $\conf{s, ab,ab}$ can, and will, be reached from both $v_1$ and $v_2$, by adding the symbols $ab$ to the first and second channel of $v_1$ and $v_2$ respectively.
 
-A rough worst-case estimate of the number of potential concretizations created in each iteration in the above algorithm can be given. Let $s$ denote the size of the alphabet, $t$ the number of channels and $n$ = $size(X_k^i)$. A potential concretization is created for each combination of symbols with which a word of the channel evaluation can be extended. An upper bound for this is $s^k$ combinations (the number of words of size $k$ that can be created from an alphabet of $s$ symbols). Also, each combination of such extensions on the $t$ different channels is created, resulting in $(s^k)^t$ potential concretizations for a single view. As this must be done for each of the $n$ existing views, the result is an upper bound of $O(n*(s^k)^t)$ potential concretizations that may be considered in a single iteration.
+A rough worst-case estimate of the number of potential concretizations created in each iteration in the above algorithm can be given. Let $s$ denote the size of the alphabet, $t$ the number of channels and $n$ = $size(X_k^i)$. A potential concretization is created for each combination of symbols with which a word of the channel evaluation can be extended. An upper bound for this is $s^k$ combinations, i.e.the number of words of size $k$ that can be created from an alphabet of $s$ symbols. Also, each combination of such extensions on the $t$ different channels is created, resulting in $(s^k)^t$ potential concretizations for a single view. As this must be done for each of the $n$ existing views, the result is an upper bound of $O(n*(s^k)^t)$ potential concretizations that may be considered in a single iteration.
 
-This leads to the conclusion that decreasing the number of potential concretizations considered may result in a faster algorithm. Below we show that this can be achieved by redefining the subword relation, originally defined in section \ref{words}. Using the new definition of the subword relation, algorithm \ref{verificationalgorithm} will still reach the fixpoint $V_k$, i.e. reachable concretizations will be found.
+This leads to the conclusion that decreasing the number of potential concretizations considered may result in a faster algorithm. Below we show that this can be achieved by redefining the subword relation, originally defined in section \ref{words}. Using the new definition of the subword relation, algorithm \ref{naivealg} will still reach the fixpoint $V_k$, i.e. reachable concretizations will be found.
 
 \subsection{Simplified Subword Relation ($\models$)}
-In this section, we propose a new definition of the subword relation, and show that algorithm \ref{verificationalgorithm} will still reach the same set $V_k$ upon termination.
+In this section, we propose a new definition of the subword relation, and show that algorithm \ref{naivealg} will still reach the same set $V_k$ upon termination.
 
 \begin{defn}
 \label{newsubword}
@@ -131,10 +131,10 @@ We redefine the subword relation in section \ref{words}, such that a word $w' \m
 Let $w$=$abc$. Then the set of subwords of \e{w} is \e{abc, ab, bc, a, b, c, $\varepsilon$}. Note that if $w' \models w \implies w' \subword w$, but $w' \subword w \centernot\implies w' \models w$. 
 \end{exmp}
 
-Note that when using algorithm \ref{verificationalgorithm}, each time a new reachable configuration $v$ is found, all its views $v' \subword v$ are accepted as well. This means that a set $X_k$ is closed with respect to the subword relation, i.e. $v \in X_k \implies v' \in X_k$ if $v' \subword v$. This is true for the simplified subword relation as well, so that if $X_k$ is the maintained set of the algorithm using the simplified subword relation, $v \in X_k \implies v' \in X_k$ if $v' \models v$.
+Note that when using algorithm \ref{naivealg}, each time a new reachable configuration $v$ is found, all its views $v' \subword v$ are accepted as well. This means that a set $X_k$ is closed with respect to the subword relation, i.e. $v \in X_k \implies v' \in X_k$ if $v' \subword v$. This is true for the simplified subword relation as well, so that if $X_k$ is the maintained set of the algorithm using the simplified subword relation, $v \in X_k \implies v' \in X_k$ if $v' \models v$.
 
 \begin{lemma}
-Let the set $Y$ denote a fixpoint of algorithm \ref{verificationalgorithm} reached using the definition of the subword relation as defined in section \ref{words}, and let the set $X$ denote a fixpoint of the algorithm using the above definition of the subword relation, then $X=Y$.
+Let the set $Y$ denote a fixpoint of algorithm \ref{naivealg} reached using the definition of the subword relation as defined in section \ref{words}, and let the set $X$ denote a fixpoint of the algorithm using the above definition of the subword relation, then $X=Y$.
 \end{lemma}
 \begin{proof}
 Let $v$ be a view with the word $w = a_ia_{i+1}\ldots a_m$ on its channel (assuming for simplicity that there is only one), and let $v\in Y_k^p$ for some $p \leq 0$ and $v\in X_k^i$ for some $i \leq 0$.
@@ -211,7 +211,8 @@ Suppose we want to determine whether the potential concretization \e{con} = $\co
 \newpage
 \newpage
 \section{Improved Implementation}
-In the previous chapter, it was explained how redefining the subword relation could effectivize the calculation of the set $V_k$, leading to a lower computational complexity in each iteration for the cost of an increased number of iterations. In this chapter, we will show how storing the set $V_k$ and the set $\delta$ of transitions partitioned into disjunct sets of configurations and transitions respectively, we can further improve the implementation of algorithm \ref{verificationalgorithm}.
+\label{improved1}
+In the previous chapter, it was explained how redefining the subword relation could effectivize the calculation of the set $V_k$, leading to a lower computational complexity in each iteration for the cost of an increased number of iterations. In this chapter, we will show how storing the set $V_k$ and the set $\delta$ of transitions partitioned into disjunct sets of configurations and transitions respectively, we can further improve the implementation of algorithm \ref{naivealg}.
 
 %The algorithm implementation in chapter \ref{naive} uses a \e{set} to store configurations, therefore the time to insert and perform a lookup in the set increases with its size, which can often be expected to grow large, due to often unavoidable state-space explotion. Using an ordered set, inserting an element to the set and finding an element in the set is done in \e{O(log n)} where \e{n} denotes the number of elements in the set.
 
@@ -310,6 +311,7 @@ Additionally, the complexity of calculating the set of post-images of a set $\ga
 
 \newpage
 \section{Final Implementation}
+\label{improved2}
 An efficient algorithm in this context is largely an algorithm that avoids performing unnecessary calculations. This can either be done by avoiding to create unnecessary configurations such as was done by redefining the subword relation, or by avoiding recalculating previously calculated results. The algorithm as described above reproduces its steps each iteration; if a configuration \e{c} can be extended to a concretization \e{con} at any point in the verification process, then \e{con} can and will be created in every following iteration. This includes checking whether \e{$\alpha_k(con) \subseteq V$}, applying a set of rules to the configuration and then adding all the views of the resulting configurations to the set. Each time the calculations are performed, the result will be duplicates and no new views are added to the system.
 
 We solve this by maintaining another hashmap, \e{seen}, of concretizations in parallell, containing exactly those concretizations that have been accepted. If a configuration \e{c} can be extended to the concretization \e{con}, then we first check if \e{con} is an element of $seen$. If it is, we discard \e{con}, otherwise we add \e{con} to \e{seen} and also to the set of concretizations to be evaluated in this iteration.

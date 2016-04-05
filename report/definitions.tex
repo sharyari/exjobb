@@ -5,7 +5,9 @@ In this chapter we will give the formal definition of a channel system. First we
 \subsection{Preliminaries}
 \subsubsection{Words and Alphabet}
 \label{words}
-A word  $w = a_1a_2\ldots a_n$ is a finite sequence of letters from an alphabet $\Sigma$, where $a_i$ is in $\Sigma$ for all $i$ in \{1\ldots n\}. We use $\epsilon$  to denote the empty word. We define the length  of a word $w$ to be the number of letters appearing in it (i.e., the length of the word $w=a_1 a_2 \ldots a_n$, with $a_1$, $a_2$, $\ldots$, $a_n \in \Sigma$, is n). We use $|w|$ to denote the length of the word $w$. Observe that $|\epsilon|=0$. We use $\Sigma^*$  (resp. $\Sigma^+$) to denote the set of all  words (resp. non-empty words) over the alphabet $\Sigma$.  Let $k$ be a natural number.  We use $\Sigma_k^*$  (resp. $\Sigma_k^+$) to denote the set of all  words (resp. non-empty words)  of length at most $k$. We use the symbol $\bullet$ to emphasize the concatenation of two words, i.e. $w_1w_2w_3$ can be written as $w_1 \bullet w_2 \bullet w_3$.
+A word  $w = a_1a_2\ldots a_n$ is a finite sequence of letters from an alphabet $\Sigma$, where $a_i$ is in $\Sigma$ for all $i$ in \{1\ldots n\}. We use $\epsilon$  to denote the empty word. We define the length  of a word $w$ to be the number of letters appearing in it, i.e., the length of the word $w=a_1 a_2 \ldots a_n$, with $a_1$, $a_2$, $\ldots$, $a_n \in \Sigma$, is n. We use $|w|$ to denote the length of the word $w$. Observe that $|\epsilon|=0$.
+
+We use $\Sigma^*$  (resp. $\Sigma^+$) to denote the set of all  words (resp. non-empty words) over the alphabet $\Sigma$.  Let $k$ be a natural number.  We use $\Sigma_k^*$  (resp. $\Sigma_k^+$) to denote the set of all  words (resp. non-empty words)  of length at most $k$. We use the symbol $\bullet$ to emphasize the concatenation of two words, i.e. $w_1w_2w_3$ can be written as $w_1 \bullet w_2 \bullet w_3$.
 
 %For a word $w$ = $w_1\ldots w_n$ we define $\leq$ such that for $w_i,w_j \in w$, $w_i\leq w_j$ if $i\leq j$. We define the relation $\subword$ to be the \e{subword} relation; $u = u_1...u_n \subword w_1...w_n = w$ iff $\forall u_i, u_j \in u $ there exists $w_k, w_l \in w$ such that $u_i = w_k$, $u_j = w_l$ and $u_i \leq u_j \iff w_k \leq w_l$.
 
@@ -14,7 +16,7 @@ Let $\sigma : \Sigma^* \rightarrow \Sigma^*$ be a mapping between words, s.t. $\
 As an example, if \e{w}=abc, then the set of subwords of \e{w} is {abc, ab, ac, bc, a, b, c, $\varepsilon$}.
 
 \subsubsection{Fixpoints}
-Let $A$ be a set. We use $2^A$ to denote the set of all the subsets of $A$. Let $F$ be a function with $2^A$ as its domain and co-domain. We say that $F$ is a \e{monotonic function} if and only if for every subset $X,Y \subseteq A$, if $X \subseteq Y$ then $F(X) \subseteq F(Y)$.  We say that $X$ is a \e{fixpoint} of F iff $F(X)=X$. We use $\mu X. F(X)$ to denote the least fixpoint of $F$ with respect to the subset relation (i.e.,  $\mu X. F(X)$ denotes the smallest set $D \subseteq A$, such that $D$ is a fixpoint of $F$). From the Knaster-Tarski theorem~\cite{tarski}, we know that the least-fix point for a monotonic function exists. Furthermore, if $A$ is finite, then the sequence $X_0 = I$, $X_{i+1} = f(A_{n-1})$ for all $i \geq 0$, converges in finitely many iterations to the least-fixpoint of $F$; we refer to this as the \e{Kleen iteration}.
+Let $A$ be a set. We use $2^A$ to denote the set of all the subsets of $A$. Let $F$ be a function with $2^A$ as its domain and co-domain. We say that $F$ is a \e{monotonic function} if and only if for every subset $X,Y \subseteq A$, if $X \subseteq Y$ then $F(X) \subseteq F(Y)$.  We say that $X$ is a \e{fixpoint} of F iff $F(X)=X$. We use $\mu X. F(X)$ to denote the least fixpoint of $F$ with respect to the subset relation, i.e.,  $\mu X. F(X)$ denotes the smallest set $D \subseteq A$, such that $D$ is a fixpoint of $F$. From the Knaster-Tarski theorem~\cite{tarski}, we know that the least-fix point for a monotonic function exists. Furthermore, if $A$ is finite, then the sequence $X_0 = I$, $X_{i+1} = f(A_{n-1})$ for all $i \geq 0$, converges in finitely many iterations to the least-fixpoint of $F$. We refer to this as the \e{Kleen iteration}.
 
 \subsection{Lossy Channel Systems}
 \label{CS}
@@ -41,9 +43,9 @@ The finite-state control part of \e{LCS} is the set of states $S$, with the init
 
 \begin{itemize}
 \item[]
-$(s, ch!m, s')$ represents a change of state from $s \in S$ to $s'$ $\in S$ while appending the message $m\in M$ to the tail of channel $ch\in Ch$.
+$(s, ch!m, s')$ represents a change of state from $s$ to $s'$,  $s, s' \in S$ while appending the message $m\in M$ to the tail of channel $ch\in Ch$.
 \item[]
-$(s, ch?m, s')$ represents a change of state from $s\in S$ to $s'\in S$ while removing the message $m\in M$ from the head of channel $ch \in Ch$
+$(s, ch?m, s')$ represents a change of state from $s$ to $s'$, $s, s' \in S$ while removing the message $m\in M$ from the head of channel $ch \in Ch$
 \end{itemize}
 
 
@@ -55,11 +57,11 @@ Let $\xi : Ch \rightarrow \Sigma^*$ be a function that maps the content of each 
 %For a sequence of evaluations $W = (w_1, w_2 \ldots w_n)$ we use $w_i$ to denote the $i$:th evaluation in the sequence.
 Let $c=(s,\xi)$ be a configuration. We use $state(c)$ and $eval(c)$  to denote the state and the evaluation in $c$, respectively and use the shorthand $c_{S} = state(c)$ and $c_{E} = eval(c)$ for a configuration $c$.
 
-Let $\xi^0$ denote the empty channel evaluation such that for each channel ch $\in$ Ch, we $\xi^0(ch)=\epsilon$. We define $c^0$ to be the initial configuration $(s^0, \xi^0)$, i.e. the configuration with all processes in their initial state and all channel evaluations being the empty word.
+Let $\xi^0$ denote the empty channel evaluation such that for each channel ch $\in$ Ch, $\xi^0(ch)=\epsilon$. We define $c^0$ to be the initial configuration $(s^0, \xi^0)$, i.e. the configuration with all processes in their initial state and all channel evaluations being the empty word.
 
-We define the size of a configuration $c = (s,\xi)$ to be the length of the longest word in the channels, i.e., size(c)=$max\{|\xi(ch)|, ch \in Ch\}$.
+We define the size of a configuration $c = (s,\xi)$ to be the length of the longest word in the channels, i.e., $size(c)$=$max\{|\xi(ch)|, ch \in Ch\}$.
 
-Finally, we extend the subword relation to the configuration of the lossy channel system as follows: Let c=(s,$\xi$) and c'=(s',$\xi'$) be two configurations of the lossy channel system. We say that c is a sub-configuration of c' (denoted  $c \subword c'$) if and only if s=s' and for every channel ch $\in$ Ch, we have $\xi(ch)$ is a subword of $\xi'(ch)$.
+Finally, we extend the subword relation to the configuration of the lossy channel system as follows: Let $c=(s,\xi)$ and $c'=(s',\xi')$ be two configurations of the lossy channel system. We say that $c$ is a sub-configuration of $c'$ (denoted  $c \subword c'$) if and only if $s=s'$ and for every channel $ch \in Ch$, we have $\xi(ch)$ is a subword of $\xi'(ch)$.
 
 \subsection{Semantics}
 \label{LTS}
@@ -73,7 +75,7 @@ In the following section, we explain the semantics of a lossy channel system, wh
   \end{itemize}
 
 \paragraph{Notations for configurations}
-Depending on the context, different notations to describe a configuration $c\in C$ may be used. For example, $c = \conf{s, \xi}$ can be denoted as \e{c} = $\conf{s, w_1, w_2, ..., w_n}$ when the set of channels is ordered (e.g., $Ch=\{ch_1,ch_2, \ldots,ch_n\}$).
+Depending on the context, different notations to describe a configuration $c\in C$ may be used. For example, $c = \conf{s, \xi}$ can be denoted as \e{c} = $\conf{s, w_1, w_2, ..., w_n}$ when the set of channels is ordered, e.g., $Ch=\{ch_1,ch_2, \ldots,ch_n\}$.
 
 We refer to the act of taking a transition $c' \xrightarrow{r} c$, as \emph{firing} the transition $r=\conf{s,\tau,s'}$ from $c$ to $c'$ such that $state(c)=s$ and $state(c')=s'$. Alternatively, we may denote $c' \xrightarrow{r} c$ as $c = r(c)$.
 
@@ -153,7 +155,7 @@ Let $c = \conf{s,\xi}$ be a configuration of the alternating bit protocol, with 
 
 Although the channel system has a finite number of transitions (listed above) between states, the transition system has an infinite number of transitions between configurations, as these depend also on the evaluations. An example of such a transition $\conf{s_2,r_1,01,10}$, $ch_M!1$, $\conf{s_2,r_1,011,10}\rangle$.
 
-\subsubsection{The Verification Problem}
+\subsection{The Verification Problem}
 \label{badconf}
 A channel system can potentially reach a \e{bad} state, i.e. a state representing unintended behaviour. We call a configuration $\conf{s, \xi}$ such that $s$ is a bad state a \e{bad configuration}, regardless of the channel evaluation.
 
@@ -161,5 +163,3 @@ Suppose $Bad$ is a set of bad configurations of a lossy transition system \e{LTS
 
 A configuration \e{c} is said to be \emph{reachable} in \e{LTS}, if there is a trace from the initial configuration $c^0$ such that $c$ is reachable. Let $\mathcal{R}$ denote the set of all reachable configurations. The verification problem is to determine, for a channel transition system \e{LTS} with an initial configuration $c^0$ and a set \e{Bad} $\subseteq$ $C$ of bad configurations, whether a system is safe, that is, does not have any reachable bad configurations. More precisely, this means determining if $\mathcal{R} \cap Bad$ = $\emptyset$.
 
-%I MIGHT WANT THIS AGAIN
-%We assume that \e{Bad} is the upward closure $\{c$ | $ c \in B: b \sqsubseteq c\}$ of a given \e{finite} set of \e{minimal bad configurations}.
