@@ -160,13 +160,12 @@
 }
 
 
-
 \newcommand{\abstraction}[1][]{
 \begin{tikzpicture} [->,auto,node distance=2cm and 4cm,line width=0.3mm, font=\footnotesize]
 
   \node[state] (1) [rectangle, minimum width=2cm] {$V$};
   \node[state] (2) [rectangle, minimum width=2cm,right=of 1] {$\gamma_k(V)$};
-  \node[state] (3) [rectangle, minimum width=2cm,below=of 2] {$p(\gamma_k)$};
+  \node[state] (3) [rectangle, minimum width=2cm,below=of 2] {$p(\gamma_k(V))$};
   \node[state] (4) [rectangle, minimum width=2cm,left=of 3] {$\alpha_k(p(\gamma_k(V)))$};
 
   \path[every node/.style={font=\sffamily\tiny}]
@@ -174,5 +173,18 @@
     (2) edge node [right] {post-image} (3)
     (3) edge node [below] {abstraction function} (4);
 
+\end{tikzpicture}
+}
+
+
+\newcommand{\freachability}[1][]{
+\begin{tikzpicture} [->,auto,node distance=2cm and 4cm,line width=0.3mm, font=\footnotesize]
+
+  \node[state] (1) [rectangle, minimum width=2cm] {$V$};
+  \node[state] (2) [rectangle, minimum width=2cm,below=of 1] {$V'$};
+
+  \path[every node/.style={font=\sffamily\tiny}]
+    (1) edge [bend left] node [right] {post-image} (2)
+    (2) edge [bend left] node [left] {V := V'} (1);
 \end{tikzpicture}
 }

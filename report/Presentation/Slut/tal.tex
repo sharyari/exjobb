@@ -31,9 +31,11 @@ My name is Jonathan Sharyari, I'm an IT student here at Uppsala university, and 
 \begin{frame}
 \begin{itemize}
 \item
-This is an outline of my speech: I will start by explaining some general concepts of verification, with some small examples, unrelated to my work. I then continue with some more specific terminology related to what I do, but in another context. There's two reasons for this: the first is that my goal of my master thesis was to adapt an exisiting approach to a new setting, and therefore I first present the work on which mine is based, and second, examplifying the concepts gets much less cluttered.
+This is an outline of my presentation: I will start by explaining some general concepts of verification, with some small examples, unrelated to my work, before going forward and explain some more specific concepts.
+
+The first is that my goal of my master thesis was to adapt an exisiting approach to a new setting, and therefore I first present the work on which mine is based, and second, examplifying the concepts gets much less cluttered.
 \item
-Thereafter, I will explain what my task was, the adaptions I've did and the difficulties I had to face, and to round off, I show some results in comparison to some other approaches to solve the same problem.
+Thereafter, I will explain what my task was, the adaptions I have done and the difficulties I had to face, and to round off, I show some results in comparison to some other approaches to solve the same problem.
 \end{itemize}
 \end{frame}
 
@@ -55,16 +57,24 @@ Thereafter, I will explain what my task was, the adaptions I've did and the diff
 \subsection*{1}
 \begin{frame}
   \frametitle{Peterson's Mutual Exclusion -- Pseudo Code}
-As an example of verification, we take a simple algorithm, peterson's mutual exclusion algorithm. The goal is that two processes communicate over shared variables in order to avoid that both processes are in their critical section at the same time. We can describe this algorithm as a graph, which would look like this:
+As an example of verification, we take a simple algorithm, peterson's mutual exclusion algorithm. The goal is that two processes communicate over shared variables in order to avoid that both processes are in their critical section at the same time.
+
+The algorithm relies on three shared variables: x for which both have write access, and $b_1$ and $b_2$ for which processes $P_1$ and $P_2$ have write access respectively.
+
+We can describe this algorithm as two program graphs, which would look like this:
 \end{frame}
 
 \subsection*{1}
 \begin{frame}
 \begin{itemize}
 \item
-The two processes have one graph each, rather similar in this case, with three local states each, n1, w1, c1, n2,w2 and c2, where n means non-critical, w means waiting and c is the critical section. From these two graphs, we can see that the unintended behaviour would be that P1 would be in state c1 at the same time as P2 would be in state p2, but neither c1 nor c2 is a bad state in itself.
+The two processes have one graph each, rather similar in this case, with three local states each, n1, w1, c1, n2, w2 and c2, where n means non-critical, w means waiting and c is the critical section.
+
+The unintended behavior which is to be avoided is, in terms of the graph, that process P1 would be in state c1 at the same time as process P2 would be in state p2, but neither state c1 nor c2 is by itself a bad state.
 \item
-We need a graph that describes the joint behaviour of the two program graphs, in order to express the bad state, before we can prove or disprove the existence of such a bad state.
+We can create a graph that describes the joint behaviour of the two program graphs, which would look like this:
+
+% in order to express the bad state, before we can prove or disprove the existence of such a bad state.
 
 \end{itemize}
 \end{frame}
@@ -72,14 +82,24 @@ We need a graph that describes the joint behaviour of the two program graphs, in
 \subsection*{1}
 \begin{frame}
   \frametitle{Peterson's Mutual Exclusion -- Transition System}
-For this, we use a transition system. This graph shows all the reachable states of the transition system corresponding to the two program graphs. Each node in the graph is a global state, which is in turn described by the local state of P1, the local state of P2, and the value of the shared variable x, which can be either 1 or 2. Since no node has both P1 and P2 in their critical sections, petersons mutual exclusion algorithm is safe (as long as the underlying memory system is not doing anything funky).
+This is called a transition system, as opposed to the term program graph I used before. This graph shows all the reachable states of the transition system corresponding to the two program graphs. Each node in the graph is a global state, which is in turn described by the local state of P1, the local state of P2, and the value of the shared variable x, which can be either 1 or 2.
 
-There are several methods to find the reachable set of global states, the arguably simplest being forward reachability analysis: basically, start in an initial state, and take all possible combinations of actions iteratively, until now new states are found.
+With some simple arithmetic we get the result that there are 12 combinations of states and global variable, but as we can see in the graph, only 10 turn out to be reachable. The other two states would be those states where both P1 and P2 are in their critical states at the same time.
+
+Petersons mutual exclusion algorithm can therefore be said to be safe (as long as the underlying memory system is not doing anything funky).
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Forward Reachability Analysis}
+There are several methods to find the reachable set of global states, the arguably simplest being forward reachability analysis: basically, start in an initial state, and take all possible combinations of actions iteratively, until no new states are found.
+
+We maintain a set of states that are reachable, initially being some initiail state. Then for each state we follow every possible arc in the transition system and so reach new states. This is called the post-image of the set. Doing this iteratively, we eventually end up not reaching any new states, and so we have found all the reachable states.
 \end{frame}
 
 \begin{frame}
   \frametitle{Peterson's Mutual Exclusion -- Transition System}
-Now Peterson's algorithm can be generalized as to work for any number of processes, rather than the two we have seen here. The question is then, can our result be generalized as well?
+Now Peterson's algorithm can be generalized as to work for any number of processes, rather than just the two I have showed. The question is then, can the safety result be generalized as well?
 
 What would happen if we would do the same thing for a mutual exclusion algorithm without some upper bound on the number processes using it? This would mean that we would have an infinite number of program graphs, and a transition system like the one here, would be infinite as well. An exhaustive search in such a graph would of course be infeasible.
 \end{frame}
@@ -91,7 +111,9 @@ What would happen if we would do the same thing for a mutual exclusion algorithm
   \frametitle{All for the Price of Few}
   \begin{itemize}
 \item
-One approach to solving this problem was presented in the paper ``all for the price of few'', written Parosh Abdulla, my supervisor, Frederic Haziza and Lukas Holik. I will in short present their results as it the basis of my own work, and it serves better to explain some additional techniques and terminology, namely,  paramterized system, small models and view abstrabction.
+One approach to solving this problem was presented in the paper ``all for the price of few'', written Parosh Abdulla, my supervisor, Frederic Haziza and Lukas Holik. I will in short present some of their results as it has bearing on my own work.
+
+%and it serves better to explain some additional techniques and terminology, namely,  paramterized system, small models and view abstrabction.
 
   \end{itemize}
 \end{frame}
@@ -102,7 +124,7 @@ One approach to solving this problem was presented in the paper ``all for the pr
   \frametitle{Parameterized Systems}
   \begin{itemize}
   \item
-  Parameterized system are systems, where the size of the system is a parameter of the system itself. A mutual exclusion algorithm with unbounded number of participants is one example, and as I mentioned, it results in an infinite size system. This happens not only when there is an unbounded number of processes, but as soon as any global artifact becomes unbounded, for example an integer counter, or communication over unbounded channels.
+  Parameterized system are systems, where the size of the system is a parameter of the system itself. A mutual exclusion algorithm with unbounded number of participants is one example, and as I mentioned, it results in an infinite size system. Such infinite systems can arise in a variety of ways, really as soon as any global artifact becomes unbounded. Other than the number of concurrent processess, this could be the presence of an integer counter, or the communication over unbounded channels.
 
   \end{itemize}
 \end{frame}
@@ -125,10 +147,10 @@ VAD SPELAR DETTA FÖR ROLL?
   \frametitle{Small Models}
   \begin{itemize}
   \item
-As the verification of inifite systems is impossible, we must somehow make the problem finite. A simple method would then to simply put a limit on the number of participents, lets say 5. But proving that the system is safe when there are 2, 3, 4 or 5 processes, is not really a proof that it will still be safe for 6,7 or 8 participents.
+As the verification of inifite systems is impossible, we must somehow make the problem finite. A simple method would then to simply put a limit on the number of participents, lets say 5. But proving that the system is safe when there are 2, 3, 4 or 5 processes, is not really a proof that it will still be safe for 6, 7 or 8 participents.
 
 \item
-    The underlying idea to solve this, is the concept of ``small models''. In some cases, it turns out that it is possible to find a ``small model'', that exhibits all the relevant behaviour of larger models. If we can prove that what we are verifying actually does exhibit all the relevant behaviour of larger models, then proving the correctness for a small model having lets say 5 processes will indeed be a proof for any larger size as well.
+    One way of resolving this, is the concept of ``small models''. In some cases, it turns out that it is possible to find a ``small model'', that exhibits all the relevant behaviour of larger models. If we can prove that what we are verifying actually does exhibit all the relevant behaviour of larger models, then proving the correctness for a small model having let's say 5 processes will indeed be a proof for any larger size as well.
 
   \end{itemize}
 \end{frame}
@@ -139,11 +161,14 @@ As the verification of inifite systems is impossible, we must somehow make the p
 
 \begin{itemize}
 \item
-The question then, is how to show that a certain problem instance is actually a small model. To do this, they use a technique called view abstraction, which is a type of abstract interpretation. Graphically, the process looks something like this:
+The question then, is how to show that a certain problem instance is actually a small model. To do this, one can use a technique called view abstraction, which is a type of abstract interpretation. A schematic of the process looks something like this:
 \item
-Instead of only calculating the set of reachable global states, we create an over-approximation of that set using what we we call a concretization function and a an abstraction function. This is done iteratively: The upper left box is marked V, and denotes the set of views, up to a certain size k.
+Instead of only computing the set of reachable global states directly, as done with a forward reachability analysis, we create an over-approximation of that set using what we we call a concretization function and a an abstraction function. This is done iteratively: The upper left box is marked V, and denotes the set of views, up to a certain size k.
 
-The concretization function takes the this set, and finds a set gamma of concretiaztions of size k+1. You could think of this as a set of reachable states, if there would have been yet another process in the system. Then we take the post-image of this set, which means that we see which other configurations of size k+1 are reachable from the set gamma k. From this set of configurations of size k+1, we use an abstraction function to reduce this to a set of corresponding views of size k.
+The concretization function takes the this set, and finds a set gamma of concretiaztions of size k+1. The best way I could explain this is that the set of concretizations represent a set of potentially reachable states, had the system at hand been of size $k+1$ instead.
+
+Then we take the post-image of this set, that is taking steps in the transition system,
+Having done this, from this set of cocretizations of size k+1, we use an abstraction function to reduce this to a set of corresponding views of size k.
 
 \end{itemize}
 \end{frame}
@@ -187,7 +212,7 @@ The second part of the task was to implement the verification method, the diffic
 \item
 In the remaining time, I'm going to explain more precisely what I mean with a channel system, and give an example for it. I will also shortly define the functions alpha and gamma, just enough to give an intuitive feeling for it. These functions are the most central point of what I have been working on, so it's only fair that I show them, but they are a bit to messy for me to explain adequately withing the short time frame I have.
 \item
-And last, I will compare the results of my work to two other methods for solving the same problem, and apply some self-critisism.
+And last, I will compare the results of my work to two other methods for solving the same problem, and say something about the conclusions that can be drawn.
 \end{itemize}
 \end{frame}
 
@@ -223,6 +248,8 @@ So the two program graphs a and b represent the protocol itself, but additionall
 The corresponding transition system is a system describing the joint functionality of the three processes. In the case of peterson's mutual exclusion before, that was the local state of the two processes and the state of the shared variable x. In this case, it is the local states of the three processes, and the states of the two shared channels M and A. Peterson's algorithm had a transition system with ten reachable states, ABP has 108 reachable states, so drawing it is not really an option.
 \item
 We say that each state is a tuple S, and xi, where S is the global state of the three processes, and xi is the state of the channels, the latter of which I call the evaluation as not to overload the term state.
+\item
+In the context of the alternating bit protocol, the global state is composed by the local states of the sender, receiver and the observer, and the evaluation of the content of the two channels being used.
   \end{itemize}
 \end{frame}
 
@@ -251,12 +278,13 @@ The point of view abstraction was, that for a system of a certain size k, in thi
   \frametitle{Concretization function}
   \begin{itemize}
   \item
-  The concretization function goes in the opposite direction, but is far more difficult to calculate in practice.
-
+    What is the concretization function?
   \item
   Using the same input as before, we not only get back [110,0] that we started with, but also three additional configuration, because the different subsets of the inputs are the views of these configurations.
 \item
-  This is one of the main difficulties that needed to be overcome, in order to write an efficient information. In this example, the input is only 10 views, resulting in 4 configuration. If we look at the verification results from some algorithms, we see in the second column that the number of views range between 45 and 1,8 million, and how to compute this becomes somewhat cumbersome.
+Whereas the abstraction function is easy to implement, the concretization function is not.   This is one of the main difficulties that needed to be overcome, in order to write an efficient information.
+
+%In this example, the input is only 10 views, resulting in 4 configuration. If we look at the verification results from some algorithms, we see in the second column that the number of views range between 45 and 1,8 million, and how to compute this becomes somewhat cumbersome.
   \end{itemize}
 \end{frame}
 

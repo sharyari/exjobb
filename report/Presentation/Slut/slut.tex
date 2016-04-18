@@ -21,7 +21,7 @@
 \usepackage{subcaption}
 \usepackage{algpseudocode}
 \usepackage{biblatex}
-\usepackage[usenames,svgnames]{xcolor}
+%\usepackage[usenames,svgnames]{xcolor}
 
 \addbibresource{references.bib}
 \algtext*{EndWhile}% Remove "end while" text
@@ -54,6 +54,7 @@
   \frametitle{Peterson's Mutual Exclusion -- Pseudo Code}
   \begin{itemize}
   \item
+$P_1$:
   \begin{algorithmic}
     \small
     \While{true}
@@ -64,6 +65,7 @@
     \EndWhile
   \end{algorithmic}
   \item
+$P_2$:
   \begin{algorithmic}
     \small
     \While{true}
@@ -85,9 +87,13 @@
 \begin{frame}
   \begin{example}[Program Graphs]
     \frametitle{Petersons's Mutual Exclusion -- Program Graph}
-    \petersonone
+    $P_1$:
 
-    \petersontwo
+     \petersonone
+
+    $P_2$:
+
+     \petersontwo
   \end{example}
   \begin{itemize}
   \item
@@ -100,11 +106,19 @@
 \begin{frame}
   \frametitle{Peterson's Mutual Exclusion -- Transition System}
   \begin{example}[Transition System]
+    \center
     \petersonboth
   \end{example}
   % Mention that there are several ways to check for this. This is a case of forward reachability...
 \end{frame}
 
+\begin{frame}
+    \begin{example}
+    \center
+    \frametitle{Forward Reachability Analysis}
+    \freachability
+    \end{example}
+\end{frame}
 
 \section{All for the Price of Few}
 \subsection*{1}
@@ -318,9 +332,9 @@ Concretization function $\gamma$: The ''inverse'' of the abstraction function
 
     \{$\langle S, [11, 0]\rangle$, $\langle S, [11, \varepsilon]\rangle$, $\langle S, [10, 0]\rangle$, $\langle S, [10, \varepsilon]\rangle$, $\langle S, [1, 0]\rangle$, $\langle S, [1,\varepsilon ]\rangle$, $\langle S,[0,0]\rangle$, $\langle S, [0,\varepsilon]\rangle$, $\langle S, [\varepsilon, 0]\rangle$, $\langle S, [\varepsilon, \varepsilon]\rangle$\} $\subseteq$ $V$
 
-  $\Rightarrow$ \{
+  $\Rightarrow$
 
-${\color{red}\langle S, [110,0]\rangle}$,
+\{${\color{red}\langle S, [110,0]\rangle}$,
   $\langle S, [110,\varepsilon]\rangle$,
 $\langle S, [111,0]\rangle$,
 $\langle S, [111,\varepsilon]\rangle\}$
