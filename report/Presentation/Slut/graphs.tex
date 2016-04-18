@@ -14,7 +14,7 @@
     (1) edge [bend left] node [above] {$b_1$:=true} (2)
     (1) edge [bend left] node [below] {x:=2} (2)
     (2) edge [bend left] node [above] {x=1 $\vee$ $\neq$ $b_2$} (3)
-    (3) edge [bend left] node [below] {$b_1$=false} (1);
+    (3) edge [bend left] node [below] {$b_1$:=false} (1);
 
 \end{tikzpicture}
 }
@@ -33,7 +33,7 @@
     (1) edge [bend left] node [above] {$b_2$:=true} (2)
     (1) edge [bend left] node [below] {x:=1} (2)
     (2) edge [bend left] node [above] {x=2 $\vee$ $\neq$ $b_1$} (3)
-    (3) edge [bend left] node [below] {$b_2$=false} (1);
+    (3) edge [bend left] node [below] {$b_2$:=false} (1);
 
 \end{tikzpicture}
 }
@@ -65,9 +65,11 @@
     (4) edge node [below] {} (3)
         edge [bend left] node [below] {} (10)
     (5) edge node [below] {} (6)
+	edge node [below] {} (1)
     (6) edge node [below] {} (7)
     (7) edge node [below] {} (8)
     (8) edge node [below] {} (9)
+	edge node [below] {} (4)
     (9) edge node [below] {} (10)
     (10) edge node [below] {} (5);
 

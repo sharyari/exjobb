@@ -6,8 +6,8 @@
 \subject{Computer Science}
 
 \input{graphs.tex}
-\date[2014-09-09] % appears in the bottom of the sidebar
-{September $9^{th}$, 2014}
+\date[2016-04-20] % appears in the bottom of the sidebar
+{April $20^{th}$, 2016}
 \institute[Dept. of Information Technology] % appears in the footline
 {
   Department of Information Technology\\
@@ -23,7 +23,7 @@
 \usepackage{biblatex}
 \usepackage[usenames,svgnames]{xcolor}
 
-%\addbibresource{references.bib}
+\addbibresource{references.bib}
 \algtext*{EndWhile}% Remove "end while" text
 \algtext*{EndIf}% Remove "end if" text
 \algtext*{EndFor}% Remove "end if" text
@@ -43,25 +43,37 @@
   \frametitle{Verification}
   \begin{itemize}
   \item
-    Verification is the “process of evaluating software to determine whether the products of a given development phase satisfy the conditions imposed at the start of that phase”\cite{ordbok}
-  \item
-    Model checking is the task of automatically verifying the correctness of a program, with regard to its specification.
+    Verification is the \emph{``process of evaluating software to determine whether the products of a given development phase satisfy the conditions imposed at the start of that phase''}
+%  \item
+%    Model checking is the task of automatically verifying the correctness of a program, with regard to its specification.
   \end{itemize}
 \end{frame}
 
 \subsection*{1}
 \begin{frame}
   \frametitle{Peterson's Mutual Exclusion -- Pseudo Code}
-
+  \begin{itemize}
+  \item
   \begin{algorithmic}
     \small
     \While{true}
-    \State $\langle b_1$:= true, $x$:=true$\rangle$;
-    \State \textbf{await} ($x$=1 $\vee$ $\neq$ $b_2$);
+    \State $\langle b_1$ := $true$, $x$ = $true\rangle$;
+    \State \textbf{wait while} ($x$ = $true$ $\wedge$ $b_2$ = $true$);
     \State \textsc{critical section}
     \State $b_1$ := false
     \EndWhile
   \end{algorithmic}
+  \item
+  \begin{algorithmic}
+    \small
+    \While{true}
+    \State $\langle b_2$ := $true$, $x$ = $false\rangle$;
+    \State \textbf{wait while} ($x$ = $false$ $\wedge$ $b_1$ = $true$);
+    \State \textsc{critical section}
+    \State $b_1$ := false
+    \EndWhile
+  \end{algorithmic}
+\end{itemize}
 
   % This slide should have a simple example, for example two counters or something, to illustrate how graphs are ``searched''.
   % Introduce the concept of a ``bad state''
