@@ -97,7 +97,7 @@ $P_2$:
   \end{example}
   \begin{itemize}
   \item
-    $\langle$ $c_1$,$c_2$ $\rangle$ is a \emph{bad global state}
+    $\langle$ $c_1$,$c_2,x=1\vee 2$ $\rangle$ is a \emph{bad global state}
   \end{itemize}
 
 \end{frame}
@@ -151,9 +151,9 @@ $P_2$:
 
 \subsection*{1}
 \begin{frame}
-  \frametitle{Parameterized Systems -- Burns' Protocol}
+  \frametitle{Parameterized Systems -- Burns Protocol}
   \begin{figure}
-    \begin{example}[Burns' Protocol]
+    \begin{example}[Burns Protocol]
       \begin{subfigure}[b]{0.49\textwidth}
         \begin{algorithmic}
           \footnotesize
@@ -460,7 +460,7 @@ $\in$ $\gamma_{k+1}(V)$
     \makebox[\linewidth]{
       \begin{tabular}{| c || c | c | c | c | c || c | c | c || c | c | }
         \hline & \multicolumn{5}{c||}{} & \multicolumn{3}{c||}{\textbf{Backward}} & \multicolumn{2}{c|}{\textbf{MPass}} \\
-        \cline {2-11} & \textbf{k} & \textbf{size(V)} & \textbf{Result} & \textbf{Time} & \textbf{Mem} & \textbf{Size V} & \textbf{Result} & \textbf{Time} & \textbf{Result} & \textbf{Time} \\
+        \cline {2-11} & \textbf{k} & \textbf{size(V)} & \textbf{Result} & \textbf{Time} & \textbf{Mem} & \textbf{Size(V)} & \textbf{Result} & \textbf{Time} & \textbf{Result} & \textbf{Time} \\
         \hline
         \textsc{abp} & 2 & 108 & Safe & 0.00s & 1MB & 56 & Safe &  0.01s & Safe & 1.04s\\
         \hline
@@ -470,13 +470,13 @@ $\in$ $\gamma_{k+1}(V)$
         \hline
         \textsc{sw5} & 5 & 1834345 & Safe & 120.20s & 924MB & 2028 & Safe & 24.31s & -- & --\\
         \hline
-        \textsc{brp} & 2 & 45 & Safe & 0.02s & 3MB & -- & ?? & Timeout & Safe & 1.23s\\
+        \textsc{brp} & 2 & 45 & Safe & 0.02s & 3MB & ?? & ?? & Timeout & Safe & 1.23s\\
         \hline
         \textsc{abp\_f} & 1 & -- & Fail & 0.00s & 1MB & -- & Fail & 0.01s & Fail & 6.04s\\
         \hline
         \textsc{sw3\_f} & 1 & -- & Fail & 0.00s & 1MB & -- & Fail & 0.10s & Fail & 26.08s\\
         \hline
-        \textsc{brp\_f} & 1 & -- & Fail & 0.00 & 2 & -- &  Fail & 0.15 & -- & --\\
+        \textsc{brp\_f} & 1 & -- & Fail & 0.00 & 2MB & -- &  Fail & 0.15s & -- & --\\
         \hline
       \end{tabular}
     }

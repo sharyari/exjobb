@@ -25,17 +25,18 @@
 \begin{document}
 \begin{footnotesize}
 \begin{frame}[plain]
-My name is Jonathan Sharyari, I'm an IT student here at Uppsala university, and I'm going to present my master thesis, ``algorithmic verification of channel machines using small models''. This is an internal project for the algorithmic program verification group, with Parosh Abdulla as supervisor and Mohamed Faouzi Atig as reviewer.
+My name is Jonathan Sharyari, I'm an IT student here at Uppsala university, and I'm going to present my master thesis, ``algorithmic verification of channel machines using small models''. This is an internal project at the university, for the algorithmic program verification group, with Parosh Abdulla as supervisor and Mohamed Faouzi Atig as reviewer.
 \end{frame}
 
 \begin{frame}
 \begin{itemize}
 \item
-This is an outline of my presentation: I will start by explaining some general concepts of verification, with some small examples, unrelated to my work, before going forward and explain some more specific concepts.
+This is an outline of my presentation: I will start by explaining some general concepts of verification, with some small examples, unrelated to my work.
 
-The first is that my goal of my master thesis was to adapt an exisiting approach to a new setting, and therefore I first present the work on which mine is based, and second, examplifying the concepts gets much less cluttered.
+I then go on to present some more specific concepts: parameterized systems, small models and view abstraction, still outside of the context of my own work, as I believe it will be a bit easier to follow.
+
 \item
-Thereafter, I will explain what my task was, the adaptions I have done and the difficulties I had to face, and to round off, I show some results in comparison to some other approaches to solve the same problem.
+Thereafter, I will explain what my objective was, and the difficulties I faced. To round off, I will show you some statistics, and talk a bit about what conclusions I reached.
 \end{itemize}
 \end{frame}
 
@@ -46,8 +47,9 @@ Thereafter, I will explain what my task was, the adaptions I have done and the d
   \frametitle{Verification}
   \begin{itemize}
   \item
-  In general, verification is the ``process of evaluating software to determine whether the products of a given development phase satisfy the conditions imposed at the start of that phase''. In this context the term verification refers to ``formal verification'' or ``algorithmic verification'', i.e.\ to formally either prove or disprove the correctness of algorithms.
-%  \item
+  In general, verification is the ``process of evaluating software to determine whether the products of a given development phase satisfy the conditions imposed at the start of that phase''. (The on-line dictionary of computing). In this context the term verification refers to ``formal verification'' or ``algorithmic verification'', i.e.\ to formally either prove or disprove the correctness of algorithms.
+ \item
+I will start with an example of a simple algorithm:
 %  With the term model checking, I refer to the task of performing automated verification of algorithms: in general, one specifies the behaviour of the algorithm expressed as a graph, and specifies either the desired or the undesired behaviour of the algorithm, and then performs an exhaustive search in the graph. The exhaustive search corresponds in essense to all the possible outcomes of the algorithm, and the algorithm is safe, if all possible outcomes exhibit the desired behaviour.
 %  \item
 %  A common way to describe the intended or unintended behavior is to use linear time logic, and this more specific approach is often simply called ``model checking''; This is not the approach used in this project, and I'm mentioning this to avoid potential confusion.
@@ -57,7 +59,7 @@ Thereafter, I will explain what my task was, the adaptions I have done and the d
 \subsection*{1}
 \begin{frame}
   \frametitle{Peterson's Mutual Exclusion -- Pseudo Code}
-As an example of verification, we take a simple algorithm, peterson's mutual exclusion algorithm. The goal is that two processes communicate over shared variables in order to avoid that both processes are in their critical section at the same time.
+...peterson's mutual exclusion algorithm. The goal is that two processes communicate over shared variables in order to avoid that both processes are in their critical section at the same time.
 
 The algorithm relies on three shared variables: x for which both have write access, and $b_1$ and $b_2$ for which processes $P_1$ and $P_2$ have write access respectively.
 
@@ -84,9 +86,9 @@ We can create a graph that describes the joint behaviour of the two program grap
   \frametitle{Peterson's Mutual Exclusion -- Transition System}
 This is called a transition system, as opposed to the term program graph I used before. This graph shows all the reachable states of the transition system corresponding to the two program graphs. Each node in the graph is a global state, which is in turn described by the local state of P1, the local state of P2, and the value of the shared variable x, which can be either 1 or 2.
 
-With some simple arithmetic we get the result that there are 12 combinations of states and global variable, but as we can see in the graph, only 10 turn out to be reachable. The other two states would be those states where both P1 and P2 are in their critical states at the same time.
+With some simple combinatorics we get the result that there are 18 combinations of states and global variables, but as we can see in the graph, only 10 turn out to be reachable.
 
-Petersons mutual exclusion algorithm can therefore be said to be safe (as long as the underlying memory system is not doing anything funky).
+None of these 10 states is the bad state I defined before, thus Petersons mutual exclusion algorithm can be said to be safe (as long as the underlying memory system is not doing anything funky).
 \end{frame}
 
 
@@ -94,7 +96,7 @@ Petersons mutual exclusion algorithm can therefore be said to be safe (as long a
 \frametitle{Forward Reachability Analysis}
 There are several methods to find the reachable set of global states, the arguably simplest being forward reachability analysis: basically, start in an initial state, and take all possible combinations of actions iteratively, until no new states are found.
 
-We maintain a set of states that are reachable, initially being some initiail state. Then for each state we follow every possible arc in the transition system and so reach new states. This is called the post-image of the set. Doing this iteratively, we eventually end up not reaching any new states, and so we have found all the reachable states.
+We maintain a set of states that are reachable, initially being some initiail state. Then for each state we follow every possible arc in the transition system and so reach new states. This is called the post-image of the set. Doing this iteratively, we eventually reach a fixpoint of V, such that V is the set of all reachable global states.
 \end{frame}
 
 \begin{frame}
@@ -136,7 +138,10 @@ One approach to solving this problem was presented in the paper ``all for the pr
 \item
 Here we see another mutual exclusion algorithm, this time with unbounded number of participents, the burns' protocol. Each process has the exact same program graph, with 6 local states where the 6:th one represents the critical section. How this algorithm works exactly is not that important in this context.
 
-VAD SPELAR DETTA FÖR ROLL?
+\item
+How would this protocol be verified?
+Let's say we would limit the number of processes to say 5. Showing that the protocol is correct for 2, 3, 4 and 5 would surely suggest that it is correct for larger instances as well, but suggesting is not proving that it will still be safe for 6, 7 or 8 participents.
+
 
 \end{itemize}
 \end{frame}
@@ -147,11 +152,11 @@ VAD SPELAR DETTA FÖR ROLL?
   \frametitle{Small Models}
   \begin{itemize}
   \item
-As the verification of inifite systems is impossible, we must somehow make the problem finite. A simple method would then to simply put a limit on the number of participents, lets say 5. But proving that the system is safe when there are 2, 3, 4 or 5 processes, is not really a proof that it will still be safe for 6, 7 or 8 participents.
-
-\item
     One way of resolving this, is the concept of ``small models''. In some cases, it turns out that it is possible to find a ``small model'', that exhibits all the relevant behaviour of larger models. If we can prove that what we are verifying actually does exhibit all the relevant behaviour of larger models, then proving the correctness for a small model having let's say 5 processes will indeed be a proof for any larger size as well.
+\item
+This means that in the scenario before, if a problem instance with 5 processes can be shown to be a small model, then proving that it is correct for that instance would indeed be a proof of correctness for larger instances.
 
+The question then, is how to show that a certain problem instance is actually a small model.
   \end{itemize}
 \end{frame}
 
@@ -161,7 +166,7 @@ As the verification of inifite systems is impossible, we must somehow make the p
 
 \begin{itemize}
 \item
-The question then, is how to show that a certain problem instance is actually a small model. To do this, one can use a technique called view abstraction, which is a type of abstract interpretation. A schematic of the process looks something like this:
+To do this, one can use a technique called view abstraction, which is a type of abstract interpretation. A schematic of the process looks something like this:
 \item
 Instead of only computing the set of reachable global states directly, as done with a forward reachability analysis, we create an over-approximation of that set using what we we call a concretization function and a an abstraction function. This is done iteratively: The upper left box is marked V, and denotes the set of views, up to a certain size k.
 
@@ -182,7 +187,9 @@ Drawing example
   \frametitle{Verification algorithm} % mention ``Abstract interpretation''
 \begin{itemize}
 \item
-This results in a verification algorithm, that looks a bit like this. It has two distinct parts: the first part is to use some verification technique to check whether a finite model is safe or not, using any technique: this could be for example forward reachability. The second part consists of applying the concretization function gamma and abstraction function alpha, trying to show that the model is a small model.
+This results in a verification algorithm, that looks a bit like this. It has two distinct parts:
+
+the first part is to use some verification technique to check whether the finite model is safe or not, using any technique: this could be for example forward reachability. The second part consists of applying the concretization function gamma and abstraction function alpha, trying to show that the model is a small model.
 \item
 To be a bit more precise, I'll step through the algorithm once. We start with the smallest number k of participents, in the case of mutual exclusion algorithms, that would be 2. In the first step, we find the reachable set of global states, such as we saw for peterson's algorithm earlier, and check if any of those states is a bad state. If such a state exists, we have shown that the algorithm is unsafe, and we're done.
 \item
@@ -197,20 +204,21 @@ If not, we want to check if k=2 is a small model. We apply the concretization an
   \frametitle{Goal}
   \begin{itemize}
     \item
-You have probably noticed that I still havn't explained what my thesis work is about. Recall that parameterized systems arise, when there is some unbounded entity within a system, leading to an infinite system. One example was an unbounded number of processes, and solving this problem was the goal of this paper by the Algorithmic Program Verification group. Another example was the presence of unbounded integers, and solving this problem was the topic of another master thesis this year by Thomas Sävström. The last example was the presence of unbounded buffers, and this is the topic of my master thesis.
+Now here's where my master thesis comes into the picture. I said before that parameterized systems arise, when there is some unbounded entity within a system, leading to an infinite system. One example was an unbounded number of processes, and solving this problem was the goal of this paper by the Algorithmic Program Verification group. Another example was the presence of unbounded integers, and solving this problem was the topic of another master thesis before me, Thomas Sävström. The last example was the presence of unbounded buffers, and this is the topic of my master thesis.
 \item
 My task was to adapt the model that I have presented, to a method of verifying channel systems, i.e.\ systems working with unbounded buffers. Perhaps a bit oversimplified, this means that I'm using the same verification algorithm as we just saw, but with other functions for alpha and gamma.
 \item
 The difficulty is then, to define a concretization function gamma and an abstraction function alpha, and to prove that the continuous application of these function will indeed result in the proof of a small model.
 \item
-The second part of the task was to implement the verification method, the difficulty of which is of course trying to do efficiently.
+The second part of the task was that of implementing the verification method, the difficulty of which is of course trying to do efficiently.
   \end{itemize}
 \end{frame}
 
 \begin{frame}
 \begin{itemize}
 \item
-In the remaining time, I'm going to explain more precisely what I mean with a channel system, and give an example for it. I will also shortly define the functions alpha and gamma, just enough to give an intuitive feeling for it. These functions are the most central point of what I have been working on, so it's only fair that I show them, but they are a bit to messy for me to explain adequately withing the short time frame I have.
+In the remaining time, I'm going to explain more precisely what I mean with a channel system, and give an example for it. I will also shortly define the functions alpha and gamma, just enough to give an intuitive feeling for it.
+
 \item
 And last, I will compare the results of my work to two other methods for solving the same problem, and say something about the conclusions that can be drawn.
 \end{itemize}
@@ -245,7 +253,7 @@ So the two program graphs a and b represent the protocol itself, but additionall
   \frametitle{Channel Transition System}
   \begin{itemize}
   \item
-The corresponding transition system is a system describing the joint functionality of the three processes. In the case of peterson's mutual exclusion before, that was the local state of the two processes and the state of the shared variable x. In this case, it is the local states of the three processes, and the states of the two shared channels M and A. Peterson's algorithm had a transition system with ten reachable states, ABP has 108 reachable states, so drawing it is not really an option.
+The corresponding transition system is a system describing the joint functionality of the three processes. In the case of peterson's mutual exclusion before, that was the local state of the two processes and the state of the shared variable x. In this case, it is the local states of the three processes, and the states of the two shared channels M and A. Peterson's algorithm had a transition system with ten reachable states, ABP has 56 reachable states, so drawing it is not really an option.
 \item
 We say that each state is a tuple S, and xi, where S is the global state of the three processes, and xi is the state of the channels, the latter of which I call the evaluation as not to overload the term state.
 \item
